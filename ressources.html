@@ -1,5 +1,51 @@
-<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1"><title>RESSOURCES — Zou Maï</title>
-<style>body{margin:0;background:#090909;color:#fff;font:20px Arial;display:grid;place-items:center;min-height:100vh}
-main{text-align:center}a{color:#ffd400}h1{font-size:clamp(3rem,10vw,8rem);margin:.2em}</style></head>
-<body><main><h1>RESSOURCES</h1><p>Page en construction.</p><p><a href="index.html">← Accueil</a></p></main></body></html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ressources — Zou Maï</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#080808;color:#fff;font-family:Arial,Helvetica,sans-serif}
+body{min-height:100vh;background:
+radial-gradient(circle at 15% 20%,#173f62 0 8%,transparent 9%),
+radial-gradient(circle at 85% 75%,#6d1717 0 7%,transparent 8%),
+linear-gradient(135deg,#090909,#151515 55%,#050505);overflow-x:hidden}
+body:after{content:"";position:fixed;inset:0;pointer-events:none;opacity:.16;
+background:repeating-linear-gradient(8deg,transparent 0 13px,rgba(255,255,255,.08) 14px,transparent 15px)}
+nav{display:flex;justify-content:flex-end;gap:10px;padding:22px 4vw;position:relative;z-index:2}
+nav a{color:#fff;text-decoration:none;font-weight:900;padding:9px 13px;border:2px solid #eee;background:#111;transform:rotate(-1deg)}
+nav a:nth-child(2){background:#e0b900;color:#111;transform:rotate(1deg)}
+main{width:min(1100px,92vw);margin:5vh auto;position:relative;z-index:1}
+h1{font-size:clamp(4rem,12vw,9rem);line-height:.8;margin:0 0 50px;text-transform:uppercase;letter-spacing:-.08em;text-shadow:7px 7px 0 #161616}
+.card{position:relative;width:min(720px,100%);padding:32px;border:4px solid #111;background:#e2c00b;color:#0b0b0b;
+box-shadow:14px 14px 0 #b5231e,-8px -8px 0 #1b5d83;transform:rotate(-1deg)}
+.card:before{content:"ENGLISH";position:absolute;right:-40px;top:-28px;background:#1d5c82;color:#fff;padding:8px 20px;font-weight:900;transform:rotate(7deg)}
+.kicker{font-weight:900;letter-spacing:.18em}.card h2{font-size:clamp(2.5rem,7vw,5.5rem);margin:8px 0 4px;line-height:.9}
+.card p{font-size:1.1rem;max-width:560px;font-weight:700}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+.btn{display:inline-block;padding:14px 22px;background:#0b0b0b;color:#fff;text-decoration:none;font-weight:900;border:3px solid #0b0b0b}
+.btn:hover{background:#d62420;box-shadow:6px 6px 0 #fff;transform:translate(-2px,-2px)}
+.btn.secondary{background:transparent;color:#0b0b0b}.back{display:inline-block;margin-top:55px;color:#fff;font-weight:900;text-decoration:none}
+@media(max-width:600px){nav{justify-content:center;flex-wrap:wrap}.card{padding:24px}.card:before{right:5px}}
+</style>
+</head>
+<body>
+<nav>
+<a href="index.html">ACCUEIL</a>
+<a href="ressources.html">RESSOURCES</a>
+<a href="projets.html">PROJETS</a>
+<a href="apropos.html">À PROPOS</a>
+</nav>
+<main>
+<h1>RESSOURCES</h1>
+<section class="card">
+<div class="kicker">JEUX D'ANGLAIS</div>
+<h2>THE METHOD</h2>
+<p>Jeux et activités interactives d'anglais. Cette ressource reste dans son dépôt indépendant : Zou Maï sert de portail pour y accéder.</p>
+<div class="actions">
+<a class="btn" href="https://zoumai.github.io/the-method/" target="_blank" rel="noopener">JOUER →</a>
+<a class="btn secondary" href="https://github.com/ZouMai/the-method" target="_blank" rel="noopener">VOIR LE DÉPÔT</a>
+</div>
+</section>
+<a class="back" href="index.html">← RETOUR AU MUR</a>
+</main>
+</body></html>
