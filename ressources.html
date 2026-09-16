@@ -1,51 +1,31 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Ressources — Zou Maï</title>
 <style>
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#080808;color:#fff;font-family:Arial,Helvetica,sans-serif}
-body{min-height:100vh;background:
-radial-gradient(circle at 15% 20%,#173f62 0 8%,transparent 9%),
-radial-gradient(circle at 85% 75%,#6d1717 0 7%,transparent 8%),
-linear-gradient(135deg,#090909,#151515 55%,#050505);overflow-x:hidden}
-body:after{content:"";position:fixed;inset:0;pointer-events:none;opacity:.16;
-background:repeating-linear-gradient(8deg,transparent 0 13px,rgba(255,255,255,.08) 14px,transparent 15px)}
-nav{display:flex;justify-content:flex-end;gap:10px;padding:22px 4vw;position:relative;z-index:2}
-nav a{color:#fff;text-decoration:none;font-weight:900;padding:9px 13px;border:2px solid #eee;background:#111;transform:rotate(-1deg)}
-nav a:nth-child(2){background:#e0b900;color:#111;transform:rotate(1deg)}
-main{width:min(1100px,92vw);margin:5vh auto;position:relative;z-index:1}
-h1{font-size:clamp(4rem,12vw,9rem);line-height:.8;margin:0 0 50px;text-transform:uppercase;letter-spacing:-.08em;text-shadow:7px 7px 0 #161616}
-.card{position:relative;width:min(720px,100%);padding:32px;border:4px solid #111;background:#e2c00b;color:#0b0b0b;
-box-shadow:14px 14px 0 #b5231e,-8px -8px 0 #1b5d83;transform:rotate(-1deg)}
-.card:before{content:"ENGLISH";position:absolute;right:-40px;top:-28px;background:#1d5c82;color:#fff;padding:8px 20px;font-weight:900;transform:rotate(7deg)}
-.kicker{font-weight:900;letter-spacing:.18em}.card h2{font-size:clamp(2.5rem,7vw,5.5rem);margin:8px 0 4px;line-height:.9}
-.card p{font-size:1.1rem;max-width:560px;font-weight:700}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
-.btn{display:inline-block;padding:14px 22px;background:#0b0b0b;color:#fff;text-decoration:none;font-weight:900;border:3px solid #0b0b0b}
-.btn:hover{background:#d62420;box-shadow:6px 6px 0 #fff;transform:translate(-2px,-2px)}
-.btn.secondary{background:transparent;color:#0b0b0b}.back{display:inline-block;margin-top:55px;color:#fff;font-weight:900;text-decoration:none}
-@media(max-width:600px){nav{justify-content:center;flex-wrap:wrap}.card{padding:24px}.card:before{right:5px}}
-</style>
-</head>
-<body>
-<nav>
-<a href="index.html">ACCUEIL</a>
-<a href="ressources.html">RESSOURCES</a>
-<a href="projets.html">PROJETS</a>
-<a href="apropos.html">À PROPOS</a>
-</nav>
-<main>
-<h1>RESSOURCES</h1>
-<section class="card">
-<div class="kicker">JEUX D'ANGLAIS</div>
-<h2>THE METHOD</h2>
-<p>Jeux et activités interactives d'anglais. Cette ressource reste dans son dépôt indépendant : Zou Maï sert de portail pour y accéder.</p>
-<div class="actions">
-<a class="btn" href="https://zoumai.github.io/the-method/" target="_blank" rel="noopener">JOUER →</a>
-<a class="btn secondary" href="https://github.com/ZouMai/the-method" target="_blank" rel="noopener">VOIR LE DÉPÔT</a>
+*{box-sizing:border-box}body{margin:0;background:#080808;color:#eee;font-family:Arial,sans-serif;min-height:100vh;
+background-image:linear-gradient(110deg,rgba(18,72,105,.25),transparent 35%),linear-gradient(300deg,rgba(160,25,20,.22),transparent 40%)}
+nav{padding:20px 4vw;display:flex;justify-content:flex-end;gap:9px;flex-wrap:wrap}
+nav a,.tag{font-weight:900;color:#fff;text-decoration:none;border:2px solid #ddd;background:#111;padding:8px 12px;transform:rotate(-1deg)}
+nav a:nth-child(2){background:#e4c20d;color:#111}
+main{width:min(1120px,92vw);margin:auto;padding:4vh 0 10vh}
+h1{font-size:clamp(4rem,12vw,9rem);margin:0 0 15px;line-height:.8;letter-spacing:-.07em;text-shadow:7px 7px #171717}
+.intro{font-weight:900;margin:0 0 45px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:30px}
+.card{min-height:270px;padding:25px;border:4px solid #0b0b0b;box-shadow:10px 10px 0 #151515;position:relative;transition:.15s}
+.card:nth-child(1){background:#e4c20d;color:#090909;transform:rotate(-1deg)}
+.card:nth-child(2){background:#17648e;transform:rotate(1deg)}
+.card:nth-child(3){background:#b72b25;transform:rotate(-.5deg)}
+.card:hover{transform:translate(-4px,-6px) rotate(0);box-shadow:16px 16px 0 #050505}
+.card h2{font-size:2.5rem;margin:28px 0 8px;line-height:.9}.card p{font-weight:700;line-height:1.45}
+.card a{display:inline-block;margin-top:16px;background:#080808;color:white;text-decoration:none;padding:13px 18px;font-weight:900;border:2px solid #080808}
+.card a:hover{background:white;color:#080808}.stamp{position:absolute;right:15px;top:12px;font-size:2rem;font-weight:900;transform:rotate(7deg)}
+.repo{margin-top:48px;padding:20px;border-left:8px solid #e4c20d}.repo a{color:#e4c20d;font-weight:900}
+</style></head><body>
+<nav><a href="index.html">ACCUEIL</a><a href="ressources.html">RESSOURCES</a><a href="projets.html">PROJETS</a><a href="apropos.html">À PROPOS</a></nav>
+<main><h1>RESSOURCES</h1><p class="intro">ANGLAIS / THE METHOD</p>
+<div class="grid">
+<article class="card"><span class="stamp">01</span><div class="tag">ENGLISH GAME</div><h2>BACK TO SCHOOL</h2><p>Jeu interactif d’anglais de la collection Sensei Zou Maï.</p><a href="https://zoumai.github.io/the-method/" target="_blank" rel="noopener">JOUER →</a></article>
+<article class="card"><span class="stamp">02</span><div class="tag">ENGLISH GAME</div><h2>DRINKS</h2><p>Activité interactive autour du vocabulaire des boissons.</p><a href="https://zoumai.github.io/the-method/" target="_blank" rel="noopener">JOUER →</a></article>
+<article class="card"><span class="stamp">∞</span><div class="tag">COLLECTION</div><h2>THE METHOD</h2><p>Accéder au menu complet des jeux d’anglais et aux futures activités.</p><a href="https://zoumai.github.io/the-method/" target="_blank" rel="noopener">TOUS LES JEUX →</a></article>
 </div>
-</section>
-<a class="back" href="index.html">← RETOUR AU MUR</a>
-</main>
-</body></html>
+<div class="repo">CODE SOURCE : <a href="https://github.com/ZouMai/the-method" target="_blank" rel="noopener">ZouMai / the-method →</a></div>
+</main></body></html>
