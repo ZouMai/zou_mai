@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Zou Maï</title>
+
+  <meta name="description"
+        content="Zou Maï — ressources, projets et créations.">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      background: #000;
+    }
+
+    body {
+      overflow: hidden;
+    }
+
+    /* ==========================
+       IMAGE PRINCIPALE
+       ========================== */
+
+    #mur {
+      position: relative;
+
+      width: 100vw;
+      height: 100vh;
+
+      background-image: url("images/accueil.png");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+
+      overflow: hidden;
+    }
+
+    /* ==========================
+       ZONES CLIQUABLES
+       ========================== */
+
+    .menu-zone {
+      position: absolute;
+
+      top: 1.5%;
+      height: 13%;
+
+      display: block;
+
+      cursor: pointer;
+
+      border-radius: 8px;
+
+      transition:
+        background 0.18s ease,
+        box-shadow 0.18s ease,
+        transform 0.18s ease,
+        filter 0.18s ease;
+    }
+
+    /*
+       Les boutons sont déjà dessinés
+       dans l'image.
+
+       Ces rectangles sont donc
+       transparents.
+    */
+
+    .menu-zone:hover {
+      background: rgba(255,255,255,.08);
+
+      box-shadow:
+        0 0 10px rgba(255,255,255,.7),
+        0 0 25px rgba(255,220,0,.5),
+        0 0 50px rgba(255,0,0,.25);
+
+      filter:
+        brightness(1.25)
+        saturate(1.4);
+
+      transform:
+        rotate(-1deg)
+        scale(1.04);
+    }
+
+
+    /* ==========================
+       ACCUEIL
+       ========================== */
+
+    #accueil {
+      left: 54%;
+      width: 11%;
+    }
+
+
+    /* ==========================
+       RESSOURCES
+       ========================== */
+
+    #ressources {
+      left: 64.5%;
+      width: 12%;
+    }
+
+
+    /* ==========================
+       PROJETS
+       ========================== */
+
+    #projets {
+      left: 76%;
+      width: 10%;
+    }
+
+
+    /* ==========================
+       À PROPOS
+       ========================== */
+
+    #apropos {
+      left: 85.5%;
+      width: 13%;
+    }
+
+
+    /* ==========================
+       PETIT EFFET GRAIN
+       ========================== */
+
+    #grain {
+      position: absolute;
+      inset: 0;
+
+      pointer-events: none;
+
+      opacity: .10;
+
+      background-image:
+        repeating-radial-gradient(
+          circle at 20% 30%,
+          rgba(255,255,255,.15) 0,
+          rgba(255,255,255,.15) 1px,
+          transparent 1px,
+          transparent 4px
+        );
+
+      mix-blend-mode: overlay;
+
+      animation: grain .18s steps(2) infinite;
+    }
+
+    @keyframes grain {
+
+      0% {
+        transform: translate(0,0);
+      }
+
+      25% {
+        transform: translate(-2px,1px);
+      }
+
+      50% {
+        transform: translate(2px,-1px);
+      }
+
+      75% {
+        transform: translate(-1px,-2px);
+      }
+
+      100% {
+        transform: translate(0,0);
+      }
+    }
+
+
+    /* ==========================
+       MOBILE
+       ========================== */
+
+    @media (max-width: 800px) {
+
+      body {
+        overflow: auto;
+      }
+
+      #mur {
+        min-width: 1000px;
+        min-height: 100vh;
+
+        background-size: cover;
+        background-position: center;
+      }
+    }
+
+  </style>
+</head>
+
+
+<body>
+
+  <main id="mur">
+
+    <!-- ACCUEIL -->
+
+    <a
+      id="accueil"
+      class="menu-zone"
+      href="index.html"
+      aria-label="Accueil">
+    </a>
+
+
+    <!-- RESSOURCES -->
+
+    <a
+      id="ressources"
+      class="menu-zone"
+      href="ressources.html"
+      aria-label="Ressources">
+    </a>
+
+
+    <!-- PROJETS -->
+
+    <a
+      id="projets"
+      class="menu-zone"
+      href="projets.html"
+      aria-label="Projets">
+    </a>
+
+
+    <!-- À PROPOS -->
+
+    <a
+      id="apropos"
+      class="menu-zone"
+      href="apropos.html"
+      aria-label="À propos">
+    </a>
+
+
+    <!-- texture animée -->
+
+    <div id="grain"></div>
+
+  </main>
+
+
+  <script>
+
+    /*
+      Petit mouvement du mur avec la souris.
+      Très léger pour conserver l'aspect
+      illustration.
+    */
+
+    const mur = document.getElementById("mur");
+
+    document.addEventListener("mousemove", (event) => {
+
+      if (window.innerWidth < 800) return;
+
+      const x =
+        (event.clientX / window.innerWidth - 0.5) * 4;
+
+      const y =
+        (event.clientY / window.innerHeight - 0.5) * 4;
+
+      mur.style.backgroundPosition =
+        `calc(50% + ${x}px) calc(50% + ${y}px)`;
+
+    });
+
+    document.addEventListener("mouseleave", () => {
+
+      mur.style.backgroundPosition = "center";
+
+    });
+
+  </script>
+
+</body>
+</html>
