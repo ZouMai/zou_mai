@@ -1,5 +1,5 @@
 (()=>{
-const id=Number(document.body.dataset.dictee),d=window.DICTEES.find(x=>x.id===id),app=document.querySelector('#app');
+const id=Number(document.body.dataset.dictee),d=window.DICTEES.find(x=>x.id===id),art=window.DICTEE_ART?.[id],app=document.querySelector('#app');
 if(!d){app.innerHTML='<p>Dictée introuvable.</p>';return}
 const key='zm-d'+id,colors=['yellow','green','violet'];
 let lvl=0,mode='flash',queue=[],index=0,points=0,answer='',reviewAnswer='',timer;
@@ -12,7 +12,7 @@ const hard=w=>{const a=repair(JSON.parse(localStorage.getItem(key)||'[]'));if(!a
 const speak=w=>{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(w);u.lang='fr-FR';u.rate=.72;speechSynthesis.speak(u)};
 
 app.innerHTML=`<header class="dict-hero"><div><span class="tag">DICTÉE ${id} · CM2</span><h1>${d.title}</h1><p>Cinq missions courtes pour observer, mémoriser, transformer et écrire.</p></div><div class="dict-nav"><a ${id>1?`href="${fileFor(id-1)}"`:''}>←</a><span>${id} / 25</span><a ${id<25?`href="${fileFor(id+1)}"`:''}>→</a></div></header>
-<section class="dict-wrap"><figure class="artwork"><div class="art-frame"><img id="art" alt="Illustration en lien avec ${d.title}"><span id="artFallback">ŒUVRE<br>À OBSERVER</span></div><figcaption><b>Observe l’œuvre avant de commencer.</b><br>Que remarques-tu ? Quels détails sont liés au thème de la dictée ?<small id="credit">Illustration recherchée dans Wikimedia Commons.</small></figcaption></figure>
+<section class="dict-wrap"><figure class="artwork"><div class="art-frame ${art?.images.length>1?'art-gallery':''}">${art?art.images.map((src,n)=>`<img src="${src}" alt="${art.title}${art.images.length>1?' - vue '+(n+1):''}">`).join(''):'<span>ŒUVRE<br>À OBSERVER</span>'}</div><figcaption><span class="art-label">ŒUVRE ASSOCIÉE</span><h2>${art?.title||d.title}</h2><p>${art?.why||'Observe les détails qui sont liés au thème de la dictée.'}</p><small>Source : ${art?.source||'document pédagogique'}</small></figcaption></figure>
 <section class="levels">${colors.map((c,n)=>`<button class="level ${c} ${n===0?'active':''}" data-l="${n}">${c.toUpperCase()}<small>${n===0?'Mots essentiels':n===1?'Jaune + intermédiaires':'Toute la liste'}</small></button>`).join('')}</section>
 <div class="status"><span class="pill" id="levelName">Niveau jaune</span><span class="pill" id="score">0 réussite</span><div class="progress"><span id="progressFill"></span></div></div>
 <section class="missions"><button class="mission active" data-m="flash">👁️<b>Mot éclair</b><span>Observer puis écrire</span></button><button class="mission" data-m="transform">🔄<b>Je transforme</b><span>Accords et formes</span></button><button class="mission" data-m="choice">🎯<b>Je choisis</b><span>Reconnaître l’orthographe</span></button><button class="mission" data-m="dictation">🎧<b>Mini-dictée</b><span>Écouter puis écrire</span></button><button class="mission" data-m="reverse">↩️<b>Bonus à l’envers</b><span>De la fin au début</span></button><button class="study-tab" id="study">📚<b>Revoir les mots</b><span>Liste du niveau</span></button><button class="study-tab" id="review">⭐<b>Mes mots à revoir</b><span>Mes erreurs</span></button></section>
@@ -32,6 +32,5 @@ function showReview(){clearTimeout(timer);deactivate();document.querySelector('#
 function deactivate(){document.querySelectorAll('.mission,.study-tab').forEach(x=>x.classList.remove('active'))}
 document.querySelectorAll('.level').forEach(b=>b.onclick=()=>{document.querySelectorAll('.level').forEach(x=>x.classList.remove('active'));b.classList.add('active');lvl=Number(b.dataset.l);document.querySelector('#levelName').textContent='Niveau '+colors[lvl];document.querySelector('#study').classList.contains('active')?showWords():document.querySelector('#review').classList.contains('active')?showReview():start()});
 document.querySelectorAll('.mission').forEach(b=>b.onclick=()=>{deactivate();b.classList.add('active');mode=b.dataset.m;start()});document.querySelector('#study').onclick=showWords;document.querySelector('#review').onclick=showReview;
-async function artwork(){try{const url='https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrnamespace=6&gsrlimit=6&gsrsearch='+encodeURIComponent(d.query)+'&prop=imageinfo&iiprop=url|extmetadata&iiurlwidth=1200&format=json&origin=*';const j=await fetch(url).then(r=>r.json()),pages=Object.values(j.query?.pages||{}),p=pages.find(x=>x.imageinfo?.[0]?.thumburl);if(!p)return;const info=p.imageinfo[0],img=document.querySelector('#art');img.src=info.thumburl;img.onload=()=>document.querySelector('#artFallback').hidden=true;document.querySelector('#credit').textContent='Illustration : Wikimedia Commons · '+(p.title||'') }catch(e){}}
-artwork();start();
+start();
 })();
