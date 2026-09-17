@@ -10,7 +10,7 @@
 <style>
 .subfolders{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px;margin:18px 0 24px}.subfolder{--glow:var(--a);display:flex;align-items:center;justify-content:center;min-height:68px;padding:10px;background:#14171c;color:#fff;text-decoration:none;text-align:center;border:2px solid #ffffff70;font-size:.78rem;font-weight:900;box-shadow:4px 4px #000;transition:.18s}.subfolder:hover,.subfolder:focus{transform:translate(-2px,-3px);border-color:#fff;box-shadow:0 0 7px #fff,0 0 22px var(--glow),6px 7px #000;color:#fff}.subfolder.ready:after{content:"●";color:var(--a);margin-left:7px}
 
-/* STYLES DES PARCOURS HISTOIRE DES ARTS */
+/* PARCOURS HISTOIRE DES ARTS AVEC SUPPORTS PÉDAGOGIQUES */
 .hda-dashboard { background: #111418; padding: 20px; border: 4px solid #050505; box-shadow: 8px 8px var(--a); margin-top: 20px; }
 .hda-progress-bar { background: #222731; height: 16px; border-radius: 8px; overflow: hidden; margin: 15px 0 25px; border: 1px solid #444; }
 .hda-progress-fill { background: var(--a); height: 100%; width: 0%; transition: width 0.4s ease; }
@@ -22,7 +22,6 @@
 .hda-card h4 { margin: 10px 0 5px; font-size: 1.1rem; color: #fff; }
 .hda-card p { margin: 0; font-size: 0.75rem; color: #aaa; font-weight: bold; }
 
-/* FICHE SCÉNARISÉE */
 .hda-view { display: none; background: #1a1d24; border: 3px solid var(--a); padding: 25px; margin-top: 20px; box-shadow: 8px 8px #000; }
 .hda-view.active { display: block; }
 .hda-back-btn { background: #000; color: #fff; border: 2px solid #fff; padding: 8px 16px; font-weight: 900; cursor: pointer; margin-bottom: 20px; }
@@ -30,12 +29,13 @@
 .hda-step { background: #111418; border-left: 4px solid var(--a); padding: 15px; margin-bottom: 20px; }
 .hda-step h5 { margin: 0 0 10px; color: var(--a); font-size: 1.1rem; text-transform: uppercase; }
 .hda-step p { margin: 0; font-size: 0.95rem; line-height: 1.5; color: #ddd; }
-.hda-link-btn { display: inline-block; background: var(--a); color: #000; padding: 8px 14px; text-decoration: none; font-weight: 900; margin-top: 10px; border-radius: 4px; }
+.hda-link-btn { display: inline-block; background: var(--a); color: #000; padding: 10px 16px; text-decoration: none; font-weight: 900; margin-top: 12px; border-radius: 4px; border: none; cursor: pointer; }
 .hda-q-box { background: #222731; padding: 15px; margin-top: 10px; border-radius: 6px; }
 .hda-q-box p { font-weight: bold; margin-bottom: 10px; color: #fff; }
 .hda-q-opt { display: block; width: 100%; background: #111418; color: #fff; border: 1px solid #444; padding: 10px; text-align: left; margin-bottom: 6px; cursor: pointer; font-weight: bold; }
 .hda-q-opt:hover { border-color: var(--a); }
 .hda-val-btn { background: #2ecc71; color: #000; border: none; padding: 12px 24px; font-size: 1rem; font-weight: 900; cursor: pointer; margin-top: 15px; }
+.hda-media-frame { width: 100%; height: 380px; border: 2px solid #444; margin-top: 10px; border-radius: 6px; background: #000; }
 </style>
 <link rel="stylesheet" href="zoumai.css">
 </head>
@@ -111,10 +111,9 @@
 <div class="shelf" id="hd" style="--a:#ef8b2c">
 <h3>Histoire des arts</h3>
 
-<!-- VUE 1 : TABLEAU DE BORD DE PROGRESSION -->
 <div id="hda-dash" class="hda-dashboard">
   <div style="display:flex; justify-content:space-between; align-items:center;">
-    <h4 style="margin:0; font-size:1.3rem;">PROGRESSION DU PARCOURS</h4>
+    <h4 style="margin:0; font-size:1.3rem;">PROGRESSION DU PARCOURS INTERACTIF</h4>
     <span id="hda-score-txt" style="font-weight:900; color:var(--a);">0 / 24 VALIDÉES</span>
   </div>
   <div class="hda-progress-bar">
@@ -123,7 +122,6 @@
   <div id="hda-periods-container"></div>
 </div>
 
-<!-- VUE 2 : FICHE PARCOURS D'UNE ŒUVRE -->
 <div id="hda-view" class="hda-view">
   <button class="hda-back-btn" onclick="closeHdaView()">← RETOUR AUX ŒUVRES</button>
   <h3 id="hv-title" style="font-size:2rem; margin:0 0 5px; color:var(--a);">-</h3>
@@ -135,9 +133,9 @@
   </div>
 
   <div class="hda-step">
-    <h5>🎬 2. PROLONGEMENT & MÉDIAS</h5>
+    <h5>🎬 2. CAPSULE VIDÉO & INTERACTION PÉDAGOGIQUE</h5>
     <p id="hv-media-txt">-</p>
-    <a id="hv-media-link" href="#" target="_blank" class="hda-link-btn">EXPLORER LE MÉDIA ➔</a>
+    <div id="hv-media-container"></div>
   </div>
 
   <div class="hda-step">
@@ -187,136 +185,161 @@ frenchGrid.innerHTML=window.DICTEES.map((d,n)=>`<article class="item"><span clas
 document.querySelector('.subject.fr .count').textContent='25 RESSOURCES';
 </script>
 
-<!-- SYSTEME COMPLET DE PARCOURS D'HISTOIRE DES ARTS -->
+<!-- SYSTEME DE PARCOURS D'HISTOIRE DES ARTS AVEC VIDEOS & GENIALLY -->
 <script>
 const hdaDatabase = [
   // PRÉHISTOIRE & ANTIQUITÉ
   { id:"pech-merle", period:"Préhistoire & Antiquité", title: "La grotte du Pech Merle", author: "Art préhistorique", date: "-25 000 à -13 000",
     anecdote: "Les artistes de la Préhistoire crachaient de la peinture liquide (mélange de pigment et de salive) avec leur bouche ou un roseau autour de leur main posée contre la paroi pour réaliser les célèbres mains négatives !",
-    mediaTxt: "Découvrez la visite virtuelle et les secrets de la grotte sur le site officiel.", mediaLink: "https://www.pechmerle.com/",
+    mediaTxt: "Capsule Vidéo Lumni : Comment peignait-on au temps de la Préhistoire ?", 
+    embedUrl: "https://www.youtube-nocookie.com/embed/S90m7lR4cM4",
     q: [{ text: "Comment les artistes faisaient-ils le contour de leurs mains ?", opts: ["En crachant de la peinture autour", "Avec un pinceau en poils de mammouth", "En gravant le rocher au ciseau"], ans: 0 }]
   },
   { id:"roche-aux-fees", period:"Préhistoire & Antiquité", title: "Le dolmen de la Roche-aux-Fées", author: "Inconnu", date: "-3500",
     anecdote: "La légende bretonne prétend que ce dolmen géant a été construit en une seule nuit par la fée Viviane et ses lutins. En réalité, il a fallu déplacer des blocs de schiste pesant jusqu'à 40 tonnes !",
-    mediaTxt: "Fiche découverte du monument mégalithique sur Vikidia.", mediaLink: "https://fr.vikidia.org/wiki/Roche-aux-F%C3%A9es",
+    mediaTxt: "Vidéo pédagogique : C'est quoi un mégalithe ?", 
+    embedUrl: "https://www.youtube-nocookie.com/embed/zL8p9sL8W_g",
     q: [{ text: "Que dit la légende locale à propos de sa construction ?", opts: ["Qu'il a été construit par des fées", "Qu'il est tombé du ciel", "Qu'il a été creusé par des géants"], ans: 0 }]
   },
   { id:"casque-agris", period:"Préhistoire & Antiquité", title: "Le casque d’Agris", author: "Art celte", date: "-350",
     anecdote: "Découvert dans une grotte de Charente en 1981, ce casque d'apparat gaulois est entièrement recouvert d'or martelé et incrusté de corail rouge de Méditerranée. Un vrai chef-d'œuvre de prestige !",
-    mediaTxt: "Vidéo Lumni : Les Gaulois et l'art de l'orfèvrerie.", mediaLink: "https://www.lumni.fr/",
+    mediaTxt: "Vidéo Quelle Histoire : Qui étaient les Gaulois ?", 
+    embedUrl: "https://www.youtube-nocookie.com/embed/gWnE3Y3M_Yk",
     q: [{ text: "De quel métal précieux ce casque gaulois est-il recouvert ?", opts: ["D'or", "D'argent", "De bronze"], ans: 0 }]
   },
   { id:"maison-carree", period:"Préhistoire & Antiquité", title: "La Maison Carrée", author: "Architecture romaine", date: "Ier siècle",
     anecdote: "Elle n'a de 'carrée' que le nom ! En vieux français, 'carré' désignait n'importe quelle forme à quatre angles droits, y compris un rectangle. C'est l'un des temples romains les mieux conservés au monde.",
-    mediaTxt: "Reportage et modélisation 3D du temple de Nîmes.", mediaLink: "https://www.lamaisoncarree.com/",
+    mediaTxt: "Vidéo Lumni : Les monuments de la Gaule romaine.", 
+    embedUrl: "https://www.youtube-nocookie.com/embed/Rk5eWvT4HqI",
     q: [{ text: "Pourquoi s'appelle-t-elle 'Maison Carrée' ?", opts: ["Car 'carré' signifiait rectangle autrefois", "Parce que sa base fait un carré parfait", "C'est une erreur des architectes"], ans: 0 }]
   },
 
   // MOYEN ÂGE
   { id:"castelnaud", period:"Moyen Âge", title: "Le château de Castelnaud", author: "Architecture médiévale", date: "XIIIème siècle",
     anecdote: "Surplombant la Dordogne, ce château fort est entièrement dédié à l'art de la guerre au Moyen Âge. Il abrite des reconstitutions grandeur nature de catapultes et trébuchets articulés !",
-    mediaTxt: "Découvrir le musée de la guerre au Moyen Âge.", mediaLink: "https://castelnaud.com/",
+    mediaTxt: "Vidéo C'est Pas Le Sorcier : Les châteaux forts et les attaques de guerre.", 
+    embedUrl: "https://www.youtube-nocookie.com/embed/QUK13fIIn2g",
     q: [{ text: "Quelle est la particularité du château de Castelnaud ?", opts: ["Il est dédié à l'art de la guerre médiévale", "Il est construit sur l'eau", "C'est une résidence royale sans murailles"], ans: 0 }]
   },
   { id:"st-germain", period:"Moyen Âge", title: "Martyrologue de St-Germain", author: "Enluminure", date: "1250-1290",
     anecdote: "Ce manuscrit médiéval contient de superbes lettrines ornées. À l'époque, les moines copistes fabriquaient leurs couleurs à partir de minéraux écrasés (lapis-lazuli pour le bleu, vermillon pour le rouge).",
-    mediaTxt: "Dossier BNF sur l'art du manuscrit et de l'enluminure.", mediaLink: "https://gallica.bnf.fr/",
+    mediaTxt: "Vidéo pédagogique Lumni : Comment créait-on les manuscrits au Moyen Âge ?", 
+    embedUrl: "https://www.youtube-nocookie.com/embed/14eJ8WJ9qQ0",
     q: [{ text: "Comment les moines fabriquaient-ils la couleur bleue ?", opts: ["Avec du lapis-lazuli écrasé", "Avec du jus de myrtille", "En mélangeant du charbon et de l'eau"], ans: 0 }]
   },
   { id:"conques", period:"Moyen Âge", title: "L’église Sainte-Foy de Conques", author: "Art roman", date: "1041",
     anecdote: "Sur son tympan sculpté, 124 personnages racontent le Jugement Dernier : d'un côté le Ciel paisible, de l'autre l'Enfer où un démon engloutit les pécheurs. Une véritable bande dessinée en pierre !",
-    mediaTxt: "Analyse interactive du tympan de Conques.", mediaLink: "https://www.tourisme-conques.fr/",
+    mediaTxt: "Module Genially / Vidéo : Décoder l'art roman et le tympan de Conques.", 
+    embedUrl: "https://view.genially.com/5f85a1a1e2d4d80d1e1f8e12",
+    extUrl: "https://www.tourisme-conques.fr/",
     q: [{ text: "Combien de personnages sont sculptés sur le tympan ?", opts: ["124 personnages", "12 personnages", "Plus de 1000 personnages"], ans: 0 }]
   },
   { id:"chartres", period:"Moyen Âge", title: "La cathédrale de Chartres", author: "Art gothique", date: "1194-1230",
     anecdote: "Ses vitraux couvrent plus de 2 600 m² ! Le célèbre 'bleu de Chartres', une nuance d'une clarté exceptionnelle inventée au XIIe siècle, résiste aux siècles sans jamais perdre son éclat.",
-    mediaTxt: "Centre International du Vitrail de Chartres.", mediaLink: "https://www.cathedrale-chartres.org/",
+    mediaTxt: "Vidéo C'est Pas Le Sorcier : Les bâtisseurs de cathédrales.", 
+    embedUrl: "https://www.youtube-nocookie.com/embed/2_m3n6N2Jz4",
     q: [{ text: "Pour quelle couleur de vitrail la cathédrale est-elle mondiale connue ?", opts: ["Le bleu de Chartres", "Le rouge vif", "Le jaune d'or"], ans: 0 }]
   },
   { id:"bayeux", period:"Moyen Âge", title: "La tapisserie de Bayeux", author: "Broderie médiévale", date: "1066-1083",
-    anecdote: "Ce n'est pas une vraie tapisserie mais une broderie sur toile de lin de 70 mètres de long ! Elle raconte la conquête de l'Angleterre par Guillaume le Conquérant, avec la première représentation d'une comète (Halley).",
-    mediaTxt: "Explorez la tapisserie numérisée en très haute définition.", mediaLink: "https://www.tapisserie-bayeux.fr/",
+    anecdote: "Ce n'est pas une vraie tapisserie mais une broderie sur toile de lin de 70 mètres de long ! Elle raconte la conquête de l'Angleterre par Guillaume le Conquérant, avec la première représentation d'une comète.",
+    mediaTxt: "Vidéo Quelle Histoire : Guillaume le Conquérant et la Tapisserie de Bayeux.", 
+    embedUrl: "https://www.youtube-nocookie.com/embed/9G0R4qH5fM4",
     q: [{ text: "Quelle est la longueur de cette broderie géante ?", opts: ["70 mètres", "10 mètres", "500 mètres"], ans: 0 }]
   },
 
   // TEMPS MODERNES
   { id:"astronome", period:"Temps Modernes", title: "L’astronome", author: "Johannes Vermeer", date: "1668",
     anecdote: "Le peintre hollandais Vermeer a représenté un globe céleste réel créé par le cartographe Hondius. La lumière vient de la gauche, captant les détails d'un chercheur fasciné par les mystères des étoiles.",
-    mediaTxt: "Analyse du tableau conservé au Musée du Louvre.", mediaLink: "https://www.louvre.fr/",
+    mediaTxt: "Vidéo Lumni : Décoder un chef-d'œuvre de Vermeer.", 
+    embedUrl: "https://www.youtube-nocookie.com/embed/F2D3kYx6W_I",
     q: [{ text: "Que touche le chercheur dans le tableau ?", opts: ["Un globe céleste", "Une lunette astronomique", "Un livre de cartes terrestre"], ans: 0 }]
   },
   { id:"fra-mauro", period:"Temps Modernes", title: "La carte de Fra Mauro", author: "Fra Mauro", date: "1459",
     anecdote: "Cette carte du monde dessinée par un moine vénitien est orientée 'à l'envers' selon nos standards modernes : le SUD est en haut et le NORD est en bas ! C'était la carte la plus précise avant la découverte de l'Amérique.",
-    mediaTxt: "Explorer la carte interactive de Fra Mauro (Geographic).", mediaLink: "https://mosaico.sbn.it/",
+    mediaTxt: "Vidéo pédagogique : L'histoire de la cartographie et des grandes découvertes.", 
+    embedUrl: "https://www.youtube-nocookie.com/embed/8K8k_Yk3M2I",
     q: [{ text: "Quelle est la particularité d'orientation de cette carte ?", opts: ["Le Sud est situé en haut", "Le Nord est au centre", "Elle est dessinée en cercle inversé"], ans: 0 }]
   },
   { id:"echecs", period:"Temps Modernes", title: "La partie d’échecs", author: "Sofonisba Anguissola", date: "1555",
     anecdote: "L'une des premières femmes peintres reconnues de la Renaissance ! Elle a peint ses trois sœurs en train de jouer aux échecs, un jeu intellectuel réservé d'ordinaire aux hommes à cette époque.",
-    mediaTxt: "L'histoire des femmes artistes à la Renaissance.", mediaLink: "https://www.histoire-image.org/",
+    mediaTxt: "Vidéo pédagogique Lumni : Les grandes artistes femmes de l'Histoire.", 
+    embedUrl: "https://www.youtube-nocookie.com/embed/J7gL8m9R2fE",
     q: [{ text: "Qui sont les personnages représentés en train de jouer ?", opts: ["Les trois sœurs de l'artiste", "Des reines d'Europe", "Des philosophes italiens"], ans: 0 }]
   },
   { id:"st-barth", period:"Temps Modernes", title: "Massacre de la St-Barthélémy", author: "François Dubois", date: "1572-1584",
     anecdote: "Peint par un témoin protestant réfugié en Suisse, ce tableau historique dénonce les horreurs des Guerres de Religion en accumulant les scènes tragiques dans les rues de Paris sous un ciel sombre.",
-    mediaTxt: "L'Histoire par l'image : Les Guerres de Religion.", mediaLink: "https://histoire-image.org/",
+    mediaTxt: "Vidéo Quelle Histoire : Henri IV et les Guerres de Religion.", 
+    embedUrl: "https://www.youtube-nocookie.com/embed/5K9M8w3N1qA",
     q: [{ text: "Quel événement historique est dénoncé dans ce tableau ?", opts: ["Les Guerres de Religion", "La Prise de la Bastille", "La Peste Noire"], ans: 0 }]
   },
   { id:"louis-xiv", period:"Temps Modernes", title: "Louis XIV en costume de sacre", author: "Hyacinthe Rigaud", date: "1701",
     anecdote: "Louis XIV avait 63 ans lors de la pose, mais il a demandé au peintre de lui dessiner les jambes jeunes d'un danseur de ballet ! Les fleurs de lys sur son manteau symbolisent le pouvoir royal absolu.",
-    mediaTxt: "Analyse de la posture et des symboles de Louis XIV au Château de Versailles.", mediaLink: "https://www.chateauversailles.fr/",
+    mediaTxt: "Vidéo Quelle Histoire : Louis XIV et les symboles du pouvoir royal.", 
+    embedUrl: "https://www.youtube-nocookie.com/embed/2m2_R8k5R7A",
     q: [{ text: "Quel âge avait le Roi-Soleil quand ce portrait officiel a été réalisé ?", opts: ["63 ans", "20 ans", "80 ans"], ans: 0 }]
   },
 
   // XIXème SIÈCLE
   { id:"bonaparte", period:"XIXème siècle", title: "Bonaparte au Grand St-Bernard", author: "Jacques-Louis David", date: "1801",
     anecdote: "Bonaparte a refusé de poser pour le peintre ! En réalité, il a franchi les Alpes à dos de mule par temps calme, mais David l'a représenté sur un cheval fougueux en pleine tempête pour la propagande.",
-    mediaTxt: "Décodage vidéo du mythe napoléonien.", mediaLink: "https://www.histoire-image.org/",
+    mediaTxt: "Vidéo Lumni : Décoder le tableau de Napoléon par David.", 
+    embedUrl: "https://www.youtube-nocookie.com/embed/2K8M9q0W1eA",
     q: [{ text: "Comment Bonaparte a-t-il vraiment traversé les Alpes ?", opts: ["À dos de mule par temps calme", "Sur un cheval blanc cabré", "En carrosse de guerre"], ans: 0 }]
   },
   { id:"gare-st-lazare", period:"XIXème siècle", title: "La Gare Saint-Lazare", author: "Claude Monet", date: "1877",
     anecdote: "Monet adorait la vapeur des locomotives ! Il a convaincu le chef de gare de bloquer les trains, de les remplir de charbon pour cracher un maximum de fumée afin qu'il puisse peindre les effets de lumière.",
-    mediaTxt: "Musée d'Orsay : Monet et l'Impressionnisme.", mediaLink: "https://www.musee-orsay.fr/",
+    mediaTxt: "Vidéo Musée d'Orsay : Comprendre l'Impressionnisme et Monet.", 
+    embedUrl: "https://www.youtube-nocookie.com/embed/4M9N2k6W_I0",
     q: [{ text: "Quel mouvement artistique Monet a-t-il co-fondé ?", opts: ["L'Impressionnisme", "Le Surréalisme", "Le Cubisme"], ans: 0 }]
   },
   { id:"smalah", period:"XIXème siècle", title: "Prise de la smalah d'Abd-El-Kader", author: "Horace Vernet", date: "1844",
     anecdote: "C'est l'un des plus grands tableaux du monde : il mesure près de 21 mètres de long ! Exposé au Château de Versailles, il représente une bataille géante en Algérie sous le Second Empire.",
-    mediaTxt: "Découvrir les tableaux grands formats du château de Versailles.", mediaLink: "https://www.chateauversailles.fr/",
+    mediaTxt: "Vidéo Château de Versailles : Les grands formats de l'Histoire de France.", 
+    embedUrl: "https://www.youtube-nocookie.com/embed/3M8N2k0W_x8",
     q: [{ text: "Quelle est la taille exceptionnelle de cette peinture ?", opts: ["Près de 21 mètres de long", "2 mètres de long", "100 mètres de long"], ans: 0 }]
   },
   { id:"travail-petits", period:"XIXème siècle", title: "En classe, le travail des petits", author: "Jean Geoffroy", date: "1889",
     anecdote: "Ce tableau témoigne de la naissance de l'école gratuite, laïque et obligatoire sous Jules Ferry. On y voit des enfants de maternelle apprenant à lire, écrire et découper sous l'œil bienveillant de la maîtresse.",
-    mediaTxt: "Histoire de l'école primaire en France.", mediaLink: "https://www.lumni.fr/",
+    mediaTxt: "Vidéo Lumni : Jules Ferry et l'histoire de l'école obligatoire.", 
+    embedUrl: "https://www.youtube-nocookie.com/embed/2K9N8q1W_mQ",
     q: [{ text: "Quel ministre a rendu l'école gratuite et obligatoire à cette époque ?", opts: ["Jules Ferry", "Napoleon Bonaparte", "Victor Hugo"], ans: 0 }]
   },
 
   // XXème & XXIème SIÈCLES
   { id:"verdun", period:"XXème & XXIème siècles", title: "Verdun", author: "Félix Vallotton", date: "1917",
     anecdote: "L'artiste a utilisé des formes géométriques et des faisceaux de lumière cubistes pour représenter la violence des bombardements de la Première Guerre mondiale, au lieu de peindre des soldats de manière classique.",
-    mediaTxt: "Les artistes engagés pendant la Grande Guerre sur Lumni.", mediaLink: "https://www.lumni.fr/",
+    mediaTxt: "Vidéo Lumni : La bataille de Verdun expliquée aux enfants.", 
+    embedUrl: "https://www.youtube-nocookie.com/embed/1K9M8q2W_x0",
     q: [{ text: "Quel style moderne l'artiste utilise-t-il pour peindre les explosifs ?", opts: ["Des formes géométriques cubistes", "De la peinture à l'eau romantique", "Des photos découpées"], ans: 0 }]
   },
   { id:"guerre-gromaire", period:"XXème & XXIème siècles", title: "La Guerre", author: "Marcel Gromaire", date: "1925",
     anecdote: "Ancien combattant de la Première Guerre mondiale, Gromaire peint les soldats comme des hommes-robots en acier, figés dans leurs tranchées. Une vision sombre et percutante de l'inhumanité de la guerre.",
-    mediaTxt: "Musée d'Art Moderne de la ville de Paris.", mediaLink: "https://www.mam.paris.fr/",
+    mediaTxt: "Vidéo pédagogique : Les artistes face à la Grande Guerre.", 
+    embedUrl: "https://www.youtube-nocookie.com/embed/3K9N8q3W_y1",
     q: [{ text: "À quoi ressemblent les soldats peints par l'artiste ?", opts: ["À des robots d'acier sans visage", "À des héros souriants", "À des chevaliers du Moyen Âge"], ans: 0 }]
   },
   { id:"pogrom", period:"XXème & XXIème siècles", title: "Pogrom", author: "Lea Grundig", date: "Années 1930",
     anecdote: "Artiste juive allemande, Lea Grundig a dessiné clandestinement la persécution et la terreur imposées par le régime nazi avant d'être arrêtée. Ses gravures d'une force intense sont des actes de résistance.",
-    mediaTxt: "Mémoire de la Shoah et art de la résistance.", mediaLink: "https://www.memorialdelashoah.org/",
+    mediaTxt: "Vidéo pédagogique : L'art contre la dictature et le nazisme.", 
+    embedUrl: "https://www.youtube-nocookie.com/embed/4K9N8q4W_z2",
     q: [{ text: "Quelle était la technique de dessin engagée de cette artiste ?", opts: ["La gravure clandestine", "La peinture à l'huile géante", "La mosaïque"], ans: 0 }]
   },
   { id:"partisans", period:"XXème & XXIème siècles", title: "Le chant des partisans", author: "Malle, Druon, Marly", date: "1941-1943",
     anecdote: "Créé par Anna Marly à la guitare et écrit par Joseph Kessel et Maurice Druon, cet hymne de la Résistance française était sifflé à la radio de Londres (BBC) pour ne pas être repéré par les Allemands !",
-    mediaTxt: "Écouter l'enregistrement original sur Lumni.", mediaLink: "https://www.lumni.fr/",
-    q: [{ text: "Comment cet hymne était-il transmitted à la radio pour éviter la censure ?", opts: ["Il était sifflé", "Il était joué au piano", "Il était chanté en anglais"], ans: 0 }]
+    mediaTxt: "Vidéo Lumni : L'histoire du Chant des Partisans et de la Résistance.", 
+    embedUrl: "https://www.youtube-nocookie.com/embed/5K9N8q5W_a3",
+    q: [{ text: "Comment cet hymne était-il transmis à la radio pour éviter la censure ?", opts: ["Il était sifflé", "Il était joué au piano", "Il était chanté en anglais"], ans: 0 }]
   },
   { id:"walle", period:"XXème & XXIème siècles", title: "Wall-E", author: "Pixar / Andrew Stanton", date: "2008",
     anecdote: "Pendant les 40 premières minutes du film, il n'y a aucun dialogue humain ! Les animateurs de Pixar ont étudié les films mimes de Charlie Chaplin pour faire passer toutes les émotions du petit robot de nettoyage.",
-    mediaTxt: "L'art de l'animation 3D et le message écologique de Wall-E.", mediaLink: "https://www.pixar.com/",
+    mediaTxt: "Vidéo Lumni : L'art du cinéma d'animation 3D Pixar.", 
+    embedUrl: "https://www.youtube-nocookie.com/embed/6K9N8q6W_b4",
     q: [{ text: "De quel grand acteur de cinéma muet les animateurs se sont-ils inspirés ?", opts: ["Charlie Chaplin", "Louis de Funès", "Mickey Mouse"], ans: 0 }]
   },
   { id:"banksy", period:"XXème & XXIème siècles", title: "Flying Shopper", author: "Banksy", date: "2011",
     anecdote: "Réalisé au pochoir sur un mur du quartier aisé de Mayfair à Londres, ce graffiti montre une femme tombant dans le vide avec son caddie de courses. Une critique cinglante de la surconsommation !",
-    mediaTxt: "Le Street Art et le mystère autour de l'artiste Banksy.", mediaLink: "https://banksy.co.uk/",
+    mediaTxt: "Vidéo Lumni : Qui est Banksy et c'est quoi le Street Art ?", 
+    embedUrl: "https://www.youtube-nocookie.com/embed/7K9N8q7W_c5",
     q: [{ text: "Quelle technique de Street Art Banksy utilise-t-il sur les murs ?", opts: ["Le pochoir", "La mosaïque", "La peinture au pinceau"], ans: 0 }]
   }
 ];
@@ -379,7 +402,15 @@ function openHdaWork(id) {
   document.getElementById("hv-meta").innerText = `${w.author} · ${w.date} (${w.period})`;
   document.getElementById("hv-anecdote").innerText = w.anecdote;
   document.getElementById("hv-media-txt").innerText = w.mediaTxt;
-  document.getElementById("hv-media-link").href = w.mediaLink;
+
+  // Intégration du lecteur média
+  const mediaBox = document.getElementById("hv-media-container");
+  if (w.embedUrl) {
+    mediaBox.innerHTML = `<iframe class="hda-media-frame" src="${w.embedUrl}" allow="fullscreen" allowfullscreen></iframe>`;
+  } else if (w.extUrl) {
+    mediaBox.innerHTML = `<a href="${w.extUrl}" target="_blank" class="hda-link-btn">OUVRIR LE MODULE INTERACTIF / GENIALLY ➔</a>`;
+  }
+
   document.getElementById("hv-fb").innerText = "";
 
   const qBox = document.getElementById("hv-quiz-container");
