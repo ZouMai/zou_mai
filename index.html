@@ -20,26 +20,15 @@
     nav a{color:#222;text-decoration:none;font-size:.78rem;font-weight:1000;letter-spacing:.12em;text-transform:uppercase;transition:.2s}
     nav a:hover,nav a:focus-visible{color:#c92f28;text-shadow:none}
     main{display:flex;align-items:center;justify-content:flex-end;padding:35px 0 75px}
-    .hero{width:min(610px,55vw);margin-right:2vw;padding:28px 32px;background:rgba(247,243,233,.76);border:2px solid rgba(7,8,9,.12);box-shadow:10px 10px 0 rgba(7,8,9,.1);backdrop-filter:blur(5px)}
-    .eyebrow{display:inline-flex;align-items:center;gap:10px;margin:0 0 18px;color:#c92f28;font-size:.76rem;font-weight:1000;letter-spacing:.17em;text-transform:uppercase}
-    .eyebrow::before{content:"";width:36px;height:3px;background:#c92f28}
     h1{max-width:680px;margin:0;font-size:clamp(3.4rem,6.5vw,6.5rem);font-weight:1000;line-height:.84;letter-spacing:-.045em;text-transform:uppercase;overflow:visible}
     h1 span{display:block;padding-top:.08em;color:transparent;-webkit-text-stroke:2px var(--ink);overflow:visible}
-    .intro{max-width:530px;margin:22px 0 26px;color:#282725;font-size:clamp(1rem,1.4vw,1.16rem);font-weight:800;line-height:1.5}
-    .choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;max-width:650px}
-    .choice{position:relative;min-height:120px;padding:21px;border:2px solid var(--ink);background:rgba(7,8,9,.9);color:#fff;text-decoration:none;overflow:hidden;transition:transform .2s,border-color .2s,box-shadow .2s,background .2s}
-    .choice::after{content:"→";position:absolute;right:22px;bottom:18px;font-size:2rem;font-weight:900;transition:transform .2s}
-    .choice small{display:block;color:#aaa69f;font-size:.68rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase}
-    .choice strong{display:block;margin-top:14px;font-size:clamp(1.45rem,3vw,2.05rem);line-height:1;text-transform:uppercase}
-    .choice:hover,.choice:focus-visible{transform:translateY(-4px);border-color:var(--yellow);background:#111318;box-shadow:7px 7px 0 rgba(201,47,40,.7)}
-    .choice:hover::after,.choice:focus-visible::after{transform:translateX(5px);color:var(--yellow)}
     footer{display:flex;justify-content:flex-start;align-items:center;padding:18px 0 22px;border-top:2px solid rgba(7,8,9,.14);color:#2e2c29;font-size:.72rem;font-weight:1000;letter-spacing:.08em;text-transform:uppercase}
     @media(max-width:720px){
       body{background-position:30% center;background-attachment:scroll}
       body::before{background:rgba(247,243,233,.38)}
       header{padding:20px 0}nav{gap:14px}nav a:first-child{display:none}
-      main{position:relative;display:block;padding:42vh 0 30px}.hero{width:100%;margin:0;padding:24px 20px;background:rgba(247,243,233,.9)}h1{font-size:clamp(3.5rem,19vw,6rem);line-height:.94;letter-spacing:-.02em}
-      .intro{margin:24px 0 30px}.choices{grid-template-columns:1fr}.choice{min-height:120px}
+      main{position:relative;display:block;padding:42vh 0 30px}
+      h1{font-size:clamp(3.5rem,19vw,6rem);line-height:.94;letter-spacing:-.02em}
       footer{gap:15px;align-items:flex-start;flex-direction:column}
     }
   </style>
@@ -57,15 +46,7 @@
     </header>
 
     <main>
-      <section class="hero" aria-labelledby="titre">
-        <p class="eyebrow">La classe autrement</p>
-        <h1 id="titre">Zou <span>Maï</span></h1>
-        <p class="intro">Des jeux, des supports et des idées pour apprendre, expérimenter et créer en classe.</p>
-        <div class="choices">
-          <a class="choice" href="ressources.html"><small>Explorer et jouer</small><strong>Ressources</strong></a>
-          <a class="choice" href="projets.html"><small>Découvrir les coulisses</small><strong>Projets</strong></a>
-        </div>
-      </section>
+      <h1 id="titre">Zou <span>Maï</span></h1>
     </main>
 
     <footer><span>Ressources pédagogiques · CM2</span></footer>
