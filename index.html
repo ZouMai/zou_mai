@@ -6,43 +6,40 @@
   <title>Zou Maï — Ressources pédagogiques</title>
   <meta name="description" content="Zou Maï — ressources, jeux et projets pédagogiques pour la classe.">
   <style>
-    :root{--ink:#070809;--paper:#f3efe5;--yellow:#f2d31c;--red:#e04435;--line:rgba(255,255,255,.18)}
+    :root{--ink:#070809;--paper:#f3efe5;--yellow:#f2d31c;--red:#e04435;--line:rgba(7,8,9,.2)}
     *{box-sizing:border-box}
-    html{background:var(--ink)}
-    body{margin:0;min-height:100vh;color:var(--paper);font-family:Arial,Helvetica,sans-serif;background:var(--ink)}
-    body::before{content:"";position:fixed;inset:0;background:radial-gradient(circle at 78% 45%,#14202c 0,rgba(7,8,9,.88) 34%,#070809 72%);z-index:-2}
-    body::after{content:"";position:fixed;inset:0;z-index:-1;opacity:.13;pointer-events:none;background-image:repeating-radial-gradient(circle at 25% 20%,#fff 0,#fff 1px,transparent 1px,transparent 5px)}
+    html{background:#eee9de}
+    body{margin:0;min-height:100vh;color:var(--ink);font-family:Arial,Helvetica,sans-serif;background:#eee9de url("images/accueil-zou-mai.png") center/cover fixed no-repeat}
+    body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,transparent 0 35%,rgba(247,243,233,.12) 48%,rgba(247,243,233,.2) 100%)}
+    body::after{display:none}
     .page{width:min(1180px,92vw);min-height:100vh;margin:auto;display:grid;grid-template-rows:auto 1fr auto}
-    header{display:flex;align-items:center;justify-content:space-between;padding:28px 0;border-bottom:1px solid var(--line)}
-    .brand{display:flex;align-items:center;gap:12px;color:#fff;text-decoration:none;font-weight:1000;letter-spacing:.08em}
+    header{display:flex;align-items:center;justify-content:space-between;padding:25px 0;border-bottom:2px solid rgba(7,8,9,.14)}
+    .brand{display:flex;align-items:center;gap:12px;color:var(--ink);text-decoration:none;font-weight:1000;letter-spacing:.08em}
     .stamp{display:grid;place-items:center;width:36px;height:36px;background:var(--red);color:#fff;font-weight:1000;transform:rotate(-4deg);box-shadow:3px 3px 0 #000}
     nav{display:flex;align-items:center;gap:25px}
-    nav a{color:#d8d5ce;text-decoration:none;font-size:.78rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;transition:.2s}
-    nav a:hover,nav a:focus-visible{color:var(--yellow);text-shadow:0 0 16px rgba(242,211,28,.75)}
-    main{display:grid;grid-template-columns:minmax(0,1fr) 250px;align-items:center;gap:45px;padding:50px 0 20px}
-    .hero{width:min(690px,100%)}
-    .eyebrow{display:inline-flex;align-items:center;gap:10px;margin:0 0 24px;color:var(--yellow);font-size:.76rem;font-weight:1000;letter-spacing:.17em;text-transform:uppercase}
-    .eyebrow::before{content:"";width:36px;height:3px;background:var(--yellow)}
-    h1{max-width:680px;margin:0;font-size:clamp(3.8rem,9vw,8rem);font-weight:1000;line-height:.9;letter-spacing:-.035em;text-transform:uppercase;overflow:visible}
-    h1 span{display:block;padding-top:.08em;color:transparent;-webkit-text-stroke:2px var(--paper);overflow:visible}
-    .intro{max-width:530px;margin:30px 0 38px;color:#c9c5bc;font-size:clamp(1rem,1.6vw,1.22rem);font-weight:700;line-height:1.55}
+    nav a{color:#222;text-decoration:none;font-size:.78rem;font-weight:1000;letter-spacing:.12em;text-transform:uppercase;transition:.2s}
+    nav a:hover,nav a:focus-visible{color:#c92f28;text-shadow:none}
+    main{display:flex;align-items:center;justify-content:flex-end;padding:35px 0 75px}
+    .hero{width:min(610px,55vw);margin-right:2vw;padding:28px 32px;background:rgba(247,243,233,.76);border:2px solid rgba(7,8,9,.12);box-shadow:10px 10px 0 rgba(7,8,9,.1);backdrop-filter:blur(5px)}
+    .eyebrow{display:inline-flex;align-items:center;gap:10px;margin:0 0 18px;color:#c92f28;font-size:.76rem;font-weight:1000;letter-spacing:.17em;text-transform:uppercase}
+    .eyebrow::before{content:"";width:36px;height:3px;background:#c92f28}
+    h1{max-width:680px;margin:0;font-size:clamp(3.4rem,6.5vw,6.5rem);font-weight:1000;line-height:.84;letter-spacing:-.045em;text-transform:uppercase;overflow:visible}
+    h1 span{display:block;padding-top:.08em;color:transparent;-webkit-text-stroke:2px var(--ink);overflow:visible}
+    .intro{max-width:530px;margin:22px 0 26px;color:#282725;font-size:clamp(1rem,1.4vw,1.16rem);font-weight:800;line-height:1.5}
     .choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;max-width:650px}
-    .choice{position:relative;min-height:145px;padding:24px;border:1px solid var(--line);background:rgba(16,18,21,.76);color:#fff;text-decoration:none;overflow:hidden;backdrop-filter:blur(7px);transition:transform .2s,border-color .2s,box-shadow .2s,background .2s}
+    .choice{position:relative;min-height:120px;padding:21px;border:2px solid var(--ink);background:rgba(7,8,9,.9);color:#fff;text-decoration:none;overflow:hidden;transition:transform .2s,border-color .2s,box-shadow .2s,background .2s}
     .choice::after{content:"→";position:absolute;right:22px;bottom:18px;font-size:2rem;font-weight:900;transition:transform .2s}
     .choice small{display:block;color:#aaa69f;font-size:.68rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase}
     .choice strong{display:block;margin-top:14px;font-size:clamp(1.45rem,3vw,2.05rem);line-height:1;text-transform:uppercase}
-    .choice:hover,.choice:focus-visible{transform:translateY(-4px);border-color:var(--yellow);background:rgba(25,27,30,.92);box-shadow:0 0 24px rgba(242,211,28,.28)}
+    .choice:hover,.choice:focus-visible{transform:translateY(-4px);border-color:var(--yellow);background:#111318;box-shadow:7px 7px 0 rgba(201,47,40,.7)}
     .choice:hover::after,.choice:focus-visible::after{transform:translateX(5px);color:var(--yellow)}
-    .mascot{align-self:center;display:flex;align-items:center;justify-content:center;margin:0;filter:drop-shadow(0 0 24px rgba(31,141,255,.22))}
-    .mascot img{display:block;width:220px;max-width:100%;height:auto;object-fit:contain}
-    footer{display:flex;justify-content:space-between;align-items:center;padding:20px 0 25px;border-top:1px solid var(--line);color:#8d8a84;font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
-    footer span:last-child{color:var(--yellow)}
+    footer{display:flex;justify-content:flex-start;align-items:center;padding:18px 0 22px;border-top:2px solid rgba(7,8,9,.14);color:#2e2c29;font-size:.72rem;font-weight:1000;letter-spacing:.08em;text-transform:uppercase}
     @media(max-width:720px){
-      body::before{background:radial-gradient(circle at 80% 25%,#14202c 0,#070809 58%)}
+      body{background-position:30% center;background-attachment:scroll}
+      body::before{background:rgba(247,243,233,.38)}
       header{padding:20px 0}nav{gap:14px}nav a:first-child{display:none}
-      main{position:relative;display:block;padding:54px 0 30px}h1{font-size:clamp(3.5rem,19vw,6rem);line-height:.94;letter-spacing:-.02em}
+      main{position:relative;display:block;padding:42vh 0 30px}.hero{width:100%;margin:0;padding:24px 20px;background:rgba(247,243,233,.9)}h1{font-size:clamp(3.5rem,19vw,6rem);line-height:.94;letter-spacing:-.02em}
       .intro{margin:24px 0 30px}.choices{grid-template-columns:1fr}.choice{min-height:120px}
-      .mascot{margin:30px auto 0;justify-content:center}.mascot img{width:155px}
       footer{gap:15px;align-items:flex-start;flex-direction:column}
     }
   </style>
@@ -69,12 +66,9 @@
           <a class="choice" href="projets.html"><small>Découvrir les coulisses</small><strong>Projets</strong></a>
         </div>
       </section>
-      <figure class="mascot" aria-label="Le loup bleu original de Zou Maï">
-        <img src="images/loup-bleu-original.png" alt="Le loup bleu graphique de Zou Maï, couronné et le poing levé">
-      </figure>
     </main>
 
-    <footer><span>Ressources pédagogiques · CM2</span><a class="site-signature" href="apropos.html" aria-label="À propos de Sensei Zou_Mai"><img src="images/logo-zou-mai-sensei.png" alt="Logo Sensei Zou_Mai"></a></footer>
+    <footer><span>Ressources pédagogiques · CM2</span></footer>
   </div>
 </body>
 </html>
