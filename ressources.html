@@ -10,8 +10,9 @@
 <style>
 .subfolders{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px;margin:18px 0 24px}.subfolder{--glow:var(--a);display:flex;align-items:center;justify-content:center;min-height:68px;padding:10px;background:#14171c;color:#fff;text-decoration:none;text-align:center;border:2px solid #ffffff70;font-size:.78rem;font-weight:900;box-shadow:4px 4px #000;transition:.18s}.subfolder:hover,.subfolder:focus{transform:translate(-2px,-3px);border-color:#fff;box-shadow:0 0 7px #fff,0 0 22px var(--glow),6px 7px #000;color:#fff}.subfolder.ready:after{content:"●";color:var(--a);margin-left:7px}
 </style>
+<link rel="stylesheet" href="zoumai.css">
 </head>
-<body id="top">
+<body id="top" class="resources-page">
 <nav>
 <a href="index.html">ACCUEIL</a>
 <a class="on" href="ressources.html">RESSOURCES</a>
@@ -176,5 +177,11 @@ nu:[["INTERNET","#nu"],["MÉDIAS","#nu"],["PROGRAMMATION","#nu"],["CITOYENNETÉ 
 };
 document.querySelectorAll(".shelf").forEach(s=>{const list=folders[s.id];if(!list)return;const box=document.createElement("div");box.className="subfolders";box.innerHTML=list.map(x=>'<a class="subfolder '+(x[2]?'ready':'')+'" href="'+x[1]+'">'+x[0]+'</a>').join("");s.querySelector("h3").after(box)});
 </script>
+<script>
+function openSubject(id,scroll=false){const target=document.querySelector('.shelf#'+id);if(!target)return;document.querySelectorAll('.shelf').forEach(x=>x.classList.toggle('active',x===target));document.querySelectorAll('.subject').forEach(x=>x.classList.toggle('active',x.getAttribute('href')==='#'+id));document.querySelector('.content>h2').innerHTML='CONTENU <span>'+target.querySelector('h3').textContent.toUpperCase()+'</span>';if(scroll)document.querySelector('.content').scrollIntoView({behavior:'smooth',block:'start'})}
+document.querySelectorAll('.subject').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();const id=a.getAttribute('href').slice(1);history.replaceState(null,'','#'+id);openSubject(id,true)}));
+openSubject(location.hash.slice(1)||'fr');
+</script>
+<footer class="site-footer"><span>Choisir · Explorer · S’entraîner</span><a class="site-signature" href="apropos.html"><img src="images/logo-zou-mai-sensei.png" alt="Logo Sensei Zou_Mai"></a></footer>
 </body>
 </html>
