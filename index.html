@@ -19,7 +19,7 @@
     nav{display:flex;align-items:center;gap:25px}
     nav a{color:#d8d5ce;text-decoration:none;font-size:.78rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;transition:.2s}
     nav a:hover,nav a:focus-visible{color:var(--yellow);text-shadow:0 0 16px rgba(242,211,28,.75)}
-    main{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr);align-items:center;gap:35px;padding:50px 0 20px}
+    main{display:grid;grid-template-columns:minmax(0,1fr) 250px;align-items:center;gap:45px;padding:50px 0 20px}
     .hero{width:min(690px,100%)}
     .eyebrow{display:inline-flex;align-items:center;gap:10px;margin:0 0 24px;color:var(--yellow);font-size:.76rem;font-weight:1000;letter-spacing:.17em;text-transform:uppercase}
     .eyebrow::before{content:"";width:36px;height:3px;background:var(--yellow)}
@@ -33,8 +33,8 @@
     .choice strong{display:block;margin-top:14px;font-size:clamp(1.45rem,3vw,2.05rem);line-height:1;text-transform:uppercase}
     .choice:hover,.choice:focus-visible{transform:translateY(-4px);border-color:var(--yellow);background:rgba(25,27,30,.92);box-shadow:0 0 24px rgba(242,211,28,.28)}
     .choice:hover::after,.choice:focus-visible::after{transform:translateX(5px);color:var(--yellow)}
-    .mascot{align-self:end;display:flex;align-items:flex-end;justify-content:center;height:min(76vh,720px);overflow:hidden;filter:drop-shadow(0 0 28px rgba(31,141,255,.24))}
-    .mascot img{display:block;width:min(100%,500px);height:100%;object-fit:contain;object-position:center bottom}
+    .mascot{align-self:center;display:flex;align-items:center;justify-content:center;margin:0;filter:drop-shadow(0 0 24px rgba(31,141,255,.22))}
+    .mascot img{display:block;width:220px;max-width:100%;height:auto;object-fit:contain}
     footer{display:flex;justify-content:space-between;align-items:center;padding:20px 0 25px;border-top:1px solid var(--line);color:#8d8a84;font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
     footer span:last-child{color:var(--yellow)}
     @media(max-width:720px){
@@ -42,7 +42,7 @@
       header{padding:20px 0}nav{gap:14px}nav a:first-child{display:none}
       main{position:relative;display:block;padding:54px 0 30px}h1{font-size:clamp(3.5rem,19vw,6rem);line-height:.94;letter-spacing:-.02em}
       .intro{margin:24px 0 30px}.choices{grid-template-columns:1fr}.choice{min-height:120px}
-      .mascot{height:300px;margin:25px auto -25px;justify-content:flex-end}.mascot img{width:240px}
+      .mascot{margin:30px auto 0;justify-content:center}.mascot img{width:155px}
       footer{gap:15px;align-items:flex-start;flex-direction:column}
     }
   </style>
@@ -68,8 +68,8 @@
           <a class="choice" href="projets.html"><small>Découvrir les coulisses</small><strong>Projets</strong></a>
         </div>
       </section>
-      <figure class="mascot" aria-label="Le loup bleu de Zou Maï">
-        <img src="images/loup-bleu-zou-mai.png" alt="Le petit loup bleu malicieux de Zou Maï">
+      <figure class="mascot" aria-label="Le loup bleu original de Zou Maï">
+        <img src="images/loup-bleu-original.png" alt="Le loup bleu graphique de Zou Maï, couronné et le poing levé">
       </figure>
     </main>
 
