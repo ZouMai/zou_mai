@@ -112,8 +112,8 @@ window.DICTEES=[
         "une époque",
         "une pierre",
         "un côté",
-        "lest",
-        "louest",
+        "l’est",
+        "l’ouest",
         "le nord",
         "se dresser",
         "lointain",
@@ -211,7 +211,7 @@ window.DICTEES=[
         "l’histoire",
         "l’écriture",
         "une invention",
-        "lhumanité",
+        "l’humanité",
         "une connaissance",
         "une génération",
         "un humain",
@@ -1305,11 +1305,11 @@ window.DICTEES=[
         "une penseuse",
         "un savoir",
         "lAntiquité",
-        "lhumanité",
+        "l’humanité",
         "la religion",
         "la richesse",
-        "sinterroger",
-        "sinspirer",
+        "s’interroger",
+        "s’inspirer",
         "sur"
       ],
       [
@@ -1389,12 +1389,12 @@ window.DICTEES=[
       ],
       [
         "Recopie ce verbe sans erreur : sinterroger",
-        "sinterroger",
+        "s’interroger",
         0
       ],
       [
         "Recopie ce verbe sans erreur : sinspirer",
-        "sinspirer",
+        "s’inspirer",
         0
       ],
       [
@@ -2138,7 +2138,7 @@ window.DICTEES=[
         "lutter",
         "améliorer",
         "commencer",
-        "sorganiser",
+        "s’organiser",
         "dénoncer",
         "pénible",
         "beaucoup"
@@ -2208,7 +2208,7 @@ window.DICTEES=[
       ],
       [
         "Recopie ce verbe sans erreur : sorganiser",
-        "sorganiser",
+        "s’organiser",
         0
       ],
       [
@@ -2732,7 +2732,7 @@ window.DICTEES=[
         "une existence",
         "une intelligence",
         "un effort",
-        "lhumanité",
+        "l’humanité",
         "la liberté",
         "le chemin",
         "un individu",
