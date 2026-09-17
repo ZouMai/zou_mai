@@ -182,6 +182,13 @@ function openSubject(id,scroll=false){const target=document.querySelector('.shel
 document.querySelectorAll('.subject').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();const id=a.getAttribute('href').slice(1);history.replaceState(null,'','#'+id);openSubject(id,true)}));
 openSubject(location.hash.slice(1)||'fr');
 </script>
+<script src="dictee-data.js"></script>
+<script>
+const dictFiles=['grottes','megalithes','ecriture','artisanat-gaulois','monuments-gallo-romains','seigneurs','paysans','eglises','guillaume-conquerant','alienor-aquitaine','inventions','exploration','renaissance','guerres-religion','monarchie-absolue','revolution-francaise','napoleon','revolution-industrielle','expansion-coloniale','progres-sociaux','premiere-guerre','seconde-guerre','resistance','societe-consommation','futur'];
+const frenchGrid=document.querySelector('#fr .grid');
+frenchGrid.innerHTML=window.DICTEES.map((d,n)=>`<article class="item"><span class="type">3 NIVEAUX · 5 JEUX</span><h4>Dictée ${d.id} · ${d.title}</h4><p>Mémorisation, accords, orthographe et mini-dictée.</p><a href="dictee-${String(d.id).padStart(2,'0')}-${dictFiles[n]}.html">S’ENTRAÎNER →</a></article>`).join('');
+document.querySelector('.subject.fr .count').textContent='25 RESSOURCES';
+</script>
 <footer class="site-footer"><span>Choisir · Explorer · S’entraîner</span><a class="site-signature" href="apropos.html"><img src="images/logo-zou-mai-sensei.png" alt="Logo Sensei Zou_Mai"></a></footer>
 </body>
 </html>
