@@ -1,65 +1,203 @@
 <!doctype html>
-<html lang="fr">
+<html lang="fr" class="no-js">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Ressources — Zou Maï</title>
-  <meta name="description" content="Supports, fiches d'activités, jeux et séquences pour la classe de CM2.">
+  <meta charset="UTF-8">
+  <title>Zou Maï — Ressources pédagogiques</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    :root{--ink:#070809;--paper:#f3efe5;--yellow:#f2d31c;--red:#e04435;--line:rgba(7,8,9,.2)}
-    *{box-sizing:border-box}
-    html{background:#eee9de}
-    body{margin:0;min-height:100vh;color:var(--ink);font-family:Arial,Helvetica,sans-serif;background:#eee9de url("images/accueil-zou-mai.png") center/cover fixed no-repeat}
-    body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,transparent 0 35%,rgba(247,243,233,.12) 48%,rgba(247,243,233,.2) 100%)}
-    
-    .page{width:min(1180px,92vw);min-height:100vh;margin:auto;display:grid;grid-template-rows:auto 1fr auto}
-    
-    /* Header */
-    header{display:flex;align-items:center;justify-content:space-between;padding:25px 0;border-bottom:2px solid rgba(7,8,9,.14)}
-    .brand{display:flex;align-items:center;gap:12px;color:var(--ink);text-decoration:none;font-weight:1000;letter-spacing:.08em}
-    .stamp{display:grid;place-items:center;width:36px;height:36px;background:var(--red);color:#fff;font-weight:1000;transform:rotate(-4deg);box-shadow:3px 3px 0 #000}
-    nav{display:flex;align-items:center;gap:25px}
-    nav a{color:#222;text-decoration:none;font-size:.78rem;font-weight:1000;letter-spacing:.12em;text-transform:uppercase;transition:.2s}
-    nav a:hover,nav a:focus-visible{color:#c92f28}
-    nav a.active{color:var(--red);border-bottom:2px solid var(--red)}
+    :root {
+      --ink: #070809;
+      --paper: #f3efe5;
+      --yellow: #f2d31c;
+      --red: #e04435;
+      --line: rgba(7, 8, 9, 0.2);
+    }
+    * { box-sizing: border-box; }
+    html { background: #eee9de; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+      background: #eee9de url("images/accueil-zou-mai.png") center/cover fixed no-repeat;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background: linear-gradient(90deg, transparent 0 35%, rgba(247,243,233,.12) 48%, rgba(247,243,233,.2) 100%);
+    }
 
-    /* Main content */
-    main{padding:40px 0 75px}
-    
-    .page-header{margin-bottom:40px}
-    .page-title{font-size:clamp(2.5rem,5vw,4.5rem);font-weight:1000;text-transform:uppercase;margin:0 0 10px;line-height:.9}
-    .page-desc{font-size:1.1rem;font-weight:700;color:#333;max-width:600px;margin:0}
+    .page {
+      width: min(1180px, 92vw);
+      min-height: 100vh;
+      margin: auto;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
 
-    /* Filters / Categories */
-    .filter-tags{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:35px}
-    .tag{padding:8px 16px;background:rgba(247,243,233,.8);border:2px solid var(--ink);font-size:.75rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em;cursor:pointer;text-decoration:none;color:var(--ink);transition:.2s}
-    .tag:hover, .tag.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+    /* En-tête identique à la page d'accueil */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 25px 0;
+      border-bottom: 2px solid rgba(7, 8, 9, .14);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 1000;
+      letter-spacing: .08em;
+    }
+    .stamp {
+      display: grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      background: var(--red);
+      color: #fff;
+      font-weight: 1000;
+      transform: rotate(-4deg);
+      box-shadow: 3px 3px 0 #000;
+    }
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+    }
+    nav a {
+      color: #222;
+      text-decoration: none;
+      font-size: .78rem;
+      font-weight: 1000;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      transition: .2s;
+    }
+    nav a:hover, nav a:focus-visible { color: #c92f28; }
+    nav a.active { color: var(--red); border-bottom: 2px solid var(--red); }
 
-    /* Grid of resources */
-    .resources-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
-    
-    .resource-card{display:flex;flex-direction:column;justify-content:space-between;padding:24px;background:rgba(247,243,233,.82);border:2px solid var(--ink);box-shadow:6px 6px 0 rgba(7,8,9,.15);backdrop-filter:blur(4px);transition:transform .2s, box-shadow .2s}
-    .resource-card:hover{transform:translateY(-4px);box-shadow:10px 10px 0 rgba(224,68,53,.3)}
-    
-    .card-category{font-size:.68rem;font-weight:1000;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:8px}
-    .card-title{font-size:1.4rem;font-weight:900;margin:0 0 12px;line-height:1.2;text-transform:uppercase}
-    .card-text{font-size:.92rem;font-weight:600;line-height:1.45;color:#333;margin:0 0 20px}
-    
-    .card-link{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;padding:10px 18px;background:var(--ink);color:#fff;text-decoration:none;font-size:.75rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em;transition:.2s}
-    .card-link:hover{background:var(--red);color:#fff}
+    /* Zone de contenu principal */
+    main { padding: 40px 0 75px; }
 
-    /* Footer */
-    footer{display:flex;justify-content:flex-start;align-items:center;padding:18px 0 22px;border-top:2px solid rgba(7,8,9,.14);color:#2e2c29;font-size:.72rem;font-weight:1000;letter-spacing:.08em;text-transform:uppercase}
+    #content {
+      background: rgba(247, 243, 233, 0.85);
+      border: 2px solid var(--ink);
+      box-shadow: 8px 8px 0 rgba(7, 8, 9, .15);
+      backdrop-filter: blur(4px);
+      padding: 30px;
+    }
+
+    .titre-contenus {
+      font-size: 1.6rem;
+      font-weight: 1000;
+      text-transform: uppercase;
+      margin-top: 0;
+      margin-bottom: 25px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--ink);
+    }
+
+    /* Menu accordéon repensé avec la charte */
+    .cd-accordion-menu, .cd-accordion-menu ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .cd-accordion-menu li { margin-bottom: 12px; }
+
+    /* Cacher les checkbox nativement */
+    .cd-accordion-menu input[type=checkbox] {
+      display: none;
+    }
+
+    /* Styles des niveaux */
+    .titre-niv1 {
+      display: block;
+      padding: 12px 18px;
+      background: var(--ink);
+      color: #fff;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .titre-niv1:hover { background: var(--red); }
+
+    .titre-niv2 {
+      display: block;
+      padding: 10px 16px;
+      margin-top: 8px;
+      background: rgba(7, 8, 9, 0.08);
+      border-left: 4px solid var(--ink);
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .titre-niv2:hover { background: rgba(242, 211, 28, 0.4); }
+
+    .titre-niv3 {
+      display: block;
+      padding: 8px 14px;
+      margin-top: 6px;
+      font-weight: 700;
+      color: #333;
+      cursor: pointer;
+    }
+
+    /* Déploiement des sous-menus via CSS */
+    .cd-accordion-menu ul { display: none; padding-left: 20px; }
+    .cd-accordion-menu input[type=checkbox]:checked + label + ul { display: block; }
+
+    /* Liens vers les ressources */
+    .ressources a {
+      display: inline-block;
+      padding: 6px 12px;
+      margin: 4px 0;
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 700;
+      border: 1px solid var(--ink);
+      background: #fff;
+      transition: transform .1s, background .1s;
+    }
+    .ressources a:hover {
+      transform: translateX(4px);
+      background: var(--yellow);
+    }
+
+    /* Pied de page */
+    footer {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 18px 0 22px;
+      border-top: 2px solid rgba(7, 8, 9, .14);
+      color: #2e2c29;
+      font-size: .72rem;
+      font-weight: 1000;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
 
     @media(max-width:720px){
-      body{background-position:30% center;background-attachment:scroll}
-      header{padding:20px 0}
-      nav{gap:14px}
-      .resources-grid{grid-template-columns:1fr}
-      footer{gap:15px;align-items:flex-start;flex-direction:column}
+      body { background-position: 30% center; background-attachment: scroll; }
+      header { padding: 20px 0; }
+      nav { gap: 14px; }
+      #content { padding: 18px; }
+      footer { gap: 15px; align-items: flex-start; flex-direction: column; }
     }
   </style>
-  <link rel="stylesheet" href="zoumai.css">
+  <link rel="stylesheet" href="data/css/reset.css">
+  <link rel="stylesheet" href="data/css/style.css">
+  <script src="data/js/modernizr.js"></script>
 </head>
 <body class="resources-page">
   <div class="page">
@@ -73,63 +211,79 @@
     </header>
 
     <main>
-      <div class="page-header">
-        <h1 class="page-title">Ressources</h1>
-        <p class="page-desc">Fiches, jeux, leçons et exercices prêts à être exploités en classe.</p>
-      </div>
-
-      <!-- Filtres par matière -->
-      <div class="filter-tags">
-        <a href="#" class="tag active">Tout voir</a>
-        <a href="#" class="tag">Français</a>
-        <a href="#" class="tag">Histoire</a>
-        <a href="#" class="tag">Arts &amp; Culture</a>
-        <a href="#" class="tag">Échecs</a>
-      </div>
-
-      <!-- Grille des ressources -->
-      <div class="resources-grid">
-        
-        <!-- Carte 1 -->
-        <article class="resource-card">
-          <div>
-            <span class="card-category">Français · Conjugaison</span>
-            <h2 class="card-title">Le Passé Simple</h2>
-            <p class="card-text">Séquence complète, leçons synthétiques et fiches d'exercices interactives pour les élèves de CM2.</p>
-          </div>
-          <a href="#" class="card-link">Télécharger (PDF / Word) →</a>
-        </article>
-
-        <!-- Carte 2 -->
-        <article class="resource-card">
-          <div>
-            <span class="card-category">Français · Vocabulaire</span>
-            <h2 class="card-title">Les Verbes de Dialogue</h2>
-            <p class="card-text">Support et fiches d'entraînement sur le champ lexical de la parole et la mise en forme des dialogues.</p>
-          </div>
-          <a href="#" class="card-link">Consulter la fiche →</a>
-        </article>
-
-        <!-- Carte 3 -->
-        <article class="resource-card">
-          <div>
-            <span class="card-category">Histoire &amp; Arts</span>
-            <h2 class="card-title">Analyse : Le Cri (Munch)</h2>
-            <p class="card-text">Diaporama d'analyse artistique et fiche de préparation pour l'histoire des arts en CM.</p>
-          </div>
-          <a href="#" class="card-link">Voir le support →</a>
-        </article>
-
-        <!-- Carte 4 -->
-        <article class="resource-card">
-          <div>
-            <span class="card-category">Jeu / Réflexion</span>
-            <h2 class="card-title">Class'Échecs</h2>
-            <p class="card-text">Supports pédagogiques et défis progressifs d'initiation aux échecs en classe.</p>
-          </div>
-          <a href="#" class="card-link">Explorer →</a>
-        </article>
-
+      <div id="content">
+        <ul class="cd-accordion-menu animated">
+          <p class="titre-contenus">Entrée par domaine</p>
+          <li class="has-children">
+            <input type="checkbox" name="group-1" id="group-1">
+            <label for="group-1" class="font-bold titre-niv1">Orthographe</label>
+            <ul>
+              <li class="has-children">
+                <input type="checkbox" name="sub-group-1" id="sub-group-1">
+                <label for="sub-group-1" class="titre-niv2">Intercalaire de domaine</label>
+                <ul>
+                  <li class="ressources"><a class="pdf titre-ressources" href="data/Ressources/orthographe_intercalaire.pdf" target="_blank">Intercalaire Orthographe</a></li>
+                </ul>
+              </li>
+              <li class="has-children">
+                <input type="checkbox" name="sub-group-2" id="sub-group-2">
+                <label for="sub-group-2" class="titre-niv2">Chapitre 1. Phonèmes et graphèmes</label>
+                <ul> 
+                  <li class="has-children">
+                    <input type="checkbox" name="sub-group-level-2-1" id="sub-group-level-2-1">
+                    <label for="sub-group-level-2-1" class="titre-niv3">Leçon et leçon illustrée</label>
+                    <ul class="ressources">
+                      <li class="ressources"><a class="doc titre-ressources" href="data/Ressources/C1_lecon.docx" target="_blank">Leçon au format Word</a></li>
+                      <li class="ressources"><a class="doc titre-ressources" href="data/Ressources/C1_lecon.odt" target="_blank">Leçon au format Open Office</a></li>
+                      <li class="ressources"><a class="image titre-ressources" href="data/Ressources/C1_lecon_illustree.png" target="_blank">Leçon illustrée</a></li>
+                    </ul>
+                  </li>
+                  <li class="has-children">
+                    <input type="checkbox" name="sub-group-level-2-2" id="sub-group-level-2-2">
+                    <label for="sub-group-level-2-2" class="titre-niv3">Défis</label>
+                    <ul class="ressources">
+                      <li class="ressources"><a class="pdf titre-ressources" href="data/Ressources/C1_les_3_defis.pdf" target="_blank">Les 3 défis</a></li>
+                      <li class="ressources"><a class="pdf titre-ressources" href="data/Ressources/C1_defi_1.pdf" target="_blank">Défi 1</a></li>
+                      <li class="ressources"><a class="pdf titre-ressources" href="data/Ressources/C1_defi_2.pdf" target="_blank">Défi 2</a></li>
+                      <li class="ressources"><a class="pdf titre-ressources" href="data/Ressources/C1_defi_3.pdf" target="_blank">Défi 3</a></li>
+                    </ul>
+                  </li>
+                  <li class="has-children">
+                    <input type="checkbox" name="sub-group-level-2-3" id="sub-group-level-2-3">
+                    <label for="sub-group-level-2-3" class="titre-niv3">Fiches d'évaluation</label>
+                    <ul class="ressources">
+                      <li class="ressources"><a class="doc titre-ressources" href="data/Ressources/C1_evaluation.docx" target="_blank">Fiches d'évaluation au format Word</a></li>
+                      <li class="ressources"><a class="doc titre-ressources" href="data/Ressources/C1_evaluation.odt" target="_blank">Fiches d'évaluation au format Open Office</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+              <li class="has-children">
+                <input type="checkbox" name="sub-group-3" id="sub-group-3">
+                <label for="sub-group-3" class="titre-niv2">Chapitre 2. Les accords dans le groupe nominal</label>
+                <ul> 
+                  <li class="has-children">
+                    <input type="checkbox" name="sub-group-level-3-1" id="sub-group-level-3-1">
+                    <label for="sub-group-level-3-1" class="titre-niv3">Leçon et leçon illustrée</label>
+                    <ul class="ressources">
+                      <li class="ressources"><a class="doc titre-ressources" href="data/Ressources/C2_lecon.docx" target="_blank">Leçon au format Word</a></li>
+                      <li class="ressources"><a class="doc titre-ressources" href="data/Ressources/C2_lecon.odt" target="_blank">Leçon au format Open Office</a></li>
+                      <li class="ressources"><a class="image titre-ressources" href="data/Ressources/C2_lecon_illustree.png" target="_blank">Leçon illustrée</a></li>
+                    </ul>
+                  </li>
+                  <li class="has-children">
+                    <input type="checkbox" name="sub-group-level-3-2" id="sub-group-level-3-2">
+                    <label for="sub-group-level-3-2" class="titre-niv3">Défis</label>
+                    <ul class="ressources">
+                      <li class="ressources"><a class="pdf titre-ressources" href="data/Ressources/C2_les_3_defis.pdf" target="_blank">Les 3 défis</a></li>
+                      <li class="ressources"><a class="pdf titre-ressources" href="data/Ressources/C2_defi_1.pdf" target="_blank">Défi 1</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
       </div>
     </main>
 
