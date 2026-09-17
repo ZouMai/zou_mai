@@ -9,6 +9,102 @@
 </style>
 <style>
 .subfolders{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px;margin:18px 0 24px}.subfolder{--glow:var(--a);display:flex;align-items:center;justify-content:center;min-height:68px;padding:10px;background:#14171c;color:#fff;text-decoration:none;text-align:center;border:2px solid #ffffff70;font-size:.78rem;font-weight:900;box-shadow:4px 4px #000;transition:.18s}.subfolder:hover,.subfolder:focus{transform:translate(-2px,-3px);border-color:#fff;box-shadow:0 0 7px #fff,0 0 22px var(--glow),6px 7px #000;color:#fff}.subfolder.ready:after{content:"●";color:var(--a);margin-left:7px}
+
+/* STYLES DES JEUX HISTOIRE DES ARTS */
+.hda-app {
+  background: #111418;
+  color: #fff;
+  padding: 20px;
+  border: 4px solid #050505;
+  box-shadow: 8px 8px var(--a);
+  margin-top: 20px;
+}
+.hda-nav {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.hda-btn {
+  background: #1e232a;
+  color: #fff;
+  border: 2px solid #fff4;
+  padding: 8px 14px;
+  font-weight: 900;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+.hda-btn.active, .hda-btn:hover {
+  background: var(--a);
+  color: #000;
+  border-color: #fff;
+}
+.hda-game {
+  display: none;
+  background: #1a1d24;
+  padding: 20px;
+  border: 2px solid #333;
+}
+.hda-game.active { display: block; }
+.hda-opts {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 15px;
+}
+.hda-opt-btn {
+  background: #252a34;
+  color: #fff;
+  border: 2px solid #444;
+  padding: 12px;
+  text-align: left;
+  font-weight: 700;
+  cursor: pointer;
+}
+.hda-opt-btn:hover { border-color: var(--a); }
+.hda-card-wrap {
+  perspective: 1000px;
+  height: 200px;
+  cursor: pointer;
+  margin: 15px 0;
+}
+.hda-card {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.5s;
+}
+.hda-card.flipped { transform: rotateY(180deg); }
+.hda-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  border: 2px solid var(--a);
+}
+.hda-front { background: #222731; color: #fff; }
+.hda-back { background: #eee8dc; color: #000; transform: rotateY(180deg); }
+.hda-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.hda-item {
+  padding: 10px;
+  background: #252a34;
+  border: 2px dashed #555;
+  text-align: center;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+.hda-item.selected { border-color: var(--a); background: #323946; }
+.hda-item.matched { border-color: #2ecc71; opacity: 0.4; cursor: default; }
 </style>
 <link rel="stylesheet" href="zoumai.css">
 </head>
@@ -76,7 +172,7 @@
 </a>
 <a class="subject hd" href="#hd">
 <span class="icon">🏛️</span>
-<span class="count">À VENIR</span>
+<span class="count">3 JEUX</span>
 <h2>Histoire des arts</h2>
 <p>Œuvres et artistes.</p>
 </a>
@@ -144,12 +240,64 @@
 </article>
 </div>
 </div>
+
+<!-- SECTION HISTOIRE DES ARTS DÉDIÉE (#hd) -->
+<div class="shelf" id="hd" style="--a:#ef8b2c">
+<h3>Histoire des arts</h3>
+<div class="hda-app">
+  <div class="hda-nav">
+    <button class="hda-btn active" onclick="hdaTab(event,'g-quiz')">1. QUIZ QCM</button>
+    <button class="hda-btn" onclick="hdaTab(event,'g-cards')">2. FLASHCARDS</button>
+    <button class="hda-btn" onclick="hdaTab(event,'g-assoc')">3. ASSOCIATIONS</button>
+  </div>
+
+  <!-- JEU 1 : QCM -->
+  <div id="g-quiz" class="hda-game active">
+    <h4 id="hq-title" style="margin:0 0 10px; font-size:1.2rem;">...</h4>
+    <div id="hq-opts" class="hda-opts"></div>
+    <p id="hq-fb" style="font-weight:900; margin-top:15px;"></p>
+    <button id="hq-next" class="hda-btn" style="display:none; margin-top:10px;" onclick="hdaNextQ()">QUESTION SUIVANTE ➔</button>
+  </div>
+
+  <!-- JEU 2 : FLASHCARDS -->
+  <div id="g-cards" class="hda-game">
+    <p style="font-size:0.8rem; margin:0 0 5px;">Cliquez sur la carte pour la retourner :</p>
+    <div class="hda-card-wrap" onclick="this.querySelector('.hda-card').classList.toggle('flipped')">
+      <div class="hda-card" id="hda-fc">
+        <div class="hda-face hda-front">
+          <h3 id="fc-t" style="margin:0; font-size:1.4rem; text-align:center;">-</h3>
+          <p id="fc-a" style="margin:10px 0 0; color:#aaa;">-</p>
+        </div>
+        <div class="hda-face hda-back">
+          <h3 id="fc-d" style="margin:0; font-size:1.3rem;">-</h3>
+          <p id="fc-p" style="margin:10px 0 0; font-weight:700;">-</p>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex; gap:10px; justify-content:center;">
+      <button class="hda-btn" onclick="hdaCardNav(-1)">◀ PRÉCÉDENTE</button>
+      <button class="hda-btn" onclick="hdaCardNav(1)">SUIVANTE ▶</button>
+    </div>
+  </div>
+
+  <!-- JEU 3 : ASSOCIATIONS -->
+  <div id="g-assoc" class="hda-game">
+    <p style="font-size:0.8rem; margin:0 0 10px;">Associez l'œuvre (à gauche) à sa date/auteur (à droite) :</p>
+    <div class="hda-grid">
+      <div id="has-left" style="display:flex; flex-direction:column; gap:8px;"></div>
+      <div id="has-right" style="display:flex; flex-direction:column; gap:8px;"></div>
+    </div>
+    <p id="has-msg" style="font-weight:900; margin-top:15px;"></p>
+  </div>
+</div>
+</div>
+
 <div id="empty">
 </div>
 </section>
 </main>
 <script>
-const n={ma:'Mathématiques',ge:'Géographie',sc:'Sciences & technologie',em:'EMC',ar:'Arts visuels',hd:'Histoire des arts',ep:'EPS',mu:'Musique',nu:'Numérique & EMI'},c={ma:'#23a3df',ge:'#45b96b',sc:'#81c63b',em:'#7766d7',ar:'#e54ea2',hd:'#ef8b2c',ep:'#37d4ce',mu:'#aa5be6',nu:'#f5d725'},e=document.querySelector('#empty');Object.keys(n).forEach(id=>e.insertAdjacentHTML('beforebegin',`<div class="shelf" id="${id}" style="--a:${c[id]}">
+const n={ma:'Mathématiques',ge:'Géographie',sc:'Sciences & technologie',em:'EMC',ar:'Arts visuels',ep:'EPS',mu:'Musique',nu:'Numérique & EMI'},c={ma:'#23a3df',ge:'#45b96b',sc:'#81c63b',em:'#7766d7',ar:'#e54ea2',ep:'#37d4ce',mu:'#aa5be6',nu:'#f5d725'},e=document.querySelector('#empty');Object.keys(n).forEach(id=>e.insertAdjacentHTML('beforebegin',`<div class="shelf" id="${id}" style="--a:${c[id]}">
 <h3>${n[id]}</h3>
 <div class="grid">
 <article class="item soon">
@@ -188,6 +336,169 @@ const dictFiles=['grottes','megalithes','ecriture','artisanat-gaulois','monument
 const frenchGrid=document.querySelector('#fr .grid');
 frenchGrid.innerHTML=window.DICTEES.map((d,n)=>`<article class="item"><span class="type">3 NIVEAUX · 5 JEUX</span><h4>Dictée ${d.id} · ${d.title}</h4><p>Mémorisation, accords, orthographe et mini-dictée.</p><a href="dictee-${String(d.id).padStart(2,'0')}-${dictFiles[n]}.html">S’ENTRAÎNER →</a></article>`).join('');
 document.querySelector('.subject.fr .count').textContent='25 RESSOURCES';
+</script>
+
+<!-- SCRIPT DES JEUX HISTOIRE DES ARTS -->
+<script>
+const hdaData = [
+  { title: "La grotte du Pech Merle", author: "Art préhistorique", date: "-25 000 à -13 000", period: "Préhistoire" },
+  { title: "Le dolmen de la Roche-aux-Fées", author: "Inconnu", date: "-3500", period: "Préhistoire" },
+  { title: "Le casque d’Agris", author: "Art celte", date: "-350", period: "Antiquité" },
+  { title: "La Maison Carrée", author: "Architecture romaine", date: "Ier siècle", period: "Antiquité" },
+  { title: "Le château de Castelnaud", author: "Architecture médiévale", date: "XIIIème siècle", period: "Moyen Âge" },
+  { title: "Le martyrologue de St-Germain", author: "Enluminure", date: "1250-1290", period: "Moyen Âge" },
+  { title: "L’église Sainte-Foy de Conques", author: "Art roman", date: "1041", period: "Moyen Âge" },
+  { title: "La cathédrale de Chartres", author: "Art gothique", date: "1194-1230", period: "Moyen Âge" },
+  { title: "La tapisserie de Bayeux", author: "Broderie médiévale", date: "1066-1083", period: "Moyen Âge" },
+  { title: "L’astronome", author: "Johannes Vermeer", date: "1668", period: "Temps Modernes" },
+  { title: "La carte de Fra Mauro", author: "Fra Mauro", date: "1459", period: "Temps Modernes" },
+  { title: "La partie d’échecs", author: "Sofonisba Anguissola", date: "1555", period: "Temps Modernes" },
+  { title: "Le massacre de la St-Barthélémy", author: "François Dubois", date: "1572-1584", period: "Temps Modernes" },
+  { title: "Louis XIV en costume de sacre", author: "Hyacinthe Rigaud", date: "1701", period: "Temps Modernes" },
+  { title: "Bonaparte au Grand St-Bernard", author: "Jacques-Louis David", date: "1801", period: "XIXème siècle" },
+  { title: "La Gare Saint-Lazare", author: "Claude Monet", date: "1877", period: "XIXème siècle" },
+  { title: "La prise de la smalah d'Abd-El-Kader", author: "Horace Vernet", date: "1844", period: "XIXème siècle" },
+  { title: "En classe, le travail des petits", author: "Jean Geoffroy", date: "1889", period: "XIXème siècle" },
+  { title: "Verdun", author: "Félix Vallotton", date: "1917", period: "XXème siècle" },
+  { title: "La Guerre", author: "Marcel Gromaire", date: "1925", period: "XXème siècle" },
+  { title: "Pogrom", author: "Lea Grundig", date: "Années 1930", period: "XXème siècle" },
+  { title: "Le chant des partisans", author: "Malle, Druon, Marly", date: "1941-1943", period: "XXème siècle" },
+  { title: "Wall-E", author: "Pixar / Andrew Stanton", date: "2008", period: "Époque contemporaine" },
+  { title: "Flying Shopper", author: "Banksy", date: "2011", period: "Époque contemporaine" }
+];
+
+function hdaTab(e, id) {
+  document.querySelectorAll('.hda-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.hda-game').forEach(g => g.classList.remove('active'));
+  e.currentTarget.classList.add('active');
+  document.getElementById(id).classList.add('active');
+}
+
+/* 1. QUIZ */
+let hqIdx = 0;
+function hdaInitQ() {
+  const q = hdaData[hqIdx];
+  document.getElementById("hq-title").innerText = `Quelle est la date / période de : "${q.title}" ?`;
+  const container = document.getElementById("hq-opts");
+  container.innerHTML = "";
+  document.getElementById("hq-fb").innerText = "";
+  document.getElementById("hq-next").style.display = "none";
+
+  let opts = [q.date];
+  while(opts.length < 4) {
+    let r = hdaData[Math.floor(Math.random() * hdaData.length)].date;
+    if(!opts.includes(r)) opts.push(r);
+  }
+  opts.sort(() => Math.random() - 0.5);
+
+  opts.forEach(o => {
+    const btn = document.createElement("button");
+    btn.className = "hda-opt-btn";
+    btn.innerText = o;
+    btn.onclick = () => {
+      if(o === q.date) {
+        document.getElementById("hq-fb").innerText = "Bravo ! Bonne réponse. ✅";
+        document.getElementById("hq-fb").style.color = "#2ecc71";
+      } else {
+        document.getElementById("hq-fb").innerText = `Incorrect. Réponse : ${q.date} ❌`;
+        document.getElementById("hq-fb").style.color = "#e74c3c";
+      }
+      document.getElementById("hq-next").style.display = "inline-block";
+    };
+    container.appendChild(btn);
+  });
+}
+function hdaNextQ() {
+  hqIdx = (hqIdx + 1) % hdaData.length;
+  hdaInitQ();
+}
+
+/* 2. CARDS */
+let hcIdx = 0;
+function hdaUpdateC() {
+  document.getElementById("hda-fc").classList.remove("flipped");
+  setTimeout(() => {
+    const o = hdaData[hcIdx];
+    document.getElementById("fc-t").innerText = o.title;
+    document.getElementById("fc-a").innerText = `Auteur : ${o.author}`;
+    document.getElementById("fc-d").innerText = o.date;
+    document.getElementById("fc-p").innerText = `Période : ${o.period}`;
+  }, 150);
+}
+function hdaCardNav(d) {
+  hcIdx = (hcIdx + d + hdaData.length) % hdaData.length;
+  hdaUpdateC();
+}
+
+/* 3. ASSOC */
+let hSelL = null, hSelR = null;
+function hdaInitA() {
+  const lBox = document.getElementById("has-left");
+  const rBox = document.getElementById("has-right");
+  lBox.innerHTML = ""; rBox.innerHTML = "";
+
+  let sample = [...hdaData].sort(() => Math.random() - 0.5).slice(0, 4);
+  let rightItems = [...sample].sort(() => Math.random() - 0.5);
+
+  sample.forEach(item => {
+    let d = document.createElement("div");
+    d.className = "hda-item";
+    d.innerText = item.title;
+    d.dataset.id = item.title;
+    d.onclick = () => hdaSelectA(d, 'L');
+    lBox.appendChild(d);
+  });
+
+  rightItems.forEach(item => {
+    let d = document.createElement("div");
+    d.className = "hda-item";
+    d.innerText = `${item.author} (${item.date})`;
+    d.dataset.id = item.title;
+    d.onclick = () => hdaSelectA(d, 'R');
+    rBox.appendChild(d);
+  });
+}
+
+function hdaSelectA(el, side) {
+  if(el.classList.contains("matched")) return;
+
+  if(side === 'L') {
+    document.querySelectorAll("#has-left .hda-item").forEach(i => i.classList.remove("selected"));
+    hSelL = el;
+  } else {
+    document.querySelectorAll("#has-right .hda-item").forEach(i => i.classList.remove("selected"));
+    hSelR = el;
+  }
+  el.classList.add("selected");
+
+  if(hSelL && hSelR) {
+    if(hSelL.dataset.id === hSelR.dataset.id) {
+      hSelL.classList.add("matched");
+      hSelR.classList.add("matched");
+      hSelL.classList.remove("selected");
+      hSelR.classList.remove("selected");
+      hSelL = null; hSelR = null;
+      if(document.querySelectorAll(".hda-item:not(.matched)").length === 0) {
+        document.getElementById("has-msg").innerText = "Bravo ! Tout est associé ! 🎉";
+        document.getElementById("has-msg").style.color = "#2ecc71";
+      }
+    } else {
+      document.getElementById("has-msg").innerText = "Faux ! ❌";
+      document.getElementById("has-msg").style.color = "#e74c3c";
+      setTimeout(() => {
+        if(hSelL) hSelL.classList.remove("selected");
+        if(hSelR) hSelR.classList.remove("selected");
+        hSelL = null; hSelR = null;
+        document.getElementById("has-msg").innerText = "";
+      }, 800);
+    }
+  }
+}
+
+// Initialisation
+hdaInitQ();
+hdaUpdateC();
+hdaInitA();
 </script>
 <footer class="site-footer"><span>Choisir · Explorer · S’entraîner</span><a class="site-signature" href="apropos.html"><img src="images/logo-zou-mai-sensei.png" alt="Logo Sensei Zou_Mai"></a></footer>
 </body>
