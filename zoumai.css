@@ -65,3 +65,33 @@ nav a:hover,nav a:focus-visible,nav a.on{color:var(--zm-yellow)!important;text-s
 @keyframes zmIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @media(max-width:850px){.resources-page .subjects{grid-template-columns:repeat(3,1fr)!important}.editorial-grid{grid-template-columns:1fr}.dictation-page .artwork{grid-template-columns:1fr!important}.dictation-page .artwork img{height:220px!important}}
 @media(max-width:600px){nav{justify-content:center!important;flex-wrap:wrap!important}.resources-page .subjects{grid-template-columns:repeat(2,1fr)!important}.resources-page .subject{height:92px!important}.site-footer{align-items:flex-start;flex-direction:column}.dictation-page .missions{grid-template-columns:1fr 1fr!important}.editorial-wrap{padding-top:45px}.site-signature{width:105px;height:44px}}
+
+/* Accueil : ces règles viennent après les styles communs pour préserver le fond illustré. */
+body.home-page{
+  background-color:#eee9de!important;
+  background-image:url("images/accueil-zou-mai.png")!important;
+  background-position:center!important;
+  background-size:cover!important;
+  background-attachment:fixed!important;
+  background-repeat:no-repeat!important;
+  color:#070809!important;
+}
+.home-page::after{display:none!important}
+.home-page nav{
+  position:static!important;
+  min-height:0!important;
+  padding:0!important;
+  background:transparent!important;
+  border:0!important;
+  backdrop-filter:none!important;
+}
+.home-page nav a{color:#222!important;padding:8px 4px!important}
+.home-page nav a:hover,.home-page nav a:focus-visible{color:#c92f28!important;text-shadow:none!important}
+
+@media(max-width:720px){
+  body.home-page{
+    background-position:30% center!important;
+    background-attachment:scroll!important;
+  }
+  .home-page nav{justify-content:flex-end!important;flex-wrap:nowrap!important;gap:14px!important}
+}
