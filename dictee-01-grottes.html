@@ -74,7 +74,7 @@ const sets=[
 ["un enfant","un pays","le succès","la visite","une fois","s’abîmer","petit","petite","deux","afin que","plusieurs"]];
 const trans=[[["Mets au pluriel : un homme","des hommes"],["Accorde au féminin : ancien","ancienne"],["Les artistes ___ la grotte. (décorer)","décorent"],["Nous ___ les parois. (décorer)","décorons"]],[["Mets au pluriel : un animal","des animaux"],["Mets au pluriel : un cheval","des chevaux"],["Accorde au féminin : âgé","âgée"],["Les peintures ___ des animaux. (représenter)","représentent"]],[["Mets au pluriel : un pays","des pays"],["Accorde au féminin : petit","petite"],["Les peintures ___ avec le temps. (s’abîmer)","s’abîment"],["La peinture ___. (s’abîmer à l’imparfait)","s’abîmait"]]];
 let lvl=0,mode="flash",q=[],i=0,pts=0,answer="",seen="",timer;
-const game=document.querySelector("#game"),norm=s=>s.toLowerCase().trim().replace(/[’']/g,"'").normalize("NFD").replace(/[\u0300-\u036f]/g,""),pool=()=>sets.slice(0,lvl+1).flat(),pick=(a,n)=>[...a].sort(()=>Math.random()-.5).slice(0,n);
+const game=document.querySelector("#game"),clean=s=>s.trim().replace(/[’']/g,"'").normalize("NFC"),norm=s=>clean(s).toLowerCase(),sameAnswer=(value,expected)=>/[A-ZÀ-ÖØ-Þ]/.test(expected)?clean(value)===clean(expected):norm(value)===norm(expected),pool=()=>sets.slice(0,lvl+1).flat(),pick=(a,n)=>[...a].sort(()=>Math.random()-.5).slice(0,n);
 function hard(w){let a=JSON.parse(localStorage.getItem("zm-d1")||"[]");if(!a.includes(w))a.push(w);localStorage.setItem("zm-d1",JSON.stringify(a))}
 function speech(w){speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(w.replace(/^(un|une|le|la|des) /i,""));u.lang="fr-FR";u.rate=.72;speechSynthesis.speak(u)}
 function score(){document.querySelector("#score").textContent=pts+" réussite"+(pts>1?"s":"")}
@@ -84,7 +84,7 @@ function form(title,prompt,a,audio=false){answer=a;game.innerHTML=`<h2>${title}<
 <button class="action" id="check">VALIDER</button>
 <div class="feedback" id="feed">
 </div>`;if(audio)document.querySelector("#hear").onclick=()=>speech(a);document.querySelector("#check").onclick=check;document.querySelector("#inp").onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();check()}};document.querySelector("#inp").onclick=e=>e.currentTarget.focus();document.querySelector("#inp").focus()}
-function check(){let f=document.querySelector("#feed"),v=document.querySelector("#inp").value;if(norm(v)===norm(answer)){pts++;f.className="feedback ok";f.textContent="✓ Bravo !"}else{hard(answer);f.className="feedback bad";f.textContent="La réponse était : "+answer}score();setTimeout(next,900)}
+function check(){let f=document.querySelector("#feed"),v=document.querySelector("#inp").value;if(sameAnswer(v,answer)){pts++;f.className="feedback ok";f.textContent="✓ Bravo !"}else{hard(answer);f.className="feedback bad";f.textContent="La réponse était : "+answer}score();setTimeout(next,900)}
 function start(){clearTimeout(timer);i=pts=0;score();if(mode==="transform")q=pick(trans.slice(0,lvl+1).flat(),4);else q=pick(pool(),mode==="dictation"?(lvl===0?5:lvl===1?7:9):mode==="choice"?5:4);next()}
 function next(){if(i>=q.length)return finish();if(mode==="flash"){let w=q[i++];game.innerHTML=`<h2>MOT ÉCLAIR · ${i}/${q.length}</h2>
 <p class="prompt">${w}</p>
