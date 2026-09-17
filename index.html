@@ -1,72 +1,79 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zou Maï</title>
-  <meta name="description" content="Zou Maï — ressources, projets et créations.">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Zou Maï — Ressources pédagogiques</title>
+  <meta name="description" content="Zou Maï — ressources, jeux et projets pédagogiques pour la classe.">
   <style>
-    *{margin:0;padding:0;box-sizing:border-box}
-    html,body{width:100%;height:100%;background:#000}
-    body{overflow:hidden}
-    #mur{
-      position:relative;width:100vw;height:100vh;
-      background:url("images/accueil.png") center/cover no-repeat;
-      overflow:hidden
-    }
-    .menu-zone{
-      position:absolute;top:1.5%;height:13%;display:block;cursor:pointer;
-      border-radius:8px;
-      transition:background .18s,box-shadow .18s,transform .18s,filter .18s
-    }
-    .menu-zone:hover{
-      background:rgba(255,255,255,.08);
-      box-shadow:0 0 10px rgba(255,255,255,.7),
-                 0 0 25px rgba(255,220,0,.5),
-                 0 0 50px rgba(255,0,0,.25);
-      filter:brightness(1.25) saturate(1.4);
-      transform:rotate(-1deg) scale(1.04)
-    }
-    #accueil{left:54%;width:11%}
-    #ressources{left:64.5%;width:12%}
-    #projets{left:76%;width:10%}
-    #apropos{left:85.5%;width:13%}
-    #grain{
-      position:absolute;inset:0;pointer-events:none;opacity:.10;
-      background-image:repeating-radial-gradient(circle at 20% 30%,
-        rgba(255,255,255,.15) 0,rgba(255,255,255,.15) 1px,
-        transparent 1px,transparent 4px);
-      mix-blend-mode:overlay;animation:grain .18s steps(2) infinite
-    }
-    @keyframes grain{
-      0%,100%{transform:translate(0,0)}
-      25%{transform:translate(-2px,1px)}
-      50%{transform:translate(2px,-1px)}
-      75%{transform:translate(-1px,-2px)}
-    }
-    @media(max-width:800px){
-      body{overflow:auto}
-      #mur{min-width:1000px;min-height:100vh;background-size:cover;background-position:center}
+    :root{--ink:#070809;--paper:#f3efe5;--yellow:#f2d31c;--red:#e04435;--line:rgba(255,255,255,.18)}
+    *{box-sizing:border-box}
+    html{background:var(--ink)}
+    body{margin:0;min-height:100vh;color:var(--paper);font-family:Arial,Helvetica,sans-serif;background:var(--ink)}
+    body::before{content:"";position:fixed;inset:0;background:radial-gradient(circle at 78% 45%,#14202c 0,rgba(7,8,9,.88) 34%,#070809 72%);z-index:-2}
+    body::after{content:"";position:fixed;inset:0;z-index:-1;opacity:.13;pointer-events:none;background-image:repeating-radial-gradient(circle at 25% 20%,#fff 0,#fff 1px,transparent 1px,transparent 5px)}
+    .page{width:min(1180px,92vw);min-height:100vh;margin:auto;display:grid;grid-template-rows:auto 1fr auto}
+    header{display:flex;align-items:center;justify-content:space-between;padding:28px 0;border-bottom:1px solid var(--line)}
+    .brand{display:flex;align-items:center;gap:12px;color:#fff;text-decoration:none;font-weight:1000;letter-spacing:.08em}
+    .stamp{display:grid;place-items:center;width:36px;height:36px;background:var(--red);color:#fff;font-weight:1000;transform:rotate(-4deg);box-shadow:3px 3px 0 #000}
+    nav{display:flex;align-items:center;gap:25px}
+    nav a{color:#d8d5ce;text-decoration:none;font-size:.78rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;transition:.2s}
+    nav a:hover,nav a:focus-visible{color:var(--yellow);text-shadow:0 0 16px rgba(242,211,28,.75)}
+    main{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr);align-items:center;gap:35px;padding:50px 0 20px}
+    .hero{width:min(690px,100%)}
+    .eyebrow{display:inline-flex;align-items:center;gap:10px;margin:0 0 24px;color:var(--yellow);font-size:.76rem;font-weight:1000;letter-spacing:.17em;text-transform:uppercase}
+    .eyebrow::before{content:"";width:36px;height:3px;background:var(--yellow)}
+    h1{max-width:680px;margin:0;font-size:clamp(3.8rem,9vw,8rem);font-weight:1000;line-height:.9;letter-spacing:-.035em;text-transform:uppercase;overflow:visible}
+    h1 span{display:block;padding-top:.08em;color:transparent;-webkit-text-stroke:2px var(--paper);overflow:visible}
+    .intro{max-width:530px;margin:30px 0 38px;color:#c9c5bc;font-size:clamp(1rem,1.6vw,1.22rem);font-weight:700;line-height:1.55}
+    .choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;max-width:650px}
+    .choice{position:relative;min-height:145px;padding:24px;border:1px solid var(--line);background:rgba(16,18,21,.76);color:#fff;text-decoration:none;overflow:hidden;backdrop-filter:blur(7px);transition:transform .2s,border-color .2s,box-shadow .2s,background .2s}
+    .choice::after{content:"→";position:absolute;right:22px;bottom:18px;font-size:2rem;font-weight:900;transition:transform .2s}
+    .choice small{display:block;color:#aaa69f;font-size:.68rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase}
+    .choice strong{display:block;margin-top:14px;font-size:clamp(1.45rem,3vw,2.05rem);line-height:1;text-transform:uppercase}
+    .choice:hover,.choice:focus-visible{transform:translateY(-4px);border-color:var(--yellow);background:rgba(25,27,30,.92);box-shadow:0 0 24px rgba(242,211,28,.28)}
+    .choice:hover::after,.choice:focus-visible::after{transform:translateX(5px);color:var(--yellow)}
+    .mascot{align-self:end;display:flex;align-items:flex-end;justify-content:center;height:min(76vh,720px);overflow:hidden;filter:drop-shadow(0 0 28px rgba(31,141,255,.24))}
+    .mascot img{display:block;width:min(100%,500px);height:100%;object-fit:contain;object-position:center bottom}
+    footer{display:flex;justify-content:space-between;align-items:center;padding:20px 0 25px;border-top:1px solid var(--line);color:#8d8a84;font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+    footer span:last-child{color:var(--yellow)}
+    @media(max-width:720px){
+      body::before{background:radial-gradient(circle at 80% 25%,#14202c 0,#070809 58%)}
+      header{padding:20px 0}nav{gap:14px}nav a:first-child{display:none}
+      main{position:relative;display:block;padding:54px 0 30px}h1{font-size:clamp(3.5rem,19vw,6rem);line-height:.94;letter-spacing:-.02em}
+      .intro{margin:24px 0 30px}.choices{grid-template-columns:1fr}.choice{min-height:120px}
+      .mascot{height:300px;margin:25px auto -25px;justify-content:flex-end}.mascot img{width:240px}
+      footer{gap:15px;align-items:flex-start;flex-direction:column}
     }
   </style>
 </head>
 <body>
-  <main id="mur">
-    <a id="accueil" class="menu-zone" href="index.html" aria-label="Accueil"></a>
-    <a id="ressources" class="menu-zone" href="ressources.html" aria-label="Ressources"></a>
-    <a id="projets" class="menu-zone" href="projets.html" aria-label="Projets"></a>
-    <a id="apropos" class="menu-zone" href="apropos.html" aria-label="À propos"></a>
-    <div id="grain"></div>
-  </main>
-  <script>
-    const mur=document.getElementById("mur");
-    document.addEventListener("mousemove",e=>{
-      if(innerWidth<800)return;
-      const x=(e.clientX/innerWidth-.5)*4;
-      const y=(e.clientY/innerHeight-.5)*4;
-      mur.style.backgroundPosition=`calc(50% + ${x}px) calc(50% + ${y}px)`;
-    });
-    document.addEventListener("mouseleave",()=>mur.style.backgroundPosition="center");
-  </script>
+  <div class="page">
+    <header>
+      <a class="brand" href="index.html"><span class="stamp">ぞ</span><span>ZOU MAÏ</span></a>
+      <nav aria-label="Navigation principale">
+        <a href="ressources.html">Ressources</a>
+        <a href="projets.html">Projets</a>
+        <a href="apropos.html">À propos</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="titre">
+        <p class="eyebrow">La classe autrement</p>
+        <h1 id="titre">Zou <span>Maï</span></h1>
+        <p class="intro">Des jeux, des supports et des idées pour apprendre, expérimenter et créer en classe.</p>
+        <div class="choices">
+          <a class="choice" href="ressources.html"><small>Explorer et jouer</small><strong>Ressources</strong></a>
+          <a class="choice" href="projets.html"><small>Découvrir les coulisses</small><strong>Projets</strong></a>
+        </div>
+      </section>
+      <figure class="mascot" aria-label="Le loup bleu de Zou Maï">
+        <img src="images/loup-bleu-zou-mai.png" alt="Le petit loup bleu malicieux de Zou Maï">
+      </figure>
+    </main>
+
+    <footer><span>Ressources pédagogiques · CM2</span><span>Créer · Chercher · Partager</span></footer>
+  </div>
 </body>
 </html>
