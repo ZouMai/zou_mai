@@ -95,3 +95,26 @@ body.home-page{
   }
   .home-page nav{justify-content:flex-end!important;flex-wrap:nowrap!important;gap:14px!important}
 }
+
+/* Identité commune : accueil, ressources et jeux */
+.site-nav .nav-brand{margin-right:auto!important;display:flex!important;align-items:center!important;gap:10px!important;color:#fff!important;letter-spacing:.14em!important}
+.nav-stamp{display:grid;place-items:center;width:32px;height:32px;background:var(--zm-red);color:#fff;font-size:.9rem;box-shadow:3px 3px 0 #000;transform:rotate(-4deg)}
+.home-hero{width:min(660px,100%);padding:clamp(24px,4vw,44px);background:rgba(243,239,229,.84);border:1px solid rgba(7,8,9,.24);border-left:8px solid var(--zm-red);box-shadow:14px 14px 0 rgba(7,8,9,.92);backdrop-filter:blur(8px)}
+.home-kicker{margin:0 0 18px;color:#a82f29;font-size:.72rem;font-weight:1000;letter-spacing:.18em;text-transform:uppercase}
+.home-intro{max-width:540px;margin:22px 0 0;font-size:1rem;font-weight:800;line-height:1.55}
+.home-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.zm-button{display:inline-flex;align-items:center;justify-content:space-between;gap:22px;min-height:48px;padding:12px 16px;border:2px solid var(--zm-ink);color:var(--zm-ink);font-size:.74rem;font-weight:1000;letter-spacing:.08em;text-decoration:none;text-transform:uppercase;transition:.18s}
+.zm-button.primary{background:var(--zm-yellow);box-shadow:5px 5px 0 var(--zm-ink)}
+.zm-button.secondary{background:var(--zm-paper)}
+.zm-button:hover,.zm-button:focus-visible{transform:translate(-2px,-3px);box-shadow:7px 8px 0 var(--zm-ink);outline:none}
+.resources-page header{border-bottom:1px solid var(--zm-line)}
+.resources-page .intro{color:#aaa69e;letter-spacing:.05em}
+.resources-page .item a{border:2px solid #090909;transition:.18s}
+.resources-page .item a:hover,.resources-page .item a:focus-visible{background:var(--a);color:#090909;outline:none}
+@media(max-width:720px){
+  .home-main{padding:34vh 0 30px!important}
+  .home-hero{padding:22px;box-shadow:8px 8px 0 rgba(7,8,9,.92)}
+  .home-intro{font-size:.9rem}
+  .home-actions{display:grid}
+  .site-nav .nav-brand{width:100%;justify-content:center;margin:0 0 4px!important}
+}
