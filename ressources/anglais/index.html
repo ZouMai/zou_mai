@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Anglais — Ressources</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <div class="eyebrow">RESSOURCES · ANGLAIS</div>
+      <h1>English</h1>
+      <p>Choisis une leçon, puis ouvre la <strong>BD</strong> ou les <strong>Jeux</strong>.</p>
+    </header>
+
+    <section id="lessons" class="lessons" aria-label="Leçons d'anglais"></section>
+  </main>
+
+  <script src="./lessons.js"></script>
+  <script>
+    const container = document.getElementById("lessons");
+
+    LESSONS.forEach((lesson, i) => {
+      const card = document.createElement("article");
+      card.className = "lesson-card";
+
+      card.innerHTML = `
+        <div class="lesson-number">${String(i + 1).padStart(2, "0")}</div>
+        <div class="lesson-main">
+          <div class="lesson-kicker">${lesson.kicker || "THE METHOD · CYCLE 3"}</div>
+          <h2>${lesson.title}</h2>
+          <p>${lesson.subtitle || ""}</p>
+        </div>
+        <div class="lesson-actions">
+          <a class="btn btn-bd ${lesson.bd ? "" : "disabled"}"
+             href="${lesson.bd || "#"}"
+             ${lesson.bd ? "" : 'aria-disabled="true" tabindex="-1"'}>
+            <span class="ico">📖</span>
+            <span><b>BD</b><small>${lesson.bdLabel || "Lire / écouter"}</small></span>
+          </a>
+
+          <a class="btn btn-game ${lesson.jeux ? "" : "disabled"}"
+             href="${lesson.jeux || "#"}"
+             ${lesson.jeux ? "" : 'aria-disabled="true" tabindex="-1"'}>
+            <span class="ico">🎮</span>
+            <span><b>Jeux</b><small>${lesson.jeuxLabel || "S'entraîner"}</small></span>
+          </a>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  </script>
+</body>
+</html>
