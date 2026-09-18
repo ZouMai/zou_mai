@@ -124,3 +124,17 @@ body.home-page{
   .site-nav .nav-brand{width:100%;justify-content:center;margin:0 0 4px!important}
   .resource-figure{width:105px;height:105px}
 }
+
+/* Dictées : œuvre agrandie et repérage orthographique */
+body.dictation-page .artwork{grid-template-columns:minmax(0,3fr) minmax(250px,1fr)!important}
+body.dictation-page .art-frame{height:min(68vh,720px)!important}
+body.dictation-page .artwork .art-frame img{width:100%!important;height:100%!important;object-fit:contain!important}
+.spelling-legend{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin:14px 0;padding:10px 12px;background:#fff;color:#222;border:1px solid #bbb;font-size:.78rem;font-weight:800}
+.spelling-legend span,.word-zoom [class^="hl-"]{padding:1px 3px;border-radius:3px}
+.hl-capital,.legend-capital{background:#9dd8ff;color:#073b61}
+.hl-silent,.legend-silent{background:#ffb6b6;color:#771414;text-decoration:underline}
+.hl-accent,.legend-accent{background:#ffe56d;color:#5b4700}
+.hl-double,.legend-double{background:#d8b4ff;color:#482069}
+.hl-grapheme,.legend-grapheme{background:#aeeec4;color:#145b2d}
+@media(max-width:800px){body.dictation-page .artwork{grid-template-columns:1fr!important}body.dictation-page .art-frame{height:420px!important}}
+@media(max-width:600px){body.dictation-page .art-frame{height:330px!important}}
