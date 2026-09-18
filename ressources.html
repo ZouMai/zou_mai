@@ -57,7 +57,7 @@
 <h2>Sciences & techno</h2>
 <p>Vivant, matière, objets.</p>
 </a>
-<a class="subject an" href="#an">
+<a class="subject an" href="https://zoumai.github.io/the-method/">
 <span class="icon">💬</span>
 <span class="count">2 RESSOURCES</span>
 <h2>Anglais</h2>
@@ -175,7 +175,7 @@ document.querySelectorAll(".shelf").forEach(s=>{const list=folders[s.id];if(!lis
 </script>
 <script>
 function openSubject(id,scroll=false){const target=document.querySelector('.shelf#'+id);if(!target)return;document.querySelectorAll('.shelf').forEach(x=>x.classList.toggle('active',x===target));document.querySelectorAll('.subject').forEach(x=>x.classList.toggle('active',x.getAttribute('href')==='#'+id));document.querySelector('.content>h2').innerHTML='CONTENU <span>'+target.querySelector('h3').textContent.toUpperCase()+'</span>';if(scroll)document.querySelector('.content').scrollIntoView({behavior:'smooth',block:'start'})}
-document.querySelectorAll('.subject').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();const id=a.getAttribute('href').slice(1);history.replaceState(null,'','#'+id);openSubject(id,true)}));
+document.querySelectorAll('.subject[href^="#"]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();const id=a.getAttribute('href').slice(1);history.replaceState(null,'','#'+id);openSubject(id,true)}));
 if(location.hash)openSubject(location.hash.slice(1));
 </script>
 <script src="dictee-data.js"></script>
