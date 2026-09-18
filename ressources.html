@@ -23,8 +23,7 @@
 </nav>
 <header>
 <h1>RESSOURCES</h1>
-<p class="intro">TOUTES LES MATIÈRES SUR UNE PAGE · LES BOUTONS <span>S’ÉCLAIRENT</span>
-</p>
+<img class="resource-figure" src="images/loup-bleu-zou-mai.png" alt="Le loup bleu de Zou_Maï">
 </header>
 <main>
 <section class="subjects">
@@ -60,9 +59,9 @@
 </a>
 <a class="subject an" href="#an">
 <span class="icon">💬</span>
-<span class="count">3 RESSOURCES</span>
+<span class="count">2 RESSOURCES</span>
 <h2>Anglais</h2>
-<p>Jeux The Method.</p>
+<p>Vocabulaire et jeux interactifs.</p>
 </a>
 <a class="subject em" href="#em">
 <span class="icon">⚖️</span>
@@ -102,7 +101,7 @@
 </a>
 </section>
 <section class="content">
-<h2>CONTENUS <span>DISPONIBLES</span>
+<h2>CHOISIS <span>UNE MATIÈRE</span>
 </h2>
 <div class="shelf" id="fr" style="--a:#ef4b43">
 <h3>Français · Dictées</h3>
@@ -132,17 +131,12 @@
 <article class="item">
 <span class="type">JEU</span>
 <h4>Back to School</h4>
-<a href="https://zoumai.github.io/the-method/">JOUER →</a>
+<a href="https://zoumai.github.io/the-method/lessons/back-to-school/">JOUER →</a>
 </article>
 <article class="item">
 <span class="type">JEU</span>
 <h4>Drinks</h4>
-<a href="https://zoumai.github.io/the-method/">JOUER →</a>
-</article>
-<article class="item">
-<span class="type">COLLECTION</span>
-<h4>The Method</h4>
-<a href="https://zoumai.github.io/the-method/">VOIR →</a>
+<a href="https://zoumai.github.io/the-method/lessons/drinks/">JOUER →</a>
 </article>
 </div>
 </div>
@@ -169,7 +163,7 @@ ma:[["NUMÉRATION","#ma"],["CALCUL","#ma"],["PROBLÈMES","#ma"],["GÉOMÉTRIE","
 hi:[["REPÈRES CHRONOLOGIQUES","histoire-periodes.html",1],["PRÉHISTOIRE","#hi"],["ANTIQUITÉ","#hi"],["MOYEN ÂGE","#hi"],["TEMPS MODERNES","#hi"],["ÉPOQUE CONTEMPORAINE","#hi"]],
 ge:[["FRANCE","#ge"],["EUROPE","#ge"],["MONDE","#ge"],["CARTES & REPÈRES","#ge"],["MYSTÈRES DU MONDE","#ge"]],
 sc:[["VIVANT","#sc"],["MATIÈRE","#sc"],["ÉNERGIE","#sc"],["OBJETS TECHNIQUES","#sc"],["ESPACE","#sc"]],
-an:[["VOCABULAIRE","https://zoumai.github.io/the-method/",1],["RITUELS","#an"],["BD","#an"],["JEUX","https://zoumai.github.io/the-method/",1],["CIVILISATION","#an"]],
+an:[["BACK TO SCHOOL","https://zoumai.github.io/the-method/lessons/back-to-school/",1],["DRINKS","https://zoumai.github.io/the-method/lessons/drinks/",1],["RITUELS","#an"],["BD","#an"],["CIVILISATION","#an"]],
 em:[["VALEURS DE LA RÉPUBLIQUE","#em"],["DÉBATS","#em"],["DROITS & DEVOIRS","#em"],["ESPRIT CRITIQUE","#em"]],
 ar:[["DESSIN","#ar"],["PEINTURE","#ar"],["VOLUME","#ar"],["STREET ART","#ar"],["PROJETS","#ar"]],
 hd:[["ŒUVRES","#hd"],["ARTISTES","#hd"],["RESSENTIS","#hd"],["REPÈRES","#hd"]],
@@ -182,7 +176,7 @@ document.querySelectorAll(".shelf").forEach(s=>{const list=folders[s.id];if(!lis
 <script>
 function openSubject(id,scroll=false){const target=document.querySelector('.shelf#'+id);if(!target)return;document.querySelectorAll('.shelf').forEach(x=>x.classList.toggle('active',x===target));document.querySelectorAll('.subject').forEach(x=>x.classList.toggle('active',x.getAttribute('href')==='#'+id));document.querySelector('.content>h2').innerHTML='CONTENU <span>'+target.querySelector('h3').textContent.toUpperCase()+'</span>';if(scroll)document.querySelector('.content').scrollIntoView({behavior:'smooth',block:'start'})}
 document.querySelectorAll('.subject').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();const id=a.getAttribute('href').slice(1);history.replaceState(null,'','#'+id);openSubject(id,true)}));
-openSubject(location.hash.slice(1)||'fr');
+if(location.hash)openSubject(location.hash.slice(1));
 </script>
 <script src="dictee-data.js"></script>
 <script>
