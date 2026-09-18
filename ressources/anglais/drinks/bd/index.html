@@ -2,27 +2,39 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>On the plane · BD Drink — Zou Maï</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>On the plane — planche sonorisée</title>
 <style>
-:root{--orange:#ff593f;--yellow:#f1d21a}*{box-sizing:border-box}body{margin:0;background:#080a0d;color:#f7f4ec;font-family:Arial,sans-serif}body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.16;background:linear-gradient(120deg,#0c679055,transparent 35%),linear-gradient(300deg,#a0191455,transparent 40%),radial-gradient(#fff5 1px,transparent 1px);background-size:auto,auto,7px 7px}.top{position:relative;z-index:1;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:14px max(18px,4vw);border-bottom:2px solid #ffffff38;background:#080a0dee}.brand{font-weight:900;letter-spacing:.06em}.actions{display:flex;flex-wrap:wrap;gap:9px}.actions a{display:inline-block;padding:9px 12px;border:2px solid #eee;color:#fff;text-decoration:none;font-size:.78rem;font-weight:900}.actions a:hover,.actions a:focus{background:var(--yellow);color:#111;box-shadow:0 0 18px var(--yellow)}main{position:relative;z-index:1;width:min(980px,94vw);margin:0 auto;padding:28px 0 44px}h1{margin:0;font-size:clamp(2.7rem,8vw,6rem);line-height:.85;letter-spacing:-.06em;text-transform:uppercase}h1 span{color:var(--orange)}.subtitle{margin:15px 0 24px;font-weight:900}.board{margin:0;background:#eee8dc;border:4px solid #050505;box-shadow:10px 10px var(--orange);padding:clamp(8px,2vw,18px)}.board img{display:block;width:100%;height:auto}figcaption{padding:12px 4px 2px;color:#111;font-size:.8rem;font-weight:900;text-align:center}@media(max-width:560px){.top{justify-content:center}.brand{width:100%;text-align:center}.actions{justify-content:center}main{padding-top:22px}.board{box-shadow:6px 6px var(--orange)}}
+:root{--accent:#0b69a8}*{box-sizing:border-box}body{margin:0;background:#ece9e2;color:#1b1b1b;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}.toolbar{position:sticky;top:0;z-index:20;display:flex;flex-wrap:wrap;align-items:center;gap:.55rem;padding:.7rem .9rem;background:#fffffff0;backdrop-filter:blur(8px);box-shadow:0 2px 12px #0002}.toolbar strong{margin-right:.4rem}.toolbar button,.toolbar select,.back{font:inherit;border:1px solid #bbb;border-radius:10px;background:#fff;color:#1b1b1b;padding:.45rem .65rem;text-decoration:none}.toolbar button{cursor:pointer}.toolbar button:hover,.toolbar button:focus,.back:hover,.back:focus{background:#eef7ff;outline:2px solid #ffe66d}.wrap{width:min(100%,1055px);margin:18px auto 40px;padding:0 8px}.page{position:relative;width:100%;aspect-ratio:1054/1492;background:#fff;box-shadow:0 8px 32px #0003;overflow:hidden}.page img{width:100%;height:100%;display:block;object-fit:contain}.sound-btn{position:absolute;transform:translate(-50%,-50%);width:clamp(30px,3.4vw,40px);height:clamp(30px,3.4vw,40px);border:2px solid #fff;border-radius:999px;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:clamp(14px,1.8vw,20px);cursor:pointer;box-shadow:0 2px 8px #0006;opacity:.76;transition:.14s ease}.sound-btn:hover,.sound-btn:focus{transform:translate(-50%,-50%) scale(1.12);opacity:1;outline:3px solid #ffe66d}.sound-btn.playing{background:#b3261e;animation:pulse .85s infinite alternate}@keyframes pulse{to{transform:translate(-50%,-50%) scale(1.14)}}.hint{width:min(100%,1055px);margin:0 auto 20px;padding:0 12px;font-size:.92rem;color:#555;text-align:center}@media(max-width:680px){.toolbar{gap:.4rem;padding:.55rem .65rem;font-size:.88rem}.toolbar strong{width:100%}.wrap{margin-top:8px;padding:0}.page{box-shadow:none}.sound-btn{width:34px;height:34px;font-size:15px;border-width:1.5px}}
 </style>
 </head>
 <body>
-<nav class="top" aria-label="Navigation">
-<span class="brand">ZOU MAÏ · THE METHOD</span>
-<div class="actions">
-<a href="../../../../ressources.html#an">RESSOURCES</a>
-<a href="https://zoumai.github.io/the-method/lessons/drinks/">LEÇON + JEUX DRINK</a>
+<div class="toolbar">
+<strong>🔊 On the plane</strong>
+<button id="playAll">▶ Tout écouter</button><button id="stop">■ Stop</button>
+<label>Vitesse <select id="rate"><option value="0.72">très lente</option><option value="0.82" selected>lente</option><option value="0.92">normale</option><option value="1.02">rapide</option></select></label>
+<label>Voix <select id="voice"></select></label>
+<a class="back" href="https://zoumai.github.io/the-method/lessons/drinks/">LEÇON DRINK</a>
 </div>
-</nav>
-<main>
-<h1>On the <span>plane</span></h1>
-<p class="subtitle">La bande dessinée de la leçon Drink.</p>
-<figure class="board">
-<img src="on-the-plane.jpg" alt="Planche de bande dessinée On the plane, liée à la leçon Drink">
-<figcaption>Comicstrip · Drink</figcaption>
-</figure>
-</main>
+<div class="wrap"><div class="page" id="page">
+<img alt="Planche sonorisée On the plane" src="on-the-plane-enhanced.png">
+<button class="sound-btn" style="left:13%;top:16.5%" data-text="Hello! What do you want to drink?" aria-label="Écouter la première bulle">🔊</button>
+<button class="sound-btn" style="left:13%;top:28.5%" data-text="An orange juice, please." aria-label="Écouter la deuxième bulle">🔊</button>
+<button class="sound-btn" style="left:91%;top:17.5%" data-text="What do you want to drink, Sir?" aria-label="Écouter la troisième bulle">🔊</button>
+<button class="sound-btn" style="left:58%;top:29%" data-text="Coffee, please! And a glass of water." aria-label="Écouter la quatrième bulle">🔊</button>
+<button class="sound-btn" style="left:8%;top:43%" data-text="And you, Madam?" aria-label="Écouter la cinquième bulle">🔊</button>
+<button class="sound-btn" style="left:47%;top:54%" data-text="I would like a cup of tea, please. With milk!" aria-label="Écouter la sixième bulle">🔊</button>
+<button class="sound-btn" style="left:61%;top:43%" data-text="And you, Miss?" aria-label="Écouter la septième bulle">🔊</button>
+<button class="sound-btn" style="left:78%;top:58%" data-text="A soda, please." aria-label="Écouter la huitième bulle">🔊</button>
+<button class="sound-btn" style="left:44%;top:72%" data-text="And you, Peek? What do you want to drink?" aria-label="Écouter la neuvième bulle">🔊</button>
+</div></div>
+<p class="hint">Clique sur un 🔊 pour entendre la bulle correspondante. Une voix anglaise britannique est choisie en priorité.</p>
+<script>
+const synth=window.speechSynthesis,buttons=[...document.querySelectorAll('.sound-btn')],voiceSelect=document.getElementById('voice'),rateSelect=document.getElementById('rate');let voices=[];
+function loadVoices(){voices=synth.getVoices();const english=voices.filter(v=>/^en(-|_)/i.test(v.lang)).sort((a,b)=>(/en-GB/i.test(a.lang)?0:1)-(/en-GB/i.test(b.lang)?0:1)||a.name.localeCompare(b.name));voiceSelect.innerHTML='';(english.length?english:voices).forEach(v=>{const o=document.createElement('option');o.value=voices.indexOf(v);o.textContent=`${v.name} (${v.lang})`;voiceSelect.appendChild(o)});const preferred=voices.findIndex(v=>/en-GB/i.test(v.lang)&&/natural|google|microsoft|siri|premium/i.test(v.name));const fallback=voices.findIndex(v=>/en-GB/i.test(v.lang));const idx=preferred>=0?preferred:(fallback>=0?fallback:voices.findIndex(v=>/^en/i.test(v.lang)));if(idx>=0)voiceSelect.value=String(idx)}
+loadVoices();if('onvoiceschanged'in synth)synth.onvoiceschanged=loadVoices;
+function clearActive(){buttons.forEach(b=>b.classList.remove('playing'))}function utter(text,button,onEnd){const u=new SpeechSynthesisUtterance(text);u.lang='en-GB';u.rate=parseFloat(rateSelect.value);u.pitch=1;const idx=Number(voiceSelect.value);if(voices[idx])u.voice=voices[idx];if(button)button.classList.add('playing');u.onend=()=>{if(button)button.classList.remove('playing');if(onEnd)onEnd()};u.onerror=()=>{clearActive();if(onEnd)onEnd()};synth.speak(u)}
+buttons.forEach(b=>b.addEventListener('click',()=>{synth.cancel();clearActive();utter(b.dataset.text,b)}));document.getElementById('stop').addEventListener('click',()=>{synth.cancel();clearActive()});document.getElementById('playAll').addEventListener('click',()=>{synth.cancel();clearActive();let i=0;const next=()=>{if(i>=buttons.length)return;const b=buttons[i++];utter(b.dataset.text,b,()=>setTimeout(next,250))};next()});
+</script>
 </body>
 </html>
