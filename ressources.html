@@ -35,7 +35,7 @@
 </a>
 <a class="subject ma" href="#ma">
 <span class="icon">➗</span>
-<span class="count">À VENIR</span>
+<span class="count">1 JEU</span>
 <h2>Mathématiques</h2>
 <p>Calcul, problèmes, géométrie.</p>
 </a>
@@ -182,7 +182,7 @@ const n={ma:'Mathématiques',ge:'Géographie',sc:'Sciences & technologie',ar:'Ar
 <script>
 const folders={
 fr:[["DICTÉES","dictee-01-grottes.html",1],["LECTURE","#fr"],["LITTÉRATURE","#fr"],["ÉTUDE DE LA LANGUE","#fr"],["ÉCRITURE","#fr"]],
-ma:[["NUMÉRATION","#ma"],["CALCUL","#ma"],["PROBLÈMES","#ma"],["GÉOMÉTRIE","#ma"],["GRANDEURS & MESURES","#ma"]],
+ma:[["NUMÉRATION","#ma"],["CALCUL","tables-multiplication.html",1],["PROBLÈMES","#ma"],["GÉOMÉTRIE","#ma"],["GRANDEURS & MESURES","#ma"]],
 hi:[["REPÈRES CHRONOLOGIQUES","histoire-periodes.html",1],["PRÉHISTOIRE","#hi"],["ANTIQUITÉ","#hi"],["MOYEN ÂGE","#hi"],["TEMPS MODERNES","#hi"],["ÉPOQUE CONTEMPORAINE","#hi"]],
 ge:[["FRANCE","#ge"],["EUROPE","#ge"],["MONDE","#ge"],["CARTES & REPÈRES","#ge"],["MYSTÈRES DU MONDE","ressources/mysteresdumonde/index.html",1]],
 sc:[["VIVANT","#sc"],["MATIÈRE","#sc"],["ÉNERGIE","#sc"],["OBJETS TECHNIQUES","#sc"],["ESPACE","#sc"]],
@@ -208,6 +208,14 @@ const dictFiles=['grottes','megalithes','ecriture','artisanat-gaulois','monument
 const frenchGrid=document.querySelector('#fr .grid');
 frenchGrid.innerHTML=window.DICTEES.map((d,n)=>`<article class="item"><span class="type">3 NIVEAUX · 5 JEUX</span><h4>Dictée ${d.id} · ${d.title}</h4><p>Mémorisation, accords, orthographe et mini-dictée.</p><a href="dictee-${String(d.id).padStart(2,'0')}-${dictFiles[n]}.html">S’ENTRAÎNER →</a></article>`).join('');
 document.querySelector('.subject.fr .count').textContent='25 RESSOURCES';
+</script>
+<script>
+const mathGrid=document.querySelector('#ma .grid');
+if(mathGrid){
+  mathGrid.innerHTML='<article class="item"><span class="type">TABLES 2 À 11 · 3 NIVEAUX</span><h4>Le défi des tables</h4><p>Choisir une, deux, trois ou toutes les tables, puis jouer sans chrono, en 6 secondes ou en mode Champion.</p><a href="tables-multiplication.html">JOUER →</a></article>';
+  const mathCount=document.querySelector('.subject.ma .count');
+  if(mathCount)mathCount.textContent='1 JEU';
+}
 </script>
 <footer class="site-footer"><span>Choisir · Explorer · S’entraîner</span><a class="site-signature" href="apropos.html"><img src="images/logo-zou-mai-sensei.png" alt="Logo Sensei Zou_Mai"></a></footer>
 </body>
