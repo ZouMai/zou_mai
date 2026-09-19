@@ -1,3 +1,4 @@
+/* Chemins contrôlés pour le dépôt ZouMai/zou_mai (branche main). */
 const LESSONS = [
   {
     "id": 1,
@@ -5,7 +6,7 @@ const LESSONS = [
     "subtitle": "School supplies",
     "icon": "./assets/lesson_01.png",
     "audio": "./back-to-school/bd/",
-    "games": "./back-to-school/jeux/",
+    "games": "https://zoumai.github.io/the-method/lessons/back-to-school/",
     "image": "./bd-images/01.jpg",
     "viewer": "./bd.html?id=1"
   },
