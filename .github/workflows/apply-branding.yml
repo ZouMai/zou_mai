@@ -1,4 +1,4 @@
-name: Appliquer le logo sur toutes les pages
+name: Ajouter le jeu des tables
 
 on:
   workflow_dispatch:
@@ -11,83 +11,44 @@ permissions:
   contents: write
 
 jobs:
-  apply-branding:
+  add-tables-game:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Uniformiser le logo
+      - name: Relier le jeu à la rubrique Mathématiques
         run: |
           python - <<'PY'
           from pathlib import Path
-          import re
 
-          root = Path(".")
-          for page in root.rglob("*.html"):
-              if ".git" in page.parts:
-                  continue
-              text = page.read_text(encoding="utf-8")
-              if not re.search(r"<body\b", text, re.I):
-                  continue
-              depth = len(page.relative_to(root).parts) - 1
-              prefix = "../" * depth
-              if "zoumai-brand.css" not in text:
-                  text = re.sub(
-                      r"</head>",
-                      f'<link rel="stylesheet" href="{prefix}zoumai-brand.css"></head>',
-                      text,
-                      count=1,
-                      flags=re.I,
-                  )
-              if "zm-corner-logo" not in text:
-                  badge = (
-                      f'<a class="zm-corner-logo" href="{prefix}index.html" '
-                      f'aria-label="Accueil Zou Maï"><img '
-                      f'src="{prefix}images/logo-zou-mai-sensei.png" '
-                      f'alt="Logo Sensei Zou Maï"></a>'
-                  )
-                  text = re.sub(
-                      r"(<body\b[^>]*>)",
-                      lambda match: match.group(1) + badge,
-                      text,
-                      count=1,
-                      flags=re.I,
-                  )
-              page.write_text(text, encoding="utf-8")
-
-          css_path = root / "zoumai-brand.css"
-          css = css_path.read_text(encoding="utf-8")
-          css = re.sub(
-              r"\.zm-corner-logo\{[^}]*\}",
-              ".zm-corner-logo{position:fixed;top:8px;left:12px;z-index:12000;display:block;width:108px;height:82px;padding:5px;background:#fffdf7f2;border:1px solid #20202033;border-radius:10px;box-shadow:0 3px 12px #0005;text-decoration:none;transition:transform .16s}",
-              css,
-              count=1,
+          path = Path("ressources.html")
+          text = path.read_text(encoding="utf-8")
+          text = text.replace(
+              '<span class="count">À VENIR</span>\n<h2>Mathématiques</h2>',
+              '<span class="count">1 JEU</span>\n<h2>Mathématiques</h2>',
+              1,
           )
-          css = re.sub(
-              r"body\.home-page \.zm-corner-logo\{[^}]*\}",
-              "body.home-page .zm-corner-logo{width:148px;height:112px;top:12px;left:16px;padding:7px}",
-              css,
-              count=1,
+          text = text.replace(
+              '["CALCUL","#ma"]',
+              '["CALCUL","tables-multiplication.html",1]',
+              1,
           )
-          css = re.sub(
-              r"@media\(max-width:600px\)\{\.zm-corner-logo\{[^}]*\}body\.home-page \.zm-corner-logo\{[^}]*\}\}",
-              "@media(max-width:600px){.zm-corner-logo{width:78px;height:62px;top:5px;left:6px}body.home-page .zm-corner-logo{width:104px;height:80px}}",
-              css,
-              count=1,
-          )
-          marker = "/* Le logo remplace le nom textuel dans les bandeaux. */"
-          if marker not in css:
-              css += (
-                  "\n" + marker + "\n"
-                  "nav .nav-brand,nav .brand,.home-header .brand{display:none!important}\n"
-                  ".top>strong:first-child{font-size:0!important}\n"
-                  ".top>strong:first-child::after{content:\"EMC\";font-size:.83rem}\n"
-              )
-          css_path.write_text(css, encoding="utf-8")
+          block = """<script>
+          const mathGrid=document.querySelector('#ma .grid');
+          if(mathGrid){
+            mathGrid.innerHTML='<article class="item"><span class="type">TABLES 2 À 11 · 3 NIVEAUX</span><h4>Le défi des tables</h4><p>Choisir une, deux, trois ou toutes les tables, puis jouer sans chrono, en 6 secondes ou en mode Champion.</p><a href="tables-multiplication.html">JOUER →</a></article>';
+            const mathCount=document.querySelector('.subject.ma .count');
+            if(mathCount)mathCount.textContent='1 JEU';
+          }
+          </script>
+          """
+          if "const mathGrid=" not in text:
+              text = text.replace('<footer class="site-footer">', block + '<footer class="site-footer">', 1)
+          path.write_text(text, encoding="utf-8")
           PY
-      - name: Publier les changements
+      - name: Publier
         run: |
           git config user.name "ZouMai automation"
           git config user.email "actions@users.noreply.github.com"
-          git add -A
-          git diff --cached --quiet || git commit -m "Agrandir le logo sur toutes les pages"
+          git add ressources.html
+          git diff --cached --quiet || git commit -m "Ajouter le jeu des tables aux ressources"
           git push
