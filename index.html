@@ -1,51 +1,72 @@
 <!doctype html>
-<html lang="fr">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Zou Maï — Ressources pédagogiques</title>
-  <meta name="description" content="Zou Maï — ressources, jeux et projets pédagogiques pour la classe.">
-  <style>
-    :root{--ink:#070809;--paper:#f3efe5;--yellow:#f2d31c;--red:#e04435;--line:rgba(7,8,9,.2)}
-    *{box-sizing:border-box}
-    html{background:#eee9de}
-    body{margin:0;min-height:100vh;color:var(--ink);font-family:Arial,Helvetica,sans-serif;background:#eee9de url("images/accueil-zou-mai.png") center/cover fixed no-repeat}
-    body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,transparent 0 35%,rgba(247,243,233,.12) 48%,rgba(247,243,233,.2) 100%)}
-    body::after{display:none}
-    .page{width:min(1180px,92vw);min-height:100vh;margin:auto;display:grid;grid-template-rows:auto 1fr auto}
-    header{display:flex;align-items:center;justify-content:space-between;padding:25px 0;border-bottom:2px solid rgba(7,8,9,.14)}
-    .brand{display:flex;align-items:center;gap:12px;color:var(--ink);text-decoration:none;font-weight:1000;letter-spacing:.08em}
-    .stamp{display:grid;place-items:center;width:36px;height:36px;background:var(--red);color:#fff;font-weight:1000;transform:rotate(-4deg);box-shadow:3px 3px 0 #000}
-    nav{display:flex;align-items:center;gap:25px}
-    nav a{color:#222;text-decoration:none;font-size:.78rem;font-weight:1000;letter-spacing:.12em;text-transform:uppercase;transition:.2s}
-    nav a:hover,nav a:focus-visible{color:#c92f28;text-shadow:none}
-    main{display:flex;align-items:center;justify-content:flex-end;padding:35px 0 75px}
-    h1{max-width:680px;margin:0;font-size:clamp(3.4rem,6.5vw,6.5rem);font-weight:1000;line-height:.84;letter-spacing:-.045em;text-transform:uppercase;overflow:visible}
-    h1 span{display:block;padding-top:.08em;color:transparent;-webkit-text-stroke:2px var(--ink);overflow:visible}
-    footer{display:flex;justify-content:flex-start;align-items:center;padding:18px 0 22px;border-top:2px solid rgba(7,8,9,.14);color:#2e2c29;font-size:.72rem;font-weight:1000;letter-spacing:.08em;text-transform:uppercase}
-    @media(max-width:720px){
-      body{background-position:30% center;background-attachment:scroll}
-      body::before{background:rgba(247,243,233,.38)}
-      header{padding:20px 0}nav{gap:14px}nav a:first-child{display:block}
-      main{position:relative;display:block;padding:42vh 0 30px}
-      h1{font-size:clamp(3.5rem,19vw,6rem);line-height:.94;letter-spacing:-.02em}
-      footer{gap:15px;align-items:flex-start;flex-direction:column}
-    }
-  </style>
-  <link rel="stylesheet" href="zoumai.css">
-</head>
-<body class="home-page">
-  <div class="page">
-    <header class="home-header">
-      <a class="brand" href="index.html"><span class="stamp">ぞ</span><span>ZOU MAÏ</span></a>
-      <nav aria-label="Navigation principale">
-        <a href="ressources.html">Ressources</a>
-      </nav>
-    </header>
-
-    <main class="home-main" aria-label="Accueil Zou Maï"></main>
-
-    <footer><span>Ressources pédagogiques · CM2</span></footer>
-  </div>
-</body>
-</html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>At the hotel · BD sonorisée · Zou Maï</title><style>:root{--ink:#16191e;--paper:#e8e5df;--yellow:#ffdf35;--blue:#146cbd}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif}button,select,a{font:inherit}.toolbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;flex-wrap:wrap;gap:.55rem;padding:.65rem max(10px,2vw);background:#fffefa;box-shadow:0 2px 12px #0002}.toolbar strong{margin-right:auto}.toolbar button,.toolbar select,.toolbar a{padding:.6rem .8rem;border:2px solid #20242a;border-radius:12px;background:#fff;color:#151515;text-decoration:none;font-weight:750;cursor:pointer}.toolbar #playAll{background:#aff3c7}.toolbar #stop{background:#ffe2dd}.toolbar button:disabled{opacity:.55;cursor:default}.toolbar button:focus-visible,.sound-btn:focus-visible{outline:4px solid var(--yellow);outline-offset:3px}.wrap{max-width:1055px;margin:16px auto 40px;padding:0 8px}.page{position:relative;width:100%;background:#fff;box-shadow:0 8px 25px #0002;line-height:0}.page>img{display:block;width:100%;height:auto}.sound-btn{position:absolute;z-index:2;transform:translate(-50%,-50%);width:clamp(30px,3.2vw,42px);height:clamp(30px,3.2vw,42px);display:grid;place-items:center;line-height:1;border:2px solid #fff;border-radius:50%;background:var(--blue);color:#fff;box-shadow:0 2px 8px #0009;cursor:pointer;transition:background .15s}.sound-btn.active{background:#e43166;box-shadow:0 0 0 9px #ffed4f99,0 0 28px 17px #ffde3599;animation:pulse 1s infinite alternate}@keyframes pulse{to{box-shadow:0 0 0 14px #ffed4f77,0 0 36px 22px #ffde3577}}.sound-btn.active:before{content:'';position:absolute;z-index:-1;width:clamp(70px,13vw,145px);height:clamp(42px,7vw,84px);border:5px solid #f9ce16;border-radius:50%;background:#fff25d25;pointer-events:none}.transcript{margin:14px auto;padding:12px 16px;background:#fff;border-radius:14px;border-left:7px solid #ffca25;font-size:1.1rem;line-height:1.4}.transcript strong{display:block;font-size:.8rem;text-transform:uppercase;letter-spacing:.08em}.hint{max-width:1055px;margin:12px auto;padding:0 10px 25px;color:#484c52;font-size:.92rem}@media(max-width:680px){.toolbar strong{width:100%}.wrap{padding:0;margin-top:6px}.sound-btn{width:31px;height:31px;font-size:13px}}@media(prefers-reduced-motion:reduce){.sound-btn.active{animation:none}}</style></head>
+<body><div class="toolbar"><strong>🎭 At the hotel</strong><button type="button" id="playAll">▶ Écouter toute la BD</button><button type="button" id="stop">■ Arrêter</button><label>Vitesse <select id="rate"><option value="0.76">Très lente</option><option value="0.88" selected>Lente</option><option value="1">Normale</option></select></label><a href="../../index.html">← Retour aux leçons</a></div>
+<div class="wrap"><div class="page" id="page"><img src="at-the-hotel.png" alt="Planche de BD : At the hotel"><button type="button" class="sound-btn" style="left:8%;top:16%" data-character="dad" data-text="Hello, we have a booking for five, please." aria-label="Case 1 : Hello, we have a booking for five, please." aria-pressed="false">🔊</button>
+<button type="button" class="sound-btn" style="left:42%;top:18%" data-character="receptionist" data-text="Which name?" aria-label="Case 1 : Which name?" aria-pressed="false">🔊</button>
+<button type="button" class="sound-btn" style="left:25%;top:30%" data-character="child" data-text="Travellers!!!" aria-label="Case 1 : Travellers!!!" aria-pressed="false">🔊</button>
+<button type="button" class="sound-btn" style="left:71%;top:18%" data-character="receptionist" data-text="Yes, the Family Room 305, for two adults, two children and one cat. At the third floor." aria-label="Case 2 : Room 305..." aria-pressed="false">🔊</button>
+<button type="button" class="sound-btn" style="left:58%;top:48%" data-character="receptionist" data-text="You can take the lift on your right." aria-label="Case 3 : You can take the lift on your right." aria-pressed="false">🔊</button>
+<button type="button" class="sound-btn" style="left:77%;top:48%" data-character="receptionist" data-text="Or the stairs, on your left." aria-label="Case 4 : Or the stairs, on your left." aria-pressed="false">🔊</button>
+<button type="button" class="sound-btn" style="left:61%;top:81%" data-character="receptionist" data-text="Would you like to have breakfast at the hotel?" aria-label="Case 5 : Would you like to have breakfast at the hotel?" aria-pressed="false">🔊</button>
+<button type="button" class="sound-btn" style="left:74%;top:92%" data-character="family" data-text="Yes!!! Absolutely!" aria-label="Case 6 : Yes!!! Absolutely!" aria-pressed="false">🔊</button></div><div class="transcript" aria-live="polite"><strong>Réplique en cours</strong><span id="caption">Choisis une bulle, ou écoute toute la scène.</span></div></div><p class="hint">La lecture intégrale suit les cases une à une. Tu peux aussi faire rejouer chaque réplique séparément. La voix du réceptionniste reste stable tout au long de la scène.</p><script>
+(() => {
+  'use strict';
+  const synth = window.speechSynthesis;
+  const buttons = [...document.querySelectorAll('.sound-btn')];
+  const playAll = document.querySelector('#playAll');
+  const stop = document.querySelector('#stop');
+  const rate = document.querySelector('#rate');
+  const caption = document.querySelector('#caption');
+  let voices = [], token = 0, timeout = null;
+  const characters = {dad:{slot:0,pitch:0.9,speed:0.97},receptionist:{slot:1,pitch:0.98,speed:0.93},child:{slot:2,pitch:1.34,speed:1.04},family:{slot:3,pitch:1.16,speed:1.02}};
+  function loadVoices() {
+    voices = synth.getVoices().filter(v => /^en[-_]/i.test(v.lang))
+      .sort((a,b) => Number(/en-GB/i.test(b.lang)) - Number(/en-GB/i.test(a.lang)));
+  }
+  function clearActive() {
+    buttons.forEach(b => {b.classList.remove('active'); b.setAttribute('aria-pressed','false');});
+  }
+  function halt() {
+    token++;
+    clearTimeout(timeout);
+    if (synth) synth.cancel();
+    clearActive();
+    caption.textContent = 'Choisis une bulle, ou écoute toute la scène.';
+    playAll.disabled = false;
+  }
+  function lineAt(i, current, all) {
+    if (current !== token) return;
+    if (i >= buttons.length) {clearActive(); playAll.disabled = false; caption.textContent = 'Lecture terminée.'; return;}
+    const b = buttons[i], actor = characters[b.dataset.character] || Object.values(characters)[0];
+    clearActive(); b.classList.add('active'); b.setAttribute('aria-pressed','true');
+    caption.textContent = b.dataset.text;
+    const u = new SpeechSynthesisUtterance(b.dataset.text);
+    u.lang = 'en-GB';
+    u.rate = Math.max(.55, Math.min(1.5, Number(rate.value) * actor.speed));
+    u.pitch = actor.pitch;
+    if (voices.length) u.voice = voices[actor.slot % voices.length];
+    let done = false;
+    const finish = () => {
+      if (done || current !== token) return;
+      done = true;
+      b.classList.remove('active'); b.setAttribute('aria-pressed','false');
+      if (all) timeout = setTimeout(() => lineAt(i + 1, current, true), 340);
+    };
+    u.onend = finish;
+    u.onerror = finish;
+    synth.speak(u);
+  }
+  if (!synth || !window.SpeechSynthesisUtterance) {
+    playAll.disabled = true;
+    buttons.forEach(b => {b.disabled = true;});
+    caption.textContent = 'La synthèse vocale n’est pas disponible sur cet appareil.';
+    return;
+  }
+  loadVoices();
+  synth.addEventListener?.('voiceschanged', loadVoices);
+  buttons.forEach((b,i) => b.addEventListener('click', () => {halt(); lineAt(i, token, false);}));
+  playAll.addEventListener('click', () => {halt(); playAll.disabled = true; lineAt(0, token, true);});
+  stop.addEventListener('click', halt);
+  window.addEventListener('pagehide', halt);
+})();
+</script></body></html>
