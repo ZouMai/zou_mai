@@ -35,7 +35,7 @@ const LESSONS = [
     "title": "The train to London",
     "subtitle": "Directions",
     "icon": "./assets/04_the_train_to_london.png",
-    "audio": "",
+    "audio": "./the-train-to-london/bd/",
     "games": "",
     "image": "./bd-images/04.jpg",
     "viewer": "./bd.html?id=4"
@@ -45,7 +45,7 @@ const LESSONS = [
     "title": "At the hotel",
     "subtitle": "Hotel and numbers",
     "icon": "./assets/05_at_the_hotel.png",
-    "audio": "",
+    "audio": "./at-the-hotel/bd/",
     "games": "",
     "image": "./bd-images/05.jpg",
     "viewer": "./bd.html?id=5"
@@ -55,7 +55,7 @@ const LESSONS = [
     "title": "Halloween: Trick or treat",
     "subtitle": "Halloween and costumes",
     "icon": "./assets/06_halloween_trick_or_treat.png",
-    "audio": "",
+    "audio": "./halloween-trick-or-treat/bd/",
     "games": "",
     "image": "./bd-images/06.jpg",
     "viewer": "./bd.html?id=6"
@@ -65,7 +65,7 @@ const LESSONS = [
     "title": "Nationalities",
     "subtitle": "Countries and nationalities",
     "icon": "./assets/07_nationalities.png",
-    "audio": "",
+    "audio": "./nationalities/bd/",
     "games": "",
     "image": "./bd-images/07.jpg",
     "viewer": "./bd.html?id=7"
@@ -75,7 +75,7 @@ const LESSONS = [
     "title": "Visiting monuments",
     "subtitle": "Monuments and localisation",
     "icon": "./assets/08_visiting_monuments.png",
-    "audio": "",
+    "audio": "./visiting-monuments/bd/",
     "games": "",
     "image": "./bd-images/08.jpg",
     "viewer": "./bd.html?id=8"
@@ -85,7 +85,7 @@ const LESSONS = [
     "title": "Simon says",
     "subtitle": "Instructions",
     "icon": "./assets/09_simon_says.png",
-    "audio": "",
+    "audio": "./simon-says/bd/",
     "games": "",
     "image": "./bd-images/09.jpg",
     "viewer": "./bd.html?id=9"
@@ -95,7 +95,7 @@ const LESSONS = [
     "title": "Merry Christmas!",
     "subtitle": "Christmas and rooms of the house",
     "icon": "./assets/10_merry_christmas.png",
-    "audio": "",
+    "audio": "./merry-christmas/bd/",
     "games": "",
     "image": "./bd-images/10.jpg",
     "viewer": "./bd.html?id=10"
