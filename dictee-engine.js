@@ -497,12 +497,20 @@
       });
 
   app.innerHTML = `<header class="dict-hero"><div><span class="tag">DICTÉE ${id} · CM2</span><h1>${d.title}</h1><p>Cinq missions courtes pour observer, mémoriser, transformer et écrire.</p></div><div class="dict-nav"><a ${id > 1 ? `href="${fileFor(id - 1)}"` : ""}>←</a><span>${id} / 25</span><a ${id < 25 ? `href="${fileFor(id + 1)}"` : ""}>→</a></div></header>
+<section class="method-box" aria-label="Méthode utilisée pour les dictées"><img src="https://www.editions-retz.com/sites/default/files/visuels/9782725647791.jpg" alt="Couverture du cahier Dictées et histoire des arts CM — Voyage dans le temps" loading="lazy"><div><h2>Notre méthode de dictée</h2><p>Ces entraînements accompagnent <strong>Dictées et histoire des arts – Voyage dans le temps, cycle 3</strong>, de <strong>Mélanie Pouëssel</strong> (Éditions Retz). On découvre une œuvre, puis on mémorise des mots, on travaille les accords et on s’entraîne à écrire avant la dictée en classe.</p><small>Complément numérique élaboré pour les élèves de notre classe : utilisation dans le cadre de la classe et de ses devoirs, sans redistribution des supports originaux. <a href="https://www.editions-retz.com/ecole-elementaire/cm1/francais/dictees-et-histoire-des-arts-cm-voyage-dans-le-temps-ressources-numeriques-9782725647517.html" target="_blank" rel="noopener noreferrer">Présentation de l’ouvrage ↗</a></small></div></section>
 <section class="dict-wrap"><figure class="artwork"><div class="art-frame ${art?.images.length > 1 ? "art-gallery" : ""}">${art ? art.images.map((src, n) => `<img src="${src}" alt="${art.title}${art.images.length > 1 ? " - vue " + (n + 1) : ""}">`).join("") : "<span>ŒUVRE<br>À OBSERVER</span>"}</div><figcaption><span class="art-label">ŒUVRE ASSOCIÉE</span><h2>${art?.title || d.title}</h2><p>${art?.why || "Observe les détails qui sont liés au thème de la dictée."}</p><small>Source : ${art?.source || "document pédagogique"}</small></figcaption></figure>
 <section class="levels">${colors.map((c, n) => `<button class="level ${c} ${n === 0 ? "active" : ""}" data-l="${n}">${levelLabels[n].toUpperCase()}</button>`).join("")}</section>
 <div class="status"><span class="pill" id="levelName">Niveau jaune</span><span class="pill" id="score">0 réussite</span><div class="progress"><span id="progressFill"></span></div></div>
 <section class="missions"><button class="study-tab active" id="study">📚<b>Revoir les mots</b><span>Mémoriser et zoomer</span></button><button class="mission" data-m="flash">👁️<b>Mot éclair</b><span>Observer puis écrire</span></button><button class="mission" data-m="transform">🔄<b>Je transforme</b><span>Pluriels, accords, présent</span></button><button class="mission" data-m="choice">🎯<b>Je choisis</b><span>Groupes et terminaisons</span></button><button class="mission" data-m="dictation">🎧<b>Mots dictés</b><span>Écouter puis écrire</span></button><button class="mission" data-m="reverse">↩️<b>Bonus à l’envers</b><span>De la fin au début</span></button><button class="study-tab" id="review">⭐<b>Mes mots à revoir</b><span>Mes erreurs</span></button></section>
 <section class="game" id="game"></section></section>`;
 
+  if (!document.querySelector('link[href="zoumai-brand.css"]')) {
+    const css=document.createElement('link');css.rel='stylesheet';css.href='zoumai-brand.css';document.head.append(css);
+  }
+  if (!document.querySelector('.zm-corner-logo')) {
+    const badge=document.createElement('a');badge.className='zm-corner-logo';badge.href='index.html';badge.setAttribute('aria-label','Accueil Zou Maï');
+    const pic=document.createElement('img');pic.src='images/logo-zou-mai-sensei.png';pic.alt='Logo Sensei Zou_Maï';badge.append(pic);document.body.append(badge);
+  }
   const game = document.querySelector("#game");
   function fileFor(n) {
     const names = [
@@ -585,6 +593,19 @@
     if (mode === "transform") queue = pick(grammarTasks(), count);
     else if (mode === "choice") queue = pick(choiceTasks(), count);
     else if (mode === "flash") queue = flashQueue(count);
+    else if (mode === "dictation") {
+      // Tirage aléatoire pondéré : favorise difficultés et erreurs passées,
+      // sans ordre fixe ni doublon dans la série.
+      const missed = new Set(repair(JSON.parse(localStorage.getItem(key) || "[]")));
+      const bag = [...new Set(pool())].map(w => ({
+        word: w,
+        priority: Math.max(1, difficultyScore(w)) + (missed.has(w) ? 22 : 0),
+        roll: -Math.log(Math.max(0.000001, Math.random()))
+      }));
+      bag.sort((a,b) => a.roll/a.priority - b.roll/b.priority);
+      queue = bag.slice(0, Math.min(count, bag.length)).map(x => x.word);
+    }
+    else if (mode === "reverse") queue = pick([...new Set(pool())], 3);
     else queue = pick(pool(), count);
     updateStatus();
     next();
@@ -765,7 +786,7 @@
         b.classList.add("active");
         lvl = Number(b.dataset.l);
         document.querySelector("#levelName").textContent =
-          "Niveau " + levelLabels[lvl] + " · " + itemCounts[lvl] + " items";
+          "Niveau " + levelLabels[lvl] + " · " + (mode === "reverse" ? 3 : itemCounts[lvl]) + " items";
         document.querySelector("#study").classList.contains("active")
           ? showWords()
           : document.querySelector("#review").classList.contains("active")
