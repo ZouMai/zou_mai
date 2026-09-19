@@ -1,18 +1,9 @@
-/* Signature Zou_Maï — ajout commun et non intrusif */
-.zm-corner-logo{position:fixed;top:8px;left:12px;z-index:12000;display:block;width:108px;height:82px;padding:5px;background:#fffdf7f2;border:1px solid #20202033;border-radius:10px;box-shadow:0 3px 12px #0005;text-decoration:none;transition:transform .16s}
-.zm-corner-logo img{display:block;width:100%;height:100%;object-fit:contain}
-.zm-corner-logo:hover{transform:scale(1.05)}
-body.home-page .zm-corner-logo{width:148px;height:112px;top:12px;left:16px;padding:7px}
-@media(max-width:600px){.zm-corner-logo{width:78px;height:62px;top:5px;left:6px}body.home-page .zm-corner-logo{width:104px;height:80px}}
-.method-box{display:flex;align-items:center;gap:18px;margin:15px 0 20px;padding:16px;background:#f8f5ea;color:#202027;border:1px solid #d8d1c3;border-radius:16px;line-height:1.45}
-.method-box img{width:83px;height:118px;object-fit:contain;flex:0 0 83px;border-radius:4px;box-shadow:0 2px 10px #0002;background:#fff}
-.method-box h2{font-size:1.1rem;margin:0 0 5px;color:#202027}
-.method-box p{font-size:.88rem;margin:0 0 6px;color:#323238}
-.method-box small{font-size:.73rem;color:#555}
-.method-box a{color:#145e84;text-decoration:underline}
-@media(max-width:480px){.method-box{align-items:flex-start;gap:10px;padding:10px}.method-box img{width:64px;height:92px;flex-basis:64px}}
-
-/* Le logo remplace le nom textuel dans les bandeaux. */
-nav .nav-brand,nav .brand,.home-header .brand{display:none!important}
-.top>strong:first-child{font-size:0!important}
-.top>strong:first-child::after{content:"EMC";font-size:.83rem}
+/* Signature Zou_Maï — ajout commun et non intrusif */.zm-corner-logo{position:fixed;top:8px;left:12px;z-index:12000;display:block;width:108px;height:82px;padding:5px;background:#fffdf7f2;border:1px solid #20202033;border-radius:10px;box-shadow:0 3px 12px #0005;text-decoration:none;transition:transform .16s}.zm-corner-logo img{display:block;width:100%;height:100%;object-fit:contain}.zm-corner-logo:hover{transform:scale(1.05)}body.home-page .zm-corner-logo{width:148px;height:112px;top:12px;left:16px;padding:7px}@media(max-width:600px){.zm-corner-logo{width:78px;height:62px;top:5px;left:6px}body.home-page .zm-corner-logo{width:104px;height:80px}}.method-box{display:flex;align-items:center;gap:18px;margin:15px 0 20px;padding:16px;background:#f8f5ea;color:#202027;border:1px solid #d8d1c3;border-radius:16px;line-height:1.45}.method-box img{width:83px;height:118px;object-fit:contain;flex:0 0 83px;border-radius:4px;box-shadow:0 2px 10px #0002;background:#fff}.method-box h2{font-size:1.1rem;margin:0 0 5px;color:#202027}.method-box p{font-size:.88rem;margin:0 0 6px;color:#323238}.method-box small{font-size:.73rem;color:#555}.method-box a{color:#145e84;text-decoration:underline}@media(max-width:480px){.method-box{align-items:flex-start;gap:10px;padding:10px}.method-box img{width:64px;height:92px;flex-basis:64px}}/* Le logo remplace le nom textuel dans les bandeaux. */nav .nav-brand,nav .brand,.home-header .brand{display:none!important}.top>strong:first-child{font-size:0!important}.top>strong:first-child::after{content:"EMC";font-size:.83rem}
+/* Accueil mobile : le bouton Ressources reste dégagé du logo. */
+.home-header{justify-content:flex-end}
+.home-header nav{position:relative;z-index:12001;margin-left:auto}
+@media(max-width:600px){
+  body.home-page .home-header{padding-left:118px}
+  body.home-page .home-header nav{margin-left:auto}
+  body.home-page .home-header nav a{display:inline-flex;align-items:center;min-height:44px;padding:10px 12px;background:#f3efe5e8;border:2px solid #070809;border-radius:8px}
+}
