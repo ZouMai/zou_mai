@@ -1,11 +1,73 @@
-<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>At the airport — planche sonorisée</title>
-<style>:root{--accent:#0b69a8}*{box-sizing:border-box}body{margin:0;background:#ece9e2;color:#1b1b1b;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}.toolbar{position:sticky;top:0;z-index:20;display:flex;flex-wrap:wrap;align-items:center;gap:.55rem;padding:.7rem .9rem;background:#fffffff0;backdrop-filter:blur(8px);box-shadow:0 2px 12px #0002}.toolbar strong{margin-right:.4rem}.toolbar button,.toolbar select,.back{font:inherit;border:1px solid #bbb;border-radius:10px;background:#fff;color:#1b1b1b;padding:.45rem .65rem;text-decoration:none}.toolbar button{cursor:pointer}.toolbar button:hover,.toolbar button:focus,.back:hover,.back:focus{background:#eef7ff;outline:2px solid #ffe66d}.wrap{width:min(100%,1055px);margin:18px auto 40px;padding:0 8px}.page{position:relative;width:100%;aspect-ratio:1054/1492;background:#fff;box-shadow:0 8px 32px #0003;overflow:hidden}.page img{width:100%;height:100%;display:block;object-fit:contain}.sound-btn{position:absolute;transform:translate(-50%,-50%);width:clamp(30px,3.4vw,40px);height:clamp(30px,3.4vw,40px);border:2px solid #fff;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:clamp(14px,1.8vw,20px);cursor:pointer;box-shadow:0 2px 8px #0006;opacity:.76}.sound-btn:hover,.sound-btn:focus{transform:translate(-50%,-50%) scale(1.12);opacity:1;outline:3px solid #ffe66d}.sound-btn.playing{background:#b3261e;animation:pulse .85s infinite alternate}@keyframes pulse{to{transform:translate(-50%,-50%) scale(1.14)}}.hint{text-align:center;color:#555;padding:0 12px 20px}@media(max-width:680px){.toolbar{font-size:.88rem}.toolbar strong{width:100%}.wrap{margin-top:8px;padding:0}.page{box-shadow:none}.sound-btn{width:34px;height:34px}}</style></head><body>
-<div class="toolbar"><strong>🔊 At the airport</strong><button id="playAll">▶ Tout écouter</button><button id="stop">■ Stop</button><label>Vitesse <select id="rate"><option value="0.72">très lente</option><option value="0.82" selected>lente</option><option value="0.92">normale</option><option value="1.02">rapide</option></select></label><label>Voix <select id="voice"></select></label><a class="back" href="https://zoumai.github.io/the-method/lessons/at-the-airport/">JEUX</a></div>
-<div class="wrap"><div class="page"><img src="at-the-airport-enhanced.png" alt="Planche sonorisée At the airport">
-<button class="sound-btn" style="left:8%;top:18%" data-text="What's your name?">🔊</button><button class="sound-btn" style="left:28%;top:30%" data-text="My name is Patrick!">🔊</button>
-<button class="sound-btn" style="left:91%;top:20%" data-text="What's your name?">🔊</button><button class="sound-btn" style="left:91%;top:27%" data-text="My name is Nessie!">🔊</button>
-<button class="sound-btn" style="left:9%;top:43%" data-text="What's your name, Sir?">🔊</button><button class="sound-btn" style="left:44%;top:57%" data-text="My name is Harry!">🔊</button>
-<button class="sound-btn" style="left:64%;top:43%" data-text="What's your name, Sir?">🔊</button><button class="sound-btn" style="left:67%;top:58%" data-text="My name is Arthur!">🔊</button>
-<button class="sound-btn" style="left:62%;top:71%" data-text="What's your name?">🔊</button><button class="sound-btn" style="left:64%;top:83%" data-text="I am Puss in Boots!">🔊</button>
-</div></div><p class="hint">Clique sur un 🔊 pour entendre la bulle correspondante. Une voix anglaise britannique est choisie en priorité.</p>
-<script>const synth=speechSynthesis,buttons=[...document.querySelectorAll('.sound-btn')],voiceSelect=document.getElementById('voice'),rateSelect=document.getElementById('rate');let voices=[];function loadVoices(){voices=synth.getVoices();const en=voices.filter(v=>/^en(-|_)/i.test(v.lang)).sort((a,b)=>(/en-GB/i.test(a.lang)?0:1)-(/en-GB/i.test(b.lang)?0:1));voiceSelect.innerHTML='';(en.length?en:voices).forEach(v=>{const o=document.createElement('option');o.value=voices.indexOf(v);o.textContent=`${v.name} (${v.lang})`;voiceSelect.appendChild(o)});const i=voices.findIndex(v=>/en-GB/i.test(v.lang)&&/natural|google|microsoft|siri|premium/i.test(v.name)),f=voices.findIndex(v=>/en-GB/i.test(v.lang));voiceSelect.value=String(i>=0?i:f)}loadVoices();if('onvoiceschanged'in synth)synth.onvoiceschanged=loadVoices;function clear(){buttons.forEach(b=>b.classList.remove('playing'))}function speak(t,b,end){const u=new SpeechSynthesisUtterance(t);u.lang='en-GB';u.rate=+rateSelect.value;const v=voices[+voiceSelect.value];if(v)u.voice=v;b?.classList.add('playing');u.onend=()=>{b?.classList.remove('playing');end?.()};u.onerror=()=>{clear();end?.()};synth.speak(u)}buttons.forEach(b=>b.onclick=()=>{synth.cancel();clear();speak(b.dataset.text,b)});stop.onclick=()=>{synth.cancel();clear()};playAll.onclick=()=>{synth.cancel();clear();let i=0;const next=()=>{if(i<buttons.length){const b=buttons[i++];speak(b.dataset.text,b,()=>setTimeout(next,250))}};next()}</script></body></html>
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>At the airport · BD expressive · Zou Maï</title><style>*{box-sizing:border-box}body{margin:0;background:#e8e5df;color:#16191e;font-family:system-ui,Arial,sans-serif}button,select,a{font:inherit}.toolbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;flex-wrap:wrap;gap:.55rem;padding:.65rem max(10px,2vw);background:#fffefa;box-shadow:0 2px 12px #0002}.toolbar strong{margin-right:auto}.toolbar button,.toolbar select,.toolbar a{padding:.6rem .8rem;border:2px solid #20242a;border-radius:12px;background:white;color:#151515;text-decoration:none;font-weight:750;cursor:pointer}.toolbar #playAll{background:#aff3c7}.toolbar #stop{background:#ffe2dd}.toolbar button:focus-visible,.sound-btn:focus-visible{outline:4px solid #fae248;outline-offset:3px}.wrap{max-width:1055px;margin:16px auto 40px;padding:0 8px}.page{position:relative;width:100%;background:#fff;box-shadow:0 8px 25px #0002;line-height:0}.page>img{display:block;width:100%;height:auto}.sound-btn{position:absolute;z-index:2;transform:translate(-50%,-50%);width:clamp(30px,3.2vw,42px);height:clamp(30px,3.2vw,42px);display:grid;place-items:center;line-height:1;border:2px solid #fff;border-radius:50%;background:#146cbd;color:#fff;box-shadow:0 2px 8px #0009;cursor:pointer;transition:background .15s}.sound-btn.active{background:#e43166;box-shadow:0 0 0 9px #ffed4f99,0 0 28px 17px #ffde3599;animation:pulse 1s infinite alternate}@keyframes pulse{to{box-shadow:0 0 0 14px #ffed4f77,0 0 36px 22px #ffde3577}}.sound-btn.active:before{content:'';position:absolute;z-index:-1;width:clamp(70px,13vw,145px);height:clamp(42px,7vw,84px);border:5px solid #f9ce16;border-radius:50%;background:#fff25d25;pointer-events:none}.transcript{margin:14px auto;padding:12px 16px;background:#fff;border-radius:14px;border-left:7px solid #ffca25;font-size:1.1rem;line-height:1.4}.transcript strong{display:block;font-size:.8rem;text-transform:uppercase;letter-spacing:.08em}.hint{max-width:1055px;margin:12px auto;padding:0 10px 25px;color:#484c52;font-size:.92rem}@media(max-width:680px){.toolbar strong{width:100%}.wrap{padding:0;margin-top:6px}.sound-btn{width:31px;height:31px;font-size:13px}}@media(prefers-reduced-motion:reduce){.sound-btn.active{animation:none}}</style></head><body><div class="toolbar"><strong>🎭 At the airport</strong><button id="playAll">▶ Écouter toute la BD</button><button id="stop">■ Arrêter</button><label>Vitesse <select id="rate"><option value="0.76">Très lente</option><option value="0.88" selected>Lente</option><option value="1">Normale</option></select></label><a href="../../index.html">← Retour aux leçons</a></div><div class="wrap"><div class="page"><img src="at-the-airport-enhanced.png" alt="Planche de BD : At the airport"><button class="sound-btn" style="left:8%;top:18%" data-character="questioner" data-text="What&#x27;s your name?" aria-label="Écouter : What&#x27;s your name?" aria-pressed="false">🔊</button>
+<button class="sound-btn" style="left:91%;top:20%" data-character="questioner" data-text="What&#x27;s your name?" aria-label="Écouter : What&#x27;s your name?" aria-pressed="false">🔊</button>
+<button class="sound-btn" style="left:91%;top:27%" data-character="nessie" data-text="My name is Nessie!" aria-label="Écouter : My name is Nessie!" aria-pressed="false">🔊</button>
+<button class="sound-btn" style="left:28%;top:30%" data-character="patrick" data-text="My name is Patrick!" aria-label="Écouter : My name is Patrick!" aria-pressed="false">🔊</button>
+<button class="sound-btn" style="left:9%;top:43%" data-character="questioner" data-text="What&#x27;s your name, Sir?" aria-label="Écouter : What&#x27;s your name, Sir?" aria-pressed="false">🔊</button>
+<button class="sound-btn" style="left:64%;top:43%" data-character="questioner" data-text="What&#x27;s your name, Sir?" aria-label="Écouter : What&#x27;s your name, Sir?" aria-pressed="false">🔊</button>
+<button class="sound-btn" style="left:44%;top:57%" data-character="harry" data-text="My name is Harry!" aria-label="Écouter : My name is Harry!" aria-pressed="false">🔊</button>
+<button class="sound-btn" style="left:67%;top:58%" data-character="arthur" data-text="My name is Arthur!" aria-label="Écouter : My name is Arthur!" aria-pressed="false">🔊</button>
+<button class="sound-btn" style="left:62%;top:71%" data-character="questioner" data-text="What&#x27;s your name?" aria-label="Écouter : What&#x27;s your name?" aria-pressed="false">🔊</button>
+<button class="sound-btn" style="left:64%;top:83%" data-character="cat" data-text="I am Puss in Boots!" aria-label="Écouter : I am Puss in Boots!" aria-pressed="false">🔊</button></div><div class="transcript" aria-live="polite"><strong>Réplique en cours</strong><span id="caption">Choisis une bulle, ou écoute toute la scène.</span></div></div><p class="hint">Clique sur le 🔊 d’une bulle pour l’écouter seule. Pendant la lecture intégrale, la bulle active est surlignée autour de son bouton. Les voix dépendent de celles installées sur l’appareil.</p><script>(() => {
+  'use strict';
+  const synth = window.speechSynthesis;
+  const buttons = [...document.querySelectorAll('.sound-btn')];
+  const playAll = document.querySelector('#playAll');
+  const stop = document.querySelector('#stop');
+  const rate = document.querySelector('#rate');
+  const caption = document.querySelector('#caption');
+  let voices = [], token = 0, timeout = null;
+  // Pick separate installed English voices when possible. Pitch/rate provide
+  // an audible distinction if the device offers only one English voice.
+  const characters = {
+    crew:{slot:0,pitch:1.13,speed:1.02},child:{slot:1,pitch:1.24,speed:1.02},
+    adult:{slot:2,pitch:.88,speed:.96},adult2:{slot:3,pitch:1.04,speed:.98},
+    child2:{slot:1,pitch:1.29,speed:1.08},questioner:{slot:0,pitch:1.03,speed:.98},
+    patrick:{slot:1,pitch:.91,speed:1.03},nessie:{slot:2,pitch:1.28,speed:1.07},
+    harry:{slot:3,pitch:.84,speed:.93},arthur:{slot:1,pitch:1.11,speed:1},
+    cat:{slot:2,pitch:1.52,speed:.91}
+  };
+  function loadVoices(){
+    const available=synth.getVoices();
+    voices=available.filter(v=>/^en[-_]/i.test(v.lang))
+      .sort((a,b)=>(/en-GB/i.test(b.lang)?1:0)-(/en-GB/i.test(a.lang)?1:0));
+  }
+  loadVoices();synth.addEventListener?.('voiceschanged',loadVoices);
+  function clear(){
+    buttons.forEach(b=>{b.classList.remove('active');b.setAttribute('aria-pressed','false')});
+    caption.textContent='Choisis une bulle, ou écoute toute la scène.';
+  }
+  function halt(){token++;clearTimeout(timeout);synth.cancel();clear();playAll.disabled=false;}
+  function lineAt(i,current,all){
+    if(current!==token)return;
+    if(i>=buttons.length){clear();playAll.disabled=false;return;}
+    const b=buttons[i],name=b.dataset.character;
+    buttons.forEach(x=>{x.classList.remove('active');x.setAttribute('aria-pressed','false')});
+    b.classList.add('active');b.setAttribute('aria-pressed','true');
+    caption.textContent=b.dataset.text;
+    const actor=characters[name]||characters.questioner;
+    const u=new SpeechSynthesisUtterance(b.dataset.text);
+    u.lang='en-GB';
+    u.rate=Math.max(.55,Math.min(1.5,Number(rate.value)*actor.speed));
+    u.pitch=actor.pitch;
+    if(voices.length)u.voice=voices[actor.slot%voices.length];
+    let done=false;
+    const finish=()=>{
+      if(done||current!==token)return;done=true;
+      b.classList.remove('active');b.setAttribute('aria-pressed','false');
+      if(all)timeout=setTimeout(()=>lineAt(i+1,current,true),340);
+      else clear();
+    };
+    u.onend=finish;
+    u.onerror=finish;
+    synth.speak(u);
+  }
+  buttons.forEach((b,i)=>b.addEventListener('click',()=>{
+    halt();lineAt(i,token,false);
+  }));
+  playAll.addEventListener('click',()=>{
+    halt();playAll.disabled=true;lineAt(0,token,true);
+  });
+  stop.addEventListener('click',halt);
+  window.addEventListener('pagehide',halt);
+  if(!synth||!window.SpeechSynthesisUtterance){playAll.disabled=true;caption.textContent='La synthèse vocale n’est pas disponible dans ce navigateur.';}
+})();</script></body></html>
