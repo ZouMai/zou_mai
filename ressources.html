@@ -65,7 +65,7 @@
 </a>
 <a class="subject em" href="#em">
 <span class="icon">⚖️</span>
-<span class="count">À VENIR</span>
+<span class="count">1 RESSOURCE</span>
 <h2>EMC</h2>
 <p>Valeurs et débats.</p>
 </a>
@@ -153,12 +153,16 @@
 </article>
 </div>
 </div>
+<div class="shelf" id="em" style="--a:#7766d7">
+<h3>EMC · Vivre ensemble</h3>
+<div class="grid"><article class="item"><span class="type">AFFICHAGE · LEÇON · 3 JEUX</span><h4>Les messages clairs</h4><p>Exprimer un désaccord sans blesser, écouter l’autre et chercher une solution.</p><a href="emc-messages-clairs.html">DÉCOUVRIR &amp; JOUER →</a></article></div>
+</div>
 <div id="empty">
 </div>
 </section>
 </main>
 <script>
-const n={ma:'Mathématiques',ge:'Géographie',sc:'Sciences & technologie',em:'EMC',ar:'Arts visuels',hd:'Histoire des arts',ep:'EPS',mu:'Musique',nu:'Numérique & EMI'},c={ma:'#23a3df',ge:'#45b96b',sc:'#81c63b',em:'#7766d7',ar:'#e54ea2',hd:'#ef8b2c',ep:'#37d4ce',mu:'#aa5be6',nu:'#f5d725'},e=document.querySelector('#empty');Object.keys(n).forEach(id=>e.insertAdjacentHTML('beforebegin',`<div class="shelf" id="${id}" style="--a:${c[id]}">
+const n={ma:'Mathématiques',ge:'Géographie',sc:'Sciences & technologie',ar:'Arts visuels',hd:'Histoire des arts',ep:'EPS',mu:'Musique',nu:'Numérique & EMI'},c={ma:'#23a3df',ge:'#45b96b',sc:'#81c63b',ar:'#e54ea2',hd:'#ef8b2c',ep:'#37d4ce',mu:'#aa5be6',nu:'#f5d725'},e=document.querySelector('#empty');Object.keys(n).forEach(id=>e.insertAdjacentHTML('beforebegin',`<div class="shelf" id="${id}" style="--a:${c[id]}">
 <h3>${n[id]}</h3>
 <div class="grid">
 <article class="item soon">
@@ -177,7 +181,7 @@ hi:[["REPÈRES CHRONOLOGIQUES","histoire-periodes.html",1],["PRÉHISTOIRE","#hi"
 ge:[["FRANCE","#ge"],["EUROPE","#ge"],["MONDE","#ge"],["CARTES & REPÈRES","#ge"],["MYSTÈRES DU MONDE","#ge"]],
 sc:[["VIVANT","#sc"],["MATIÈRE","#sc"],["ÉNERGIE","#sc"],["OBJETS TECHNIQUES","#sc"],["ESPACE","#sc"]],
 an:[["THE MÉTHODE 3 · 22 LEÇONS","ressources/anglais/index.html",1],["RITUELS","#an"],["CIVILISATION","#an"]],
-em:[["VALEURS DE LA RÉPUBLIQUE","#em"],["DÉBATS","#em"],["DROITS & DEVOIRS","#em"],["ESPRIT CRITIQUE","#em"]],
+em:[["MESSAGES CLAIRS","emc-messages-clairs.html",1],["VALEURS DE LA RÉPUBLIQUE","#em"],["DÉBATS","#em"]],
 ar:[["DESSIN","#ar"],["PEINTURE","#ar"],["VOLUME","#ar"],["STREET ART","#ar"],["PROJETS","#ar"]],
 hd:[["ŒUVRES","#hd"],["ARTISTES","#hd"],["RESSENTIS","#hd"],["REPÈRES","#hd"]],
 ep:[["COURSE","#ep"],["SPORTS COLLECTIFS","#ep"],["GYMNASTIQUE","#ep"],["DANSE","#ep"],["JEUX","#ep"]],
