@@ -23,7 +23,7 @@
   const baseWord = (w) =>
       w
         .replace(
-          /^(un|une|le|la|les|des|ce|cet|cette|ces|mon|ma|mes|ton|ta|tes|son|sa|ses|l[’'])\s*/i,
+          /^(?:une|un|les|le|la|des|cette|cet|ces|ce|mes|mon|ma|tes|ton|ta|ses|son|sa)\b\s+|^l[’']/i,
           "",
         )
         .replace(/\s/g, ""),
@@ -31,7 +31,7 @@
   const withoutDeterminer = (w) =>
     w
       .replace(
-        /^(un|une|le|la|les|des|ce|cet|cette|ces|mon|ma|mes|ton|ta|tes|son|sa|ses|l[’'])\s*/i,
+        /^(?:une|un|les|le|la|des|cette|cet|ces|ce|mes|mon|ma|tes|ton|ta|ses|son|sa)\b\s+|^l[’']/i,
         "",
       )
       .trim();
@@ -191,8 +191,11 @@
     isNoun(phrase) &&
     !rarelyPlural.test(clean(phrase)) &&
     !/^[A-ZÀ-ÖØ-Þ]/.test(withoutDeterminer(phrase));
+  // Ne jamais laisser une marque de pluriel seule entre le déterminant et le nom.
+  const cleanNounPhrase = (phrase) =>
+    phrase.trim().replace(/\s+/g, " ").replace(/^(\S+)\s+s\s+(?=\S)/i, "$1 ");
   const toPlural = (phrase, determiner = "des") => {
-    let noun = phrase.replace(/^(un|une|le|la)\s+/i, "").replace(/^l[’']/i, "");
+    let noun = withoutDeterminer(cleanNounPhrase(phrase));
     if (!/[sxz]$/i.test(noun))
       noun = /al$/i.test(noun)
         ? noun.replace(/al$/i, "aux")
@@ -359,6 +362,7 @@
         answer: full,
         accept: [withoutDeterminer(full)],
         review: w,
+        source: w,
       });
     });
     d.transforms
@@ -378,6 +382,7 @@
             answer: pluralTarget,
             accept: [withoutDeterminer(pluralTarget)],
             review: pluralTarget,
+            source,
           });
         } else if (
           /^Accorde/i.test(instruction) &&
@@ -458,10 +463,29 @@
             joinSubject(t.subject, otherPresent),
           ];
         } else if (t.kind === "noun") {
-          const noun = withoutDeterminer(t.answer);
-          options = pluralDeterminers.map(
-            (determiner) => `${determiner} ${noun}`,
-          );
+          const answer = cleanNounPhrase(t.answer);
+          const pluralNoun = withoutDeterminer(answer);
+          const singularPhrase = cleanNounPhrase(t.source);
+          const singularNoun = withoutDeterminer(singularPhrase);
+          const requestedDet = answer.split(" ")[0].toLowerCase();
+          // Trois difficultés ciblées : nom non accordé, groupe resté au
+          // singulier, confusion entre deux déterminants proches.
+          const otherDet = {
+            ces: "ses", ses: "ces", les: "des", des: "les",
+          }[requestedDet];
+          const candidates = [
+            answer,
+            `${requestedDet} ${singularNoun}`,
+            singularPhrase,
+            `${otherDet} ${pluralNoun}`,
+            // Substituts uniquement si le nom est invariable au pluriel.
+            `${otherDet} ${singularNoun}`,
+            `${requestedDet === "ces" ? "des" : "ces"} ${pluralNoun}`,
+            `${requestedDet === "ces" ? "ce" : "un"} ${singularNoun}`,
+          ];
+          options = [...new Set(candidates.map(cleanNounPhrase))]
+            .filter((candidate) => candidate !== answer || candidate === candidates[0])
+            .slice(0, 4);
         } else {
           const noun = withoutDeterminer(t.answer);
           options = [t.answer, t.prompt.match(/« ([^»]+) »/)?.[1], `l’${noun}`];
