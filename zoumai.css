@@ -113,6 +113,10 @@ body.home-page{
 .resources-page header{border-bottom:1px solid var(--zm-line)}
 .resources-page .intro{color:#aaa69e;letter-spacing:.05em}
 .resources-page header{display:flex;align-items:center;justify-content:space-between;overflow:visible}
+
+
+/* Ressources : recentrage du loup sur mobile */
+@media(max-width:720px){body.resources-page{background-position:58% top!important;}}
 .resource-figure{position:relative;z-index:2;width:155px;height:155px;object-fit:contain;object-position:center 24%;filter:drop-shadow(0 0 18px rgba(35,158,229,.28))}
 .resources-page .item a{border:2px solid #090909;transition:.18s}
 .resources-page .item a:hover,.resources-page .item a:focus-visible{background:var(--a);color:#090909;outline:none}
