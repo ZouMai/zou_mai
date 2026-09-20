@@ -34,7 +34,7 @@ main{position:relative;z-index:1;width:min(980px,93vw);margin:auto;padding:20px 
 <button class="game-tab" data-tab="review" aria-pressed="false">🧠 MES CALCULS À REVOIR <span id="reviewCount"></span></button>
 </div>
 <section id="setup">
-<div class="panel" id="tablePanel"><h2><span class="step">1</span>Choisis tes tables</h2><div class="tables" id="tables"></div><p class="hint" id="tableHint">Choisis une, deux ou trois tables.</p></div>
+<div class="panel" id="tablePanel"><h2><span class="step">1</span>Choisis tes tables</h2><div class="tables" id="tables"></div><p class="hint" id="tableHint">Clique sur toutes les tables que tu veux travailler.</p></div>
 <div class="panel"><h2><span class="step">2</span>Choisis ton niveau</h2><div class="modes">
 <button class="mode" data-mode="learn" aria-pressed="true"><strong>🌱 J’apprends</strong><small>Je prends le temps nécessaire. Si je me trompe, je recopie la bonne réponse.</small></button>
 <button class="mode" data-mode="train" aria-pressed="false"><strong>⚡ Je m’entraîne</strong><small>10 secondes pour chaque calcul.</small></button>
@@ -57,7 +57,7 @@ function saveProgress(){localStorage.setItem(KEY,JSON.stringify(progress));updat
 function key(q){return q.a+'x'+q.b}function fromKey(k){const [a,b]=k.split('x').map(Number);return{a,b,result:a*b}}
 function weakKeys(){return Object.keys(progress).filter(k=>progress[k].wrong>0||progress[k].timeout>0||progress[k].slow>0).sort((x,y)=>{const a=progress[x],b=progress[y];return(b.wrong+b.timeout+b.slow)-(a.wrong+a.timeout+a.slow)})}
 for(let n=2;n<=11;n++){const b=document.createElement('button');b.type='button';b.className='table-btn';b.textContent='× '+n;b.dataset.table=n;b.setAttribute('aria-pressed','false');b.onclick=()=>toggleTable(n,b);tableBox.append(b)}
-function toggleTable(n,b){const p=selected.indexOf(n);if(p>=0){selected.splice(p,1);b.setAttribute('aria-pressed','false')}else if(selected.length<3){selected.push(n);b.setAttribute('aria-pressed','true');hint.classList.remove('error')}else{hint.textContent='Tu peux choisir trois tables au maximum.';hint.classList.add('error')}updateStart()}
+function toggleTable(n,b){const p=selected.indexOf(n);if(p>=0){selected.splice(p,1);b.setAttribute('aria-pressed','false')}else{selected.push(n);b.setAttribute('aria-pressed','true')}hint.textContent='Clique sur toutes les tables que tu veux travailler.';hint.classList.remove('error');updateStart()}
 function updateStart(){start.disabled=!selected.length;start.textContent=selected.length?'COMMENCER · '+selected.sort((a,b)=>a-b).map(n=>'×'+n).join(' · '):'CHOISIS AU MOINS UNE TABLE'}
 $$('.mode').forEach(b=>b.onclick=()=>{mode=b.dataset.mode;$$('.mode').forEach(x=>x.setAttribute('aria-pressed',String(x===b)))});
 $$('.game-tab').forEach(b=>b.onclick=()=>selectTab(b.dataset.tab));
