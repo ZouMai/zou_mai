@@ -21,6 +21,19 @@ main{position:relative;z-index:1;width:min(980px,93vw);margin:auto;padding:20px 
 .review-list,.fact-list{display:flex;flex-wrap:wrap;gap:9px}.fact{border:2px solid #111;border-radius:9px;padding:8px 11px;background:#fff;font-weight:900}.fact.red{background:#ffaea6}.fact.yellow{background:#ffe66a}.fact.green{background:#8be2ad}.empty{padding:18px;border:3px dashed #777;border-radius:12px;font-weight:800;color:#555}.result{text-align:center}.result .big{font-size:clamp(4rem,15vw,8rem);font-weight:1000;line-height:1;color:var(--violet)}.report{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:22px 0;text-align:left}.report-card{border:3px solid #111;border-radius:12px;padding:12px;background:#fff}.report-card.good{background:#9ae4b6}.report-card.mid{background:#ffe477}.report-card.bad{background:#ffaaa1}.report-card strong{display:block;font-size:1.2rem}.result h3{text-align:left;margin-top:26px}.actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:22px}.actions button,.actions a{border:3px solid #111;background:#fff;color:#111;text-decoration:none;border-radius:10px;padding:11px 15px;font-weight:900;cursor:pointer}.actions .again{background:var(--yellow)}.actions .weak{background:var(--red)}
 @media(max-width:640px){.top{min-height:78px;padding-left:116px}.game-tabs{grid-template-columns:1fr}.tables{grid-template-columns:repeat(3,1fr)}.modes,.review-actions{grid-template-columns:1fr}.mode{min-height:88px}.panel{box-shadow:6px 6px 0 #050505}.answer-row{flex-direction:column;align-items:center}.validate{width:min(250px,70vw);min-height:50px}}
 </style>
+
+<style>
+/* Célébration 20/20 : visuel détouré et bulle intégrée à l'illustration. */
+.totoro-celebration[hidden]{display:none}
+.totoro-celebration{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;padding:20px;background:rgba(13,27,29,.68);backdrop-filter:blur(5px)}
+.totoro-dialog{position:relative;width:min(94vw,950px);max-height:94dvh;display:grid;place-items:center;animation:totoro-enter .65s cubic-bezier(.2,1.3,.35,1) both}
+.totoro-dialog img{display:block;width:100%;max-height:85dvh;object-fit:contain;filter:drop-shadow(0 20px 22px rgba(0,0,0,.2));animation:totoro-float 3.2s ease-in-out .7s infinite}
+.totoro-close{position:absolute;top:0;right:0;z-index:1;width:44px;height:44px;border:0;border-radius:50%;background:#fff;color:#26352f;font-size:26px;cursor:pointer;box-shadow:0 3px 12px #0003}
+.totoro-close:focus-visible{outline:4px solid #ffda58;outline-offset:3px}
+@keyframes totoro-enter{from{opacity:0;transform:translateY(45px) scale(.83)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes totoro-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+@media(prefers-reduced-motion:reduce){.totoro-dialog,.totoro-dialog img{animation:none}}
+</style>
 </head>
 <body>
 <a class="zm-corner-logo" href="index.html" aria-label="Accueil Zou Maï"><img src="images/logo-zou-mai-sensei.png" alt="Logo Sensei Zou Maï"></a>
@@ -45,6 +58,12 @@ main{position:relative;z-index:1;width:min(980px,93vw);margin:auto;padding:20px 
 <section id="review" hidden><div class="panel"><h2>🧠 Mes calculs à revoir</h2><p>Voici les calculs ratés, non répondus ou encore trop lents sur cet appareil.</p><div class="review-list" id="reviewList"></div></div><div class="review-actions"><button class="start review-start" id="reviewStart">REJOUER MES DIFFICULTÉS</button><button class="reset-review" id="resetReview">REMETTRE À ZÉRO LES CALCULS À REVOIR</button></div></section>
 <section id="game" hidden><div class="panel" id="gamePanel"><div class="game-head"><span class="counter" id="counter"></span><span class="score" id="score">0 point</span></div><div class="timer off" id="timer"><span></span></div><div class="question" id="question"></div><form class="answer-row" id="answerForm"><input class="answer" id="answer" inputmode="numeric" pattern="[0-9]*" autocomplete="off" aria-label="Ta réponse"><button class="validate">VALIDER</button></form><div class="feedback" id="feedback" aria-live="polite"></div></div></section>
 </main>
+<div id="totoroCelebration" class="totoro-celebration" hidden>
+  <div class="totoro-dialog" role="dialog" aria-modal="true" aria-label="Je te félicite ! Tu as réussi 20 sur 20.">
+    <button id="totoroClose" class="totoro-close" type="button" aria-label="Fermer la félicitation">×</button>
+    <img src="images/totoro-felicitations.png" alt="Totoro te regarde, te pointe du doigt et dit : Je te félicite !" width="1374" height="1145">
+  </div>
+</div>
 <script>
 const KEY='zoumai-tables-progress-v2';
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
@@ -72,7 +91,14 @@ function showQuestion(){clearInterval(tick);locked=false;correctionRequired=fals
 $('#answerForm').onsubmit=e=>{e.preventDefault();if(locked||answer.value==='')return;const q=questions[index];if(correctionRequired){if(Number(answer.value)!==q.result){answer.value='';feedback.textContent='Recopie la bonne réponse : '+q.a+' × '+q.b+' = '+q.result;answer.focus();return}locked=true;answer.disabled=true;feedback.textContent='✓ Bien mémorisé : '+q.a+' × '+q.b+' = '+q.result;feedback.className='feedback good';setTimeout(()=>{index++;index<questions.length?showQuestion():showResult()},800);return}finish(Number(answer.value)===q.result,false)};
 function finish(ok,timeout){if(locked)return;locked=true;clearInterval(tick);answer.disabled=true;const q=questions[index],ms=Date.now()-startedAt,slow=ok&&mode!=='learn'&&ms>(mode==='train'?7500:mode==='perfect'?5200:3600);const k=key(q),s=progress[k]||{attempts:0,correct:0,wrong:0,timeout:0,slow:0,totalMs:0};s.attempts++;s.totalMs+=ms;if(ok)s.correct++;else if(timeout)s.timeout++;else s.wrong++;if(slow)s.slow++;progress[k]=s;saveProgress();answers.push({q,ok,timeout,slow,ms});if(ok){score++;feedback.textContent='✓ '+(slow?'Juste, mais encore un peu lent. ':'Bravo ! ')+q.a+' × '+q.b+' = '+q.result;feedback.className='feedback good'}else{feedback.textContent=(timeout?'⏱ Temps écoulé. ':'↻ À revoir. ')+q.a+' × '+q.b+' = '+q.result;feedback.className='feedback bad'}scoreEl.textContent=score+(score>1?' points':' point');if(!ok&&mode==='learn'&&!timeout){locked=false;correctionRequired=true;answer.disabled=false;answer.value='';answer.placeholder=String(q.result);feedback.textContent='Observe puis recopie : '+q.a+' × '+q.b+' = '+q.result;answer.focus();return}setTimeout(()=>{index++;index<questions.length?showQuestion():showResult()},ok?700:1300)}
 function tableReport(){const map={};answers.forEach(a=>{const t=map[a.q.a]||(map[a.q.a]={total:0,ok:0});t.total++;if(a.ok)t.ok++});return Object.entries(map).sort((a,b)=>a[0]-b[0]).map(([n,s])=>{const p=Math.round(s.ok/s.total*100),c=p>=80?'good':p>=60?'mid':'bad';return'<div class="report-card '+c+'"><strong>Table de '+n+'</strong>'+s.ok+' / '+s.total+' réussis</div>'}).join('')}
-function showResult(){const difficult=answers.filter(a=>!a.ok||a.slow);$('#gamePanel').innerHTML='<div class="result"><p class="eyebrow">DÉFI TERMINÉ</p><div class="big">'+score+' / '+questions.length+'</div><h2>'+message()+'</h2><div class="report">'+tableReport()+'</div>'+(difficult.length?'<h3>🧠 Mes calculs à revoir</h3><div class="fact-list">'+difficult.map(a=>'<span class="fact '+(!a.ok?'red':'yellow')+'">'+a.q.a+' × '+a.q.b+' = '+a.q.result+'</span>').join('')+'</div>':'<h3>🟢 Aucun calcul difficile dans cette partie !</h3>')+'<div class="actions"><button class="again" onclick="location.reload()">REJOUER</button>'+(weakKeys().length?'<button class="weak" onclick="location.reload();localStorage.setItem(\'zoumai-open-review\',\'1\')">REVOIR MES DIFFICULTÉS</button>':'')+'<a href="ressources.html#ma">RETOUR AUX MATHS</a></div></div>'}
+function showResult(){if(questions.length===20&&score===20)showTotoro();const difficult=answers.filter(a=>!a.ok||a.slow);$('#gamePanel').innerHTML='<div class="result"><p class="eyebrow">DÉFI TERMINÉ</p><div class="big">'+score+' / '+questions.length+'</div><h2>'+message()+'</h2><div class="report">'+tableReport()+'</div>'+(difficult.length?'<h3>🧠 Mes calculs à revoir</h3><div class="fact-list">'+difficult.map(a=>'<span class="fact '+(!a.ok?'red':'yellow')+'">'+a.q.a+' × '+a.q.b+' = '+a.q.result+'</span>').join('')+'</div>':'<h3>🟢 Aucun calcul difficile dans cette partie !</h3>')+'<div class="actions"><button class="again" onclick="location.reload()">REJOUER</button>'+(weakKeys().length?'<button class="weak" onclick="location.reload();localStorage.setItem(\'zoumai-open-review\',\'1\')">REVOIR MES DIFFICULTÉS</button>':'')+'<a href="ressources.html#ma">RETOUR AUX MATHS</a></div></div>'}
+const totoroOverlay=$('#totoroCelebration'),totoroClose=$('#totoroClose');
+let totoroPreviousFocus=null;
+function showTotoro(){totoroPreviousFocus=document.activeElement;totoroOverlay.hidden=false;totoroClose.focus()}
+function hideTotoro(){totoroOverlay.hidden=true;if(totoroPreviousFocus&&totoroPreviousFocus.isConnected)totoroPreviousFocus.focus()}
+totoroClose.addEventListener('click',hideTotoro);
+totoroOverlay.addEventListener('click',e=>{if(e.target===totoroOverlay)hideTotoro()});
+document.addEventListener('keydown',e=>{if(totoroOverlay.hidden)return;if(e.key==='Escape')hideTotoro();if(e.key==='Tab'){e.preventDefault();totoroClose.focus()}});
 function message(){const p=score/questions.length;if(p===1)return'🏆 Sans faute !';if(p>=.8)return'⭐ Excellent travail !';if(p>=.6)return'👏 Tu progresses !';return'🌱 Continue à t’entraîner !'}
 if(localStorage.getItem('zoumai-open-review')){localStorage.removeItem('zoumai-open-review');selectTab('review')}
 </script>
