@@ -11,7 +11,49 @@
 .subfolders{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px;margin:18px 0 24px}.subfolder{--glow:var(--a);display:flex;align-items:center;justify-content:center;min-height:68px;padding:10px;background:#14171c;color:#fff;text-decoration:none;text-align:center;border:2px solid #ffffff70;font-size:.78rem;font-weight:900;box-shadow:4px 4px #000;transition:.18s}.subfolder:hover,.subfolder:focus{transform:translate(-2px,-3px);border-color:#fff;box-shadow:0 0 7px #fff,0 0 22px var(--glow),6px 7px #000;color:#fff}.subfolder.ready:after{content:"●";color:var(--a);margin-left:7px}
 </style>
 <link rel="stylesheet" href="zoumai.css">
-<link rel="stylesheet" href="zoumai-brand.css"></head>
+<link rel="stylesheet" href="zoumai-brand.css">
+<style>
+body.resources-page{
+  background-color:#f2ede4;
+  background-image:url("images/fond-ressources-zoumai.webp");
+  background-position:center top;
+  background-size:cover;
+  background-attachment:fixed;
+  background-repeat:no-repeat;
+  color:#101318;
+}
+body.resources-page:before{
+  opacity:.08;
+  background:radial-gradient(#111 1px,transparent 1px);
+  background-size:9px 9px;
+}
+.resources-page header h1,
+.resources-page .content>h2,
+.resources-page .shelf h3{color:#101318;text-shadow:0 1px #fff}
+.resources-page header:after{color:#10131812}
+.resources-page .resource-figure{display:none}
+.resources-page .content{
+  margin-top:90px;
+  padding:40px clamp(18px,3vw,42px);
+  background:rgba(248,244,236,.86);
+  border:3px solid #101318;
+  box-shadow:10px 10px 0 rgba(16,19,24,.18);
+  backdrop-filter:blur(5px);
+  -webkit-backdrop-filter:blur(5px);
+}
+@media(max-width:700px){
+  body.resources-page{
+    background-position:62% top;
+    background-size:auto 100vh;
+  }
+  .resources-page .content{
+    margin-top:55px;
+    padding:28px 14px;
+    border-width:2px;
+    box-shadow:6px 6px 0 rgba(16,19,24,.16);
+  }
+}
+</style></head>
 <body id="top" class="resources-page"><a class="zm-corner-logo" href="index.html" aria-label="Accueil Zou Maï"><img src="images/logo-zou-mai-sensei.png" alt="Logo Sensei Zou_Maï"></a>
 <nav class="site-nav" aria-label="Navigation principale">
 <a class="nav-brand" href="index.html"><span class="nav-stamp">ぞ</span><span>ZOU MAÏ</span></a>
@@ -220,3 +262,4 @@ if(mathGrid){
 <footer class="site-footer"><span>Choisir · Explorer · S’entraîner</span><a class="site-signature" href="apropos.html"><img src="images/logo-zou-mai-sensei.png" alt="Logo Sensei Zou_Mai"></a></footer>
 </body>
 </html>
+
