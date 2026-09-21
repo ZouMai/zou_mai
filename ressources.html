@@ -53,6 +53,11 @@ body.resources-page:before{
     box-shadow:6px 6px 0 rgba(16,19,24,.16);
   }
 }
+</style>
+<style>
+.world{--c:#00b8a9}.weekly{margin:6px 0 42px;padding:22px;background:rgba(11,14,19,.94);border:2px solid #111;box-shadow:10px 10px 0 rgba(16,19,24,.2);color:#fff}.weekly-guide{display:flex;align-items:center;gap:18px;margin-bottom:18px}.weekly-guide img{width:112px;height:96px;object-fit:contain;filter:drop-shadow(0 8px 12px #0008)}.weekly-kicker{display:inline-block;color:var(--y);font-size:.72rem;font-weight:900;letter-spacing:.15em}.weekly h2{margin:3px 0;font-size:clamp(1.65rem,4vw,3rem);line-height:.95}.weekly-guide p{margin:7px 0 0;color:#d8d8d5;font-weight:700}.weekly-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.weekly-card{--wc:var(--y);min-height:165px;padding:16px;display:flex;flex-direction:column;background:#f4efe5;color:#111;border:3px solid #111;box-shadow:5px 5px var(--wc);text-decoration:none;transition:.18s}.weekly-card:hover,.weekly-card:focus{transform:translateY(-4px);box-shadow:0 0 22px color-mix(in srgb,var(--wc) 55%,transparent),7px 8px var(--wc)}.weekly-card span{font-size:.66rem;font-weight:900;color:#333}.weekly-card strong{font-size:1.35rem;line-height:1.05;margin:16px 0 5px}.weekly-card small{font-weight:700;line-height:1.25}.weekly-card b{margin-top:auto;padding-top:16px;font-size:.75rem}.weekly-fr{--wc:#ef4b43}.weekly-ma{--wc:#23a3df}.weekly-an{--wc:#ff593f}.weekly-world{--wc:#00b8a9}.section-label{margin:0 0 18px;font-size:clamp(1.8rem,5vw,3.6rem);color:#101318}.section-label span{color:#b32b26}.subjects-live{margin-bottom:22px}.coming-soon{margin:26px 0 0;background:rgba(248,244,236,.82);border:2px solid #101318}.coming-soon summary{padding:16px 18px;cursor:pointer;font-weight:900;list-style:none}.coming-soon summary::-webkit-details-marker{display:none}.coming-soon summary:after{content:"＋";float:right;font-size:1.2rem}.coming-soon[open] summary:after{content:"−"}.coming-soon summary span{margin-left:8px;color:#666;font-size:.65rem}.subjects-soon{padding:0 16px 18px}.subjects-soon .subject{opacity:.68}.resources-page .content{margin-top:52px}
+@media(max-width:900px){.weekly-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.weekly{padding:15px;margin-top:0}.weekly-guide{gap:10px}.weekly-guide img{width:82px;height:76px}.weekly-guide p{font-size:.78rem}.weekly-grid{gap:9px}.weekly-card{min-height:145px;padding:12px}.weekly-card strong{font-size:1.08rem}.weekly-card small{font-size:.72rem}.section-label{margin-top:28px}.subjects-live .subject h2{font-size:.88rem!important}.subjects-live .subject{height:88px!important}.coming-soon{margin-bottom:10px}}
 </style></head>
 <body id="top" class="resources-page"><a class="zm-corner-logo" href="index.html" aria-label="Accueil Zou Maï"><img src="images/logo-zou-mai-sensei.png" alt="Logo Sensei Zou_Maï"></a>
 <nav class="site-nav" aria-label="Navigation principale">
@@ -66,92 +71,40 @@ body.resources-page:before{
 <img class="resource-figure" src="images/loup-bleu-original.png" alt="Le loup bleu original de Zou_Maï">
 </header>
 <main>
-<section class="subjects">
-<a class="subject fr" href="#fr">
-<span class="icon">✍️</span>
-<span class="count">1 RESSOURCE</span>
-<h2>Français</h2>
-<p>Dictées, lecture, écriture et langue.</p>
-</a>
-<a class="subject ma" href="#ma">
-<span class="icon">➗</span>
-<span class="count">1 JEU</span>
-<h2>Mathématiques</h2>
-<p>Calcul, problèmes, géométrie.</p>
-</a>
-<a class="subject hi" href="#hi">
-<span class="icon">⌛</span>
-<span class="count">1 RESSOURCE</span>
-<h2>Histoire</h2>
-<p>Périodes et personnages.</p>
-</a>
-<a class="subject ge" href="ressources/mysteresdumonde/index.html">
-<span class="icon">🌍</span>
-<span class="count">2 DESTINATIONS</span>
-<h2>Mystères du monde</h2>
-<p>Islande, Sahara et carnet de découvertes.</p>
-</a>
-<a class="subject ge" href="#ge">
-<span class="icon">🌍</span>
-<span class="count">À VENIR</span>
-<h2>Géographie</h2>
-<p>Cartes et territoires.</p>
-</a>
-<a class="subject sc" href="#sc">
-<span class="icon">🧪</span>
-<span class="count">À VENIR</span>
-<h2>Sciences & techno</h2>
-<p>Vivant, matière, objets.</p>
-</a>
-<a class="subject an" href="ressources/anglais/index.html">
-<span class="icon">💬</span>
-<span class="count">22 LEÇONS</span>
-<h2>Anglais</h2>
-<p>Jeux, BD et BD sonorisées.</p>
-</a>
-<a class="subject em" href="#em">
-<span class="icon">⚖️</span>
-<span class="count">1 RESSOURCE</span>
-<h2>EMC</h2>
-<p>Valeurs et débats.</p>
-</a>
-<a class="subject ar" href="#ar">
-<span class="icon">🎨</span>
-<span class="count">À VENIR</span>
-<h2>Arts visuels</h2>
-<p>Techniques et créations.</p>
-</a>
-<a class="subject hd" href="#hd">
-<span class="icon">🏛️</span>
-<span class="count">À VENIR</span>
-<h2>Histoire des arts</h2>
-<p>Œuvres et artistes.</p>
-</a>
-<a class="subject ep" href="#ep">
-<span class="icon">🏃</span>
-<span class="count">À VENIR</span>
-<h2>EPS</h2>
-<p>Défis et progrès.</p>
-</a>
-<a class="subject mu" href="#mu">
-<span class="icon">🎵</span>
-<span class="count">À VENIR</span>
-<h2>Musique</h2>
-<p>Écoute, chant, rythme.</p>
-</a>
-<a class="subject ci" href="#ci">
-<span class="icon">🎬</span>
-<span class="count">3 FILMS</span>
-<h2>École et cinéma</h2>
-<p>Nos trois films de l’année : histoires, idées et extraits.</p>
-</a>
-<a class="subject nu" href="#nu">
-<span class="icon">💻</span>
-<span class="count">À VENIR</span>
-<h2>Numérique & EMI</h2>
-<p>Médias et programmation.</p>
-</a>
+<section class="weekly" aria-labelledby="weekly-title">
+<div class="weekly-guide">
+<img src="images/loup-bleu-original.png" alt="" aria-hidden="true">
+<div><span class="weekly-kicker">LE COIN DU LOUP</span><h2 id="weekly-title">À FAIRE CETTE SEMAINE</h2><p>Choisis ton entraînement et lance-toi !</p></div>
+</div>
+<div class="weekly-grid">
+<a class="weekly-card weekly-fr" href="dictee-02-megalithes.html"><span>✍️ FRANÇAIS</span><strong>Dictée 2</strong><small>Les mégalithes</small><b>S’ENTRAÎNER →</b></a>
+<a class="weekly-card weekly-ma" href="maths-lecons-cm2.html"><span>➗ MATHÉMATIQUES</span><strong>Leçons et jeux</strong><small>Retrouve le travail du moment</small><b>JOUER →</b></a>
+<a class="weekly-card weekly-an" href="ressources/anglais/index.html"><span>💬 ANGLAIS</span><strong>La leçon du moment</strong><small>Jeux, BD et écoute</small><b>LET’S GO →</b></a>
+<a class="weekly-card weekly-world" href="ressources/mysteresdumonde/index.html"><span>🌍 MYSTÈRES DU MONDE</span><strong>La destination actuelle</strong><small>Explore le carnet de découvertes</small><b>EXPLORER →</b></a>
+</div>
 </section>
+<h2 class="section-label">TOUTES LES <span>MATIÈRES</span></h2>
+<section class="subjects subjects-live" aria-label="Matières et ressources disponibles">
+<a class="subject fr" href="#fr"><span class="icon">✍️</span><span class="count">25 RESSOURCES</span><h2>Français</h2><p>Dictées, lecture, écriture et langue.</p></a>
+<a class="subject ma" href="#ma"><span class="icon">➗</span><span class="count">LEÇONS & JEUX</span><h2>Mathématiques</h2><p>Calcul, problèmes, géométrie.</p></a>
+<a class="subject an" href="ressources/anglais/index.html"><span class="icon">💬</span><span class="count">22 LEÇONS</span><h2>Anglais</h2><p>Jeux, BD et BD sonorisées.</p></a>
+<a class="subject world" href="ressources/mysteresdumonde/index.html"><span class="icon">🧭</span><span class="count">CARNET DE VOYAGE</span><h2>Mystères du monde</h2><p>Destinations, énigmes et découvertes.</p></a>
+<a class="subject hi" href="#hi"><span class="icon">⌛</span><span class="count">1 RESSOURCE</span><h2>Histoire</h2><p>Périodes et personnages.</p></a>
+<a class="subject ge" href="#ge"><span class="icon">🗺️</span><span class="count">GÉOGRAPHIE</span><h2>Géographie</h2><p>France, Europe, monde, cartes et territoires.</p></a>
+<a class="subject em" href="#em"><span class="icon">⚖️</span><span class="count">1 RESSOURCE</span><h2>EMC</h2><p>Valeurs, messages clairs et débats.</p></a>
+<a class="subject ci" href="#ci"><span class="icon">🎬</span><span class="count">3 FILMS</span><h2>École et cinéma</h2><p>Films, histoires, idées et extraits.</p></a>
+</section>
+<details class="coming-soon">
+<summary>PROCHAINEMENT <span>6 MATIÈRES</span></summary>
+<section class="subjects subjects-soon" aria-label="Matières prochainement disponibles">
+<a class="subject sc" href="#sc"><span class="icon">🧪</span><h2>Sciences & techno</h2></a>
+<a class="subject ar" href="#ar"><span class="icon">🎨</span><h2>Arts visuels</h2></a>
+<a class="subject hd" href="#hd"><span class="icon">🏛️</span><h2>Histoire des arts</h2></a>
+<a class="subject ep" href="#ep"><span class="icon">🏃</span><h2>EPS</h2></a>
+<a class="subject mu" href="#mu"><span class="icon">🎵</span><h2>Musique</h2></a>
+<a class="subject nu" href="#nu"><span class="icon">💻</span><h2>Numérique & EMI</h2></a>
+</section>
+</details>
 <section class="content">
 <h2>CHOISIS <span>UNE MATIÈRE</span>
 </h2>
