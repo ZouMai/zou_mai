@@ -7,8 +7,8 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 .home-main{position:relative;width:56%;margin-left:auto;justify-content:center}
 .zm-start{display:block;width:min(620px,100%);text-decoration:none;animation:zm-pulse 1.7s ease-in-out infinite;transition:transform .2s ease,filter .2s ease}
 .zm-start img{display:block;width:100%;height:auto}
-.zm-start:hover,.zm-start:focus-visible{animation-play-state:paused;transform:scale(1.04);filter:drop-shadow(0 10px 8px rgba(0,0,0,.22));outline:none}
-@keyframes zm-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.035)}}
+.zm-start:hover,.zm-start:focus-visible{animation:zm-hover 650ms ease-in-out infinite alternate;filter:drop-shadow(0 16px 13px rgba(0,0,0,.32)) drop-shadow(0 0 18px rgba(242,211,28,.8));outline:none}.zm-start:hover img,.zm-start:focus-visible img{filter:saturate(1.12)}
+@keyframes zm-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.035)}}@keyframes zm-hover{from{transform:translateY(0) scale(1.04) rotate(-.6deg)}to{transform:translateY(-10px) scale(1.075) rotate(.6deg)}}
 @media(max-width:720px){.home-main{width:100%;margin-left:0;justify-content:center}.zm-start{width:min(94vw,560px)}}
 @media(prefers-reduced-motion:reduce){.zm-start{animation:none}}
 </style><link rel="stylesheet" href="zoumai.css"><link rel="stylesheet" href="zoumai-brand.css"></head><body class="home-page"><a class="zm-corner-logo" href="index.html" aria-label="Accueil Zou Maï"><img src="images/logo-zou-mai-sensei.png" alt="Logo Sensei Zou_Maï"></a><div class="page"><header class="home-header"><a class="brand" href="index.html"><span class="stamp">ぞ</span><span>ZOU MAÏ</span></a><nav aria-label="Navigation principale"><a href="ressources.html">Ressources</a></nav></header><main class="home-main" aria-label="Accueil Zou Maï"><a class="zm-start" href="ressources.html" aria-label="Accéder aux ressources"><img src="images/bouton-central-zoumai.webp" alt="Zou Maï, c’est parti !"></a></main><footer><span>Ressources pédagogiques · CM2</span></footer></div></body></html>
