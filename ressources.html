@@ -90,6 +90,7 @@ body.resources-page:before{
 <a class="subject an" href="ressources/anglais/index.html"><span class="icon">💬</span><span class="count">22 LEÇONS</span><h2>Anglais</h2><p>Jeux, BD et BD sonorisées.</p></a>
 <a class="subject world" href="ressources/mysteresdumonde/index.html"><span class="icon">🧭</span><span class="count">CARNET DE VOYAGE</span><h2>Mystères du monde</h2><p>Destinations, énigmes et découvertes.</p></a>
 <a class="subject hi" href="#hi"><span class="icon">⌛</span><span class="count">1 RESSOURCE</span><h2>Histoire</h2><p>Périodes et personnages.</p></a>
+<a class="subject hd" href="#hd"><span class="icon">🏛️</span><span class="count">3 ŒUVRES</span><h2>Histoire des arts</h2><p>Observer, ressentir, enquêter et apprendre.</p></a>
 <a class="subject ge" href="#ge"><span class="icon">🗺️</span><span class="count">GÉOGRAPHIE</span><h2>Géographie</h2><p>France, Europe, monde, cartes et territoires.</p></a>
 <a class="subject em" href="#em"><span class="icon">⚖️</span><span class="count">1 RESSOURCE</span><h2>EMC</h2><p>Valeurs, messages clairs et débats.</p></a>
 <a class="subject ci" href="#ci"><span class="icon">🎬</span><span class="count">3 FILMS</span><h2>École et cinéma</h2><p>Films, histoires, idées et extraits.</p></a>
@@ -99,7 +100,6 @@ body.resources-page:before{
 <section class="subjects subjects-soon" aria-label="Matières prochainement disponibles">
 <a class="subject sc" href="#sc"><span class="icon">🧪</span><h2>Sciences & techno</h2></a>
 <a class="subject ar" href="#ar"><span class="icon">🎨</span><h2>Arts visuels</h2></a>
-<a class="subject hd" href="#hd"><span class="icon">🏛️</span><h2>Histoire des arts</h2></a>
 <a class="subject ep" href="#ep"><span class="icon">🏃</span><h2>EPS</h2></a>
 <a class="subject mu" href="#mu"><span class="icon">🎵</span><h2>Musique</h2></a>
 <a class="subject nu" href="#nu"><span class="icon">💻</span><h2>Numérique & EMI</h2></a>
@@ -179,6 +179,10 @@ if(geographyGrid){
   const geographyCount=document.querySelector('.subject.ge .count');
   if(geographyCount)geographyCount.textContent='1 JEU · 3 CARTES';
 }
+const artsGrid=document.querySelector('#hd .grid');
+if(artsGrid){
+  artsGrid.innerHTML='<article class="item"><span class="type">MUSÉE INTERACTIF · 3 PREMIÈRES ŒUVRES</span><h4>Le Musée secret de Zou Maï</h4><p>Observe une œuvre sans explication, exprime ton ressenti, explore les détails puis découvre son histoire et ses anecdotes.</p><a href="histoire-des-arts.html">ENTRER DANS LE MUSÉE →</a></article>';
+}
 </script>
 <script>
 const folders={
@@ -190,7 +194,7 @@ sc:[["VIVANT","#sc"],["MATIÈRE","#sc"],["ÉNERGIE","#sc"],["OBJETS TECHNIQUES",
 an:[["22 LEÇONS","ressources/anglais/index.html",1],["RITUELS","#an"],["CIVILISATION","#an"]],
 em:[["MESSAGES CLAIRS","emc-messages-clairs.html",1],["VALEURS DE LA RÉPUBLIQUE","#em"],["DÉBATS","#em"]],
 ar:[["DESSIN","#ar"],["PEINTURE","#ar"],["VOLUME","#ar"],["STREET ART","#ar"],["PROJETS","#ar"]],
-hd:[["ŒUVRES","#hd"],["ARTISTES","#hd"],["RESSENTIS","#hd"],["REPÈRES","#hd"]],
+hd:[["LE MUSÉE SECRET","histoire-des-arts.html",1],["ŒUVRES","#hd"],["ARTISTES","#hd"],["RESSENTIS","#hd"],["REPÈRES","#hd"]],
 ep:[["COURSE","#ep"],["SPORTS COLLECTIFS","#ep"],["GYMNASTIQUE","#ep"],["DANSE","#ep"],["JEUX","#ep"]],
 mu:[["ÉCOUTE","#mu"],["CHANT","#mu"],["RYTHME","#mu"],["INSTRUMENTS","#mu"]],
 ci:[["LES 3 FILMS","ecole-et-cinema.html",1]],
