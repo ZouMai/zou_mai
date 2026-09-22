@@ -1,74 +1,14 @@
-<!doctype html>
-<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Back to school · BD sonorisée · Zou Maï</title><style>:root{--ink:#16191e;--paper:#e8e5df;--yellow:#ffdf35;--blue:#146cbd}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif}button,select,a{font:inherit}.toolbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;flex-wrap:wrap;gap:.55rem;padding:.65rem max(10px,2vw);background:#fffefa;box-shadow:0 2px 12px #0002}.toolbar strong{margin-right:auto}.toolbar button,.toolbar select,.toolbar a{padding:.6rem .8rem;border:2px solid #20242a;border-radius:12px;background:#fff;color:#151515;text-decoration:none;font-weight:750;cursor:pointer}.toolbar #playAll{background:#aff3c7}.toolbar #stop{background:#ffe2dd}.toolbar button:disabled{opacity:.55;cursor:default}.toolbar button:focus-visible,.sound-btn:focus-visible{outline:4px solid var(--yellow);outline-offset:3px}.wrap{max-width:1055px;margin:16px auto 40px;padding:0 8px}.page{position:relative;width:100%;background:#fff;box-shadow:0 8px 25px #0002;line-height:0}.page>img{display:block;width:100%;height:auto}.sound-btn{position:absolute;z-index:2;transform:translate(-50%,-50%);width:clamp(30px,3.2vw,42px);height:clamp(30px,3.2vw,42px);display:grid;place-items:center;line-height:1;border:2px solid #fff;border-radius:50%;background:var(--blue);color:#fff;box-shadow:0 2px 8px #0009;cursor:pointer;transition:background .15s}.sound-btn.active{background:#e43166;box-shadow:0 0 0 9px #ffed4f99,0 0 28px 17px #ffde3599;animation:pulse 1s infinite alternate}@keyframes pulse{to{box-shadow:0 0 0 14px #ffed4f77,0 0 36px 22px #ffde3577}}.sound-btn.active:before{content:'';position:absolute;z-index:-1;width:clamp(70px,13vw,145px);height:clamp(42px,7vw,84px);border:5px solid #f9ce16;border-radius:50%;background:#fff25d25;pointer-events:none}.transcript{margin:14px auto;padding:12px 16px;background:#fff;border-radius:14px;border-left:7px solid #ffca25;font-size:1.1rem;line-height:1.4}.transcript strong{display:block;font-size:.8rem;text-transform:uppercase;letter-spacing:.08em}.hint{max-width:1055px;margin:12px auto;padding:0 10px 25px;color:#484c52;font-size:.92rem}@media(max-width:680px){.toolbar strong{width:100%}.wrap{padding:0;margin-top:6px}.sound-btn{width:31px;height:31px;font-size:13px}}@media(prefers-reduced-motion:reduce){.sound-btn.active{animation:none}}</style><link rel="stylesheet" href="zoumai-brand.css"></head>
-<body><a class="zm-corner-logo" href="index.html" aria-label="Accueil Zou Maï"><img src="images/logo-zou-mai-sensei.png" alt="Logo Sensei Zou Maï"></a><div class="toolbar"><strong>🎭 Back to school</strong><button type="button" id="playAll">▶ Écouter toute la BD</button><button type="button" id="stop">■ Arrêter</button><label>Vitesse <select id="rate"><option value="0.76">Très lente</option><option value="0.88" selected>Lente</option><option value="1">Normale</option></select></label><a href="../../index.html">← Retour aux leçons</a></div>
-<div class="wrap"><div class="page" id="page"><img src="back-to-school.png" alt="Planche de BD : Back to school"><button type="button" class="sound-btn" style="left:35%;top:21%" data-character="teacher" data-text="Welcome back to school! I'm glad to see you again!" aria-label="Case 1 : Welcome back to school!" aria-pressed="false">🔊</button>
-<button type="button" class="sound-btn" style="left:63%;top:34%" data-character="teacher" data-text="Let's check your school supplies!" aria-label="Case 1 : Let's check your school supplies!" aria-pressed="false">🔊</button>
-<button type="button" class="sound-btn" style="left:75%;top:21%" data-character="teacher" data-text="Have you got a pencil case with a blue pen, a red pen, a green pen and a black pen?" aria-label="Case 2 : Have you got a pencil case...?" aria-pressed="false">🔊</button>
-<button type="button" class="sound-btn" style="left:80%;top:37%" data-character="student" data-text="Yes, I have!" aria-label="Case 2 : Yes, I have!" aria-pressed="false">🔊</button>
-<button type="button" class="sound-btn" style="left:19%;top:55%" data-character="teacher" data-text="Have you got a glue stick, an eraser and a ruler?" aria-label="Case 3 : Have you got a glue stick, an eraser and a ruler?" aria-pressed="false">🔊</button>
-<button type="button" class="sound-btn" style="left:44%;top:63%" data-character="tess" data-text="No, I haven't!" aria-label="Case 3 : No, I haven't!" aria-pressed="false">🔊</button>
-<button type="button" class="sound-btn" style="left:62%;top:55%" data-character="teacher" data-text="Don't worry, Tess, I will lend you a ruler!" aria-label="Case 4 : Don't worry, Tess..." aria-pressed="false">🔊</button>
-<button type="button" class="sound-btn" style="left:24%;top:82%" data-character="teacher" data-text="Have you got coloured pencils, a notebook and a calculator?" aria-label="Case 5 : Have you got coloured pencils, a notebook and a calculator?" aria-pressed="false">🔊</button>
-<button type="button" class="sound-btn" style="left:18%;top:93%" data-character="student" data-text="Yes, I have!" aria-label="Case 5 : Yes, I have!" aria-pressed="false">🔊</button>
-<button type="button" class="sound-btn" style="left:59%;top:82%" data-character="child" data-text="Hush!" aria-label="Case 6 : Hush!" aria-pressed="false">🔊</button></div><div class="transcript" aria-live="polite"><strong>Réplique en cours</strong><span id="caption">Choisis une bulle, ou écoute toute la scène.</span></div></div><p class="hint">Écoute toute la BD case par case, de haut en bas, ou clique sur le 🔊 d’une bulle pour la réécouter seule. La réplique en cours est signalée sur la planche. Les voix dépendent de celles disponibles sur ton appareil.</p><script>
-(() => {
-  'use strict';
-  const synth = window.speechSynthesis;
-  const buttons = [...document.querySelectorAll('.sound-btn')];
-  const playAll = document.querySelector('#playAll');
-  const stop = document.querySelector('#stop');
-  const rate = document.querySelector('#rate');
-  const caption = document.querySelector('#caption');
-  let voices = [], token = 0, timeout = null;
-  const characters = {teacher:{slot:0,pitch:1.02,speed:0.97},student:{slot:1,pitch:1.22,speed:1.02},tess:{slot:2,pitch:0.96,speed:0.95},child:{slot:3,pitch:1.28,speed:1.0}};
-  function loadVoices() {
-    voices = synth.getVoices().filter(v => /^en[-_]/i.test(v.lang))
-      .sort((a,b) => Number(/en-GB/i.test(b.lang)) - Number(/en-GB/i.test(a.lang)));
-  }
-  function clearActive() {
-    buttons.forEach(b => {b.classList.remove('active'); b.setAttribute('aria-pressed','false');});
-  }
-  function halt() {
-    token++;
-    clearTimeout(timeout);
-    if (synth) synth.cancel();
-    clearActive();
-    caption.textContent = 'Choisis une bulle, ou écoute toute la scène.';
-    playAll.disabled = false;
-  }
-  function lineAt(i, current, all) {
-    if (current !== token) return;
-    if (i >= buttons.length) {clearActive(); playAll.disabled = false; caption.textContent = 'Lecture terminée.'; return;}
-    const b = buttons[i], actor = characters[b.dataset.character] || Object.values(characters)[0];
-    clearActive(); b.classList.add('active'); b.setAttribute('aria-pressed','true');
-    caption.textContent = b.dataset.text;
-    const u = new SpeechSynthesisUtterance(b.dataset.text);
-    u.lang = 'en-GB';
-    u.rate = Math.max(.55, Math.min(1.5, Number(rate.value) * actor.speed));
-    u.pitch = actor.pitch;
-    if (voices.length) u.voice = voices[actor.slot % voices.length];
-    let done = false;
-    const finish = () => {
-      if (done || current !== token) return;
-      done = true;
-      b.classList.remove('active'); b.setAttribute('aria-pressed','false');
-      if (all) timeout = setTimeout(() => lineAt(i + 1, current, true), 340);
-    };
-    u.onend = finish;
-    u.onerror = finish;
-    synth.speak(u);
-  }
-  if (!synth || !window.SpeechSynthesisUtterance) {
-    playAll.disabled = true;
-    buttons.forEach(b => {b.disabled = true;});
-    caption.textContent = 'La synthèse vocale n’est pas disponible sur cet appareil.';
-    return;
-  }
-  loadVoices();
-  synth.addEventListener?.('voiceschanged', loadVoices);
-  buttons.forEach((b,i) => b.addEventListener('click', () => {halt(); lineAt(i, token, false);}));
-  playAll.addEventListener('click', () => {halt(); playAll.disabled = true; lineAt(0, token, true);});
-  stop.addEventListener('click', halt);
-  window.addEventListener('pagehide', halt);
-})();
-</script></body></html>
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Zou Maï — Ressources pédagogiques</title><meta name="description" content="Zou Maï — ressources, jeux et projets pédagogiques pour la classe."><style>
+:root{--ink:#070809;--paper:#f3efe5;--yellow:#f2d31c;--red:#e04435;--line:rgba(7,8,9,.2)}*{box-sizing:border-box}html{background:#eee9de}
+body{margin:0;min-height:100vh;color:var(--ink);font-family:Arial,Helvetica,sans-serif;background:#eee9de url("images/accueil-zou-mai.png") center/cover fixed no-repeat}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,transparent 0 35%,rgba(247,243,233,.12) 48%,rgba(247,243,233,.2) 100%)}body::after{display:none}
+.page{width:min(1180px,92vw);min-height:100vh;margin:auto;display:grid;grid-template-rows:auto 1fr auto}header{display:flex;align-items:center;justify-content:space-between;padding:25px 0;border-bottom:2px solid rgba(7,8,9,.14)}.brand{display:flex;align-items:center;gap:12px;color:var(--ink);text-decoration:none;font-weight:1000;letter-spacing:.08em}.stamp{display:grid;place-items:center;width:36px;height:36px;background:var(--red);color:#fff;font-weight:1000;transform:rotate(-4deg);box-shadow:3px 3px 0 #000}nav{display:flex;align-items:center;gap:25px}nav a{color:#222;text-decoration:none;font-size:.78rem;font-weight:1000;letter-spacing:.12em;text-transform:uppercase;transition:.2s}nav a:hover,nav a:focus-visible{color:#c92f28;text-shadow:none}main{display:flex;align-items:center;justify-content:flex-end;padding:35px 0 75px}h1{max-width:680px;margin:0;font-size:clamp(3.4rem,6.5vw,6.5rem);font-weight:1000;line-height:.84;letter-spacing:-.045em;text-transform:uppercase;overflow:visible}h1 span{display:block;padding-top:.08em;color:transparent;-webkit-text-stroke:2px var(--ink);overflow:visible}footer{display:flex;justify-content:flex-start;align-items:center;padding:18px 0 22px;border-top:2px solid rgba(7,8,9,.14);color:#2e2c29;font-size:.72rem;font-weight:1000;letter-spacing:.08em;text-transform:uppercase}@media(max-width:720px){body{background-position:30% center;background-attachment:scroll}body::before{background:rgba(247,243,233,.38)}header{padding:20px 0}nav{gap:14px}nav a:first-child{display:block}main{position:relative;display:block;padding:42vh 0 30px}h1{font-size:clamp(3.5rem,19vw,6rem);line-height:.94;letter-spacing:-.02em}footer{gap:15px;align-items:flex-start;flex-direction:column}}
+
+.home-main{position:relative;width:56%;margin-left:auto;justify-content:center}
+.zm-start{display:block;width:min(620px,100%);text-decoration:none;animation:zm-pulse 1.7s ease-in-out infinite;transition:transform .2s ease,filter .2s ease}
+.zm-start img{display:block;width:100%;height:auto}
+.zm-start:hover,.zm-start:focus-visible{animation:zm-hover 650ms ease-in-out infinite alternate;filter:drop-shadow(0 16px 13px rgba(0,0,0,.32)) drop-shadow(0 0 18px rgba(242,211,28,.8));outline:none}.zm-start:hover img,.zm-start:focus-visible img{filter:saturate(1.12)}
+@keyframes zm-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.035)}}@keyframes zm-hover{from{transform:translateY(0) scale(1.04) rotate(-.6deg)}to{transform:translateY(-10px) scale(1.075) rotate(.6deg)}}
+@media(max-width:720px){.home-main{width:100%;margin-left:0;justify-content:center}.zm-start{width:min(94vw,560px)}}
+@media(prefers-reduced-motion:reduce){.zm-start{animation:none}}
+</style><link rel="stylesheet" href="zoumai.css"><link rel="stylesheet" href="zoumai-brand.css"></head><body class="home-page"><a class="zm-corner-logo" href="index.html" aria-label="Accueil Zou Maï"><img src="images/logo-zou-mai-sensei.png" alt="Logo Sensei Zou_Maï"></a><div class="page"><header class="home-header"><a class="brand" href="index.html"><span class="stamp">ぞ</span><span>ZOU MAÏ</span></a><nav aria-label="Navigation principale"><a href="ressources.html">Ressources</a></nav></header><main class="home-main" aria-label="Accueil Zou Maï"><a class="zm-start" href="ressources.html" aria-label="Accéder aux ressources"><img src="images/bouton-central-zoumai.webp" alt="Zou Maï, c’est parti !"></a></main><footer><span>Ressources pédagogiques · CM2</span></footer></div></body></html>
