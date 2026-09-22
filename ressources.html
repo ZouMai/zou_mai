@@ -173,11 +173,19 @@ const n={ma:'Mathématiques',ge:'Géographie',sc:'Sciences & technologie',ar:'Ar
 </div>`));
 </script>
 <script>
+const geographyGrid=document.querySelector('#ge .grid');
+if(geographyGrid){
+  geographyGrid.innerHTML='<article class="item"><span class="type">3 CARTES RÉELLES · JEUX INTERACTIFS</span><h4>France, PACA et Vaucluse</h4><p>Retrouve les pays frontaliers, la région Provence-Alpes-Côte d’Azur et le département du Vaucluse sur de véritables cartes.</p><a href="jeu-geographie-france-paca-vaucluse.html">JOUER →</a></article>';
+  const geographyCount=document.querySelector('.subject.ge .count');
+  if(geographyCount)geographyCount.textContent='1 JEU · 3 CARTES';
+}
+</script>
+<script>
 const folders={
 fr:[["DICTÉES","dictee-01-grottes.html",1],["LECTURE","#fr"],["LITTÉRATURE","#fr"],["ÉTUDE DE LA LANGUE","#fr"],["ÉCRITURE","#fr"]],
 ma:[["LEÇONS M1, M2, M3…","maths-lecons-cm2.html",1],["NUMÉRATION","jeu-nombres-cm2.html",1],["GÉOMÉTRIE","maths-lecons-cm2.html",1],["GRANDEURS & MESURES","jeu-aires-cm2.html",1],["CALCUL MENTAL","calcul-mental-series.html",1],["TABLES DE MULTIPLICATION","tables-multiplication.html",1]],
 hi:[["REPÈRES CHRONOLOGIQUES","histoire-periodes.html",1],["PRÉHISTOIRE","#hi"],["ANTIQUITÉ","#hi"],["MOYEN ÂGE","#hi"],["TEMPS MODERNES","#hi"],["ÉPOQUE CONTEMPORAINE","#hi"]],
-ge:[["FRANCE","#ge"],["EUROPE","#ge"],["MONDE","#ge"],["CARTES & REPÈRES","#ge"],["MYSTÈRES DU MONDE","ressources/mysteresdumonde/index.html",1]],
+ge:[["JEU FRANCE · PACA · VAUCLUSE","jeu-geographie-france-paca-vaucluse.html",1],["FRANCE","#ge"],["EUROPE","#ge"],["MONDE","#ge"],["CARTES & REPÈRES","#ge"]],
 sc:[["VIVANT","#sc"],["MATIÈRE","#sc"],["ÉNERGIE","#sc"],["OBJETS TECHNIQUES","#sc"],["ESPACE","#sc"]],
 an:[["22 LEÇONS","ressources/anglais/index.html",1],["RITUELS","#an"],["CIVILISATION","#an"]],
 em:[["MESSAGES CLAIRS","emc-messages-clairs.html",1],["VALEURS DE LA RÉPUBLIQUE","#em"],["DÉBATS","#em"]],
