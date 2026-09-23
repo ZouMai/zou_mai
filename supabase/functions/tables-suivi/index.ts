@@ -18,9 +18,14 @@ async function hash(code: string) {
 }
 function summary(rows: any[]) {
   const weak = new Map<string, { attempts: number; correct: number }>();
+  const tables = new Map<number, { table: number; attempts: number; correct: number }>();
   let correct = 0;
   for (const row of rows) {
     if (row.correct) correct++;
+    const table = tables.get(row.a) || { table: row.a, attempts: 0, correct: 0 };
+    table.attempts++;
+    if (row.correct) table.correct++;
+    tables.set(row.a, table);
     const k = `${row.a} × ${row.b}`;
     const item = weak.get(k) || { attempts: 0, correct: 0 };
     if (item.attempts < 3) {
@@ -29,9 +34,17 @@ function summary(rows: any[]) {
     }
     weak.set(k, item);
   }
+  const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
   return {
     attempts: rows.length, correct,
+    successRate: rows.length ? Math.round(correct / rows.length * 100) : null,
     lastPlayed: rows[0]?.played_at || null,
+    last7days: rows.filter(row => Date.parse(row.played_at) >= weekAgo).length,
+    byTable: [...tables.values()].sort((a,b) => a.table - b.table)
+      .map(t => ({ ...t, successRate: Math.round(t.correct / t.attempts * 100) })),
+    recent: rows.slice(0, 8).map(row => ({
+      fact: `${row.a} × ${row.b}`, correct: row.correct, playedAt: row.played_at
+    })),
     weak: [...weak].filter(([,s]) => s.correct < Math.min(2,s.attempts))
       .sort((a,b) => (b[1].attempts-b[1].correct)-(a[1].attempts-a[1].correct))
       .slice(0, 8).map(([fact,s]) => ({ fact, ...s }))
