@@ -7,10 +7,10 @@
   const TOTAL_SECONDS = 240;
   const levels = [
     {name:'Premiers pas',aim:'Une addition suffit.',steps:1,maxCard:6,low:3,high:12},
-    {name:'J’ajoute et je retire',aim:'Une addition ou une soustraction suffit.',steps:1,maxCard:8,low:3,high:16},
-    {name:'Je découvre les produits',aim:'Une addition ou une multiplication suffit.',steps:1,maxCard:10,low:6,high:30},
+    {name:'J’ajoute et je retire',aim:'Trouve une soustraction.',steps:1,maxCard:8,low:3,high:16},
+    {name:'Je découvre les produits',aim:'Trouve une multiplication.',steps:1,maxCard:10,low:6,high:30},
     {name:'Deux calculs',aim:'Enchaîne deux calculs simples.',steps:2,maxCard:10,low:8,high:40},
-    {name:'Division exacte',aim:'Deux calculs ; essaie aussi une division exacte.',steps:2,maxCard:11,low:9,high:50},
+    {name:'Division exacte',aim:'Deux calculs, dont une division exacte.',steps:2,maxCard:11,low:9,high:50},
     {name:'Trois calculs',aim:'Relie quatre cartes avec trois calculs.',steps:3,maxCard:11,low:12,high:60},
     {name:'Je combine les opérations',aim:'Trois calculs avec une division exacte.',steps:3,maxCard:12,low:14,high:75},
     {name:'Cinq cartes',aim:'Utilise les cinq cartes en quatre calculs.',steps:4,maxCard:12,low:18,high:85},
@@ -154,16 +154,16 @@
         }
       }
     }
-    let newOperation = level === 1 ? '−' : level === 2 ? '×' : level === 4 ? '÷' : null;
-    if (newOperation && found.length && Math.random() < 0.5) {
+    let newOperation = level === 1 ? '−' : level === 2 ? '×' : level === 4 || level === 6 ? '÷' : null;
+    if (newOperation && found.length) {
       let practice = found.filter(item => item.lines.some(line => line.includes(' '+newOperation+' ')));
-      if (practice.length) found = practice;
+      found = practice;
     }
     return found.length ? found[random(found.length)] : null;
   }
   const fallbacks = [
     {cards:[1,2,3,4,5],target:6,witness:['2 + 4 = 6']},
-    {cards:[1,2,3,4,5],target:7,witness:['3 + 4 = 7']},
+    {cards:[1,2,4,5,8],target:7,witness:['8 − 1 = 7']},
     {cards:[2,3,4,5,6],target:20,witness:['4 × 5 = 20']},
     {cards:[2,3,4,5,6],target:20,witness:['2 + 3 = 5','5 × 4 = 20']},
     {cards:[2,3,4,5,6],target:9,witness:['3 × 6 = 18','18 ÷ 2 = 9']},
@@ -280,13 +280,16 @@
   function validate() {
     if (!active) return;
     let matches = tokens.filter(x => x.value === draw.target && x.ops.length === levels[currentLevel].steps);
-    if (currentLevel === 0) matches = matches.filter(x => x.ops[0] === '+');
+    const required = currentLevel === 0 ? '+' : currentLevel === 1 ? '−' :
+      currentLevel === 2 ? '×' : currentLevel === 4 || currentLevel === 6 ? '÷' : null;
+    if (required) matches = matches.filter(x => x.ops.includes(required));
     if (currentLevel >= 7) matches = matches.filter(x => x.used.length === 5);
     if (currentLevel === 8) matches = matches.filter(x => operations.every(op => x.ops.includes(op)));
     if (!matches.length) {
       say('Atteins la cible en ' + levels[currentLevel].steps + ' calcul' +
         (levels[currentLevel].steps > 1 ? 's' : '') +
-        (currentLevel === 0 ? ' avec une addition.' : currentLevel >= 7 ? ' avec les cinq cartes.' : '.') , 'error');
+        (required ? ' avec ' + ({'+':'une addition','−':'une soustraction','×':'une multiplication','÷':'une division'})[required] + '.' :
+          currentLevel >= 7 ? ' avec les cinq cartes.' : '.') , 'error');
       return;
     }
     let token = matches.sort((a,b) => score(b) - score(a))[0];
