@@ -4,6 +4,17 @@
   const weights = {'+':1, '−':2, '×':1, '÷':3};
   const operations = ['+', '−', '×', '÷'];
   const TOTAL_SECONDS = 240;
+  const levels = [
+    {name:'Premiers pas',aim:'Une addition suffit.',steps:1,maxCard:6,low:3,high:12},
+    {name:'J’ajoute et je retire',aim:'Une addition ou une soustraction suffit.',steps:1,maxCard:8,low:3,high:16},
+    {name:'Je découvre les produits',aim:'Une addition ou une multiplication suffit.',steps:1,maxCard:10,low:6,high:30},
+    {name:'Deux calculs',aim:'Enchaîne deux calculs simples.',steps:2,maxCard:10,low:8,high:40},
+    {name:'Division exacte',aim:'Deux calculs ; essaie aussi une division exacte.',steps:2,maxCard:11,low:9,high:50},
+    {name:'Trois calculs',aim:'Relie quatre cartes avec trois calculs.',steps:3,maxCard:11,low:12,high:60},
+    {name:'Je combine les opérations',aim:'Trois calculs avec une division exacte.',steps:3,maxCard:12,low:14,high:75},
+    {name:'Cinq cartes',aim:'Utilise les cinq cartes en quatre calculs.',steps:4,maxCard:12,low:18,high:85},
+    {name:'Coup Mathador',aim:'Utilise les cinq cartes et les quatre opérations.',steps:4,maxCard:15,low:20,high:99}
+  ];
   let data = [], draw = null, tokens = [], steps = [], undoStack = [];
   let chosen = null, operation = null, nextId = 5, seconds = TOTAL_SECONDS;
   let timer = null, active = false, hintUsed = false, best = 0, bestExpression = '';
@@ -21,35 +32,76 @@
     $('feedback').textContent = message;
     $('feedback').className = 'feedback' + (kind ? ' ' + kind : '');
   }
-  function smallNumbers(series) {
+  function levelFor(series) { return Math.min(8,Math.floor(series/4)); }
+  function showLevel() {
+    let level = levelFor(Number($('serie').value)),profile = levels[level];
+    $('level-info').innerHTML = '<strong>Étape '+(level+1)+'/9 · '+profile.name+'</strong> — '+profile.aim;
+  }
+  function smallNumbers(series,maxCard) {
     let questions = (data[series] || []).flatMap(fiche => fiche.questions || []);
     let pool = [];
     questions.forEach(item => {
       let match = item.q.match(/^Calcule : (\d+)\s*[×+−÷]\s*(\d+)\s*= \?$/);
       if (match) [match[1],match[2]].forEach(n => {
         n = Number(n);
-        if (n >= 1 && n <= 12) pool.push(n);
+        if (n >= 1 && n <= maxCard) pool.push(n);
       });
     });
-    return pool.length >= 5 ? pool : [2,3,4,5,6,7,8,9,10,11,12];
+    return pool.length >= 5 ? pool : Array.from({length:Math.min(maxCard,12)},(_,i)=>i+1);
   }
-  function findWitness(cards) {
+  function findWitness(cards,profile,level) {
     let found = [];
     const valid = x => Number.isInteger(x) && x > 0;
     function add(target, lines) {
-      if (valid(target) && target >= 20 && target <= 99 && !cards.includes(target)) {
+      if (valid(target) && target >= profile.low && target <= profile.high &&
+          !cards.includes(target) && lines.length === profile.steps) {
         found.push({target, lines});
       }
     }
     for (let i = 0; i < 5; i++) for (let j = 0; j < 5; j++) {
       if (j === i) continue;
+      let a = cards[i],b = cards[j];
+      if (level <= 2) {
+        if (level !== 2 || a+b >= profile.low) add(a+b,[a+' + '+b+' = '+(a+b)]);
+        if (level === 1 && a > b) add(a-b,[a+' − '+b+' = '+(a-b)]);
+        if (level === 2) add(a*b,[a+' × '+b+' = '+(a*b)]);
+        continue;
+      }
       for (let k = 0; k < 5; k++) {
         if (k === i || k === j) continue;
+        let c = cards[k],x,y,z;
+        if (level === 3 || level === 4) {
+          x = a+b; y = x*c;
+          add(y,[a+' + '+b+' = '+x,x+' × '+c+' = '+y]);
+          x = a*b; y = x+c;
+          add(y,[a+' × '+b+' = '+x,x+' + '+c+' = '+y]);
+          if (level === 4) {
+            x = a*b;
+            y = x/c;
+            if (valid(y)) add(y,[a+' × '+b+' = '+x,x+' ÷ '+c+' = '+y]);
+          }
+          continue;
+        }
         for (let l = 0; l < 5; l++) {
           if (l === i || l === j || l === k) continue;
+          let d = cards[l];
+          if (level === 5 || level === 6) {
+            if (level === 5) {
+              x = a+b;y = x*c;z = y-d;
+              if (valid(z)) add(z,[a+' + '+b+' = '+x,x+' × '+c+' = '+y,y+' − '+d+' = '+z]);
+              x = a*b;y = x+c;z = y-d;
+              if (valid(z)) add(z,[a+' × '+b+' = '+x,x+' + '+c+' = '+y,y+' − '+d+' = '+z]);
+            } else {
+              x = a*b;y = x/c;z = y+d;
+              if (valid(y)) add(z,[a+' × '+b+' = '+x,x+' ÷ '+c+' = '+y,y+' + '+d+' = '+z]);
+              x = a+b;y = x*c;z = y/d;
+              if (valid(z)) add(z,[a+' + '+b+' = '+x,x+' × '+c+' = '+y,y+' ÷ '+d+' = '+z]);
+            }
+            continue;
+          }
           let e = [0,1,2,3,4].find(x => ![i,j,k,l].includes(x));
-          let [a,b,c,d,f] = [cards[i],cards[j],cards[k],cards[l],cards[e]];
-          let x = a / b, y = c * d, z = x + y;
+          let f = cards[e];
+          x = a / b; y = c * d; z = x + y;
           if (valid(x) && valid(z) && valid(z - f)) {
             add(z - f, [a+' ÷ '+b+' = '+x,c+' × '+d+' = '+y,x+' + '+y+' = '+z,z+' − '+f+' = '+(z-f)]);
           }
@@ -68,21 +120,39 @@
         }
       }
     }
+    let newOperation = level === 1 ? '−' : level === 2 ? '×' : level === 4 ? '÷' : null;
+    if (newOperation && found.length && Math.random() < 0.5) {
+      let practice = found.filter(item => item.lines.some(line => line.includes(' '+newOperation+' ')));
+      if (practice.length) found = practice;
+    }
     return found.length ? found[random(found.length)] : null;
   }
+  const fallbacks = [
+    {cards:[1,2,3,4,5],target:6,witness:['2 + 4 = 6']},
+    {cards:[1,2,3,4,5],target:7,witness:['3 + 4 = 7']},
+    {cards:[2,3,4,5,6],target:20,witness:['4 × 5 = 20']},
+    {cards:[2,3,4,5,6],target:20,witness:['2 + 3 = 5','5 × 4 = 20']},
+    {cards:[2,3,4,5,6],target:9,witness:['3 × 6 = 18','18 ÷ 2 = 9']},
+    {cards:[2,3,4,5,6],target:14,witness:['2 + 3 = 5','5 × 4 = 20','20 − 6 = 14']},
+    {cards:[2,3,4,5,6],target:15,witness:['4 × 6 = 24','24 ÷ 2 = 12','12 + 3 = 15']},
+    {cards:[2,4,6,7,9],target:32,witness:['6 ÷ 2 = 3','4 × 9 = 36','3 + 36 = 39','39 − 7 = 32']},
+    {cards:[2,4,6,7,9],target:32,witness:['6 ÷ 2 = 3','4 × 9 = 36','3 + 36 = 39','39 − 7 = 32']}
+  ];
   function newDraw(series) {
-    let pool = smallNumbers(series);
-    let standard = [1,2,3,4,5,6,7,8,9,10,11,12];
+    let level = levelFor(series),profile = levels[level];
+    let pool = smallNumbers(series,profile.maxCard);
+    let standard = Array.from({length:Math.min(profile.maxCard,12)},(_,i)=>i+1);
+    if (level === 8) standard.push(15);
     for (let attempt = 0; attempt < 180; attempt++) {
       let cards = shuffled([
         pool[random(pool.length)],pool[random(pool.length)],
         ...Array.from({length:3}, () => standard[random(standard.length)])
       ]);
       if (new Set(cards).size < 3) continue;
-      let witness = findWitness(cards);
-      if (witness) return {cards, target:witness.target, witness:witness.lines};
+      let witness = findWitness(cards,profile,level);
+      if (witness) return {cards,target:witness.target,witness:witness.lines,level};
     }
-    return {cards:[2,4,6,7,9],target:32,witness:['6 ÷ 2 = 3','4 × 9 = 36','3 + 36 = 39','39 − 7 = 32']};
+    return {...fallbacks[level],level};
   }
   function initialTokens() {
     return draw.cards.map((value, id) => ({id, value, used:[id], ops:[], expr:String(value)}));
@@ -109,6 +179,7 @@
     $('game').hidden = false;
     $('solution').hidden = true;
     $('series-label').textContent = 'Série ' + (series + 1) + ' · Tirage en cours';
+    $('challenge-goal').textContent = 'Étape '+(draw.level+1)+'/9 · '+levels[draw.level].aim;
     resetMoves();
     say('Choisis un nombre, une opération, puis un autre nombre.');
     timer = setInterval(() => {
@@ -188,7 +259,8 @@
     let solution = $('solution');
     solution.replaceChildren();
     let title = document.createElement('strong');
-    title.textContent = 'Une solution possible avec les cinq nombres et les quatre opérations :';
+    title.textContent = 'Une solution possible en '+draw.witness.length+' calcul'+
+      (draw.witness.length>1?'s':'')+' :';
     solution.appendChild(title);
     let list = document.createElement('ol');
     draw.witness.forEach(line => {
@@ -256,6 +328,8 @@
   for (let i = 1; i <= 35; i++) $('serie').add(new Option('Série ' + i,i-1));
   let requested = Number(new URLSearchParams(location.search).get('serie'));
   if (requested >= 1 && requested <= 35) $('serie').value = requested - 1;
+  $('serie').addEventListener('change',showLevel);
+  showLevel();
   $('launch').addEventListener('click', start);
   $('validate').addEventListener('click', validate);
   $('undo').addEventListener('click', () => {
