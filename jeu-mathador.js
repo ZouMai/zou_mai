@@ -72,8 +72,12 @@
   }
   function newDraw(series) {
     let pool = smallNumbers(series);
+    let standard = [1,2,3,4,5,6,7,8,9,10,11,12];
     for (let attempt = 0; attempt < 180; attempt++) {
-      let cards = Array.from({length:5}, () => pool[random(pool.length)]);
+      let cards = shuffled([
+        pool[random(pool.length)],pool[random(pool.length)],
+        ...Array.from({length:3}, () => standard[random(standard.length)])
+      ]);
       if (new Set(cards).size < 3) continue;
       let witness = findWitness(cards);
       if (witness) return {cards, target:witness.target, witness:witness.lines};
