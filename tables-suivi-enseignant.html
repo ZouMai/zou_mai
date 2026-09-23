@@ -1,8 +1,8 @@
 <!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Suivi des tables · Zou Maï</title><link rel="stylesheet" href="zoumai-brand.css"><style>
 :root{font-family:system-ui,Arial,sans-serif;color:#121212;background:#111}*{box-sizing:border-box}body{margin:0;background:#111;color:#fff}main{width:min(960px,92vw);margin:auto;padding:35px 0 90px}a{color:#ffe257}h1{font-size:clamp(2.4rem,7vw,5rem);line-height:.95;letter-spacing:-.04em;margin:20px 0}.intro{font-size:1.12rem;line-height:1.5;max-width:720px}section{background:#fff9e9;color:#171717;padding:clamp(18px,4vw,30px);border:3px solid #111;box-shadow:8px 8px 0 #edce32;border-radius:12px;margin:24px 0}section[hidden]{display:none}form{display:flex;flex-wrap:wrap;gap:10px}input{padding:13px;border:2px solid #171717;border-radius:8px;min-width:230px;flex:1;font:700 1rem inherit}button{background:#f5ce27;color:#111;border:2px solid #111;border-radius:8px;padding:12px 16px;cursor:pointer;font-weight:900}button:disabled{opacity:.5}button.secondary{background:#fff}button.danger{background:#ef9a91}.code{font:800 clamp(1rem,4vw,1.45rem) ui-monospace,monospace;letter-spacing:.08em;overflow-wrap:anywhere;background:#111;color:#fff;padding:14px;border-radius:8px}.list{display:grid;gap:12px}.student{border:2px solid #161616;background:#fff;padding:15px;border-radius:8px}.student h3{margin:0 0 5px}.student p{margin:7px 0}.muted{color:#555}.notice{font-weight:800;min-height:22px}.stats{display:flex;gap:10px;flex-wrap:wrap}.stats span{background:#bdeed0;border:1px solid #111;padding:5px 8px;border-radius:7px}.student.inactive{opacity:.55}.links{margin-bottom:20px}@media(max-width:600px){section{box-shadow:5px 5px 0 #edce32}}
-</style></head><body><main><div class="links"><a href="tables-multiplication.html">← Retour au jeu des tables</a></div><h1>Le suivi<br>des tables</h1><p class="intro">Un code enseignant donne accès aux parcours. Chaque élève utilise un pseudo et un code personnel. Les codes des élèves s’affichent une seule fois à leur création.</p>
+ .tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:18px 0}.tools input,.tools select{min-width:150px;padding:11px;border:2px solid #111;border-radius:8px;background:white;font:inherit}.overview{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0}.overview strong{display:block;font-size:1.7rem}.overview span{padding:12px 16px;border:2px solid #111;border-radius:10px;background:#e7f4ff;min-width:145px}.mastery{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:7px;margin:12px 0}.mastery span{border:1px solid #333;background:#f0f3f8;border-radius:7px;padding:8px;font-weight:800}.mastery .good{background:#c8efd4}.mastery .work{background:#ffe3b3}.mastery .few{background:#f1f1f1}.student details{margin-top:10px}.student summary{cursor:pointer;font-weight:800}.recent{padding-left:20px}.recent li{margin:5px 0}@media(max-width:600px){.tools input,.tools select{width:100%}}</style></head><body><main><div class="links"><a href="index.html">← Accueil</a></div><h1>Espace<br>enseignant</h1><p class="intro">Observe les réussites et les calculs à retravailler. Le suivi concerne pour l’instant le jeu des tables. Chaque élève utilise un pseudo et un code personnel.</p>
 <section id="login"><h2>Accès enseignant</h2><form id="loginForm"><input id="teacherCode" type="password" aria-label="Code enseignant" autocomplete="off" placeholder="Code enseignant" required><button>OUVRIR LE TABLEAU</button></form><p id="loginMessage" role="status" class="notice"></p></section>
-<section id="dashboard" hidden><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><h2>Parcours de la classe</h2><button id="logout" class="secondary">SE DÉCONNECTER</button></div><p class="muted">Seuls les pseudos figurent dans ce tableau. Garde la correspondance avec les élèves hors du site.</p><form id="createForm"><input id="newNickname" maxlength="24" aria-label="Pseudo du nouvel élève" placeholder="Pseudo du nouvel élève" required><button>CRÉER UN CODE</button></form><p id="notice" class="notice" role="status"></p><div id="newCode" hidden><p>Note ce code maintenant et transmets-le uniquement à l’élève concerné. Il ne sera plus affiché :</p><p class="code" id="codeText"></p></div><p><button id="refresh" class="secondary">ACTUALISER LES PARCOURS</button></p><div class="list" id="students"></div></section>
+<section id="dashboard" hidden><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><h2>Parcours de la classe</h2><button id="logout" class="secondary">SE DÉCONNECTER</button></div><p class="muted">Seuls les pseudos figurent dans ce tableau. Garde la correspondance avec les élèves hors du site.</p><form id="createForm"><input id="newNickname" maxlength="24" aria-label="Pseudo du nouvel élève" placeholder="Pseudo du nouvel élève" required><button>CRÉER UN CODE</button></form><p id="notice" class="notice" role="status"></p><div id="newCode" hidden><p>Note ce code maintenant et transmets-le uniquement à l’élève concerné. Il ne sera plus affiché :</p><p class="code" id="codeText"></p></div><p><button id="refresh" class="secondary">ACTUALISER LES PARCOURS</button></p><div id="overview" class="overview" aria-live="polite"></div><div class="tools"><input id="searchStudent" type="search" placeholder="Chercher un pseudo" aria-label="Chercher un élève"><select id="sortStudents" aria-label="Trier les élèves"><option value="name">Par pseudo</option><option value="success">Réussite : du plus faible au plus fort</option><option value="success-desc">Réussite : du plus fort au plus faible</option><option value="activity">Activité récente</option><option value="attempts">Nombre de calculs</option></select></div><div class="list" id="students"></div></section>
 </main><script>
 const API='https://loibjnlffyjrwttvntup.supabase.co/functions/v1/tables-suivi';
 const $=s=>document.querySelector(s);let teacherCode='';
@@ -11,7 +11,83 @@ async function connect(code){teacherCode=code;$('#loginMessage').textContent='V�
 $('#loginForm').onsubmit=e=>{e.preventDefault();connect($('#teacherCode').value.trim())};
 $('#logout').onclick=()=>{teacherCode='';sessionStorage.removeItem('zoumai-tables-teacher-code');$('#dashboard').hidden=true;$('#login').hidden=false;$('#teacherCode').value='';$('#newCode').hidden=true};
 $('#createForm').onsubmit=async e=>{e.preventDefault();const nickname=$('#newNickname').value.trim();$('#notice').textContent='Création…';try{const r=await request('create',{nickname});$('#codeText').textContent=r.code;$('#newCode').hidden=false;$('#newNickname').value='';$('#notice').textContent='Compte « '+r.nickname+' » créé.';await refresh()}catch(err){$('#notice').textContent=err.message}};
+let classStudents=[];
 $('#refresh').onclick=refresh;
-async function refresh(){try{const r=await request('class');const box=$('#students');box.replaceChildren();if(!r.students.length){box.textContent='Aucun élève créé pour le moment.';return}for(const p of r.students){const card=document.createElement('article');card.className='student'+(p.active?'':' inactive');const h=document.createElement('h3');h.textContent=p.nickname+(p.active?'':' · Désactivé');card.append(h);const stats=document.createElement('p');stats.className='stats';const total=document.createElement('span');total.textContent=p.attempts+' calcul'+(p.attempts>1?'s':'');const good=document.createElement('span');good.textContent=p.correct+' réussi'+(p.correct>1?'s':'');stats.append(total,good);card.append(stats);const weak=document.createElement('p');weak.textContent=p.weak.length?'À retravailler : '+p.weak.map(x=>x.fact).join(', '):'Aucun calcul difficile enregistré.';card.append(weak);const date=document.createElement('p');date.className='muted';date.textContent=p.lastPlayed?'Dernière activité : '+new Date(p.lastPlayed).toLocaleDateString('fr-FR'):'Aucune activité enregistrée';card.append(date);if(p.active){const revoke=document.createElement('button');revoke.className='danger';revoke.textContent='DÉSACTIVER CE CODE';revoke.onclick=async()=>{if(!confirm('Désactiver le code de '+p.nickname+' ? Ses résultats resteront consultables.'))return;try{await request('revoke',{studentId:p.id});await refresh()}catch(err){$('#notice').textContent=err.message}};card.append(revoke)}box.append(card)}}catch(e){$('#notice').textContent='Impossible de charger les parcours : '+e.message}}
+$('#searchStudent').addEventListener('input',renderStudents);
+$('#sortStudents').addEventListener('change',renderStudents);
+function addStat(parent,label,value){
+  const span=document.createElement('span');
+  const strong=document.createElement('strong');strong.textContent=value;
+  span.append(strong,document.createTextNode(label));parent.append(span);
+}
+async function refresh(){
+  try{
+    const result=await request('class');
+    classStudents=result.students||[];
+    const box=$('#overview');box.replaceChildren();
+    const played=classStudents.filter(p=>p.attempts>0).length;
+    addStat(box,'élèves ayant joué',played+' / '+classStudents.filter(p=>p.active).length);
+    addStat(box,'calculs enregistrés',String(classStudents.reduce((n,p)=>n+p.attempts,0)));
+    addStat(box,'calculs cette semaine',String(classStudents.reduce((n,p)=>n+(p.last7days||0),0)));
+    renderStudents();
+    $('#notice').textContent='';
+  }catch(e){$('#notice').textContent='Impossible de charger les parcours : '+e.message}
+}
+function renderStudents(){
+  const box=$('#students');box.replaceChildren();
+  const needle=$('#searchStudent').value.trim().toLocaleLowerCase('fr');
+  const students=classStudents.filter(p=>p.nickname.toLocaleLowerCase('fr').includes(needle));
+  const mode=$('#sortStudents').value;
+  if(mode==='success')students.sort((a,b)=>(a.successRate??101)-(b.successRate??101)||a.nickname.localeCompare(b.nickname,'fr'));
+  else if(mode==='success-desc')students.sort((a,b)=>(b.successRate??-1)-(a.successRate??-1)||a.nickname.localeCompare(b.nickname,'fr'));
+  else if(mode==='activity')students.sort((a,b)=>Date.parse(b.lastPlayed||0)-Date.parse(a.lastPlayed||0));
+  else if(mode==='attempts')students.sort((a,b)=>b.attempts-a.attempts);
+  else students.sort((a,b)=>a.nickname.localeCompare(b.nickname,'fr'));
+  if(!students.length){box.textContent=classStudents.length?'Aucun pseudo ne correspond à la recherche.':'Aucun élève créé pour le moment.';return}
+  for(const p of students){
+    const card=document.createElement('article');
+    card.className='student'+(p.active?'':' inactive');
+    const heading=document.createElement('h3');
+    heading.textContent=p.nickname+(p.active?'':' · Code désactivé');
+    card.append(heading);
+    const stats=document.createElement('p');stats.className='stats';
+    for(const value of [p.attempts+' calculs',p.correct+' réussis',p.successRate===null?'Pas encore de résultat':p.successRate+' % de réussite',(p.last7days||0)+' cette semaine']){
+      const chip=document.createElement('span');chip.textContent=value;stats.append(chip);
+    }
+    card.append(stats);
+    const weak=document.createElement('p');
+    weak.textContent=p.weak.length?'À retravailler : '+p.weak.map(x=>x.fact).join(', '):p.attempts?'Pas de calcul à retravailler dans les dernières réponses.':'Aucune activité enregistrée.';
+    card.append(weak);
+    const date=document.createElement('p');date.className='muted';
+    date.textContent=p.lastPlayed?'Dernière activité : '+new Date(p.lastPlayed).toLocaleDateString('fr-FR'):'En attente de sa première partie';
+    card.append(date);
+    if(p.byTable?.length){
+      const details=document.createElement('details');
+      const label=document.createElement('summary');label.textContent='Voir les résultats par table et les dernières réponses';
+      details.append(label);
+      const grid=document.createElement('div');grid.className='mastery';
+      for(const table of p.byTable){
+        const chip=document.createElement('span');
+        chip.className=table.attempts<10?'few':table.successRate<70?'work':'good';
+        chip.textContent='Table de '+table.table+' : '+table.correct+'/'+table.attempts+' ('+table.successRate+' %)';
+        grid.append(chip);
+      }
+      details.append(grid);
+      const list=document.createElement('ul');list.className='recent';
+      for(const item of p.recent||[]){
+        const li=document.createElement('li');
+        li.textContent=item.fact+' · '+(item.correct?'réussi':'à revoir')+' · '+new Date(item.playedAt).toLocaleDateString('fr-FR');
+        list.append(li);
+      }
+      details.append(list);card.append(details);
+    }
+    if(p.active){
+      const revoke=document.createElement('button');revoke.className='danger';revoke.textContent='DÉSACTIVER CE CODE';
+      revoke.onclick=async()=>{if(!confirm('Désactiver le code de '+p.nickname+' ? Ses résultats resteront consultables.'))return;try{await request('revoke',{studentId:p.id});await refresh()}catch(err){$('#notice').textContent=err.message}};
+      card.append(revoke);
+    }
+    box.append(card);
+  }
+}
 const remembered=sessionStorage.getItem('zoumai-tables-teacher-code');if(remembered)connect(remembered);
 </script></body></html>
