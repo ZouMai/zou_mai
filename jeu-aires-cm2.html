@@ -16,7 +16,7 @@
       <p class="subtitle">M2 · Aires (1) · Observe, compare et classe des figures sur quadrillage.</p>
       <section id="intro" class="panel">
         <h2>Un jardin de figures à explorer</h2>
-        <p>Un carreau entier vaut <strong>une unité d’aire</strong>. Deux demi-carreaux valent une unité. La forme et la longueur du contour peuvent changer sans changer l’aire.</p>
+        <p>Observe toujours <strong>l’unité d’aire indiquée</strong> : elle peut être un carreau, deux petits carreaux ou deux triangles. La forme et la longueur du contour peuvent changer sans changer l’aire.</p>
         <p>20 défis visuels : compter, retrouver des aires égales et ranger des figures dans l’ordre croissant. Tu peux toucher les figures pour répondre.</p>
         <button id="start" class="btn" type="button">Entrer dans le jardin →</button>
       </section>
@@ -26,6 +26,7 @@
         <p id="task-kind" class="task-kind"></p>
         <h2 id="question"></h2>
         <p id="instruction" class="instruction"></p>
+        <div id="unit" class="unit-reference" aria-label="Unité d’aire utilisée dans ce défi"></div>
         <div id="figures" class="area-figures"></div>
         <div id="answer" class="area-answer"></div>
         <div class="actions"><button id="undo" class="btn secondary hidden" type="button">Effacer le dernier choix</button><button id="validate" class="btn" type="button">Vérifier</button><button id="next" class="btn hidden" type="button">Défi suivant →</button></div>
