@@ -26,3 +26,5 @@ alter table public.mathador_challenges enable row level security;
 -- Le service Edge utilise la clé serveur ; aucun accès direct des navigateurs aux tables.
 revoke all on public.mathador_scores from anon, authenticated;
 revoke all on public.mathador_challenges from anon, authenticated;
+grant select, insert, update, delete on public.mathador_scores to service_role;
+grant select, insert, update, delete on public.mathador_challenges to service_role;
