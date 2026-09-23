@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mon espace · Zou Maï</title><link rel="stylesheet" href="zoumai-brand.css">
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:#111;color:#fff;font:17px system-ui,Arial,sans-serif}
+main{width:min(920px,92vw);margin:auto;padding:28px 0 70px}a{color:#ffe25d}.top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+h1{font-size:clamp(3rem,9vw,6rem);line-height:.9;letter-spacing:-.06em;margin:25px 0 18px;text-transform:uppercase}
+.lead{max-width:650px;line-height:1.5;color:#e5e5e5}.card{background:#fff9e9;color:#111;border:3px solid #080808;box-shadow:8px 8px #e6c53e;border-radius:17px;padding:clamp(18px,4vw,30px);margin:27px 0}
+.card[hidden],#login[hidden],#progress[hidden]{display:none}input,button{font:inherit;border-radius:9px;padding:12px}
+input{border:2px solid #111;min-width:220px;flex:1;text-transform:uppercase}
+button,.play{border:2px solid #111;background:#f1d32b;color:#111;font-weight:900;cursor:pointer;text-decoration:none;display:inline-block}
+button:hover,.play:hover{filter:brightness(.95)}form{display:flex;gap:9px;flex-wrap:wrap}.muted{color:#555}.error{color:#a6221d;font-weight:800}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}.metric{border:2px solid #111;border-radius:12px;background:#e6f4ff;padding:14px}
+.metric strong{display:block;font-size:2rem}.tables{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:8px;margin:15px 0}
+.table{background:#e7e8f4;border:1px solid #333;border-radius:8px;padding:9px;font-weight:800}.table.good{background:#bdeacb}.table.work{background:#ffe1b1}
+.actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.actions button{background:#fff}
+@media(max-width:600px){form>*{width:100%}}
+</style></head><body><main><nav class="top"><a href="index.html">← ACCUEIL</a><a href="tables-suivi-enseignant.html">ACCÈS ENSEIGNANT</a></nav>
+<h1>MON<br>ESPACE</h1><p class="lead">Retrouve tes réussites et les calculs à retravailler. Ton parcours commence avec le défi des tables.</p>
+<section class="card" id="login"><h2>J’entre dans mon espace</h2><p>Utilise le code donné par ton enseignant. Tu peux toujours <a href="tables-multiplication.html">jouer sans code</a>.</p>
+<form id="loginForm"><input id="code" aria-label="Mon code personnel" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="MON CODE" required><button>VOIR MON PARCOURS</button></form><p id="message" role="status" class="error"></p></section>
+<section class="card" id="progress" hidden><div class="actions"><h2>Bonjour <span id="nickname"></span> !</h2><button id="logout" type="button">SE DÉCONNECTER</button></div>
+<div class="cards" id="metrics"></div><h3>Mes tables</h3><div class="tables" id="tables"></div><h3>Mes calculs à retravailler</h3><p id="weak"></p>
+<p class="actions"><a class="play" href="tables-multiplication.html">JOUER AUX TABLES →</a></p>
+<p class="muted">Seul ton enseignant peut consulter ton parcours. Tes résultats ne sont pas affichés aux autres élèves.</p>
+</section></main>
+<script>
+const API='https://loibjnlffyjrwttvntup.supabase.co/functions/v1/tables-suivi';
+const KEY='zoumai-tables-student-code',$=s=>document.querySelector(s);let code='';
+async function request(action){const response=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action,code})});const result=await response.json();if(!response.ok)throw Error(result.error||'Service indisponible');return result}
+function metric(parent,value,label){const box=document.createElement('div');box.className='metric';const number=document.createElement('strong');number.textContent=value;box.append(number,document.createTextNode(label));parent.append(box)}
+function display(result){
+  $('#nickname').textContent=result.nickname;
+  const metrics=$('#metrics');metrics.replaceChildren();
+  metric(metrics,String(result.attempts),'calculs essayés');
+  metric(metrics,String(result.correct),'réussis');
+  metric(metrics,result.successRate===null?'—':result.successRate+' %','de réussite');
+  metric(metrics,String(result.last7days||0),'cette semaine');
+  const tables=$('#tables');tables.replaceChildren();
+  for(const item of result.byTable||[]){const box=document.createElement('div');box.className='table '+(item.attempts<10?'':item.successRate>=80?'good':'work');box.textContent='Table de '+item.table+' : '+item.correct+'/'+item.attempts+' réussis';tables.append(box)}
+  if(!tables.childElementCount)tables.textContent='Tes résultats apparaîtront après ta première partie.';
+  $('#weak').textContent=result.weak?.length?result.weak.map(item=>item.fact).join(' · '):result.attempts?'Bravo, aucun calcul difficile enregistré pour le moment.':'Joue une première partie pour découvrir tes progrès.';
+}
+async function connect(value){
+  code=value;$('#message').textContent='Connexion…';
+  try{
+    const account=await request('me');
+    if(account.role!=='student')throw Error('Ce code est réservé à l’enseignant.');
+    const result=await request('summary');
+    sessionStorage.setItem(KEY,value);
+    display(result);$('#login').hidden=true;$('#progress').hidden=false;$('#message').textContent='';
+  }catch(error){code='';sessionStorage.removeItem(KEY);$('#message').textContent=error.message||'Connexion impossible.'}
+}
+$('#loginForm').addEventListener('submit',e=>{e.preventDefault();connect($('#code').value.trim())});
+$('#logout').addEventListener('click',()=>{code='';sessionStorage.removeItem(KEY);$('#progress').hidden=true;$('#login').hidden=false;$('#code').value=''});
+const remembered=sessionStorage.getItem(KEY);if(remembered)connect(remembered);
+</script></body></html>
