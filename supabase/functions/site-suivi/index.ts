@@ -11,6 +11,7 @@ const headers = {
   'Cache-Control': 'no-store'
 };
 const reply = (value: unknown, status = 200) => new Response(JSON.stringify(value), { status, headers });
+const CLASS_ACCOUNT = 'CM2 Craoux';
 const normalize = (value: unknown) => typeof value === 'string' ? value.replace(/[-\s]/g, '').toLowerCase() : '';
 const bytes = (size: number) => crypto.getRandomValues(new Uint8Array(size));
 const hex = (value: Uint8Array) => [...value].map(b => b.toString(16).padStart(2, '0')).join('');
@@ -68,7 +69,8 @@ function safePath(value: unknown) {
   const path = value.split('?')[0];
   return /^\/[a-zA-Z0-9_./%-]{1,179}$/.test(path) && !path.includes('..') ? path : null;
 }
-async function validClassCode(code: unknown) {
+async function validClassAccess(account: unknown, code: unknown) {
+  if (typeof account !== 'string' || account.trim().replace(/\s+/g, ' ').toLocaleLowerCase('fr') !== CLASS_ACCOUNT.toLocaleLowerCase('fr')) return false;
   const value = normalize(code);
   if (!/^[0-9a-f]{16}$/.test(value)) return false;
   const { data } = await db.from('site_class_access').select('code_hash').eq('id', 1).maybeSingle();
@@ -101,7 +103,7 @@ Deno.serve(async req => {
         .select('code_cipher,code_nonce').eq('id', 1).maybeSingle();
       if (readError) throw readError;
       if (current && body.rotate !== true)
-        return reply({ code: await decrypt(current.code_cipher, current.code_nonce) });
+        return reply({ account: CLASS_ACCOUNT, code: await decrypt(current.code_cipher, current.code_nonce) });
       const code = hex(bytes(8));
       const secret = await encrypt(code);
       const { error } = await db.from('site_class_access').upsert({
@@ -109,17 +111,17 @@ Deno.serve(async req => {
         code_nonce: secret.pin_nonce, updated_at: new Date().toISOString()
       });
       if (error) throw error;
-      return reply({ code });
+      return reply({ account: CLASS_ACCOUNT, code });
     }
     if (body.action === 'roster') {
-      if (!await validClassCode(body.classCode)) return reply({ error: 'Code de classe inconnu.' }, 403);
+      if (!await validClassAccess(body.classAccount, body.classCode)) return reply({ error: 'Compte ou mot de passe de classe incorrect.' }, 403);
       const { data, error } = await db.from('tables_accounts').select('nickname,pin_hash')
         .eq('role', 'student').eq('active', true).order('nickname');
       if (error) throw error;
       return reply({ students: (data || []).map(p => ({ name: p.nickname, pinSet: Boolean(p.pin_hash) })) });
     }
     if (body.action === 'activate') {
-      if (!await validClassCode(body.classCode)) return reply({ error: 'Code de classe inconnu.' }, 403);
+      if (!await validClassAccess(body.classAccount, body.classCode)) return reply({ error: 'Compte ou mot de passe de classe incorrect.' }, 403);
       if (!validNickname(body.nickname) || !/^\d{4}$/.test(body.pin)) return reply({ error: 'Prénom ou code invalide.' }, 400);
       const { data: account } = await db.from('tables_accounts')
         .select('id,nickname,pin_hash,active,role').eq('role', 'student').eq('nickname', body.nickname.trim()).maybeSingle();
@@ -133,7 +135,7 @@ Deno.serve(async req => {
       return reply({ activated: true, pending: true, nickname: account.nickname });
     }
     if (body.action === 'pinLogin') {
-      if (!await validClassCode(body.classCode)) return reply({ error: 'Code de classe inconnu.' }, 403);
+      if (!await validClassAccess(body.classAccount, body.classCode)) return reply({ error: 'Compte ou mot de passe de classe incorrect.' }, 403);
       const nickname = typeof body.nickname === 'string' ? body.nickname.trim() : '';
       if (!/^[\p{L}\p{N}][\p{L}\p{N} _-]{0,23}$/u.test(nickname) || !/^\d{4}$/.test(body.pin))
         return reply({ error: 'Pseudo ou code invalide.' }, 401);
