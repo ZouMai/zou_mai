@@ -1,2 +1,2 @@
-// URL publique de la fonction Edge Mathador. Renseignée après création du projet Supabase.
-window.ZOUMAI_MATHADOR_API = '';
+// Adresse publique de l'API ; aucune clé privée n'est envoyée au navigateur.
+window.ZOUMAI_MATHADOR_API = 'https://loibjnlffyjrwttvntup.supabase.co/functions/v1/mathador-classe';
