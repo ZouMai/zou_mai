@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Jeux et défis pour les élèves de CM2 : échecs, mots, géographie et quiz.">
+<title>Jeux — Zou Maï</title>
+<link rel="stylesheet" href="zoumai.css">
+<link rel="stylesheet" href="zoumai-brand.css">
+<style>
+.games-hero{display:flex;justify-content:space-between;align-items:center;gap:22px}
+.games-hero img{width:clamp(95px,15vw,175px);height:175px;object-fit:contain;filter:drop-shadow(0 12px 18px #239ee54d)}
+.games-section{margin-top:46px}
+.games-section h2{margin:0 0 16px;font-size:clamp(1.65rem,4vw,2.6rem);letter-spacing:-.03em}
+.games-section h2 span{color:var(--zm-yellow)}
+.games-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.game-card{--accent:var(--zm-yellow);display:flex;flex-direction:column;min-height:225px;padding:24px;border:1px solid #ffffff38;border-top:5px solid var(--accent);background:#171a22;color:#f2eee4;text-decoration:none;transition:transform .18s,box-shadow .18s,border-color .18s}
+.game-card:hover,.game-card:focus-visible{transform:translateY(-4px);border-color:var(--accent);box-shadow:0 10px 25px #0008,0 0 20px color-mix(in srgb,var(--accent) 28%,transparent);outline:none}
+.game-card .game-kind{color:var(--accent);font-size:.69rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
+.game-card strong{margin:22px 0 9px;font-size:1.5rem;line-height:1.06}
+.game-card .game-desc{color:#ccc8c0;font-size:.95rem;font-weight:700;line-height:1.45}
+.game-card .game-action{margin-top:auto;padding-top:22px;color:var(--accent);font-size:.74rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+.games-note{color:#aaa69e;font-size:.85rem;line-height:1.5}
+.games-local{margin-top:50px;padding:26px;border:1px solid #ffffff36;background:#11141a}
+.games-local h2{margin:0 0 8px;font-size:1.55rem}
+.games-local p{color:#bbb6ad;font-weight:700;line-height:1.5}
+.games-local a{display:inline-block;margin:10px 10px 0 0;padding:11px 15px;background:var(--zm-yellow);color:#101115;font-size:.78rem;font-weight:900;text-decoration:none}
+.games-local a:hover,.games-local a:focus-visible{background:#fff;outline:2px solid var(--zm-yellow)}
+@media(max-width:850px){.games-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:580px){.games-hero img{width:94px;height:110px}.games-grid{grid-template-columns:1fr}.game-card{min-height:190px}.editorial-wrap h1{font-size:clamp(3.3rem,16vw,5rem)}}
+</style>
+</head>
+<body class="editorial-page games-page">
+<a class="zm-corner-logo" href="index.html" aria-label="Accueil Zou Maï"><img src="images/logo-zou-mai-sensei.png" alt="Logo Sensei Zou Maï"></a>
+<nav aria-label="Navigation principale"><a href="index.html">ACCUEIL</a><a href="ressources.html">RESSOURCES</a><a class="on" href="jeux.html" aria-current="page">JEUX</a><a href="projets.html">PROJETS</a><a href="apropos.html">À PROPOS</a></nav>
+<main class="editorial-wrap">
+<div class="games-hero"><div><p class="page-kicker">Le coin des défis</p><h1>JEUX</h1><p class="editorial-lead">Un mot à deviner, une partie à gagner, une carte à explorer… Choisis ton défi et amuse-toi !</p></div><img src="images/loup-bleu-original.png" alt="" aria-hidden="true"></div>
+<section class="games-section" aria-labelledby="favoris"><h2 id="favoris">LES <span>FAVORIS</span></h2>
+<div class="games-grid">
+<a class="game-card" style="--accent:#f2d31c" href="https://lichess.org/learn" target="_blank" rel="noopener noreferrer"><span class="game-kind">Stratégie · Échecs</span><strong>Lichess</strong><span class="game-desc">Apprends les règles, entraîne-toi et relève des défis aux échecs.</span><span class="game-action">Apprendre et jouer ↗</span></a>
+<a class="game-card" style="--accent:#ef625b" href="https://sutom.nocle.fr/" target="_blank" rel="noopener noreferrer"><span class="game-kind">Lettres · Mot du jour</span><strong>SUTOM</strong><span class="game-desc">Trouve le mot mystère avec les indices donnés après chaque essai.</span><span class="game-action">Deviner le mot ↗</span></a>
+<a class="game-card" style="--accent:#36c4ac" href="https://cemantix.certitudes.org/" target="_blank" rel="noopener noreferrer"><span class="game-kind">Vocabulaire · À plusieurs</span><strong>Cémantix</strong><span class="game-desc">Propose des mots et approche-toi du mot secret grâce à leur sens. Un défi à chercher ensemble.</span><span class="game-action">Chercher le mot ↗</span></a>
+</div></section>
+<section class="games-section" aria-labelledby="decouvertes"><h2 id="decouvertes">À <span>DÉCOUVRIR</span></h2>
+<div class="games-grid">
+<a class="game-card" style="--accent:#52aefa" href="https://www.geoguessr.com/fr/vgp/3194" target="_blank" rel="noopener noreferrer"><span class="game-kind">Géographie · Carte</span><strong>Seterra</strong><span class="game-desc">Place les pays voisins de la France sur la carte.</span><span class="game-action">Explorer la carte ↗</span></a>
+<a class="game-card" style="--accent:#f49e45" href="https://www.logicieleducatif.fr/jeux/niveau/cm2" target="_blank" rel="noopener noreferrer"><span class="game-kind">CM2 · Mini-jeux</span><strong>Logiciel Éducatif</strong><span class="game-desc">Choisis un jeu de maths, de français ou de logique adapté au CM2.</span><span class="game-action">Choisir un jeu ↗</span></a>
+<a class="game-card" style="--accent:#b58cff" href="https://www.lumni.fr/primaire/cm2/tous-les-quiz" target="_blank" rel="noopener noreferrer"><span class="game-kind">CM2 · Quiz</span><strong>Lumni</strong><span class="game-desc">Teste tes connaissances avec des quiz sur les matières de l’école.</span><span class="game-action">Faire un quiz ↗</span></a>
+</div></section>
+<section class="games-local" aria-labelledby="sur-zoumai"><h2 id="sur-zoumai">Continue l’aventure sur Zou Maï</h2><p>Des jeux de calcul et de géométrie fabriqués pour la classe.</p><a href="tables-multiplication.html">Tables de multiplication →</a><a href="jeu-aires-cm2.html">Jeu des aires →</a></section>
+<p class="games-note">Les jeux extérieurs s’ouvrent dans un nouvel onglet. Certaines activités peuvent être plus faciles à jouer à deux.</p>
+</main>
+<footer class="site-footer"><span>Choisir · Chercher · Jouer</span><a class="site-signature" href="index.html"><img src="images/logo-zou-mai-sensei.png" alt="Logo Sensei Zou Maï"></a></footer>
+</body>
+</html>
