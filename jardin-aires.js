@@ -11,25 +11,26 @@ const SHAPES={
   k14:['#####.','#####.','####..'], l15:['#####.','#####.','#####.'],
   q6:['###...','##a...','..b...'], r8:['####..','###a..','...b..']
 };
-const area=id=>SHAPES[id].join('').split('').reduce((sum,c)=>sum+(c==='#'?1:c==='a'||c==='b'?.5:0),0);
+const smallTriangles=id=>SHAPES[id].join('').split('').reduce((sum,c)=>sum+(c==='#'?2:c==='a'||c==='b'?1:0),0);
+const area=(id,ch)=>smallTriangles(id)/(ch.unit==='twoSquares'?4:2);
 const CHALLENGES=[
   {type:'count',ids:['m5']},{type:'count',ids:['a6']},
   {type:'compare',ids:['m5','a6','n7'],goal:'largest'},
   {type:'equal',ids:['a6','n7','b6','e8']},
   {type:'order',ids:['m5','a6','n7']},
-  {type:'count',ids:['c6']},
-  {type:'compare',ids:['d8','e8'],goal:'tie'},
+  {type:'count',ids:['e8'],unit:'twoSquares'},
+  {type:'compare',ids:['d8','e8'],goal:'tie',unit:'twoSquares'},
+  {type:'count',ids:['q6'],unit:'twoTriangles'},
+  {type:'order',ids:['a6','d8','g10'],unit:'twoSquares'},
+  {type:'equal',ids:['e8','g10','f8','k14'],unit:'twoSquares'},
+  {type:'count',ids:['r8'],unit:'twoTriangles'},
+  {type:'compare',ids:['q6','a6'],goal:'tie',unit:'twoTriangles'},
+  {type:'order',ids:['n7','m5','r8','q6'],unit:'twoTriangles'},
+  {type:'equal',ids:['q6','n7','c6','d8'],unit:'twoTriangles'},
   {type:'count',ids:['o9']},
-  {type:'order',ids:['n7','d8','o9','g10']},
-  {type:'equal',ids:['e8','g10','f8','o9']},
-  {type:'count',ids:['q6']},
-  {type:'count',ids:['r8']},
-  {type:'compare',ids:['q6','a6'],goal:'tie'},
-  {type:'order',ids:['n7','m5','r8','q6']},
-  {type:'equal',ids:['q6','n7','c6','d8']},
   {type:'compare',ids:['i12','h10'],goal:'smallest'},
   {type:'order',ids:['o9','p11','g10','i12']},
-  {type:'count',ids:['k14']},
+  {type:'count',ids:['k14'],unit:'twoSquares'},
   {type:'equal',ids:['i12','p11','k14','j12']},
   {type:'order',ids:['k14','e8','g10','o9']}
 ];
@@ -37,25 +38,32 @@ const $=id=>document.getElementById(id);
 const letters='ABCDE';
 const label=i=>'figure '+letters[i];
 let index=0,score=0,selection=[],answered=false;
-function drawing(id,indexInQuestion){
+function drawing(id,indexInQuestion,triangles=false){
   const rows=SHAPES[id],fill=['#20a486','#ee9052','#6c77ce','#db6d97'][indexInQuestion%4];
-  let svg='<svg viewBox="0 0 168 144" role="img" aria-label="Figure coloriée sur un quadrillage de carreaux égaux">';
+  let svg=`<svg viewBox="0 0 168 144" role="img" aria-label="Figure coloriée sur un quadrillage de ${triangles?'triangles':'carreaux'} égaux">`;
   for(let y=0;y<5;y++)for(let x=0;x<6;x++){
     const c=rows[y]?.[x]||'.',left=x*24+12,top=y*24+12;
     svg+=`<rect x="${left}" y="${top}" width="24" height="24" fill="#fff" stroke="#b8c9c1" stroke-width="1"/>`;
     if(c==='#')svg+=`<rect x="${left+1}" y="${top+1}" width="22" height="22" fill="${fill}"/>`;
     if(c==='a')svg+=`<path d="M${left+1} ${top+1} L${left+23} ${top+1} L${left+1} ${top+23} Z" fill="${fill}"/>`;
     if(c==='b')svg+=`<path d="M${left+23} ${top+1} L${left+23} ${top+23} L${left+1} ${top+23} Z" fill="${fill}"/>`;
+    if(triangles)svg+=`<path d="M${left} ${top+24} L${left+24} ${top}" fill="none" stroke="#708a80" stroke-width="1"/>`;
   }
   return svg+'</svg>';
 }
 function result(ch){
-  const sizes=ch.ids.map(area);
+  const sizes=ch.ids.map(id=>area(id,ch));
   if(ch.type==='count')return String(sizes[0]);
   if(ch.type==='equal')return letters[sizes.findIndex((n,i)=>i>0&&n===sizes[0])];
   if(ch.type==='order')return ch.ids.map((_,i)=>i).sort((a,b)=>sizes[a]-sizes[b]).map(i=>letters[i]).join('');
   if(ch.goal==='tie')return 'Même aire';
   return letters[sizes.indexOf(ch.goal==='largest'?Math.max(...sizes):Math.min(...sizes))];
+}
+function unitReference(ch){
+  const unit=ch.unit||'square';
+  const icon=unit==='twoSquares'?'<rect x="2" y="3" width="23" height="23"/><rect x="25" y="3" width="23" height="23"/>':unit==='twoTriangles'?'<rect x="2" y="3" width="26" height="26"/><path d="M2 29 L28 3" fill="none" stroke="#124a3b" stroke-width="2"/>':'<rect x="2" y="3" width="26" height="26"/>';
+  const text=unit==='twoSquares'?'1 unité d’aire = 2 petits carreaux':unit==='twoTriangles'?'1 unité d’aire = 2 petits triangles':'1 unité d’aire = 1 carreau';
+  $('unit').innerHTML=`<svg viewBox="0 0 52 32" aria-hidden="true" focusable="false" fill="#61bb92" stroke="#124a3b" stroke-width="2">${icon}</svg><strong>${text}</strong>`;
 }
 function render(){
   const ch=CHALLENGES[index];answered=false;selection=[];
@@ -65,7 +73,8 @@ function render(){
   $('task-kind').textContent=titles[ch.type];
   const prompts={count:'Quelle est l’aire de cette figure ?',compare:ch.goal==='tie'?'Compare les deux figures.':'Quelle figure a l’aire '+(ch.goal==='largest'?'la plus grande':'la plus petite')+' ?',equal:'Quelle figure a la même aire que la figure A ?',order:'Range les figures de la plus petite aire à la plus grande.'};
   $('question').textContent=prompts[ch.type];
-  $('instruction').textContent=ch.type==='order'?'Touche les figures une par une dans l’ordre croissant.':ch.type==='equal'?'La forme peut changer : compare avec le même carreau unité.':ch.type==='count'?'Compte les carreaux colorés. Deux moitiés forment un carreau entier.':'Observe les surfaces colorées, puis réponds.';
+  $('instruction').textContent=ch.type==='order'?'Touche les figures une par une dans l’ordre croissant.':ch.type==='equal'?'La forme peut changer : compare les figures avec la même unité.':ch.type==='count'?'Compte les parties colorées, puis regroupe-les selon l’unité indiquée.':'Observe les surfaces colorées, puis réponds.';
+  unitReference(ch);
   $('figures').replaceChildren();
   ch.ids.forEach((id,i)=>{
     const card=document.createElement(ch.type==='order'||ch.type==='equal'&&i>0?'button':'div');
@@ -73,12 +82,12 @@ function render(){
     if(card.tagName==='BUTTON'){card.type='button';card.setAttribute('aria-pressed','false');card.addEventListener('click',()=>select(i))}
     const title=document.createElement('strong');title.textContent=letters[i];
     card.append(title);
-    card.insertAdjacentHTML('beforeend',drawing(id,i));
+    card.insertAdjacentHTML('beforeend',drawing(id,i,ch.unit==='twoTriangles'));
     $('figures').append(card);
   });
   $('answer').replaceChildren();
   if(ch.type==='count'){
-    const labelEl=document.createElement('label');labelEl.htmlFor='response';labelEl.textContent='Aire en carreaux unités :';
+    const labelEl=document.createElement('label');labelEl.htmlFor='response';labelEl.textContent='Aire en unités :';
     const input=document.createElement('input');input.id='response';input.type='number';input.min='0';input.step='1';input.inputMode='numeric';
     $('answer').append(labelEl,input);
   }else if(ch.type==='compare'){
@@ -119,11 +128,12 @@ function validate(){
   const f=$('feedback');f.replaceChildren();
   const heading=document.createElement('strong');heading.textContent=correct?'Bravo, tu as bien observé !':'Regarde les aires pour comprendre :';f.append(heading);
   const detail=document.createElement('p');
-  detail.textContent=ch.ids.map((id,i)=>`${letters[i]} : ${area(id)} ${area(id)===1?'unité':'unités'} d’aire`).join(' · ')+'.';f.append(detail);
+  detail.textContent=ch.ids.map((id,i)=>`${letters[i]} : ${area(id,ch)} ${area(id,ch)===1?'unité':'unités'} d’aire`).join(' · ')+'.';f.append(detail);
   const explanation=document.createElement('p');
-  explanation.textContent=ch.type==='order'?`L’ordre croissant est ${expected.split('').join(' → ')}.`:ch.type==='equal'?'Des formes différentes peuvent couvrir le même nombre de carreaux.':ch.ids.some(id=>/[ab]/.test(SHAPES[id].join('')))?'Deux demi-carreaux forment une unité d’aire.':'On compare les surfaces couvertes avec le même carreau unité, quelle que soit la forme du contour.';
+  explanation.textContent=ch.unit==='twoSquares'?'Regroupe les petits carreaux par deux : chaque paire vaut une unité d’aire.':ch.unit==='twoTriangles'?'Regroupe les petits triangles par deux : chaque paire vaut une unité d’aire.':ch.type==='order'?`L’ordre croissant est ${expected.split('').join(' → ')}.`:ch.type==='equal'?'Des formes différentes peuvent couvrir le même nombre de carreaux.':'On compare les surfaces couvertes avec le même carreau unité, quelle que soit la forme du contour.';
+  if(ch.type==='order'&&ch.unit)explanation.textContent+=` L’ordre croissant est ${expected.split('').join(' → ')}.`;
   f.append(explanation);f.className='feedback'+(correct?'':' bad');
-  [...$('figures').children].forEach((card,i)=>{const measure=document.createElement('span');measure.className='measurement';measure.textContent=`${area(ch.ids[i])} unités d’aire`;card.append(measure);if(card.tagName==='BUTTON')card.disabled=true});
+  [...$('figures').children].forEach((card,i)=>{const measure=document.createElement('span');measure.className='measurement';measure.textContent=`${area(ch.ids[i],ch)} unités d’aire`;card.append(measure);if(card.tagName==='BUTTON')card.disabled=true});
   $('answer').querySelectorAll('input,button').forEach(el=>el.disabled=true);
   $('undo').classList.add('hidden');$('validate').classList.add('hidden');$('next').classList.remove('hidden');$('next').textContent=index===CHALLENGES.length-1?'Voir mon résultat':'Défi suivant →';
 }
