@@ -23,14 +23,16 @@ function summary(rows: any[]) {
     if (row.correct) correct++;
     const k = `${row.a} × ${row.b}`;
     const item = weak.get(k) || { attempts: 0, correct: 0 };
-    item.attempts++;
-    if (row.correct) item.correct++;
+    if (item.attempts < 3) {
+      item.attempts++;
+      if (row.correct) item.correct++;
+    }
     weak.set(k, item);
   }
   return {
     attempts: rows.length, correct,
     lastPlayed: rows[0]?.played_at || null,
-    weak: [...weak].filter(([,s]) => s.correct < s.attempts)
+    weak: [...weak].filter(([,s]) => s.correct < Math.min(2,s.attempts))
       .sort((a,b) => (b[1].attempts-b[1].correct)-(a[1].attempts-a[1].correct))
       .slice(0, 8).map(([fact,s]) => ({ fact, ...s }))
   };
