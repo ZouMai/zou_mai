@@ -1,6 +1,7 @@
 (() => {
   'use strict';
   const $ = id => document.getElementById(id);
+  const API = (window.ZOUMAI_MATHADOR_API || '').replace(/\/$/,'');
   const weights = {'+':1, '−':2, '×':1, '÷':3};
   const operations = ['+', '−', '×', '÷'];
   const allowed = [['+'],['+','−'],['+','×'],['+','×'],['+','×','÷'],['+','−','×'],operations,operations,operations];
@@ -16,11 +17,42 @@
     {name:'Cinq cartes',aim:'Utilise les cinq cartes en quatre calculs.',steps:4,maxCard:12,low:18,high:85},
     {name:'Coup Mathador',aim:'Utilise les cinq cartes et les quatre opérations.',steps:4,maxCard:15,low:20,high:99}
   ];
-  let draw = null, tokens = [], steps = [], undoStack = [];
+  let draw = null, tokens = [], steps = [], moves = [], undoStack = [];
   const STORAGE = 'zoumai-mathador-parcours-v1';
   let profiles = loadProfiles(), player = null, currentLevel = 0;
   let chosen = null, operation = null, nextId = 5, seconds = TOTAL_SECONDS;
   let timer = null, active = false, hintUsed = false, best = 0, bestExpression = '';
+  let loading = false, remoteDraw = false, remoteChallengeId = null;
+  async function request(body) {
+    const response = await fetch(API, body ? {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)} : {});
+    const result = await response.json();
+    if (!response.ok) throw Error(result.error || 'Service indisponible');
+    return result;
+  }
+  async function refreshRankings() {
+    if (!API) return;
+    try {
+      const result = await request();
+      $('rankings').replaceChildren();
+      result.ranking.forEach(p => {
+        const item = document.createElement('li');
+        item.textContent = p.name + ' · ' + p.completed + '/9 défis';
+        const points = document.createElement('strong');
+        points.textContent = p.points + ' pts';
+        item.appendChild(points); $('rankings').appendChild(item);
+      });
+      if (!result.ranking.length) {
+        const item = document.createElement('li'); item.textContent = 'Le classement attend ses premiers joueurs.';
+        $('rankings').appendChild(item);
+      }
+      $('ranking-title').textContent = 'Top 10 de la classe';
+      $('ranking-note').textContent = 'Prénoms ou pseudos et meilleurs scores enregistrés dans le parcours commun.';
+    } catch (error) {
+      $('ranking-title').textContent = 'Top 10 sur cet appareil';
+      $('ranking-note').textContent = 'Le classement de la classe est momentanément indisponible. Voici les scores de cet appareil.';
+      showRankings();
+    }
+  }
 
   function random(max) { return Math.floor(Math.random() * max); }
   function shuffled(values) {
@@ -193,14 +225,15 @@
   }
   function resetMoves() {
     tokens = initialTokens();
-    steps = [];
+    steps = []; moves = [];
     undoStack = [];
     chosen = null;
     operation = null;
     nextId = 5;
     render();
   }
-  function start(requestedLevel) {
+  async function start(requestedLevel) {
+    if (loading || active) return;
     const name = cleanName($('player-name').value);
     if (!name || !/^[\p{L}][\p{L}\p{M}\p{N} _'-]*$/u.test(name)) {
       $('level-info').textContent = 'Écris un prénom ou un pseudo de 1 à 18 caractères, sans nom de famille.';
@@ -212,10 +245,25 @@
     }
     player = profiles[key];
     player.name = name;
+    if (!player.id) player.id = crypto.randomUUID();
     currentLevel = Number.isInteger(requestedLevel) && requestedLevel >= 0 && requestedLevel <= player.completed ?
       requestedLevel : Math.min(player.completed,levels.length-1);
+    if (API && !player.synced) currentLevel = 0;
+    loading = true;
+    $('launch').disabled = true;
     clearInterval(timer);
-    draw = newDraw(currentLevel);
+    remoteDraw = false; remoteChallengeId = null;
+    let networkError = false;
+    if (API) {
+      try {
+        const challenge = await request({action:'challenge',playerId:player.id,nickname:player.name,level:currentLevel});
+        draw = {cards:challenge.cards,target:challenge.target,witness:challenge.witness,level:challenge.level};
+        remoteDraw = true; remoteChallengeId = challenge.id;
+        player.completed = challenge.completed; player.points = challenge.points; player.synced = true;
+      } catch (error) { networkError = true; }
+    }
+    if (!remoteDraw) draw = newDraw(currentLevel);
+    loading = false;
     seconds = TOTAL_SECONDS;
     hintUsed = false;
     best = 0;
@@ -228,8 +276,9 @@
     $('series-label').textContent = player.name + ' · Défi ' + (currentLevel + 1) + '/9';
     $('challenge-goal').textContent = 'Étape '+(draw.level+1)+'/9 · '+levels[draw.level].aim;
     resetMoves();
-    showLevel(); showRankings(); persist();
-    say('Choisis un nombre, une opération, puis un autre nombre.');
+    showLevel(); if (API) refreshRankings(); else showRankings(); persist();
+    say(networkError ? 'Défi hors ligne : tu peux jouer, mais ce score ne rejoindra pas le classement de la classe.' :
+      'Choisis un nombre, une opération, puis un autre nombre.',networkError?'error':'');
     timer = setInterval(() => {
       seconds--;
       renderClock();
@@ -256,7 +305,7 @@
       say('Ce calcul doit donner un entier positif. Pour une division, il faut un quotient entier.', 'error');
       return;
     }
-    undoStack.push({tokens:structuredClone(tokens), steps:[...steps], nextId});
+    undoStack.push({tokens:structuredClone(tokens), steps:[...steps], moves:[...moves], nextId});
     let result = {
       id:nextId++, value,
       used:[...first.used,...second.used],
@@ -264,6 +313,7 @@
       expr:'(' + first.expr + ' ' + operation + ' ' + second.expr + ')'
     };
     steps.push(first.value + ' ' + operation + ' ' + second.value + ' = ' + value);
+    moves.push({firstId:first.id,secondId:second.id,op:operation});
     tokens = tokens.filter(x => x.id !== first.id && x.id !== second.id);
     tokens.push(result);
     chosen = null;
@@ -277,7 +327,7 @@
     let raw = mathador ? 18 : 5 + token.ops.reduce((sum, op) => sum + weights[op],0);
     return Math.max(0, raw - (hintUsed ? 2 : 0));
   }
-  function validate() {
+  async function validate() {
     if (!active) return;
     let matches = tokens.filter(x => x.value === draw.target && x.ops.length === levels[currentLevel].steps);
     const required = currentLevel === 0 ? '+' : currentLevel === 1 ? '−' :
@@ -295,10 +345,33 @@
     let token = matches.sort((a,b) => score(b) - score(a))[0];
     best = score(token);
     bestExpression = token.expr;
+    let sharedSaved = false;
+    if (remoteDraw) {
+      clearInterval(timer); timer = null;
+      active = false; render();
+      say('Calcul réussi ! Enregistrement dans le classement de la classe…');
+      try {
+        const result = await request({action:'finish',playerId:player.id,challengeId:remoteChallengeId,moves,hintUsed});
+        best = result.score;
+        player.points = result.points;
+        player.completed = result.completed;
+        sharedSaved = true;
+      } catch (error) {
+        say('Ton calcul est correct, mais le classement de la classe n’a pas reçu ce score.', 'error');
+      }
+      active = true;
+    }
     player.points[currentLevel] = Math.max(player.points[currentLevel] || 0,best);
     player.completed = Math.max(player.completed,currentLevel + 1);
-    persist(); showRankings();
-    finish(best === 18 ? 'Coup Mathador !' : 'Défi réussi ! ' + best + ' points.');
+    persist();
+    if (sharedSaved) refreshRankings();
+    else {
+      $('ranking-title').textContent = 'Top 10 sur cet appareil';
+      $('ranking-note').textContent = 'Ce score est enregistré ici, mais pas encore dans le classement de la classe.';
+      showRankings();
+    }
+    finish((best === 18 ? 'Coup Mathador !' : 'Défi réussi ! ' + best + ' points.') +
+      (API && !sharedSaved ? ' Score conservé sur cet appareil uniquement.' : ''));
     $('next').hidden = player.completed >= levels.length;
     showLevel();
   }
@@ -309,7 +382,7 @@
     $('player-name').disabled = false;
     $('series-label').textContent = player.name + ' · Défi ' + (currentLevel + 1) + '/9 terminé';
     render();
-    say(message + (best ? ' Ton parcours est enregistré sur cet appareil.' : ' Réessaie pour avancer.'), best ? 'success' : '');
+    say(message + (best ? ' Ton parcours est enregistré.' : ' Réessaie pour avancer.'), best ? 'success' : '');
     let solution = $('solution'); solution.replaceChildren();
     let title = document.createElement('strong');
     title.textContent = 'Une solution possible en ' + draw.witness.length + ' calcul' +
@@ -382,7 +455,7 @@
     const last = localStorage.getItem('zoumai-mathador-last-name');
     if (last) $('player-name').value = last;
   } catch (error) {}
-  showLevel(); showRankings();
+  showLevel(); showRankings(); if (API) refreshRankings();
   $('player-name').addEventListener('change', () => {
     const name = cleanName($('player-name').value);
     player = profiles[profileKey(name)] || null;
@@ -399,6 +472,7 @@
     let snapshot = undoStack.pop();
     tokens = snapshot.tokens;
     steps = snapshot.steps;
+    moves = snapshot.moves;
     nextId = snapshot.nextId;
     chosen = null;
     operation = null;
