@@ -3,6 +3,7 @@
   const $ = id => document.getElementById(id);
   const weights = {'+':1, '−':2, '×':1, '÷':3};
   const operations = ['+', '−', '×', '÷'];
+  const allowed = [['+'],['+','−'],['+','×'],['+','×'],['+','×','÷'],['+','−','×'],operations,operations,operations];
   const TOTAL_SECONDS = 240;
   const levels = [
     {name:'Premiers pas',aim:'Une addition suffit.',steps:1,maxCard:6,low:3,high:12},
@@ -15,7 +16,9 @@
     {name:'Cinq cartes',aim:'Utilise les cinq cartes en quatre calculs.',steps:4,maxCard:12,low:18,high:85},
     {name:'Coup Mathador',aim:'Utilise les cinq cartes et les quatre opérations.',steps:4,maxCard:15,low:20,high:99}
   ];
-  let data = [], draw = null, tokens = [], steps = [], undoStack = [];
+  let draw = null, tokens = [], steps = [], undoStack = [];
+  const STORAGE = 'zoumai-mathador-parcours-v1';
+  let profiles = loadProfiles(), player = null, currentLevel = 0;
   let chosen = null, operation = null, nextId = 5, seconds = TOTAL_SECONDS;
   let timer = null, active = false, hintUsed = false, best = 0, bestExpression = '';
 
@@ -32,22 +35,53 @@
     $('feedback').textContent = message;
     $('feedback').className = 'feedback' + (kind ? ' ' + kind : '');
   }
-  function levelFor(series) { return Math.min(8,Math.floor(series/4)); }
-  function showLevel() {
-    let level = levelFor(Number($('serie').value)),profile = levels[level];
-    $('level-info').innerHTML = '<strong>Étape '+(level+1)+'/9 · '+profile.name+'</strong> — '+profile.aim;
+  function loadProfiles() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE) || '{}');
+      return saved && typeof saved === 'object' && !Array.isArray(saved) ? saved : {};
+    } catch (error) { return {}; }
   }
-  function smallNumbers(series,maxCard) {
-    let questions = (data[series] || []).flatMap(fiche => fiche.questions || []);
-    let pool = [];
-    questions.forEach(item => {
-      let match = item.q.match(/^Calcule : (\d+)\s*[×+−÷]\s*(\d+)\s*= \?$/);
-      if (match) [match[1],match[2]].forEach(n => {
-        n = Number(n);
-        if (n >= 1 && n <= maxCard) pool.push(n);
-      });
+  function persist() {
+    try { localStorage.setItem(STORAGE, JSON.stringify(profiles)); } catch (error) {}
+  }
+  function cleanName(value) {
+    return value.trim().replace(/\s+/g,' ').slice(0,18);
+  }
+  function profileKey(name) { return name.toLocaleLowerCase('fr'); }
+  function showLevel() {
+    if (!player) {
+      $('level-info').textContent = 'Entre ton prénom ou un pseudo pour découvrir ton premier défi.';
+      $('journey').replaceChildren();
+      return;
+    }
+    let index = Math.min(player.completed, levels.length - 1), profile = levels[index];
+    $('level-info').textContent = player.name + ' · ' + player.completed + '/9 défis réussis · ' +
+      player.points.reduce((sum,value) => sum + value,0) + ' points · Prochain défi : ' + profile.name + '. ' + profile.aim;
+    const journey = $('journey'); journey.replaceChildren();
+    levels.forEach((stage,i) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'stage' + (i < player.completed ? ' done' : i === index ? ' current' : '');
+      button.textContent = (i < player.completed ? '✓ ' : i > player.completed ? '🔒 ' : '▶ ') +
+        (i + 1) + '. ' + stage.name + (player.points[i] ? ' · ' + player.points[i] + ' pts' : '');
+      button.disabled = i > player.completed || active;
+      button.addEventListener('click',() => start(i));
+      journey.appendChild(button);
     });
-    return pool.length >= 5 ? pool : Array.from({length:Math.min(maxCard,12)},(_,i)=>i+1);
+  }
+  function showRankings() {
+    const list = $('rankings'); list.replaceChildren();
+    const ranking = Object.values(profiles).filter(p => p && typeof p.name === 'string' &&
+      Number.isInteger(p.completed) && Array.isArray(p.points))
+      .map(p => ({name:p.name,completed:p.completed,points:p.points.reduce((sum,n) => sum + (Number(n)||0),0)}))
+      .sort((a,b) => b.completed-a.completed || b.points-a.points || a.name.localeCompare(b.name,'fr')).slice(0,10);
+    if (!ranking.length) { const item = document.createElement('li'); item.textContent = 'Aucun parcours commencé.'; list.appendChild(item); }
+    ranking.forEach(p => {
+      const item = document.createElement('li');
+      item.textContent = p.name + ' · ' + p.completed + '/9 défis';
+      const points = document.createElement('strong'); points.textContent = p.points + ' pts';
+      item.appendChild(points); list.appendChild(item);
+    });
   }
   function findWitness(cards,profile,level) {
     let found = [];
@@ -138,9 +172,9 @@
     {cards:[2,4,6,7,9],target:32,witness:['6 ÷ 2 = 3','4 × 9 = 36','3 + 36 = 39','39 − 7 = 32']},
     {cards:[2,4,6,7,9],target:32,witness:['6 ÷ 2 = 3','4 × 9 = 36','3 + 36 = 39','39 − 7 = 32']}
   ];
-  function newDraw(series) {
-    let level = levelFor(series),profile = levels[level];
-    let pool = smallNumbers(series,profile.maxCard);
+  function newDraw(level) {
+    let profile = levels[level];
+    let pool = Array.from({length:profile.maxCard},(_,i)=>i+1);
     let standard = Array.from({length:Math.min(profile.maxCard,12)},(_,i)=>i+1);
     if (level === 8) standard.push(15);
     for (let attempt = 0; attempt < 180; attempt++) {
@@ -166,21 +200,35 @@
     nextId = 5;
     render();
   }
-  function start() {
+  function start(requestedLevel) {
+    const name = cleanName($('player-name').value);
+    if (!name || !/^[\p{L}][\p{L}\p{M}\p{N} _'-]*$/u.test(name)) {
+      $('level-info').textContent = 'Écris un prénom ou un pseudo de 1 à 18 caractères, sans nom de famille.';
+      $('player-name').focus(); return;
+    }
+    const key = profileKey(name);
+    if (!profiles[key] || !Array.isArray(profiles[key].points)) {
+      profiles[key] = {name,completed:0,points:Array(levels.length).fill(0)};
+    }
+    player = profiles[key];
+    player.name = name;
+    currentLevel = Number.isInteger(requestedLevel) && requestedLevel >= 0 && requestedLevel <= player.completed ?
+      requestedLevel : Math.min(player.completed,levels.length-1);
     clearInterval(timer);
-    let series = Number($('serie').value);
-    draw = newDraw(series);
+    draw = newDraw(currentLevel);
     seconds = TOTAL_SECONDS;
     hintUsed = false;
     best = 0;
     bestExpression = '';
     active = true;
-    $('serie').disabled = true;
+    $('player-name').disabled = true;
+    $('next').hidden = true;
     $('game').hidden = false;
     $('solution').hidden = true;
-    $('series-label').textContent = 'Série ' + (series + 1) + ' · Tirage en cours';
+    $('series-label').textContent = player.name + ' · Défi ' + (currentLevel + 1) + '/9';
     $('challenge-goal').textContent = 'Étape '+(draw.level+1)+'/9 · '+levels[draw.level].aim;
     resetMoves();
+    showLevel(); showRankings(); persist();
     say('Choisis un nombre, une opération, puis un autre nombre.');
     timer = setInterval(() => {
       seconds--;
@@ -231,55 +279,56 @@
   }
   function validate() {
     if (!active) return;
-    let matches = tokens.filter(x => x.value === draw.target);
-    if (!matches.length) { say('Atteins d’abord la cible avec les cartes.', 'error'); return; }
-    let token = matches.sort((a,b) => score(b) - score(a))[0];
-    let points = score(token);
-    if (points > best) {
-      best = points;
-      bestExpression = token.expr;
-      try {
-        let key = 'zoumai-mathador-serie-' + $('serie').value;
-        localStorage.setItem(key,String(Math.max(points,Number(localStorage.getItem(key) || 0))));
-      } catch (error) {}
+    let matches = tokens.filter(x => x.value === draw.target && x.ops.length === levels[currentLevel].steps);
+    if (currentLevel === 0) matches = matches.filter(x => x.ops[0] === '+');
+    if (currentLevel >= 7) matches = matches.filter(x => x.used.length === 5);
+    if (currentLevel === 8) matches = matches.filter(x => operations.every(op => x.ops.includes(op)));
+    if (!matches.length) {
+      say('Atteins la cible en ' + levels[currentLevel].steps + ' calcul' +
+        (levels[currentLevel].steps > 1 ? 's' : '') +
+        (currentLevel === 0 ? ' avec une addition.' : currentLevel >= 7 ? ' avec les cinq cartes.' : '.') , 'error');
+      return;
     }
-    if (points === 18) { finish('Coup Mathador ! Les cinq nombres et les quatre opérations : 18 points.'); return; }
-    resetMoves();
-    say('Solution validée : ' + points + ' points. Recommence ce tirage pour essayer de faire mieux !', 'success');
+    let token = matches.sort((a,b) => score(b) - score(a))[0];
+    best = score(token);
+    bestExpression = token.expr;
+    player.points[currentLevel] = Math.max(player.points[currentLevel] || 0,best);
+    player.completed = Math.max(player.completed,currentLevel + 1);
+    persist(); showRankings();
+    finish(best === 18 ? 'Coup Mathador !' : 'Défi réussi ! ' + best + ' points.');
+    $('next').hidden = player.completed >= levels.length;
+    showLevel();
   }
   function finish(message) {
     if (!active) return;
     active = false;
-    clearInterval(timer);
-    timer = null;
-    $('serie').disabled = false;
-    $('series-label').textContent = 'Série ' + (Number($('serie').value) + 1) + ' · Tirage terminé';
+    clearInterval(timer); timer = null;
+    $('player-name').disabled = false;
+    $('series-label').textContent = player.name + ' · Défi ' + (currentLevel + 1) + '/9 terminé';
     render();
-    say(message + ' Meilleur score : ' + best + ' point' + (best > 1 ? 's' : '') + '.', best ? 'success' : '');
-    let solution = $('solution');
-    solution.replaceChildren();
+    say(message + (best ? ' Ton parcours est enregistré sur cet appareil.' : ' Réessaie pour avancer.'), best ? 'success' : '');
+    let solution = $('solution'); solution.replaceChildren();
     let title = document.createElement('strong');
-    title.textContent = 'Une solution possible en '+draw.witness.length+' calcul'+
-      (draw.witness.length>1?'s':'')+' :';
+    title.textContent = 'Une solution possible en ' + draw.witness.length + ' calcul' +
+      (draw.witness.length > 1 ? 's' : '') + ' :';
     solution.appendChild(title);
     let list = document.createElement('ol');
     draw.witness.forEach(line => {
-      let item = document.createElement('li');
-      item.textContent = line;
-      list.appendChild(item);
+      let item = document.createElement('li'); item.textContent = line; list.appendChild(item);
     });
     solution.appendChild(list);
     if (bestExpression) {
       let personal = document.createElement('p');
-      personal.textContent = 'Ta meilleure expression : ' + bestExpression;
+      personal.textContent = 'Ton calcul : ' + bestExpression;
       solution.appendChild(personal);
     }
     solution.hidden = false;
+    showLevel();
   }
   function render() {
     $('target').textContent = draw.target;
     renderClock();
-    $('best').textContent = 'Meilleur : ' + best + ' point' + (best > 1 ? 's' : '');
+    $('best').textContent = 'Ce défi : ' + best + ' point' + (best > 1 ? 's' : '');
     let box = $('tokens');
     box.replaceChildren();
     tokens.forEach(token => {
@@ -301,7 +350,7 @@
       button.className = 'op' + (operation === op ? ' selected' : '');
       button.textContent = op;
       button.title = (op === '+' ? 'Addition' : op === '−' ? 'Soustraction' : op === '×' ? 'Multiplication' : 'Division') + ' · ' + weights[op] + ' point' + (weights[op] > 1 ? 's' : '');
-      button.disabled = !active;
+      button.disabled = !active || !allowed[currentLevel].includes(op);
       button.addEventListener('click',() => {
         if (chosen === null) { say('Choisis d’abord une carte.', 'error'); return; }
         operation = op;
@@ -323,14 +372,24 @@
     $('give-up').disabled = !active;
     $('instructions').textContent = chosen === null ? 'Choisis un nombre, une opération, puis un autre nombre.' :
       operation === null ? 'Choisis une opération.' : 'Choisis le deuxième nombre.';
-    $('launch').textContent = active ? 'Autre tirage →' : 'Lancer un tirage →';
+    $('launch').disabled = active;
+    $('launch').textContent = player && !active ? 'Rejouer ou continuer →' : 'Commencer mon parcours →';
   }
-  for (let i = 1; i <= 35; i++) $('serie').add(new Option('Série ' + i,i-1));
-  let requested = Number(new URLSearchParams(location.search).get('serie'));
-  if (requested >= 1 && requested <= 35) $('serie').value = requested - 1;
-  $('serie').addEventListener('change',showLevel);
-  showLevel();
-  $('launch').addEventListener('click', start);
+  try {
+    const last = localStorage.getItem('zoumai-mathador-last-name');
+    if (last) $('player-name').value = last;
+  } catch (error) {}
+  showLevel(); showRankings();
+  $('player-name').addEventListener('change', () => {
+    const name = cleanName($('player-name').value);
+    player = profiles[profileKey(name)] || null;
+    showLevel();
+  });
+  $('launch').addEventListener('click', () => {
+    try { localStorage.setItem('zoumai-mathador-last-name',cleanName($('player-name').value)); } catch (error) {}
+    start();
+  });
+  $('next').addEventListener('click', () => start(Math.min(player.completed,levels.length-1)));
   $('validate').addEventListener('click', validate);
   $('undo').addEventListener('click', () => {
     if (!active || !undoStack.length) return;
@@ -351,8 +410,5 @@
     say('Indice : essaie de commencer par « ' + draw.witness[0] + ' ». Ce tirage vaudra 2 points de moins.');
   });
   $('give-up').addEventListener('click', () => finish('Une solution est affichée ci-dessous.'));
-  fetch('calcul-mental-jeux.json').then(response => {
-    if (!response.ok) throw Error('Données indisponibles');
-    return response.json();
-  }).then(json => { if (Array.isArray(json) && json.length === 35) data = json; }).catch(() => {});
+
 })();
