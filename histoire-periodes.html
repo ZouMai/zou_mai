@@ -44,4 +44,5 @@ document.querySelector('#reset').addEventListener('click',()=>{labels.forEach(bu
 document.querySelector('#show').addEventListener('click',e=>{const panel=document.querySelector('#sol');panel.hidden=!panel.hidden;e.currentTarget.setAttribute('aria-expanded',panel.hidden?'false':'true')});
 const credits=document.querySelector('#image-credits-list');images.forEach(item=>{const li=document.createElement('li'),a=document.createElement('a');a.href='https://commons.wikimedia.org/wiki/File:'+encodeURIComponent(item.file);a.target='_blank';a.rel='noopener noreferrer';a.textContent=item.label;li.append(a,document.createTextNode(' — '+item.credit));credits.append(li)});
 updateScore();
-</script><footer class="site-footer"><span>Observer · Situer · Comprendre</span><a class="site-signature" href="apropos.html"><img src="images/logo-zou-mai-sensei.png" alt="Logo Sensei Zou_Mai"></a></footer></body></html>
+</script><footer class="site-footer"><span>Observer · Situer · Comprendre</span><a class="site-signature" href="apropos.html"><img src="images/logo-zou-mai-sensei.png" alt="Logo Sensei Zou_Mai"></a></footer><script src="site-tracking.js" defer></script>
+</body></html>

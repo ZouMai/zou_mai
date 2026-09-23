@@ -23,4 +23,5 @@ document.querySelectorAll('[data-letter]').forEach(b=>b.addEventListener('click'
 const scenarios=['Un camarade a pris le ballon avec lequel tu jouais sans te demander. Propose une manière de le partager.','Pendant un travail d’équipe, quelqu’un t’interrompt plusieurs fois. Propose une règle pour que chacun puisse parler.','Une camarade s’est installée à la place où tu avais posé ton cahier. Cherche une solution sans supposer qu’elle l’a fait exprès.','Pendant la récréation, un élève change les règles au milieu de la partie. Propose une façon de décider ensemble.','Un camarade a ajouté des traits à ton dessin sans te demander. Exprime ton ressenti et une demande précise.','Un élève passe devant toi dans la file de la cantine. Décris le fait sans l’insulter et propose une solution.'];let si=0;
 function drawS(){$('scenarioText').textContent=scenarios[si];$('scenarioHelp').hidden=true;}$('nextScenario').addEventListener('click',()=>{si=(si+1)%scenarios.length;drawS()});$('helpButton').addEventListener('click',()=>{$('scenarioHelp').hidden=!$('scenarioHelp').hidden});drawS();
 })();
-</script></body></html>
+</script><script src="site-tracking.js" defer></script>
+</body></html>

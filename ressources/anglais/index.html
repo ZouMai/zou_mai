@@ -31,4 +31,5 @@ else{caption.textContent='Observe la planche, puis mets en scène le dialogue av
 window.scrollTo({top:0,behavior:'instant'});
 }
 search.addEventListener('input',render);document.getElementById('back').onclick=()=>location.hash='';playAll.onclick=()=>{if(!activeLesson?.audioData||!synth)return;halt();playAll.disabled=true;lineAt(0,token,true);};stop.onclick=()=>{halt();caption.textContent='Lecture arrêtée.';};window.addEventListener('hashchange',show);window.addEventListener('pagehide',halt);if(synth){refreshVoices();synth.addEventListener?.('voiceschanged',refreshVoices);}render();show();
-})();</script></body></html>
+})();</script><script src="../../site-tracking.js" defer></script>
+</body></html>

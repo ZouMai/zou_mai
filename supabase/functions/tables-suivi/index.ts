@@ -90,6 +90,10 @@ Deno.serve(async req => {
     if (action === 'create') {
       const nickname = typeof body.nickname === 'string' ? body.nickname.trim().replace(/\s+/g,' ') : '';
       if (!/^[\p{L}\p{N}][\p{L}\p{N} _-]{0,23}$/u.test(nickname)) return reply({ error: 'Pseudo invalide (24 caractères maximum).' }, 400);
+      const { data: existing, error: existingError } = await db.from('tables_accounts')
+        .select('id').eq('role', 'student').ilike('nickname', nickname).limit(1);
+      if (existingError) throw existingError;
+      if (existing?.length) return reply({ error: 'Ce prénom existe déjà. Ajoute une initiale pour le distinguer.' }, 409);
       const { count, error: countError } = await db.from('tables_accounts').select('id', { count: 'exact', head: true }).eq('role','student').eq('active',true);
       if (countError) throw countError;
       if ((count || 0) >= 40) return reply({ error: 'Limite de comptes atteinte.' }, 400);
