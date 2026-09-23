@@ -27,20 +27,20 @@ const data=[
 {label:'1789 · Révolution française',target:'mod-con',kind:'date'}
 ];
 const images=[
-{label:'Dame de Brassempouy',type:'Œuvre',target:'pre',file:'MAN - St de Brassempouy - Dame de Brassempouy.jpg',credit:'Cangadoba · CC BY-SA 4.0'},
-{label:'Dolmen de Crucuno',type:'Monument',target:'pre',file:'Crucuno dolmen.jpg',credit:'Myrabella · CC BY-SA (voir la fiche)'},
+{label:'Peintures de Lascaux',type:'Œuvre',target:'pre',file:'Scene from one of the cave walls at Lascaux Wellcome M0011681.jpg',credit:'Wellcome Library · CC BY 4.0'},
+{label:'Entrée de la grotte de Lascaux',type:'Site',target:'pre',file:'Lascaux entrance.jpg',credit:'Ethan Doyle White · CC BY-SA 3.0'},
 {label:'Ötzi (reconstitution)',type:'Personne',target:'pre',file:'Otzi-Quinson.jpg',credit:'Wikimedia Commons · CC BY-SA 3.0'},
-{label:'Mosaïque d’Alexandre',type:'Œuvre',target:'ant',file:'Alexander Mosaic detail of Alexander the Great.jpg',credit:'Domaine public'},
-{label:'Pont du Gard',type:'Monument',target:'ant',file:'Pont du Gard (01).jpg',credit:'Tournasol7 / Krzysztof Golik · CC BY-SA 4.0'},
-{label:'L’empereur Hadrien (buste)',type:'Personnage',target:'ant',file:'Hadrian bust.jpg',credit:'ChrisO · CC BY-SA 3.0'},
+{label:'Buste de Néfertiti',type:'Œuvre',target:'ant',file:'Nefertiti bust (front).jpg',credit:'Magnus Manske · CC BY-SA 3.0'},
+{label:'Pyramides de Gizeh',type:'Monument',target:'ant',file:'Pyramids of Giza.jpg',credit:'Ireneusz Jerzy Borysiewicz · CC BY-SA 4.0'},
+{label:'Jules César (buste)',type:'Personnage',target:'ant',file:'Julius Caesar Bust.jpg',credit:'Frachet · CC BY-SA 3.0'},
 {label:'Tapisserie de Bayeux (détail)',type:'Œuvre',target:'moy',file:'Tapestry by unknown weaver - The Bayeux Tapestry (detail) - WGA24163.jpg',credit:'Domaine public'},
-{label:'Cathédrale Sainte-Cécile d’Albi',type:'Monument',target:'moy',file:'CathedraleSteCecile-Albi.jpg',credit:'Alma Mulalic et Yann Fauché · CC BY-SA 3.0'},
-{label:'Aliénor d’Aquitaine (gisant)',type:'Personnage',target:'moy',file:"Gisant de l'Abbaye de Fontevraud DSC 1778.jpg",credit:'GuyFrancis · licence sur la fiche'},
-{label:'Le Tricheur à l’as de carreau',type:'Œuvre',target:'mod',file:"Le Tricheur à l'as de carreau - Georges de La Tour - Musée du Louvre Peintures RF 1972 8.jpg",credit:'Georges de La Tour · domaine public'},
-{label:'Observatoire de Paris',type:'Monument',target:'mod',file:'Observatoire de Paris.jpg',credit:'Stéphane Touraine · CC BY-SA 3.0'},
-{label:'Émilie du Châtelet (portrait)',type:'Personnage',target:'mod',file:'Emilie Chatelet portrait by Latour.jpg',credit:'Domaine public'},
-{label:'Les Raboteurs de parquet',type:'Œuvre',target:'con',file:'Gustave Caillebotte - Les raboteurs de parquet.jpg',credit:'Gustave Caillebotte · domaine public'},
-{label:'Viaduc de Millau',type:'Monument',target:'con',file:'Vue sur le viaduc de Millau depuis Peyre.JPG',credit:'Daniel Culsan · CC BY-SA 4.0'},
+{label:'Cité de Carcassonne',type:'Monument',target:'moy',file:'Cité de Carcassonne – Vue depuis le Pont-Vieux.jpg',credit:'Lynx1211 · CC BY-SA 4.0'},
+{label:'Charlemagne (portrait postérieur)',type:'Personnage',target:'moy',file:'Charlemagne-by-Durer.jpg',credit:'Albrecht Dürer · domaine public'},
+{label:'La Joconde',type:'Œuvre',target:'mod',file:'Mona Lisa.jpg',credit:'Léonard de Vinci · domaine public'},
+{label:'Château de Versailles',type:'Monument',target:'mod',file:'Versailles-Chateau-FacadeJardin.jpg',credit:'Jean-Christophe Benoist · CC BY-SA 3.0'},
+{label:'Louis XIV (portrait)',type:'Personnage',target:'mod',file:'Hyacinthe Rigaud - Louis XIV, roi de France (1638-1715).jpg',credit:'Hyacinthe Rigaud · domaine public'},
+{label:'La Liberté guidant le peuple',type:'Œuvre',target:'con',file:'Eugène Delacroix - La liberté guidant le peuple.jpg',credit:'Eugène Delacroix · domaine public'},
+{label:'Tour Eiffel',type:'Monument',target:'con',file:'Tour eiffel.jpg',credit:'Piloudu92 · CC0'},
 {label:'Marie Curie (photographie)',type:'Personnage',target:'con',file:'Marie Curie 1903.jpg',credit:'Fondation Nobel · domaine public'}
 ];
 data.push(...images);
@@ -58,4 +58,3 @@ document.querySelector('#show').addEventListener('click',e=>{const panel=documen
 const credits=document.querySelector('#image-credits-list');images.forEach(item=>{const li=document.createElement('li'),a=document.createElement('a');a.href='https://commons.wikimedia.org/wiki/File:'+encodeURIComponent(item.file);a.target='_blank';a.rel='noopener noreferrer';a.textContent=item.label;li.append(a,document.createTextNode(' — '+item.credit));credits.append(li)});
 updateScore();
 </script><footer class="site-footer"><span>Observer · Situer · Comprendre</span><a class="site-signature" href="apropos.html"><img src="images/logo-zou-mai-sensei.png" alt="Logo Sensei Zou_Mai"></a></footer></body></html>
-
