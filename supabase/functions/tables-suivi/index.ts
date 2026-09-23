@@ -85,14 +85,12 @@ Deno.serve(async req => {
       if (error) throw error;
       return reply({ nickname, code: raw.toUpperCase().match(/.{1,4}/g)?.join('-') });
     }
-    if (action === 'revoke' || action === 'delete') {
+    if (action === 'revoke') {
       if (typeof body.studentId !== 'string' || !/^[0-9a-f-]{36}$/i.test(body.studentId)) return reply({ error: 'Compte invalide.' }, 400);
-      const target = db.from('tables_accounts');
-      const { error } = action === 'delete'
-        ? await target.delete().eq('id', body.studentId).eq('role', 'student')
-        : await target.update({ active: false }).eq('id', body.studentId).eq('role', 'student');
+      const { error } = await db.from('tables_accounts').update({ active: false })
+        .eq('id', body.studentId).eq('role', 'student');
       if (error) throw error;
-      return reply({ [action === 'delete' ? 'deleted' : 'revoked']: true });
+      return reply({ revoked: true });
     }
     if (action === 'class') {
       const { data: pupils, error } = await db.from('tables_accounts').select('id,nickname,active,created_at')
