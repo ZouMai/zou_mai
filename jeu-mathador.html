@@ -9,13 +9,13 @@
 <style>
 :root{--ink:#17223a;--blue:#343cc4;--yellow:#ffcf49;--green:#078768;--paper:#f5f1e7}
 *{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 15% 15%,#d5e8fe,transparent 35%),radial-gradient(circle at 85% 80%,#d4f6ec,transparent 35%),var(--paper);color:var(--ink);font:16px/1.45 system-ui,Arial,sans-serif}
-button,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.5;cursor:default}button:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #ed6734;outline-offset:3px}
+button,input{font:inherit}button{cursor:pointer}button:disabled{opacity:.5;cursor:default}button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid #ed6734;outline-offset:3px}
 .wrap{width:min(960px,94vw);margin:auto;padding:22px 0 70px}.top{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}.top a{color:#24368a;font-weight:850}
 .hero{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:30px 0}.hero img{width:100px;height:130px;object-fit:contain;filter:drop-shadow(0 12px 12px #1f436344)}.kicker{font-size:.75rem;font-weight:900;letter-spacing:.13em;text-transform:uppercase;color:#4d5390}
 h1{font-size:clamp(2.3rem,7vw,4.6rem);line-height:.97;letter-spacing:-.05em;margin:8px 0 14px}h2{margin:0 0 13px;font-size:1.4rem}.hero p{margin:0;max-width:660px;font-weight:650}
 .panel{background:#fff;border:2px solid #dfe4ef;border-radius:22px;padding:clamp(18px,3vw,28px);box-shadow:0 12px 32px #18284416;margin:17px 0}
 .rules{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 20px;padding-left:20px}.rules li{padding-right:8px}
-.setup{display:flex;align-items:end;gap:12px;flex-wrap:wrap}.setup label{display:grid;gap:5px;font-weight:800}select{padding:11px 15px;border:2px solid #aab9de;border-radius:11px;background:#fff;min-width:145px}
+.setup{display:flex;align-items:end;gap:12px;flex-wrap:wrap}.setup label{display:grid;gap:5px;font-weight:800}input{padding:11px 15px;border:2px solid #aab9de;border-radius:11px;background:#fff;min-width:145px}
 .primary,.secondary{border:0;border-radius:12px;padding:12px 17px;font-weight:850}.primary{color:white;background:var(--blue);box-shadow:0 4px 0 #202a8b}.secondary{color:#263588;background:#edf0fd;border:1px solid #b7c4e8}.primary:hover:not(:disabled),.secondary:hover:not(:disabled){filter:brightness(1.08)}
 .game-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.stat{padding:7px 12px;border-radius:50px;background:#edf1ff;font-weight:900}
 .target{font-size:clamp(4rem,13vw,7rem);font-weight:1000;line-height:1;color:var(--blue);text-align:center;margin:8px 0 24px}
@@ -24,19 +24,20 @@ h1{font-size:clamp(2.3rem,7vw,4.6rem);line-height:.97;letter-spacing:-.05em;marg
 .instructions{font-weight:750;color:#4e5a70}.steps{margin:12px 0 0;padding-left:24px;font-weight:750}.steps li{padding:3px 0}.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:22px}.feedback{margin:15px 0 0;padding:12px 15px;border-radius:12px;background:#eaf1ff;color:#24316d;font-weight:800;min-height:48px}.feedback.success{background:#dcf8eb;color:#075f46}.feedback.error{background:#fff0e3;color:#8c390c}
 .solution{margin-top:16px;padding:17px;border-left:5px solid var(--green);background:#e6f8f0}.solution ol{margin-bottom:0}.fine{color:#526072;font-size:.82rem}.fine a{color:#233a96}
 .level-note{flex-basis:100%;padding:11px 14px;border-radius:12px;background:#e9f5ee;color:#145548;font-weight:800}.level-note strong{color:#0e4f72}.goal{flex-basis:100%;color:#2b4a73;font-weight:850}
-@media(max-width:600px){.rules{grid-template-columns:1fr}.hero img{width:72px;height:95px}.token{min-width:61px;min-height:61px}.target{margin:6px 0 15px}.panel{border-radius:17px}}
+.journey{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:15px}.stage{border:2px solid #d5def1;border-radius:12px;padding:10px;background:#f8faff;text-align:left;font-weight:750}.stage.current{border-color:#343cc4;background:#edf0ff}.stage.done{border-color:#17a47e;background:#e7f9ef}.stage:disabled{opacity:.6}.rankings{padding-left:28px}.rankings li{padding:7px;border-bottom:1px solid #e3e9f2}.rankings strong{float:right}.notice{color:#704a16;background:#fff4dc;border-radius:10px;padding:10px}
+@media(max-width:600px){.rules,.journey{grid-template-columns:1fr}.hero img{width:72px;height:95px}.token{min-width:61px;min-height:61px}.target{margin:6px 0 15px}.panel{border-radius:17px}}
 </style>
 </head>
 <body>
 <main class="wrap">
 <header class="top"><a href="calcul-mental-series.html">← Arcade du calcul</a><a href="maths-lecons-cm2.html">Leçons de maths</a></header>
-<div class="hero"><div><span class="kicker">Zou Maï · Défi de calcul mental</span><h1>LE NOMBRE CIBLE</h1><p>Commence par des tirages très simples, puis avance doucement vers des calculs plus malins. Chaque série te propose un défi à ta portée.</p></div><img src="images/loup-bleu-original.png" alt="Le loup bleu de Zou Maï"></div>
+<div class="hero"><div><span class="kicker">Zou Maï · Défi de calcul mental</span><h1>LE NOMBRE CIBLE</h1><p>Ton propre parcours : une addition pour commencer, puis de nouveaux calculs dès le défi suivant.</p></div><img src="images/loup-bleu-original.png" alt="Le loup bleu de Zou Maï"></div>
 <section class="panel" aria-labelledby="regles"><h2 id="regles">Comment jouer ?</h2>
 <ol class="rules"><li>Atteins le nombre cible avec tout ou partie des <strong>cinq nombres</strong>. Au début, une seule addition peut suffire.</li><li>Chaque carte ne sert qu’une fois. Combine deux cartes, puis réutilise le résultat.</li><li>Les opérations donnent des points : <strong>+ 1, − 2, × 1, ÷ 3</strong>. Atteindre la cible donne 5 points.</li><li>Plus tard, avec les cinq nombres et les quatre opérations différentes, essaie le <strong>coup Mathador : 18 points</strong>.</li></ol>
 <p class="fine">Quatre minutes par tirage. Seuls les résultats intermédiaires entiers positifs sont acceptés. Ce jeu Zou Maï est indépendant du <a href="https://www.mathador.fr/" target="_blank" rel="noopener noreferrer">jeu officiel Mathador ↗</a>.</p></section>
-<section class="panel setup"><label for="serie">Série de calcul mental<select id="serie" aria-label="Choisir une série"></select></label><button class="primary" id="launch" type="button">Lancer un tirage →</button><span class="fine">Un nouveau tirage à cinq nombres pour t’entraîner pendant cette série.</span><div class="level-note" id="level-info" aria-live="polite"></div></section>
+<section class="panel setup"><label for="player-name">Ton prénom ou ton pseudo<input id="player-name" maxlength="18" autocomplete="nickname" placeholder="Ex. : Lou"></label><button class="primary" id="launch" type="button">Commencer mon parcours →</button><span class="fine">Utilise toujours le même prénom ou pseudo sur cet appareil pour retrouver ton parcours. N’écris pas ton nom de famille.</span><div class="level-note" id="level-info" aria-live="polite"></div><div id="journey" class="journey" aria-label="Étapes du parcours"></div></section>
 <section class="panel" id="game" hidden aria-label="Tirage Mathador">
-<div class="game-head"><strong id="series-label"></strong><span class="stat" id="clock" role="timer">04:00</span><span class="stat" id="best">Meilleur : 0 point</span><span class="goal" id="challenge-goal"></span></div>
+<div class="game-head"><strong id="series-label"></strong><span class="stat" id="clock" role="timer">04:00</span><span class="stat" id="best">Score du défi : 0 point</span><span class="goal" id="challenge-goal"></span></div>
 <p class="caption">Nombre cible</p><div class="target" id="target"></div>
 <p class="caption">Cartes disponibles</p><div class="tokens" id="tokens"></div>
 <p class="instructions" id="instructions">Choisis un nombre, une opération, puis un autre nombre.</p>
@@ -44,7 +45,9 @@ h1{font-size:clamp(2.3rem,7vw,4.6rem);line-height:.97;letter-spacing:-.05em;marg
 <p class="caption">Tes calculs</p><ol class="steps" id="steps"></ol>
 <div class="actions"><button class="primary" type="button" id="validate">Valider la cible</button><button class="secondary" type="button" id="undo">Annuler le dernier calcul</button><button class="secondary" type="button" id="reset">Recommencer ce tirage</button><button class="secondary" type="button" id="hint">Un indice (−2 points)</button><button class="secondary" type="button" id="give-up">Voir une solution</button></div>
 <p class="feedback" id="feedback" role="status" aria-live="polite">À toi de jouer !</p><div class="solution" id="solution" hidden></div>
+<button class="primary" type="button" id="next" hidden>Défi suivant →</button>
 </section>
+<section class="panel"><h2>Top 10 sur cet appareil</h2><p class="notice">Ce classement réunit les parcours enregistrés sur cet appareil. Le classement commun à toute la classe sera disponible une fois le service de partage connecté.</p><ol class="rankings" id="rankings"></ol></section>
 </main>
 <script src="jeu-mathador.js" defer></script>
 </body></html>
