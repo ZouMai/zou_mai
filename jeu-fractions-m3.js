@@ -92,29 +92,74 @@
         throw new Error('Réponses incohérentes pour '+q.prompt+' ('+q.n+'/'+q.d+')');
       }
     }
+    const forms = ['bar','circle','chocolate'];
+    tasks.forEach((q,i) => { q.form = forms[i % forms.length]; });
     return tasks;
   }
-  function drawUnit(n,d) {
+  function drawUnit(n,d,form = 'bar') {
     let box = $('visual');
     box.replaceChildren();
     let label = document.createElement('span');
     label.className = 'unit-label';
-    label.textContent = '1 UNITÉ';
+    label.textContent = '1 UNITÉ · '+({bar:'bande',circle:'disque',chocolate:'tablette'}[form] || 'bande');
     box.appendChild(label);
-    let bar = document.createElement('div');
-    bar.className = 'unit-bar';
-    bar.style.gridTemplateColumns = 'repeat('+d+', minmax(0, 1fr))';
-    bar.setAttribute('role','img');
-    bar.setAttribute('aria-label','Une unité partagée en '+d+' parts égales, dont '+n+' colorées');
-    for (let i = 0; i < d; i++) {
-      let part = document.createElement('span');
-      part.className = 'unit-part'+(i < n?' filled':'');
-      bar.appendChild(part);
+    const description = 'Une unité partagée en '+d+' parts égales, dont '+n+' colorées';
+    if (form === 'circle') {
+      const ns = 'http://www.w3.org/2000/svg';
+      let svg = document.createElementNS(ns,'svg');
+      svg.setAttribute('viewBox','0 0 200 200');
+      svg.setAttribute('class','unit-circle');
+      svg.setAttribute('role','img');
+      svg.setAttribute('aria-label',description);
+      const point = angle => ({
+        x:(100+82*Math.cos(angle)).toFixed(3),
+        y:(100+82*Math.sin(angle)).toFixed(3)
+      });
+      for (let i = 0; i < d; i++) {
+        let from = point(-Math.PI/2+2*Math.PI*i/d);
+        let to = point(-Math.PI/2+2*Math.PI*(i+1)/d);
+        let sector = document.createElementNS(ns,'path');
+        sector.setAttribute('d','M 100 100 L '+from.x+' '+from.y+' A 82 82 0 0 1 '+to.x+' '+to.y+' Z');
+        sector.setAttribute('class','unit-sector'+(i<n?' filled':''));
+        svg.appendChild(sector);
+      }
+      let outline = document.createElementNS(ns,'circle');
+      outline.setAttribute('cx','100');
+      outline.setAttribute('cy','100');
+      outline.setAttribute('r','82');
+      outline.setAttribute('class','unit-outline');
+      svg.appendChild(outline);
+      box.appendChild(svg);
+    } else if (form === 'chocolate') {
+      let tablet = document.createElement('div');
+      tablet.className = 'unit-chocolate';
+      let columns = d === 4 ? 2 : d === 6 ? 3 : d === 8 ? 4 : d;
+      tablet.style.gridTemplateColumns = 'repeat('+columns+', minmax(0, 1fr))';
+      tablet.style.gridTemplateRows = 'repeat('+(d/columns)+', minmax(0, 1fr))';
+      tablet.setAttribute('role','img');
+      tablet.setAttribute('aria-label',description);
+      for (let i = 0; i < d; i++) {
+        let piece = document.createElement('span');
+        piece.className = 'choc-part'+(i<n?' filled':'');
+        tablet.appendChild(piece);
+      }
+      box.appendChild(tablet);
+    } else {
+      let bar = document.createElement('div');
+      bar.className = 'unit-bar';
+      bar.style.gridTemplateColumns = 'repeat('+d+', minmax(0, 1fr))';
+      bar.setAttribute('role','img');
+      bar.setAttribute('aria-label',description);
+      for (let i = 0; i < d; i++) {
+        let part = document.createElement('span');
+        part.className = 'unit-part'+(i<n?' filled':'');
+        bar.appendChild(part);
+      }
+      box.appendChild(bar);
     }
-    box.appendChild(bar);
     let caption = document.createElement('div');
     caption.className = 'unit-caption';
-    caption.textContent = 'Tout le rectangle entouré en doré représente une unité.';
+    caption.textContent = 'La forme entière entourée en doré représente une unité.';
     box.appendChild(caption);
   }
   function show() {
@@ -124,7 +169,7 @@
     $('score').textContent = '★ '+points+' point'+(points > 1?'s':'');
     $('barProgress').style.width = index/deck.length*100+'%';
     $('question').textContent = q.prompt;
-    drawUnit(q.n,q.d);
+    drawUnit(q.n,q.d,q.form);
     let choices = $('choices');
     choices.replaceChildren();
     q.options.forEach(option => {
