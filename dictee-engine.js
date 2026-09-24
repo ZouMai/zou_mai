@@ -502,7 +502,13 @@
 <section class="levels">${colors.map((c, n) => `<button class="level ${c} ${n === 0 ? "active" : ""}" data-l="${n}">${levelLabels[n].toUpperCase()}</button>`).join("")}</section>
 <div class="status"><span class="pill" id="levelName">Niveau jaune</span><span class="pill" id="score">0 réussite</span><div class="progress"><span id="progressFill"></span></div></div>
 <section class="missions"><button class="study-tab active" id="study">📚<b>Revoir les mots</b><span>Mémoriser et zoomer</span></button><button class="mission" data-m="flash">👁️<b>Mot éclair</b><span>Observer puis écrire</span></button><button class="mission" data-m="transform">🔄<b>Je transforme</b><span>Pluriels, accords, présent</span></button><button class="mission" data-m="choice">🎯<b>Je choisis</b><span>Groupes et terminaisons</span></button><button class="mission" data-m="dictation">🎧<b>Mots dictés</b><span>Écouter puis écrire</span></button><button class="mission" data-m="reverse">↩️<b>Bonus à l’envers</b><span>De la fin au début</span></button><button class="study-tab" id="review">⭐<b>Mes mots à revoir</b><span>Mes erreurs</span></button></section>
-<section class="game" id="game"></section></section>`;
+<section class="game" id="game"></section></section>
+<div class="totoro-celebration" id="totoroCelebration" hidden>
+  <div class="totoro-dialog" role="dialog" aria-modal="true" aria-label="Je te félicite ! Trois mots à l’envers réussis.">
+    <button class="totoro-close" id="totoroClose" type="button" aria-label="Fermer la félicitation">×</button>
+    <img src="images/totoro-felicitations.png" alt="Totoro te montre du doigt et dit : Je te félicite !" width="1374" height="1145">
+  </div>
+</div>`;
 
   if (!document.querySelector('link[href="zoumai-brand.css"]')) {
     const css=document.createElement('link');css.rel='stylesheet';css.href='zoumai-brand.css';document.head.append(css);
@@ -512,6 +518,30 @@
     const pic=document.createElement('img');pic.src='images/logo-zou-mai-sensei.png';pic.alt='Logo Sensei Zou_Maï';badge.append(pic);document.body.append(badge);
   }
   const game = document.querySelector("#game");
+  const totoroOverlay = document.querySelector("#totoroCelebration"),
+    totoroClose = document.querySelector("#totoroClose");
+  let previousFocus = null;
+  function hideTotoro() {
+    totoroOverlay.hidden = true;
+    if (previousFocus?.isConnected) previousFocus.focus();
+  }
+  function showTotoro() {
+    previousFocus = document.activeElement;
+    totoroOverlay.hidden = false;
+    totoroClose.focus();
+  }
+  totoroClose.onclick = hideTotoro;
+  totoroOverlay.onclick = (e) => {
+    if (e.target === totoroOverlay) hideTotoro();
+  };
+  document.addEventListener("keydown", (e) => {
+    if (totoroOverlay.hidden) return;
+    if (e.key === "Escape") hideTotoro();
+    if (e.key === "Tab") {
+      e.preventDefault();
+      totoroClose.focus();
+    }
+  });
   function fileFor(n) {
     const names = [
       "grottes",
@@ -574,6 +604,9 @@
   function check() {
     const inp = document.querySelector("#inp"),
       f = document.querySelector("#feed");
+    if (inp.disabled) return;
+    inp.disabled = true;
+    document.querySelector("#check").disabled = true;
     if (acceptedAnswers.some((expected) => same(inp.value, expected))) {
       points++;
       f.className = "feedback ok";
@@ -584,7 +617,7 @@
       f.textContent = "La réponse complète était : " + answer;
     }
     updateStatus();
-    setTimeout(next, 950);
+    timer = setTimeout(next, 950);
   }
   function start() {
     clearTimeout(timer);
@@ -671,9 +704,7 @@
         reverse(w),
         false,
         original,
-        [fullReverse, reverseWithDeterminer, original, clean(w)].filter(
-          Boolean,
-        ),
+        [fullReverse, reverseWithDeterminer].filter(Boolean),
       );
       game
         .querySelector(".prompt")
@@ -702,6 +733,8 @@
     document.querySelector("#progressFill").style.width = "100%";
     game.innerHTML = `<h2>MISSION TERMINÉE</h2><p class="result">${points} / ${queue.length}</p><p>${points === queue.length ? "Mission parfaite !" : "Les erreurs sont conservées dans « Mes mots à revoir »."}</p><button class="action" id="again">REJOUER</button>`;
     document.querySelector("#again").onclick = start;
+    if (mode === "reverse" && queue.length === 3 && points === 3)
+      showTotoro();
   }
   function difficultyMarkup(word) {
     const chars = [...word],
