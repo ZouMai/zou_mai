@@ -14,7 +14,7 @@
 .feedback{min-height:52px;font-size:1.25rem;font-weight:900;margin:22px 0 0}.ok{color:var(--good)}.no{color:var(--bad)}.score{font-size:3.2rem;font-weight:1000;margin:18px}.hidden{display:none}
 @media(max-width:520px){.wrap{padding:14px}.card{padding:22px 14px}.logo{width:64px;height:64px}.choices button{padding:12px 24px}}
 </style>
-</head>
+<style>.perfect-pop{position:fixed;inset:0;z-index:9999;background:rgba(255,255,255,.94);display:flex;align-items:center;justify-content:center;flex-direction:column;padding:18px;text-align:center}.perfect-pop img{width:min(72vw,620px);max-height:62vh;object-fit:contain;filter:drop-shadow(0 14px 18px rgba(0,0,0,.22));animation:perfectIn .5s cubic-bezier(.2,1.5,.4,1)}.perfect-bubble{font:1000 clamp(2rem,7vw,5rem)/1 system-ui;background:#fff;border:5px solid #182033;border-radius:35px;padding:18px 28px;box-shadow:8px 8px 0 #182033;margin-bottom:12px;transform:rotate(-2deg)}.perfect-pop button{margin-top:12px;border:3px solid #182033;border-radius:16px;background:#fff;padding:10px 20px;font-weight:900;font-size:1.1rem;cursor:pointer}@keyframes perfectIn{from{transform:scale(.25) rotate(-10deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}</style></head>
 <body><main class="wrap">
 <div class="top"><a class="back" href="ressources.html#fr">← Français</a><img class="logo" src="images/loup-bleu-original.png" alt="Zoumaï"></div>
 <section class="card">
@@ -41,6 +41,14 @@ function renderWord(raw){const p=raw.split("__");return p[0]+'<span class="blank
 function start(){deck=[...items].sort(()=>Math.random()-.5);i=0;points=0;locked=false;document.getElementById("end").classList.add("hidden");document.getElementById("game").classList.remove("hidden");show()}
 function show(){locked=false;const x=deck[i];word.innerHTML=renderWord(x[0]);counter.textContent=(i+1)+" / "+deck.length;bar.style.width=(i/deck.length*100)+"%";feedback.textContent="";feedback.className="feedback"}
 function answer(v){if(locked)return;locked=true;const x=deck[i];if(v===x[1]){points++;feedback.textContent="✓ Bravo ! "+x[2];feedback.className="feedback ok"}else{feedback.textContent="✗ Regarde bien : "+x[2];feedback.className="feedback no"}setTimeout(()=>{i++;if(i<deck.length)show();else finish()},850)}
-function finish(){bar.style.width="100%";game.classList.add("hidden");end.classList.remove("hidden");score.textContent=points+" / "+deck.length;message.textContent=points===20?"Parfait ! Tu maîtrises S et SS !":points>=16?"Très bien ! Encore un petit entraînement pour être imbattable.":"Rejoue : tu vas vite progresser !"}
+function finish(){bar.style.width="100%";game.classList.add("hidden");end.classList.remove("hidden");score.textContent=points+" / "+deck.length;if(points===deck.length)setTimeout(zoumaiPerfect,250);message.textContent=points===20?"Parfait ! Tu maîtrises S et SS !":points>=16?"Très bien ! Encore un petit entraînement pour être imbattable.":"Rejoue : tu vas vite progresser !"}
 start();
+</script><script>
+function zoumaiPerfect(){
+ const msgs=["BRAVO !","PARFAIT !","TROP FORT !","100 % RÉUSSI !","INCROYABLE !","TU AS TOUT RÉUSSI !","FÉLICITATIONS !","GÉNIAL !"];
+ const box=document.createElement("div");box.className="perfect-pop";
+ const tilt=[-5,-3,0,3,5][Math.floor(Math.random()*5)];
+ box.innerHTML='<div class="perfect-bubble">'+msgs[Math.floor(Math.random()*msgs.length)]+'</div><img src="images/totoro-felicitations.png" alt="Totoro te félicite" style="transform:rotate('+tilt+'deg)"><button>CONTINUER</button>';
+ box.querySelector("button").onclick=()=>box.remove();document.body.appendChild(box);
+}
 </script></body></html>
