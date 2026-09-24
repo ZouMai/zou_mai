@@ -122,8 +122,8 @@ function methodVisual(id){
     const dx=(leftBottom-rightTop)*SIZE;
     const fixed=[[leftBottom,bottom],[leftTop,top],[rightTop,top],[rightTop,bottom]];
     const moving=[[rightTop,top],[rightBottom,bottom],[rightTop,bottom]];
-    pieces=`<rect x="${leftBottom*SIZE}" y="${top*SIZE}" width="${(rightTop-leftBottom)*SIZE}" height="${(bottom-top)*SIZE}" fill="none" stroke="#b45326" stroke-width="2" stroke-dasharray="5 4"/><polygon points="${poly(fixed)}" fill="${color}" fill-opacity=".75" stroke="${color}" stroke-width="2"/><polygon points="${poly(moving)}" fill="#f2a944" stroke="#ad6020" stroke-width="2"><animateTransform attributeName="transform" type="translate" from="0 0" to="${dx} 0" dur="1.2s" begin="0s" fill="freeze"/></polygon>`;
-    text='La pointe de droite rejoint celle de gauche : elles forment une bande rectangulaire.';
+    pieces=`<rect x="${leftBottom*SIZE}" y="${top*SIZE}" width="${(rightTop-leftBottom)*SIZE}" height="${(bottom-top)*SIZE}" fill="none" stroke="#b45326" stroke-width="2" stroke-dasharray="5 4"/><polygon points="${poly(fixed)}" fill="${color}" fill-opacity=".75" stroke="${color}" stroke-width="2"/><g><animateTransform attributeName="transform" type="translate" from="0 0" to="${dx} ${(top+bottom)*SIZE}" dur="1.2s" begin="0s" fill="freeze"/><g><animateTransform attributeName="transform" type="scale" from="1 1" to="1 -1" dur="1.2s" begin="0s" fill="freeze"/><polygon points="${poly(moving)}" fill="#f2a944" stroke="#ad6020" stroke-width="2"/></g></g>`;
+    text='La pointe de droite se retourne, puis rejoint celle de gauche pour former une bande rectangulaire.';
   }else if(shape.method==='diamondBox'){
     const xs=shape.points.map(p=>p[0]),ys=shape.points.map(p=>p[1]);const x=Math.min(...xs),y=Math.min(...ys),w=Math.max(...xs)-x,h=Math.max(...ys)-y;
     pieces=`${shapeBody(id,color)}<rect x="${x*SIZE}" y="${y*SIZE}" width="${w*SIZE}" height="${h*SIZE}" fill="none" stroke="#b45326" stroke-width="2" stroke-dasharray="5 4"/>`;
