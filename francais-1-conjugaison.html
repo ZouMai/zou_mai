@@ -52,26 +52,26 @@ const simple=[
 {sentence:'Sur la table repose un étrange coffret.',verbs:['repose'],parts:['repose'],explanation:'Le sujet « un étrange coffret » est placé après le verbe.'},
 {sentence:'Depuis hier, le chat a disparu.',verbs:['a disparu'],parts:['a','disparu'],explanation:'Au passé composé, « a » est l’auxiliaire et « disparu » le participe passé.'},
 {sentence:'Où sont passés les voyageurs ?',verbs:['sont passés'],parts:['sont','passés'],explanation:'Cette question place le sujet après les deux mots du verbe au passé composé.'},
-{sentence:'La nuit dernière, les orages ont surpris les campeurs.',verbs:['ont surpris'],parts:['ont','surpris'],explanation:'« Ont » et « surpris » forment ensemble le verbe au passé composé.'},
+{sentence:'Demain soir, les orages surprendront peut-être les campeurs.',verbs:['surprendront'],parts:['surprendront'],explanation:'« Demain soir » indique le moment ; « surprendront » est au futur.'},
 {sentence:'Près du phare brillait une lumière inconnue.',verbs:['brillait'],parts:['brillait'],explanation:'« Brillait » est à l’imparfait ; le sujet « une lumière inconnue » suit le verbe.'},
-{sentence:'Quels indices les chercheurs avaient-ils trouvés ?',verbs:['avaient trouvés'],parts:['avaient','trouvés'],explanation:'Dans « avaient-ils », touche « avaient » et « trouvés » : « -ils » reprend le sujet, ce n’est pas le verbe.'},
-{sentence:'Les affiches ne sont pas tombées malgré le vent.',verbs:['sont tombées'],parts:['sont','tombées'],explanation:'La négation sépare « sont » et « tombées », qui forment le passé composé.'},
+{sentence:'Quels indices les chercheurs trouvent-ils près du lac ?',verbs:['trouvent'],parts:['trouvent'],explanation:'Dans « trouvent-ils », touche seulement « trouvent » : « -ils » reprend le sujet.'},
+{sentence:'Les affiches ne tombent pas malgré le vent.',verbs:['tombent'],parts:['tombent'],explanation:'La négation « ne… pas » entoure « tombent », verbe au présent.'},
 {sentence:'Avant de partir, quels indices les élèves découvriront-ils ?',verbs:['découvriront'],parts:['découvriront'],explanation:'« Partir » est à l’infinitif ; touche seulement « découvriront ». « -ils » reprend le sujet.'},
-{sentence:'Avant l’aube, les pêcheurs avaient préparé leurs filets.',verbs:['avaient préparé'],parts:['avaient','préparé'],explanation:'« Avaient préparé » est au plus-que-parfait : auxiliaire à l’imparfait et participe passé.'}
+{sentence:'Avant l’aube, les pêcheurs préparaient leurs filets.',verbs:['préparaient'],parts:['préparaient'],explanation:'« Avant l’aube » indique le moment ; « préparaient » est à l’imparfait.'}
 ];
 const complex=[
 {sentence:'Quand le portail s’ouvrira, les élèves entreront dans la cour.',verbs:['s’ouvrira','entreront'],parts:['s’ouvrira','entreront'],explanation:'Deux propositions, deux verbes au futur ; « quand » introduit le moment.'},
-{sentence:'Pour observer le ciel, la classe a installé une lunette, puis elle a dessiné les nuages.',verbs:['a installé','a dessiné'],parts:['a','installé','a','dessiné'],explanation:'« Observer » est à l’infinitif ; les deux verbes conjugués sont « a installé » et « a dessiné ».'},
-{sentence:'Si tu avais écouté l’indice, tu aurais trouvé la réponse.',verbs:['avais écouté','aurais trouvé'],parts:['avais','écouté','aurais','trouvé'],explanation:'« Avais écouté » est au plus-que-parfait ; « aurais trouvé » est au conditionnel passé.'},
+{sentence:'Pour observer le ciel, la classe installe une lunette, puis elle dessine les nuages.',verbs:['installe','dessine'],parts:['installe','dessine'],explanation:'« Observer » est à l’infinitif ; les deux verbes conjugués sont « installe » et « dessine ».'},
+{sentence:'Si tu écoutes l’indice, tu trouveras la réponse.',verbs:['écoutes','trouveras'],parts:['écoutes','trouveras'],explanation:'« Écoutes » est au présent dans la condition ; « trouveras » est au futur.'},
 {sentence:'Pourquoi les feuilles tombent-elles quand le vent souffle ?',verbs:['tombent','souffle'],parts:['tombent','souffle'],explanation:'Touche « tombent » et « souffle ». Le sujet inversé « -elles » est une autre étiquette.'},
 {sentence:'Sous le vieux pont coule un ruisseau que les promeneurs traversent.',verbs:['coule','traversent'],parts:['coule','traversent'],explanation:'Le sujet « un ruisseau » vient après « coule » ; « que » introduit une autre proposition.'},
 {sentence:'Les enfants n’ont jamais vu la neige, mais ils ont déjà construit un igloo en carton.',verbs:['ont vu','ont construit'],parts:['ont','vu','ont','construit'],tokens:['n’ont','vu','ont','construit'],explanation:'« N’… jamais » entoure le premier verbe : touche l’étiquette « n’ont » pour choisir l’auxiliaire et « vu » pour le participe passé.'},
 {sentence:'Pendant que le guide racontait une légende, nous prenions des notes.',verbs:['racontait','prenions'],parts:['racontait','prenions'],explanation:'Deux actions à l’imparfait ; « pendant que » introduit la circonstance de temps.'},
 {sentence:'Dès que la pluie aura cessé, les joueurs reprendront le match.',verbs:['aura cessé','reprendront'],parts:['aura','cessé','reprendront'],explanation:'« Aura cessé » est au futur antérieur ; « reprendront » est au futur simple.'},
-{sentence:'Quel animal avait laissé ces traces que nous avons trouvées près du ruisseau ?',verbs:['avait laissé','avons trouvées'],parts:['avait','laissé','avons','trouvées'],explanation:'La question contient deux verbes composés, au plus-que-parfait puis au passé composé.'},
-{sentence:'Personne ne bougeait ; au loin, une cloche a sonné.',verbs:['bougeait','a sonné'],parts:['bougeait','a','sonné'],explanation:'« Bougeait » est à l’imparfait ; « a sonné » est au passé composé.'},
-{sentence:'Lorsque tu verras le phare, nous aurons déjà parcouru dix kilomètres.',verbs:['verras','aurons parcouru'],parts:['verras','aurons','parcouru'],explanation:'« Verras » est au futur simple ; « aurons parcouru » est au futur antérieur.'},
-{sentence:'Les affiches étaient tombées parce que le vent avait soufflé toute la nuit.',verbs:['étaient tombées','avait soufflé'],parts:['étaient','tombées','avait','soufflé'],explanation:'Les deux verbes sont au plus-que-parfait, chacun avec son auxiliaire et son participe passé.'}
+{sentence:'Quel animal laisse ces traces que nous observons près du ruisseau ?',verbs:['laisse','observons'],parts:['laisse','observons'],explanation:'La question contient deux verbes au présent : « laisse » et « observons ».'},
+{sentence:'Personne ne bougeait ; au loin, une cloche sonnait.',verbs:['bougeait','sonnait'],parts:['bougeait','sonnait'],explanation:'Les deux verbes sont à l’imparfait ; le second sujet vient après le point-virgule.'},
+{sentence:'Lorsque tu verras le phare, nous parcourrons encore deux kilomètres.',verbs:['verras','parcourrons'],parts:['verras','parcourrons'],explanation:'Les deux verbes sont au futur simple ; « lorsque » indique le moment.'},
+{sentence:'Les affiches tombent parce que le vent souffle très fort.',verbs:['tombent','souffle'],parts:['tombent','souffle'],explanation:'La cause est introduite par « parce que » ; les deux verbes sont au présent.'}
 ];
 const $=id=>document.getElementById(id);
 function shuffle(items){const a=[...items];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
