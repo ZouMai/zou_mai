@@ -200,7 +200,7 @@ if(artsGrid){
 <script>
 const folders={
 fr:[["DICTÉES","dictee-01-grottes.html",1],["LECTURE","#fr"],["LITTÉRATURE","#fr"],["CONJUGAISON · FRANÇAIS 1","francais-1-conjugaison.html",1],["ÉTUDE DE LA LANGUE","#fr"],["ÉCRITURE","#fr"]],
-ma:[["LEÇONS M1, M2, M3…","maths-lecons-cm2.html",1],["NUMÉRATION","jeu-nombres-cm2.html",1],["GÉOMÉTRIE","maths-lecons-cm2.html",1],["GRANDEURS & MESURES","jeu-aires-cm2.html",1],["CALCUL MENTAL","calcul-mental-series.html",1],["TABLES DE MULTIPLICATION","tables-multiplication.html",1]],
+ma:[["LEÇONS M1, M2, M3…","maths-lecons-cm2.html",1],["NUMÉRATION","jeu-nombres-cm2.html",1],["NOMBRES ROMAINS","nombres-romains-cm2.html#game",1],["GÉOMÉTRIE","maths-lecons-cm2.html",1],["GRANDEURS & MESURES","jeu-aires-cm2.html",1],["CALCUL MENTAL","calcul-mental-series.html",1],["TABLES DE MULTIPLICATION","tables-multiplication.html",1]],
 hi:[["REPÈRES CHRONOLOGIQUES","histoire-periodes.html",1],["PRÉHISTOIRE","#hi"],["ANTIQUITÉ","#hi"],["MOYEN ÂGE","#hi"],["TEMPS MODERNES","#hi"],["ÉPOQUE CONTEMPORAINE","#hi"]],
 ge:[["JEU FRANCE · PACA · VAUCLUSE","jeu-geographie-france-paca-vaucluse.html",1],["FRANCE","#ge"],["EUROPE","#ge"],["MONDE","#ge"],["CARTES & REPÈRES","#ge"]],
 sc:[["VIVANT","#sc"],["MATIÈRE","#sc"],["ÉNERGIE","#sc"],["OBJETS TECHNIQUES","#sc"],["ESPACE","#sc"]],
@@ -233,6 +233,7 @@ document.querySelector('.subject.fr .count').textContent=`${window.DICTEES.lengt
 const mathGrid=document.querySelector('#ma .grid');
 if(mathGrid){
   mathGrid.innerHTML='<article class="item"><span class="type">PROGRESSION DU PORTE-VUE · M1 À M35</span><h4>Toutes les leçons de mathématiques</h4><p>Retrouve les jeux par numéro de leçon, dans l’ordre du porte-vue.</p><a href="maths-lecons-cm2.html">VOIR LES LEÇONS →</a></article><article class="item"><span class="type">NUMÉRATION · M1</span><h4>Les nombres jusqu’à 999 999</h4><p>Écriture, décomposition et comparaison.</p><a href="jeu-nombres-cm2.html">JOUER →</a></article><article class="item"><span class="type">CALCUL · TABLES</span><h4>Tables de multiplication</h4><p>Choisir ses tables et s’entraîner.</p><a href="tables-multiplication.html">JOUER →</a></article><article class="item"><span class="type">CALCUL MENTAL · 3 JEUX PAR SÉRIE · 35 SÉRIES</span><h4>L’arcade du calcul</h4><p>Trois jeux choisis pour chaque série, avec des défis qui changent au fil de la progression.</p><a href="calcul-mental-series.html">JOUER →</a><a href="jeu-mathador.html">DÉFI MATHADOR →</a></article><article class="item"><span class="type">GRANDEURS ET MESURES · M2</span><h4>Les aires (1)</h4><p>Comparer et mesurer les surfaces sur quadrillage.</p><a href="jeu-aires-cm2.html">JOUER →</a></article><article class="item"><span class="type">NOMBRES ET CALCULS · M3</span><h4>Le laboratoire des fractions</h4><p>Partager l’unité, lire et décomposer les fractions.</p><a href="jeu-fractions-m3.html">JOUER →</a></article>';
+  mathGrid.insertAdjacentHTML('beforeend','<article class="item"><span class="type">NUMÉRATION × HISTOIRE · CM2</span><h4>Le code des Romains</h4><p>Lire, construire et expliquer les nombres romains.</p><a href="nombres-romains-cm2.html#game">JOUER →</a></article>');
   const mathCount=document.querySelector('.subject.ma .count');
   if(mathCount)mathCount.textContent='35 LEÇONS · 35 JEUX';
 }
