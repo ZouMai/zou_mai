@@ -220,7 +220,7 @@ if(artsGrid){
 </script>
 <script>
 const folders={
-fr:[["DICTÉES","dictee-01-grottes.html",1],["LECTURE","#fr"],["LITTÉRATURE","#fr"],["CONJUGAISON · FRANÇAIS 1","francais-1-conjugaison.html",1],["GRAMMAIRE · G2","g2-noms-adjectifs.html",1],["ORTHOGRAPHE · O1, O2, O3","#orthographe",1],["ÉTUDE DE LA LANGUE","#fr"],["ÉCRITURE","#fr"]],
+fr:[["DICTÉES","dictee-01-grottes.html",1],["LECTURE","#fr"],["LITTÉRATURE","#fr"],["CONJUGAISON · FRANÇAIS 1","francais-1-conjugaison.html",1],["GRAMMAIRE · G2","g2-noms-adjectifs.html",1],["ORTHOGRAPHE","#orthographe",1],["ÉTUDE DE LA LANGUE","#fr"],["ÉCRITURE","#fr"]],
 ma:[["LEÇONS M1, M2, M3…","maths-lecons-cm2.html",1],["NUMÉRATION","jeu-nombres-cm2.html",1],["GÉOMÉTRIE","maths-lecons-cm2.html",1],["GRANDEURS & MESURES","jeu-aires-cm2.html",1],["CALCUL MENTAL","calcul-mental-series.html",1],["TABLES DE MULTIPLICATION","tables-multiplication.html",1]],
 hi:[["REPÈRES CHRONOLOGIQUES","histoire-periodes.html",1],["NOMBRES ROMAINS","nombres-romains-cm2.html",1],["PRÉHISTOIRE","#hi"],["ANTIQUITÉ","#hi"],["MOYEN ÂGE","#hi"],["TEMPS MODERNES","#hi"],["ÉPOQUE CONTEMPORAINE","#hi"]],
 ge:[["JEU FRANCE · PACA · VAUCLUSE","jeu-geographie-france-paca-vaucluse.html",1],["FRANCE","#ge"],["EUROPE","#ge"],["MONDE","#ge"],["CARTES & REPÈRES","#ge"]],
@@ -239,6 +239,7 @@ document.querySelectorAll(".shelf").forEach(s=>{const list=folders[s.id];if(!lis
 <script>
 function openSubject(id,scroll=false){const target=document.querySelector('.shelf#'+id);if(!target)return;document.querySelectorAll('.shelf').forEach(x=>x.classList.toggle('active',x===target));document.querySelectorAll('.subject').forEach(x=>x.classList.toggle('active',x.getAttribute('href')==='#'+id));document.querySelector('.content>h2').innerHTML='CONTENU <span>'+target.querySelector('h3').textContent.toUpperCase()+'</span>';if(scroll)document.querySelector('.content').scrollIntoView({behavior:'smooth',block:'start'})}
 document.querySelectorAll('.subject[href^="#"]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();const id=a.getAttribute('href').slice(1);history.replaceState(null,'','#'+id);openSubject(id,true)}));
+document.querySelectorAll('.subfolder[href="#orthographe"]').forEach(a=>a.addEventListener("click",e=>{e.preventDefault();history.replaceState(null,"","#orthographe");openSubject("orthographe",true)}));
 if(location.hash)openSubject(location.hash.slice(1));
 </script>
 <script src="dictee-data.js"></script>
