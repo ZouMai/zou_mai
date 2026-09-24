@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>O3 · S ou SS ? — Zou Maï</title>
+<style>
+:root{--ink:#182033;--paper:#fffdf7;--accent:#ef4b43;--good:#178a50;--bad:#c93636;--soft:#f3eee3}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(135deg,#f8f0df,#eaf5ff);color:var(--ink);min-height:100vh}
+.wrap{max-width:850px;margin:auto;padding:24px}.top{display:flex;align-items:center;justify-content:space-between;gap:16px}.logo{width:82px;height:82px;object-fit:contain}.back{color:var(--ink);text-decoration:none;font-weight:800}
+.card{background:var(--paper);border:3px solid var(--ink);border-radius:28px;padding:clamp(22px,5vw,46px);box-shadow:8px 8px 0 var(--ink);text-align:center;margin-top:18px}
+.kicker{font-weight:1000;color:var(--accent);letter-spacing:.12em}.card h1{font-size:clamp(2rem,7vw,4rem);margin:.15em 0}.rule{background:var(--soft);border-radius:18px;padding:14px 18px;text-align:left;line-height:1.45;margin:18px auto;max-width:650px}.progress{height:12px;background:#e7e1d7;border-radius:99px;overflow:hidden;margin:24px 0 8px}.bar{height:100%;width:0;background:var(--accent);transition:.25s}.counter{font-weight:800}
+.word{font-size:clamp(2.4rem,10vw,5.5rem);font-weight:1000;letter-spacing:.03em;margin:30px 0 24px}.blank{display:inline-block;min-width:1.2em;color:var(--accent);border-bottom:6px solid var(--accent);line-height:.8}
+.choices{display:flex;justify-content:center;gap:18px}.choices button,.restart{border:3px solid var(--ink);border-radius:18px;background:white;padding:14px 30px;font-size:2rem;font-weight:1000;box-shadow:4px 4px 0 var(--ink);cursor:pointer}.choices button:active,.restart:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--ink)}
+.feedback{min-height:52px;font-size:1.25rem;font-weight:900;margin:22px 0 0}.ok{color:var(--good)}.no{color:var(--bad)}.score{font-size:3.2rem;font-weight:1000;margin:18px}.hidden{display:none}
+@media(max-width:520px){.wrap{padding:14px}.card{padding:22px 14px}.logo{width:64px;height:64px}.choices button{padding:12px 24px}}
+</style>
+</head>
+<body><main class="wrap">
+<div class="top"><a class="back" href="ressources.html#fr">← Français</a><img class="logo" src="images/loup-bleu-original.png" alt="Zoumaï"></div>
+<section class="card">
+<div class="kicker">ORTHOGRAPHE · O3</div><h1>S ou SS ?</h1>
+<div class="rule"><strong>Rappel :</strong> entre deux voyelles, <strong>s</strong> se prononce souvent [z] : <em>maison</em>. Pour entendre [s] entre deux voyelles, on écrit généralement <strong>ss</strong> : <em>poisson</em>.</div>
+<div id="game">
+<div class="progress"><div class="bar" id="bar"></div></div><div class="counter" id="counter"></div>
+<div class="word" id="word"></div>
+<div class="choices"><button onclick="answer('s')">S</button><button onclick="answer('ss')">SS</button></div>
+<div class="feedback" id="feedback"></div>
+</div>
+<div id="end" class="hidden"><div class="score" id="score"></div><p id="message"></p><button class="restart" onclick="start()">Rejouer</button></div>
+</section></main>
+<script>
+const items=[
+["cla__e","ss","classe"],["mai__on","s","maison"],["poi__on","ss","poisson"],["frai__e","s","fraise"],
+["boi__on","ss","boisson"],["cou__in","ss","coussin"],["chemi__e","s","chemise"],["adre__e","ss","adresse"],
+["sai__on","s","saison"],["cui__ine","s","cuisine"],["de__ert","ss","dessert"],["fu__ée","s","fusée"],
+["tré__or","s","trésor"],["ca__erole","ss","casserole"],["ro__e","s","rose"],["vi__ite","s","visite"],
+["me__age","ss","message"],["surpri__e","s","surprise"],["pa__oire","ss","passoire"],["pay__age","s","paysage"]
+];
+let deck=[],i=0,points=0,locked=false;
+function renderWord(raw){const p=raw.split("__");return p[0]+'<span class="blank">_</span>'+p[1]}
+function start(){deck=[...items].sort(()=>Math.random()-.5);i=0;points=0;locked=false;document.getElementById("end").classList.add("hidden");document.getElementById("game").classList.remove("hidden");show()}
+function show(){locked=false;const x=deck[i];word.innerHTML=renderWord(x[0]);counter.textContent=(i+1)+" / "+deck.length;bar.style.width=(i/deck.length*100)+"%";feedback.textContent="";feedback.className="feedback"}
+function answer(v){if(locked)return;locked=true;const x=deck[i];if(v===x[1]){points++;feedback.textContent="✓ Bravo ! "+x[2];feedback.className="feedback ok"}else{feedback.textContent="✗ Regarde bien : "+x[2];feedback.className="feedback no"}setTimeout(()=>{i++;if(i<deck.length)show();else finish()},850)}
+function finish(){bar.style.width="100%";game.classList.add("hidden");end.classList.remove("hidden");score.textContent=points+" / "+deck.length;message.textContent=points===20?"Parfait ! Tu maîtrises S et SS !":points>=16?"Très bien ! Encore un petit entraînement pour être imbattable.":"Rejoue : tu vas vite progresser !"}
+start();
+</script></body></html>
