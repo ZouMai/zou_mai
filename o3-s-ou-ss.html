@@ -19,7 +19,7 @@
 <div class="top"><a class="back" href="ressources.html#fr">← Français</a><img class="logo" src="images/loup-bleu-original.png" alt="Zoumaï"></div>
 <section class="card">
 <div class="kicker">ORTHOGRAPHE · O3</div><h1>S ou SS ?</h1>
-<div class="rule"><strong>Rappel :</strong> entre deux voyelles, <strong>s</strong> se prononce souvent [z] : <em>maison</em>. Pour entendre [s] entre deux voyelles, on écrit généralement <strong>ss</strong> : <em>poisson</em>.</div>
+<div class="rule"><strong>Rappel :</strong> entre deux voyelles, <strong>s</strong> se prononce souvent [z] : <em>maison</em>. Pour entendre [s] entre deux voyelles, on écrit généralement <strong>ss</strong> : <em>poisson</em>. Après une consonne et devant une voyelle, un seul <strong>s</strong> suffit généralement pour entendre [s] : <em>penser</em>.</div>
 <div id="game">
 <div class="progress"><div class="bar" id="bar"></div></div><div class="counter" id="counter"></div>
 <div class="word" id="word"></div>
@@ -31,17 +31,17 @@
 <script>
 const items=[
 ["cla__e","ss","classe"],["mai__on","s","maison"],["poi__on","ss","poisson"],["frai__e","s","fraise"],
-["boi__on","ss","boisson"],["cou__in","ss","coussin"],["chemi__e","s","chemise"],["adre__e","ss","adresse"],
+["boi__on","ss","boisson"],["pen__er","s","penser"],["chemi__e","s","chemise"],["adre__e","ss","adresse"],
 ["sai__on","s","saison"],["cui__ine","s","cuisine"],["de__ert","ss","dessert"],["fu__ée","s","fusée"],
 ["tré__or","s","trésor"],["ca__erole","ss","casserole"],["ro__e","s","rose"],["vi__ite","s","visite"],
-["me__age","ss","message"],["surpri__e","s","surprise"],["pa__oire","ss","passoire"],["pay__age","s","paysage"]
+["me__age","ss","message"],["surpri__e","s","surprise"],["pa__oire","ss","passoire"],["pay__age","s","paysage"],\n["dan__er","s","danser"],["ver__er","s","verser"],["bour__e","s","bourse"],["pul__er","s","pulser"]
 ];
 let deck=[],i=0,points=0,locked=false;
 function renderWord(raw){const p=raw.split("__");return p[0]+'<span class="blank">_</span>'+p[1]}
 function start(){deck=[...items].sort(()=>Math.random()-.5);i=0;points=0;locked=false;document.getElementById("end").classList.add("hidden");document.getElementById("game").classList.remove("hidden");show()}
 function show(){locked=false;const x=deck[i];word.innerHTML=renderWord(x[0]);counter.textContent=(i+1)+" / "+deck.length;bar.style.width=(i/deck.length*100)+"%";feedback.textContent="";feedback.className="feedback"}
 function answer(v){if(locked)return;locked=true;const x=deck[i];if(v===x[1]){points++;feedback.textContent="✓ Bravo ! "+x[2];feedback.className="feedback ok"}else{feedback.textContent="✗ Regarde bien : "+x[2];feedback.className="feedback no"}setTimeout(()=>{i++;if(i<deck.length)show();else finish()},850)}
-function finish(){bar.style.width="100%";game.classList.add("hidden");end.classList.remove("hidden");score.textContent=points+" / "+deck.length;if(points===deck.length)setTimeout(zoumaiPerfect,250);message.textContent=points===20?"Parfait ! Tu maîtrises S et SS !":points>=16?"Très bien ! Encore un petit entraînement pour être imbattable.":"Rejoue : tu vas vite progresser !"}
+function finish(){bar.style.width="100%";game.classList.add("hidden");end.classList.remove("hidden");score.textContent=points+" / "+deck.length;if(points===deck.length)setTimeout(zoumaiPerfect,250);message.textContent=points===deck.length?"Parfait ! Tu maîtrises S et SS !":points>=16?"Très bien ! Encore un petit entraînement pour être imbattable.":"Rejoue : tu vas vite progresser !"}
 start();
 </script><script>
 function zoumaiPerfect(){
