@@ -78,7 +78,26 @@ if(g){
  return;
 }
 const p=cur[5];for(let i=1;i<p;i++){let y=50+220*i/p;S.append(el('line',{x1:70,y1:y,x2:450,y2:y,class:'help-line'}))}for(let i=0;i<p;i++){let cy=50+220*(i+.5)/p;S.append(el('circle',{cx:470,cy,r:14,class:'help-dot'}));let t=el('text',{x:470,y:cy+5,'text-anchor':'middle',class:'help-num'});t.textContent=i+1;S.append(t)}}
-function render(){S.replaceChildren();cur[6]();guides();S.append(el('rect',{x:80,y:50,width:360,height:220,fill:'none',stroke:'#111','stroke-width':5}));$('#country').textContent='🚩 '+cur[0];$('#question').textContent=cur[2];$('#hint').textContent=help?'💡 Les traits montrent des parts égales.':'';$('#help').textContent=help?'Masquer l’aide':'💡 Aide'}
+function helpText(){
+ if(!help)return '';
+ const q=cur[2],name=cur[0];
+ if(['Danemark','Suède','Finlande','Norvège','Islande'].includes(name)){
+   const m={Danemark:'12 + 4 + 12 = 28. La bande blanche de la croix mesure 4 de ces unités.',
+   'Suède':'4 + 2 + 4 = 10. Regarde seulement la hauteur : la bande jaune de la croix mesure 2 unités.',
+   Finlande:'4 + 3 + 4 = 11. Regarde seulement la hauteur : la bande bleue de la croix mesure 3 unités.',
+   'Norvège':'6 + 1 + 2 + 1 + 6 = 16. La partie bleue au centre de la croix mesure 2 unités de hauteur.',
+   Islande:'7 + 1 + 2 + 1 + 7 = 18. La partie rouge au centre de la croix mesure 2 unités de hauteur.'};
+   return '💡 Étape 1 : regarde uniquement la HAUTEUR du drapeau. Étape 2 : '+m[name]+' Étape 3 : écris « unités de la couleur / unités au total », puis simplifie si tu peux.';
+ }
+ if(name==='Botswana'&&q.includes('noire'))return '💡 Lis le drapeau de haut en bas : 9 + 1 + 4 + 1 + 9 = 24 unités. La bande noire en occupe 4. Écris « unités noires / unités totales », puis simplifie.';
+ if(name==='Botswana')return '💡 Lis le drapeau de haut en bas : 9 + 1 + 4 + 1 + 9 = 24 unités. Il y a deux liserés blancs d’une unité chacun : combien d’unités blanches en tout ?';
+ if(name==='Grèce')return '💡 Ne calcule pas l’aire de la croix. Compte seulement les 9 bandes horizontales du drapeau : combien sont bleues ?';
+ if(name==='Suisse')return '💡 Observe seulement l’épaisseur de la barre horizontale de la croix. Imagine la hauteur partagée en 5 bandes égales : la barre blanche en occupe une.';
+ if(q.includes('hauteur'))return '💡 Regarde le drapeau de haut en bas. Les traits partagent sa hauteur en '+cur[5]+' unités. Compte combien d’unités correspondent à la couleur demandée, puis écris « couleur / total ».';
+ if(q.includes('largeur'))return '💡 Regarde le drapeau de gauche à droite. Repère la part de largeur occupée par la couleur demandée et compare-la à la largeur totale.';
+ return '💡 Compte d’abord le nombre total de parts égales, puis le nombre de parts de la couleur demandée. Le premier nombre va au dénominateur, le second au numérateur.';
+}
+function render(){S.replaceChildren();cur[6]();guides();S.append(el('rect',{x:80,y:50,width:360,height:220,fill:'none',stroke:'#111','stroke-width':5}));$('#country').textContent='🚩 '+cur[0];$('#question').textContent=cur[2];$('#hint').textContent=help?helpText():'';$('#help').textContent=help?'Masquer l’aide':'💡 Aide'}
 function pick(){let pool=mode==='mix'?Q:Q.filter(x=>x[1]===mode);let i=Math.floor(Math.random()*pool.length);cur=pool[i];help=false;$('#num').value='';$('#den').value='';$('#feedback').textContent='';$('#explain').textContent='';render()}
-document.querySelectorAll('[data-level]').forEach(b=>b.onclick=()=>{mode=b.dataset.level;document.querySelectorAll('[data-level]').forEach(x=>x.classList.toggle('on',x===b));pick()});$('#help').onclick=()=>{help=!help;render()};$('#next').onclick=pick;$('#form').onsubmit=e=>{e.preventDefault();let a=parseInt($('#num').value),b=parseInt($('#den').value);if(!Number.isInteger(a)||!Number.isInteger(b)||!b){$('#feedback').textContent='Écris une fraction complète.';return}let ok=a*cur[4]===b*cur[3];$('#feedback').textContent=ok?'✅ Exact ! '+a+'/'+b+' convient.':'🧐 Pas encore.';$('#explain').textContent=ok?cur[7]:(help?'Compte les parts égales puis celles de la couleur demandée.':'Utilise 💡 Aide si tu en as besoin.')};pick()})();
+document.querySelectorAll('[data-level]').forEach(b=>b.onclick=()=>{mode=b.dataset.level;document.querySelectorAll('[data-level]').forEach(x=>x.classList.toggle('on',x===b));pick()});$('#help').onclick=()=>{help=!help;render()};$('#next').onclick=pick;$('#form').onsubmit=e=>{e.preventDefault();let a=parseInt($('#num').value),b=parseInt($('#den').value);if(!Number.isInteger(a)||!Number.isInteger(b)||!b){$('#feedback').textContent='Écris une fraction complète.';return}let ok=a*cur[4]===b*cur[3];$('#feedback').textContent=ok?'✅ Exact ! '+a+'/'+b+' convient.':'🧐 Pas encore.';$('#explain').textContent=ok?cur[7]:(help?'Relis les étapes de l’aide : trouve d’abord le total, puis les unités de la couleur demandée.':'Utilise 💡 Aide si tu en as besoin.')};pick()})();
 </script><script src="site-tracking.js" defer></script></body></html>
