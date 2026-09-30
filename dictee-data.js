@@ -1333,12 +1333,12 @@ window.DICTEES=[
         1
       ],
       [
-        "Recopie ce verbe sans erreur : sinterroger",
+        "Recopie ce verbe sans erreur : s’interroger",
         "s’interroger",
         0
       ],
       [
-        "Recopie ce verbe sans erreur : sinspirer",
+        "Recopie ce verbe sans erreur : s’inspirer",
         "s’inspirer",
         0
       ],
@@ -2132,7 +2132,7 @@ window.DICTEES=[
         0
       ],
       [
-        "Recopie ce verbe sans erreur : sorganiser",
+        "Recopie ce verbe sans erreur : s’organiser",
         "s’organiser",
         0
       ],
