@@ -509,21 +509,6 @@ window.DICTEES=[
         1
       ],
       [
-        "Recopie ce verbe sans erreur : dieu",
-        "dieu",
-        2
-      ],
-      [
-        "Recopie ce verbe sans erreur : une croyance",
-        "une croyance",
-        2
-      ],
-      [
-        "Recopie ce verbe sans erreur : l’origine",
-        "l’origine",
-        2
-      ],
-      [
         "Recopie ce verbe sans erreur : adopter",
         "adopter",
         2
@@ -562,7 +547,7 @@ window.DICTEES=[
         "un lieu",
         "un château",
         "une attaque",
-        "le voisine",
+        "le voisin",
         "la voisine",
         "posséder",
         "se protéger",
@@ -820,7 +805,7 @@ window.DICTEES=[
         "la lumière",
         "un morceau",
         "le verre",
-        "lintérieur",
+        "l’intérieur",
         "une couleur",
         "un effet",
         "illustrer",
@@ -978,7 +963,7 @@ window.DICTEES=[
         "un roi",
         "une reine",
         "la France",
-        "lAngleterre",
+        "l’Angleterre",
         "écrire",
         "jouer",
         "remarquable",
@@ -987,7 +972,7 @@ window.DICTEES=[
         "plutôt",
         "très",
         "ainsi que",
-        "dabord",
+        "d’abord",
         "puis"
       ],
       [
@@ -1071,14 +1056,14 @@ window.DICTEES=[
     "levels": [
       [
         "une invention",
-        "lutilisation",
+        "l’utilisation",
         "le papier",
         "un texte",
         "une impression",
         "la quantité",
         "la circulation",
         "le niveau",
-        "linstruction",
+        "l’instruction",
         "la révolution",
         "récent",
         "récente",
@@ -1129,21 +1114,6 @@ window.DICTEES=[
         "Accorde ou transforme : général",
         "générale",
         0
-      ],
-      [
-        "Recopie ce verbe sans erreur : preuve",
-        "preuve",
-        2
-      ],
-      [
-        "Recopie ce verbe sans erreur : l’observation",
-        "l’observation",
-        2
-      ],
-      [
-        "Recopie ce verbe sans erreur : la compréhension",
-        "la compréhension",
-        2
       ],
       [
         "Recopie ce verbe sans erreur : permettre",
@@ -1304,7 +1274,7 @@ window.DICTEES=[
         "un penseur",
         "une penseuse",
         "un savoir",
-        "lAntiquité",
+        "l’Antiquité",
         "l’humanité",
         "la religion",
         "la richesse",
@@ -1361,31 +1331,6 @@ window.DICTEES=[
         "Accorde ou transforme : humain",
         "humaine",
         1
-      ],
-      [
-        "Recopie ce verbe sans erreur : histoire",
-        "histoire",
-        1
-      ],
-      [
-        "Recopie ce verbe sans erreur : le seigneur",
-        "le seigneur",
-        2
-      ],
-      [
-        "Recopie ce verbe sans erreur : le territoire",
-        "le territoire",
-        2
-      ],
-      [
-        "Recopie ce verbe sans erreur : la demeure",
-        "la demeure",
-        2
-      ],
-      [
-        "Recopie ce verbe sans erreur : la richesse",
-        "la richesse",
-        0
       ],
       [
         "Recopie ce verbe sans erreur : sinterroger",
@@ -1485,21 +1430,6 @@ window.DICTEES=[
       [
         "Accorde ou transforme : différent",
         "différente",
-        2
-      ],
-      [
-        "Recopie ce verbe sans erreur : Français",
-        "Français",
-        2
-      ],
-      [
-        "Recopie ce verbe sans erreur : le respect",
-        "le respect",
-        2
-      ],
-      [
-        "Recopie ce verbe sans erreur : un projet",
-        "un projet",
         2
       ],
       [
@@ -1970,11 +1900,6 @@ window.DICTEES=[
         "Accorde ou transforme : différent",
         "différente",
         1
-      ],
-      [
-        "Recopie ce verbe sans erreur : parent",
-        "parent",
-        0
       ],
       [
         "Recopie ce verbe sans erreur : apparaitre",
@@ -2633,7 +2558,7 @@ window.DICTEES=[
         "le quotidien",
         "les gens",
         "un objet",
-        "lenvie",
+        "l’envie",
         "un besoin",
         "la pollution",
         "l’environnement",
@@ -2654,11 +2579,6 @@ window.DICTEES=[
       [
         "Accorde ou transforme : immédiat",
         "immédiate",
-        2
-      ],
-      [
-        "Recopie ce verbe sans erreur : l’environnement",
-        "l’environnement",
         2
       ],
       [
