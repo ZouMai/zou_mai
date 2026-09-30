@@ -59,7 +59,25 @@ const Q=[
 ['Grèce','defi','Dans les 9 bandes horizontales, quelle fraction sont bleues ?',5,9,9,()=>{H(['#0d5eaf','#fff','#0d5eaf','#fff','#0d5eaf','#fff','#0d5eaf','#fff','#0d5eaf'],[1,1,1,1,1,1,1,1,1]);R(80,50,122,122,'#0d5eaf');R(80,99,122,24,'#fff');R(129,50,24,122,'#fff')},'Il y a 5 bandes bleues sur 9.'],
 ['Suisse','defi','Le drapeau est partagé mentalement en 5 bandes égales : quelle fraction de la hauteur occupe la barre horizontale de la croix ?',1,5,5,()=>{R(80,50,360,220,'#d52b1e');R(224,94,72,132,'#fff');R(170,127,180,66,'#fff')},'La barre horizontale de la croix occupe 1/5 de la hauteur dans cette construction simplifiée.']
 ]
-function guides(){if(!help)return;const p=cur[5];for(let i=1;i<p;i++){let y=50+220*i/p;S.append(el('line',{x1:70,y1:y,x2:450,y2:y,class:'help-line'}))}for(let i=0;i<p;i++){let cy=50+220*(i+.5)/p;S.append(el('circle',{cx:470,cy,r:14,class:'help-dot'}));let t=el('text',{x:470,y:cy+5,'text-anchor':'middle',class:'help-num'});t.textContent=i+1;S.append(t)}}
+function guides(){if(!help)return;
+const nord={
+'Danemark':{x:[12,4,21],y:[12,4,12]},
+'Suède':{x:[5,2,9],y:[4,2,4]},
+'Finlande':{x:[5,3,10],y:[4,3,4]},
+'Norvège':{x:[6,1,2,1,12],y:[6,1,2,1,6]},
+'Islande':{x:[7,1,2,1,14],y:[7,1,2,1,7]}
+};
+const g=nord[cur[0]];
+if(g){
+ let sx=0,tx=g.x.reduce((a,b)=>a+b,0);
+ for(let i=0;i<g.x.length-1;i++){sx+=g.x[i];let x=80+360*sx/tx;S.append(el('line',{x1:x,y1:42,x2:x,y2:278,class:'help-line'}))}
+ let sy=0,ty=g.y.reduce((a,b)=>a+b,0);
+ for(let i=0;i<g.y.length-1;i++){sy+=g.y[i];let y=50+220*sy/ty;S.append(el('line',{x1:72,y1:y,x2:448,y2:y,class:'help-line'}))}
+ g.x.forEach((v,i)=>{let before=g.x.slice(0,i).reduce((a,b)=>a+b,0),cx=80+360*(before+v/2)/tx;let t=el('text',{x:cx,y:32,'text-anchor':'middle',class:'help-num'});t.textContent=v;S.append(t)});
+ g.y.forEach((v,i)=>{let before=g.y.slice(0,i).reduce((a,b)=>a+b,0),cy=50+220*(before+v/2)/ty;let t=el('text',{x:466,y:cy+5,'text-anchor':'middle',class:'help-num'});t.textContent=v;S.append(t)});
+ return;
+}
+const p=cur[5];for(let i=1;i<p;i++){let y=50+220*i/p;S.append(el('line',{x1:70,y1:y,x2:450,y2:y,class:'help-line'}))}for(let i=0;i<p;i++){let cy=50+220*(i+.5)/p;S.append(el('circle',{cx:470,cy,r:14,class:'help-dot'}));let t=el('text',{x:470,y:cy+5,'text-anchor':'middle',class:'help-num'});t.textContent=i+1;S.append(t)}}
 function render(){S.replaceChildren();cur[6]();guides();S.append(el('rect',{x:80,y:50,width:360,height:220,fill:'none',stroke:'#111','stroke-width':5}));$('#country').textContent='🚩 '+cur[0];$('#question').textContent=cur[2];$('#hint').textContent=help?'💡 Les traits montrent des parts égales.':'';$('#help').textContent=help?'Masquer l’aide':'💡 Aide'}
 function pick(){let pool=mode==='mix'?Q:Q.filter(x=>x[1]===mode);let i=Math.floor(Math.random()*pool.length);cur=pool[i];help=false;$('#num').value='';$('#den').value='';$('#feedback').textContent='';$('#explain').textContent='';render()}
 document.querySelectorAll('[data-level]').forEach(b=>b.onclick=()=>{mode=b.dataset.level;document.querySelectorAll('[data-level]').forEach(x=>x.classList.toggle('on',x===b));pick()});$('#help').onclick=()=>{help=!help;render()};$('#next').onclick=pick;$('#form').onsubmit=e=>{e.preventDefault();let a=parseInt($('#num').value),b=parseInt($('#den').value);if(!Number.isInteger(a)||!Number.isInteger(b)||!b){$('#feedback').textContent='Écris une fraction complète.';return}let ok=a*cur[4]===b*cur[3];$('#feedback').textContent=ok?'✅ Exact ! '+a+'/'+b+' convient.':'🧐 Pas encore.';$('#explain').textContent=ok?cur[7]:(help?'Compte les parts égales puis celles de la couleur demandée.':'Utilise 💡 Aide si tu en as besoin.')};pick()})();
