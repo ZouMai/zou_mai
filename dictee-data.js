@@ -70,17 +70,17 @@ window.DICTEES=[
         1
       ],
       [
-        "Accorde ou transforme : ancien",
+        "Complète le groupe nominal — féminin singulier : une grotte ___ (ancien)",
         "ancienne",
         0
       ],
       [
-        "Accorde ou transforme : âgé",
+        "Complète le groupe nominal — féminin singulier : une artiste ___ (âgé)",
         "âgée",
         1
       ],
       [
-        "Accorde ou transforme : petit",
+        "Complète le groupe nominal — féminin singulier : une empreinte ___ (petit)",
         "petite",
         2
       ],
@@ -156,22 +156,22 @@ window.DICTEES=[
     ],
     "transforms": [
       [
-        "Accorde ou transforme : lointain",
+        "Complète le groupe nominal — féminin singulier : une époque ___ (lointain)",
         "lointaine",
         0
       ],
       [
-        "Accorde ou transforme : rocheux",
+        "Complète le groupe nominal — féminin singulier : une pierre ___ (rocheux)",
         "rocheuse",
         1
       ],
       [
-        "Accorde ou transforme : haut",
+        "Complète le groupe nominal — féminin singulier : une pierre ___ (haut)",
         "haute",
         1
       ],
       [
-        "Accorde ou transforme : collectif",
+        "Complète le groupe nominal — féminin singulier : une tombe ___ (collectif)",
         "collective",
         1
       ],
@@ -260,12 +260,12 @@ window.DICTEES=[
     ],
     "transforms": [
       [
-        "Accorde ou transforme : suivant",
+        "Complète le groupe nominal — féminin singulier : une génération ___ (suivant)",
         "suivante",
         0
       ],
       [
-        "Accorde ou transforme : essentiel",
+        "Complète le groupe nominal — féminin singulier : une information ___ (essentiel)",
         "essentielle",
         0
       ],
@@ -389,7 +389,7 @@ window.DICTEES=[
         1
       ],
       [
-        "Accorde ou transforme : religieux",
+        "Complète le groupe nominal — féminin singulier : une cérémonie ___ (religieux)",
         "religieuse",
         2
       ],
@@ -504,7 +504,7 @@ window.DICTEES=[
         1
       ],
       [
-        "Accorde ou transforme : nombreux",
+        "Complète le groupe nominal — féminin singulier : une foule ___ (nombreux)",
         "nombreuse",
         1
       ],
@@ -603,42 +603,42 @@ window.DICTEES=[
         0
       ],
       [
-        "Accorde ou transforme : fort",
+        "Complète le groupe nominal — féminin singulier : une attaque ___ (fort)",
         "forte",
         0
       ],
       [
-        "Accorde ou transforme : bas",
+        "Complète le groupe nominal — féminin singulier : une meurtrière ___ (bas)",
         "basse",
         1
       ],
       [
-        "Accorde ou transforme : haut",
+        "Complète le groupe nominal — féminin singulier : une tour ___ (haut)",
         "haute",
         1
       ],
       [
-        "Accorde ou transforme : différent",
+        "Complète le groupe nominal — féminin singulier : une salle ___ (différent)",
         "différente",
         1
       ],
       [
-        "Accorde ou transforme : nombreux",
+        "Complète le groupe nominal — féminin singulier : une foule ___ (nombreux)",
         "nombreuse",
         1
       ],
       [
-        "Accorde ou transforme : somptueux",
+        "Complète le groupe nominal — féminin singulier : une salle ___ (somptueux)",
         "somptueuse",
         1
       ],
       [
-        "Accorde ou transforme : joyeux",
+        "Complète le groupe nominal — féminin singulier : une fête ___ (joyeux)",
         "joyeuse",
         1
       ],
       [
-        "Accorde ou transforme : amusant",
+        "Complète le groupe nominal — féminin singulier : une fête ___ (amusant)",
         "amusante",
         1
       ],
@@ -718,7 +718,7 @@ window.DICTEES=[
         2
       ],
       [
-        "Accorde ou transforme : médiéval",
+        "Complète le groupe nominal — féminin singulier : une époque ___ (médiéval)",
         "médiévale",
         0
       ],
@@ -905,12 +905,12 @@ window.DICTEES=[
     ],
     "transforms": [
       [
-        "Accorde ou transforme : précis",
+        "Complète le groupe nominal — féminin singulier : une description ___ (précis)",
         "précise",
         0
       ],
       [
-        "Accorde ou transforme : précieux",
+        "Complète le groupe nominal — féminin singulier : une broderie ___ (précieux)",
         "précieuse",
         1
       ],
@@ -1013,12 +1013,12 @@ window.DICTEES=[
         1
       ],
       [
-        "Accorde ou transforme : instruit",
+        "Complète le groupe nominal — féminin singulier : une reine ___ (instruit)",
         "instruite",
         0
       ],
       [
-        "Accorde ou transforme : premier",
+        "Complète le groupe nominal — féminin singulier : une première reine ___ (premier)",
         "première",
         1
       ],
@@ -1106,12 +1106,12 @@ window.DICTEES=[
     ],
     "transforms": [
       [
-        "Accorde ou transforme : récent",
+        "Complète le groupe nominal — féminin singulier : une invention ___ (récent)",
         "récente",
         0
       ],
       [
-        "Accorde ou transforme : général",
+        "Complète le groupe nominal — féminin singulier : une idée ___ (général)",
         "générale",
         0
       ],
@@ -1204,17 +1204,17 @@ window.DICTEES=[
         0
       ],
       [
-        "Accorde ou transforme : européen",
+        "Complète le groupe nominal — féminin singulier : une exploration ___ (européen)",
         "européenne",
         0
       ],
       [
-        "Accorde ou transforme : important",
+        "Complète le groupe nominal — féminin singulier : une découverte ___ (important)",
         "importante",
         0
       ],
       [
-        "Accorde ou transforme : brillant",
+        "Complète le groupe nominal — féminin singulier : une étoile ___ (brillant)",
         "brillante",
         2
       ],
@@ -1323,12 +1323,12 @@ window.DICTEES=[
         0
       ],
       [
-        "Accorde ou transforme : différent",
+        "Complète le groupe nominal — féminin singulier : une technique ___ (différent)",
         "différente",
         1
       ],
       [
-        "Accorde ou transforme : humain",
+        "Complète le groupe nominal — féminin singulier : une pensée ___ (humain)",
         "humaine",
         1
       ],
@@ -1413,22 +1413,22 @@ window.DICTEES=[
     ],
     "transforms": [
       [
-        "Accorde ou transforme : long",
+        "Complète le groupe nominal — féminin singulier : une guerre ___ (long)",
         "longue",
         0
       ],
       [
-        "Accorde ou transforme : violent",
+        "Complète le groupe nominal — féminin singulier : une guerre ___ (violent)",
         "violente",
         0
       ],
       [
-        "Accorde ou transforme : terrifiant",
+        "Complète le groupe nominal — féminin singulier : une guerre ___ (terrifiant)",
         "terrifiante",
         1
       ],
       [
-        "Accorde ou transforme : différent",
+        "Complète le groupe nominal — féminin singulier : une religion ___ (différent)",
         "différente",
         2
       ],
@@ -1510,17 +1510,17 @@ window.DICTEES=[
         0
       ],
       [
-        "Accorde ou transforme : absolu",
+        "Complète le groupe nominal — féminin singulier : une monarchie ___ (absolu)",
         "absolue",
         0
       ],
       [
-        "Accorde ou transforme : précédent",
+        "Complète le groupe nominal — féminin singulier : une époque ___ (précédent)",
         "précédente",
         0
       ],
       [
-        "Accorde ou transforme : seul",
+        "Complète le groupe nominal — féminin singulier : une personne ___ (seul)",
         "seule",
         0
       ],
@@ -1643,27 +1643,27 @@ window.DICTEES=[
         1
       ],
       [
-        "Accorde ou transforme : français",
+        "Complète le groupe nominal — féminin singulier : une nation ___ (français)",
         "française",
         0
       ],
       [
-        "Accorde ou transforme : ruiné",
+        "Complète le groupe nominal — féminin singulier : une France ___ (ruiné)",
         "ruinée",
         0
       ],
       [
-        "Accorde ou transforme : général",
+        "Complète le groupe nominal — féminin singulier : une idée ___ (général)",
         "générale",
         1
       ],
       [
-        "Accorde ou transforme : national",
+        "Complète le groupe nominal — féminin singulier : une assemblée ___ (national)",
         "nationale",
         1
       ],
       [
-        "Accorde ou transforme : féodal",
+        "Complète le groupe nominal — féminin singulier : une société ___ (féodal)",
         "féodale",
         2
       ],
@@ -1766,22 +1766,22 @@ window.DICTEES=[
         1
       ],
       [
-        "Accorde ou transforme : exceptionnel",
+        "Complète le groupe nominal — féminin singulier : une capacité ___ (exceptionnel)",
         "exceptionnelle",
         0
       ],
       [
-        "Accorde ou transforme : certain",
+        "Complète le groupe nominal — féminin singulier : une victoire ___ (certain)",
         "certaine",
         1
       ],
       [
-        "Accorde ou transforme : effrayé",
+        "Complète le groupe nominal — féminin singulier : une armée ___ (effrayé)",
         "effrayée",
         1
       ],
       [
-        "Accorde ou transforme : personnel",
+        "Complète le groupe nominal — féminin singulier : une ambition ___ (personnel)",
         "personnelle",
         2
       ],
@@ -1892,12 +1892,12 @@ window.DICTEES=[
         1
       ],
       [
-        "Accorde ou transforme : quotidien",
+        "Complète le groupe nominal — féminin singulier : une vie ___ (quotidien)",
         "quotidienne",
         1
       ],
       [
-        "Accorde ou transforme : différent",
+        "Complète le groupe nominal — féminin singulier : une société ___ (différent)",
         "différente",
         1
       ],
@@ -1990,27 +1990,27 @@ window.DICTEES=[
         1
       ],
       [
-        "Accorde ou transforme : industriel",
+        "Complète le groupe nominal — féminin singulier : une puissance ___ (industriel)",
         "industrielle",
         0
       ],
       [
-        "Accorde ou transforme : puissant",
+        "Complète le groupe nominal — féminin singulier : une armée ___ (puissant)",
         "puissante",
         0
       ],
       [
-        "Accorde ou transforme : nouveau",
+        "Complète le groupe nominal — féminin singulier : une voie ___ (nouveau)",
         "nouvelle",
         0
       ],
       [
-        "Accorde ou transforme : commercial",
+        "Complète le groupe nominal — féminin singulier : une route ___ (commercial)",
         "commerciale",
         0
       ],
       [
-        "Accorde ou transforme : premier",
+        "Complète le groupe nominal — féminin singulier : une première colonisation ___ (premier)",
         "première",
         1
       ],
@@ -2112,8 +2112,8 @@ window.DICTEES=[
         2
       ],
       [
-        "Accorde ou transforme : obligatoire",
-        "obligé",
+        "Complète le groupe nominal — féminin singulier : une loi ___ (obligatoire)",
+        "obligatoire",
         1
       ],
       [
@@ -2222,17 +2222,17 @@ window.DICTEES=[
     ],
     "transforms": [
       [
-        "Accorde ou transforme : premier",
+        "Complète le groupe nominal — féminin singulier : une première guerre ___ (premier)",
         "première",
         0
       ],
       [
-        "Accorde ou transforme : mondial",
+        "Complète le groupe nominal — féminin singulier : une guerre ___ (mondial)",
         "mondiale",
         0
       ],
       [
-        "Accorde ou transforme : nouveau",
+        "Complète le groupe nominal — féminin singulier : une arme ___ (nouveau)",
         "nouvelle",
         0
       ],
@@ -2337,32 +2337,32 @@ window.DICTEES=[
         1
       ],
       [
-        "Accorde ou transforme : persécuté",
+        "Complète le groupe nominal — féminin singulier : une population ___ (persécuté)",
         "persécutée",
         0
       ],
       [
-        "Accorde ou transforme : attaqué",
+        "Complète le groupe nominal — féminin singulier : une population ___ (attaqué)",
         "attaquée",
         0
       ],
       [
-        "Accorde ou transforme : envoyé",
+        "Complète le groupe nominal — féminin singulier : une victime ___ (envoyé)",
         "envoyée",
         0
       ],
       [
-        "Accorde ou transforme : allemand",
+        "Complète le groupe nominal — féminin singulier : une politique ___ (allemand)",
         "allemande",
         1
       ],
       [
-        "Accorde ou transforme : bouleversant",
+        "Complète le groupe nominal — féminin singulier : une œuvre ___ (bouleversant)",
         "bouleversante",
         1
       ],
       [
-        "Accorde ou transforme : meurtrier",
+        "Complète le groupe nominal — féminin singulier : une politique ___ (meurtrier)",
         "meurtrière",
         1
       ],
@@ -2461,47 +2461,47 @@ window.DICTEES=[
         1
       ],
       [
-        "Accorde ou transforme : vaincu",
+        "Complète le groupe nominal — féminin singulier : une France ___ (vaincu)",
         "vaincue",
         0
       ],
       [
-        "Accorde ou transforme : occupé",
+        "Complète le groupe nominal — féminin singulier : une zone ___ (occupé)",
         "occupée",
         0
       ],
       [
-        "Accorde ou transforme : soumis",
+        "Complète le groupe nominal — féminin singulier : une population ___ (soumis)",
         "soumise",
         0
       ],
       [
-        "Accorde ou transforme : allemand",
+        "Complète le groupe nominal — féminin singulier : une armée ___ (allemand)",
         "allemande",
         1
       ],
       [
-        "Accorde ou transforme : dirigé",
+        "Complète le groupe nominal — féminin singulier : une organisation ___ (dirigé)",
         "dirigée",
         1
       ],
       [
-        "Accorde ou transforme : majeur",
+        "Complète le groupe nominal — féminin singulier : une figure ___ (majeur)",
         "majeure",
         1
       ],
       [
-        "Accorde ou transforme : composé",
+        "Complète le groupe nominal — féminin singulier : une musique ___ (composé)",
         "composée",
         2
       ],
       [
-        "Accorde ou transforme : rédigé",
+        "Complète le groupe nominal — féminin singulier : une parole ___ (rédigé)",
         "rédigée",
         2
       ],
       [
-        "Accorde ou transforme : classé",
+        "Complète le groupe nominal — féminin singulier : une œuvre ___ (classé)",
         "classée",
         2
       ],
@@ -2577,7 +2577,7 @@ window.DICTEES=[
         1
       ],
       [
-        "Accorde ou transforme : immédiat",
+        "Complète le groupe nominal — féminin singulier : une satisfaction ___ (immédiat)",
         "immédiate",
         2
       ],
@@ -2670,32 +2670,32 @@ window.DICTEES=[
         0
       ],
       [
-        "Accorde ou transforme : pollué",
+        "Complète le groupe nominal — féminin singulier : une planète ___ (pollué)",
         "polluée",
         0
       ],
       [
-        "Accorde ou transforme : dernier",
+        "Complète le groupe nominal — féminin singulier : une dernière plante ___ (dernier)",
         "dernière",
         1
       ],
       [
-        "Accorde ou transforme : vivant",
+        "Complète le groupe nominal — féminin singulier : une plante ___ (vivant)",
         "vivante",
         1
       ],
       [
-        "Accorde ou transforme : spatial",
+        "Complète le groupe nominal — féminin singulier : une mission ___ (spatial)",
         "spatiale",
         1
       ],
       [
-        "Accorde ou transforme : habité",
+        "Complète le groupe nominal — féminin singulier : une planète ___ (habité)",
         "habitée",
         1
       ],
       [
-        "Accorde ou transforme : artificiel",
+        "Complète le groupe nominal — féminin singulier : une intelligence ___ (artificiel)",
         "artificielle",
         2
       ],
