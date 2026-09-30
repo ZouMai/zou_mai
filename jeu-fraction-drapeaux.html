@@ -78,6 +78,26 @@ if(g){
  return;
 }
 const p=cur[5];for(let i=1;i<p;i++){let y=50+220*i/p;S.append(el('line',{x1:70,y1:y,x2:450,y2:y,class:'help-line'}))}for(let i=0;i<p;i++){let cy=50+220*(i+.5)/p;S.append(el('circle',{cx:470,cy,r:14,class:'help-dot'}));let t=el('text',{x:470,y:cy+5,'text-anchor':'middle',class:'help-num'});t.textContent=i+1;S.append(t)}}
+function visualHelp(){
+ if(!help)return;
+ const name=cur[0],q=cur[2];
+ const cross={Danemark:[28,4,'#fff'],Suède:[10,2,'#fecc00'],Finlande:[11,3,'#003580'],Norvège:[16,2,'#00205b'],Islande:[18,2,'#dc1e35']};
+ let d=cross[name];
+ if(name==='Botswana')d=q.includes('noire')?[24,4,'#111']:[24,2,'#fff'];
+ if(name==='Grèce')d=[9,5,'#0d5eaf'];
+ if(name==='Suisse')d=[5,1,'#fff'];
+ if(!d)return;
+ const [total,chosen,col]=d;
+ const x=90,y=292,w=340,h=22,unit=w/total;
+ // fond représentant le total
+ S.append(el('rect',{x,y,width:w,height:h,rx:5,fill:'#ddd',stroke:'#111','stroke-width':2}));
+ // rassemble les unités recherchées à gauche en une seule bande
+ S.append(el('rect',{x,y,width:unit*chosen,height:h,rx:4,fill:col,stroke:'#111','stroke-width':2}));
+ // subdivisions du total
+ for(let i=1;i<total;i++){let xx=x+unit*i;S.append(el('line',{x1:xx,y1:y,x2:xx,y2:y+h,stroke:'#555','stroke-width':total>18?.6:1}))}
+ let a=el('text',{x:x+unit*chosen/2,y:y-6,'text-anchor':'middle',class:'help-num'});a.textContent=chosen+' parts rassemblées';S.append(a);
+ let b=el('text',{x:x+w,y:y-6,'text-anchor':'end',class:'help-num'});b.textContent=total+' parts au total';S.append(b);
+}
 function helpText(){
  if(!help)return '';
  const q=cur[2],name=cur[0];
@@ -97,7 +117,7 @@ function helpText(){
  if(q.includes('largeur'))return '💡 Regarde le drapeau de gauche à droite. Repère la part de largeur occupée par la couleur demandée et compare-la à la largeur totale.';
  return '💡 Compte d’abord le nombre total de parts égales, puis le nombre de parts de la couleur demandée. Le premier nombre va au dénominateur, le second au numérateur.';
 }
-function render(){S.replaceChildren();cur[6]();guides();S.append(el('rect',{x:80,y:50,width:360,height:220,fill:'none',stroke:'#111','stroke-width':5}));$('#country').textContent='🚩 '+cur[0];$('#question').textContent=cur[2];$('#hint').textContent=help?helpText():'';$('#help').textContent=help?'Masquer l’aide':'💡 Aide'}
+function render(){S.replaceChildren();cur[6]();guides();S.append(el('rect',{x:80,y:50,width:360,height:220,fill:'none',stroke:'#111','stroke-width':5}));visualHelp();$('#country').textContent='🚩 '+cur[0];$('#question').textContent=cur[2];$('#hint').textContent=help?helpText():'';$('#help').textContent=help?'Masquer l’aide':'💡 Aide'}
 function pick(){let pool=mode==='mix'?Q:Q.filter(x=>x[1]===mode);let i=Math.floor(Math.random()*pool.length);cur=pool[i];help=false;$('#num').value='';$('#den').value='';$('#feedback').textContent='';$('#explain').textContent='';render()}
 document.querySelectorAll('[data-level]').forEach(b=>b.onclick=()=>{mode=b.dataset.level;document.querySelectorAll('[data-level]').forEach(x=>x.classList.toggle('on',x===b));pick()});$('#help').onclick=()=>{help=!help;render()};$('#next').onclick=pick;$('#form').onsubmit=e=>{e.preventDefault();let a=parseInt($('#num').value),b=parseInt($('#den').value);if(!Number.isInteger(a)||!Number.isInteger(b)||!b){$('#feedback').textContent='Écris une fraction complète.';return}let ok=a*cur[4]===b*cur[3];$('#feedback').textContent=ok?'✅ Exact ! '+a+'/'+b+' convient.':'🧐 Pas encore.';$('#explain').textContent=ok?cur[7]:(help?'Relis les étapes de l’aide : trouve d’abord le total, puis les unités de la couleur demandée.':'Utilise 💡 Aide si tu en as besoin.')};pick()})();
 </script><script src="site-tracking.js" defer></script></body></html>
