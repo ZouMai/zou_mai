@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fraction'Drapeaux — Zou Maï</title><link rel="stylesheet" href="zoumai.css"><link rel="stylesheet" href="zoumai-brand.css">
+<style>
+:root{--blue:#23a3df;--yellow:#f2d31c}*{box-sizing:border-box}body{margin:0;background:#0b0e13;color:#f7f3e9;font-family:Arial,sans-serif}.wrap{width:min(1050px,94vw);margin:auto;padding:28px 0 60px}.top{display:flex;justify-content:space-between;gap:15px;align-items:center}.top a{color:#fff;font-weight:900;text-decoration:none}.kicker{color:var(--yellow);font-weight:900;letter-spacing:.12em}.title{font-size:clamp(2.6rem,8vw,5.7rem);margin:12px 0 5px;line-height:.9}.lead{color:#c9c6bf;font-weight:700}.controls{display:flex;flex-wrap:wrap;gap:9px;margin:24px 0}.controls button,.check{border:2px solid #fff;background:#151922;color:#fff;padding:11px 15px;font-weight:900;cursor:pointer}.controls button.on,.controls button:hover,.check{background:var(--yellow);color:#111;border-color:var(--yellow)}.card{background:#f2ede3;color:#111;border:4px solid #111;box-shadow:10px 10px var(--blue);padding:clamp(16px,4vw,32px)}.country{text-align:center;font-size:1.5rem;font-weight:1000}.question{text-align:center;font-size:clamp(1.2rem,3vw,1.8rem);font-weight:900;margin:8px 0}.flag{display:block;width:min(680px,100%);margin:10px auto}.hint{text-align:center;min-height:30px;font-weight:900}.answer{display:flex;justify-content:center;align-items:center;gap:12px}.frac{display:grid;grid-template-rows:auto 4px auto;gap:5px}.frac input{width:86px;padding:7px;text-align:center;font-size:1.8rem;font-weight:900;border:3px solid #111}.bar{background:#111}.feedback{text-align:center;min-height:34px;font-size:1.25rem;font-weight:900;margin-top:15px}.small{text-align:center;color:#555;font-weight:700}.help-line{stroke:#ffea00;stroke-width:5}.help-num{font-size:14px;font-weight:900;fill:#fff}.help-dot{fill:#111;stroke:#fff;stroke-width:2}@media(max-width:600px){.answer{flex-direction:column}.card{box-shadow:6px 6px var(--blue)}} 
+</style></head><body><main class="wrap"><div class="top"><a href="ressources.html#ma">← Mathématiques</a><span class="kicker">FRACTIONS · JEU</span></div><h1 class="title">FRACTION'<br>DRAPEAUX 🌍</h1><p class="lead">Observe un vrai drapeau et écris la fraction correspondant à la couleur demandée.</p>
+<div class="controls"><button data-level="simple">🟢 Simple</button><button data-level="inter">🟠 Intermédiaire</button><button data-level="defi">🔴 Défi</button><button data-level="mix" class="on">🎲 Mélange</button><button id="help">💡 Aide</button><button id="next">Nouveau drapeau ↻</button></div>
+<section class="card"><div id="country" class="country"></div><div id="question" class="question"></div><svg id="flag" viewBox="0 0 520 330" class="flag" aria-label="Drapeau"></svg><div id="hint" class="hint"></div>
+<form id="form" class="answer"><div class="frac"><input id="num" inputmode="numeric" aria-label="Numérateur" placeholder="?"><div class="bar"></div><input id="den" inputmode="numeric" aria-label="Dénominateur" placeholder="?"></div><button class="check">✓ Vérifier</button></form><div id="feedback" class="feedback"></div><div id="explain" class="small"></div></section></main>
+<script>
+(()=>{const $=s=>document.querySelector(s),S=$('#flag'),NS='http://www.w3.org/2000/svg';let mode='mix',help=false,cur,last=-1;
+function el(t,a){const e=document.createElementNS(NS,t);Object.entries(a).forEach(([k,v])=>e.setAttribute(k,v));return e}function R(x,y,w,h,c){S.append(el('rect',{x,y,width:w,height:h,fill:c}))}
+function H(colors,weights){let y=50,T=weights.reduce((a,b)=>a+b,0);colors.forEach((c,i)=>{let h=220*weights[i]/T;R(80,y,360,h,c);y+=h})}
+function V(colors,weights){let x=80,T=weights.reduce((a,b)=>a+b,0);colors.forEach((c,i)=>{let w=360*weights[i]/T;R(x,50,w,220,c);x+=w})}
+const Q=[
+['France','simple','Quelle fraction est bleue ?',1,3,3,()=>V(['#002395','#fff','#ed2939'],[1,1,1]),'Une bande sur trois.'],
+['Italie','simple','Quelle fraction est verte ?',1,3,3,()=>V(['#009246','#fff','#ce2b37'],[1,1,1]),'Une bande sur trois.'],
+['Irlande','simple','Quelle fraction est orange ?',1,3,3,()=>V(['#169b62','#fff','#ff883e'],[1,1,1]),'Une bande sur trois.'],
+['Belgique','simple','Quelle fraction est jaune ?',1,3,3,()=>V(['#111','#fdda24','#ef3340'],[1,1,1]),'Une bande sur trois.'],
+['Roumanie','simple','Quelle fraction est rouge ?',1,3,3,()=>V(['#002b7f','#fcd116','#ce1126'],[1,1,1]),'Une bande sur trois.'],
+['Allemagne','simple','Quelle fraction est jaune ?',1,3,3,()=>H(['#111','#dd0000','#ffce00'],[1,1,1]),'Une bande sur trois.'],
+['Pays-Bas','simple','Quelle fraction est bleue ?',1,3,3,()=>H(['#ae1c28','#fff','#21468b'],[1,1,1]),'Une bande sur trois.'],
+['Hongrie','simple','Quelle fraction est verte ?',1,3,3,()=>H(['#ce2939','#fff','#477050'],[1,1,1]),'Une bande sur trois.'],
+['Arménie','simple','Quelle fraction est bleue ?',1,3,3,()=>H(['#d90012','#0033a0','#f2a800'],[1,1,1]),'Une bande sur trois.'],
+['Autriche','simple','Quelle fraction est rouge ?',2,3,3,()=>H(['#ed2939','#fff','#ed2939'],[1,1,1]),'Deux bandes sur trois.'],
+['Nigeria','simple','Quelle fraction est verte ?',2,3,3,()=>V(['#008751','#fff','#008751'],[1,1,1]),'Deux bandes sur trois.'],
+['Pologne','simple','Quelle fraction est rouge ?',1,2,2,()=>H(['#fff','#dc143c'],[1,1]),'Une moitié.'],
+['Ukraine','simple','Quelle fraction est jaune ?',1,2,2,()=>H(['#0057b7','#ffd700'],[1,1]),'Une moitié.'],
+['Indonésie','simple','Quelle fraction est rouge ?',1,2,2,()=>H(['#ce1126','#fff'],[1,1]),'Une moitié.'],
+['Monaco','simple','Quelle fraction est blanche ?',1,2,2,()=>H(['#ce1126','#fff'],[1,1]),'Une moitié.'],
+['Maurice','inter','Quelle fraction est verte ?',1,4,4,()=>H(['#ea2839','#1a206d','#ffd500','#00a551'],[1,1,1,1]),'Une bande sur quatre.'],
+['Maurice','inter','Quelle fraction est rouge ou bleue ?',2,4,4,()=>H(['#ea2839','#1a206d','#ffd500','#00a551'],[1,1,1,1]),'Deux bandes sur quatre, soit aussi 1/2.'],
+['Colombie','inter','Quelle fraction de la hauteur est jaune ?',2,4,4,()=>H(['#fcd116','#003893','#ce1126'],[2,1,1]),'Le jaune occupe 2 parts sur 4, soit 1/2.'],
+['Colombie','inter','Quelle fraction de la hauteur est rouge ?',1,4,4,()=>H(['#fcd116','#003893','#ce1126'],[2,1,1]),'Le rouge occupe 1 part sur 4.'],
+['Espagne','inter','Quelle fraction de la hauteur est jaune ?',2,4,4,()=>H(['#aa151b','#f1bf00','#aa151b'],[1,2,1]),'Le jaune occupe 2 parts sur 4, soit 1/2.'],
+['Espagne','inter','Quelle fraction de la hauteur est rouge ?',2,4,4,()=>H(['#aa151b','#f1bf00','#aa151b'],[1,2,1]),'Les deux bandes rouges occupent ensemble 2/4.'],
+['Lettonie','inter','Quelle fraction de la hauteur est blanche ?',1,5,5,()=>H(['#9e3039','#fff','#9e3039'],[2,1,2]),'Les bandes sont dans le rapport 2–1–2 : blanc = 1/5.'],
+['Thaïlande','inter','Quelle fraction de la hauteur est bleue ?',2,6,6,()=>H(['#a51931','#fff','#2d2a4a','#fff','#a51931'],[1,1,2,1,1]),'Le bleu occupe 2 parts sur 6, soit 1/3.'],
+['Thaïlande','inter','Quelle fraction de la hauteur est rouge ?',2,6,6,()=>H(['#a51931','#fff','#2d2a4a','#fff','#a51931'],[1,1,2,1,1]),'Les deux bandes rouges occupent 2/6.'],
+['Costa Rica','inter','Quelle fraction de la hauteur est rouge ?',2,6,6,()=>H(['#002b7f','#fff','#ce1126','#fff','#002b7f'],[1,1,2,1,1]),'La bande rouge occupe 2 parts sur 6, soit 1/3.'],
+['Costa Rica','inter','Quelle fraction de la hauteur est bleue ?',2,6,6,()=>H(['#002b7f','#fff','#ce1126','#fff','#002b7f'],[1,1,2,1,1]),'Les deux bandes bleues occupent ensemble 2/6.'],
+['Laos','inter','Quelle fraction de la hauteur est bleue ? (sans tenir compte du disque blanc)',2,4,4,()=>H(['#ce1126','#002868','#ce1126'],[1,2,1]),'La bande bleue a une hauteur égale à la moitié du drapeau.'],
+['Liban','inter','Quelle fraction de la hauteur est blanche ? (on ne compte pas le cèdre)',2,4,4,()=>H(['#ed1c24','#fff','#ed1c24'],[1,2,1]),'La bande blanche occupe la moitié de la hauteur.'],
+['Botswana','defi','Quelle fraction de la hauteur est occupée par la bande noire ?',1,12,12,()=>H(['#75aadb','#fff','#111','#fff','#75aadb'],[9,1,2,1,9]),'La construction verticale est 9–1–2–1–9 : le noir occupe 2/22 = 1/11.'],
+['Botswana','defi','Quelle fraction de la hauteur est occupée par les deux liserés blancs ?',1,11,22,()=>H(['#75aadb','#fff','#111','#fff','#75aadb'],[9,1,2,1,9]),'Les deux liserés blancs occupent 2 unités sur 22, soit 1/11.']
+];
+function guides(){if(!help)return;const p=cur[5];for(let i=1;i<p;i++){let y=50+220*i/p;S.append(el('line',{x1:70,y1:y,x2:450,y2:y,class:'help-line'}))}for(let i=0;i<p;i++){let cy=50+220*(i+.5)/p;S.append(el('circle',{cx:470,cy,r:14,class:'help-dot'}));let t=el('text',{x:470,y:cy+5,'text-anchor':'middle',class:'help-num'});t.textContent=i+1;S.append(t)}}
+function render(){S.replaceChildren();cur[6]();guides();S.append(el('rect',{x:80,y:50,width:360,height:220,fill:'none',stroke:'#111','stroke-width':5}));$('#country').textContent='🚩 '+cur[0];$('#question').textContent=cur[2];$('#hint').textContent=help?'💡 Les traits montrent des parts égales.':'';$('#help').textContent=help?'Masquer l’aide':'💡 Aide'}
+function pick(){let pool=mode==='mix'?Q:Q.filter(x=>x[1]===mode);let i=Math.floor(Math.random()*pool.length);cur=pool[i];help=false;$('#num').value='';$('#den').value='';$('#feedback').textContent='';$('#explain').textContent='';render()}
+document.querySelectorAll('[data-level]').forEach(b=>b.onclick=()=>{mode=b.dataset.level;document.querySelectorAll('[data-level]').forEach(x=>x.classList.toggle('on',x===b));pick()});$('#help').onclick=()=>{help=!help;render()};$('#next').onclick=pick;$('#form').onsubmit=e=>{e.preventDefault();let a=parseInt($('#num').value),b=parseInt($('#den').value);if(!Number.isInteger(a)||!Number.isInteger(b)||!b){$('#feedback').textContent='Écris une fraction complète.';return}let ok=a*cur[4]===b*cur[3];$('#feedback').textContent=ok?'✅ Exact ! '+a+'/'+b+' convient.':'🧐 Pas encore.';$('#explain').textContent=ok?cur[7]:(help?'Compte les parts égales puis celles de la couleur demandée.':'Utilise 💡 Aide si tu en as besoin.')};pick()})();
+</script><script src="site-tracking.js" defer></script></body></html>
