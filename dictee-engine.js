@@ -37,10 +37,24 @@
       .trim();
   const clean = (s) => s.trim().replace(/[’']/g, "'").normalize("NFC"),
     norm = (s) => clean(s).toLowerCase();
-  const same = (value, expected) =>
-    /[A-ZÀ-ÖØ-Þ]/.test(expected)
-      ? clean(value) === clean(expected)
-      : norm(value) === norm(expected);
+  // La casse n'est jamais évaluée dans les exercices : une majuscule ou une
+  // minuscule ne doit pas transformer une réponse orthographiquement juste en erreur.
+  const same = (value, expected) => norm(value) === norm(expected);
+
+  const explainError = (value, expected) => {
+    const given = clean(value), correct = clean(expected);
+    if (!given) return "Tu n’as pas encore écrit de réponse. Observe bien la correction avant de continuer.";
+    if (norm(given) === norm(correct))
+      return "Ta réponse est correcte : les majuscules et les minuscules ne sont pas comptées.";
+    const g = norm(given), e = norm(correct);
+    if (g.replace(/s\b/g, "") === e.replace(/s\b/g, ""))
+      return "Regarde la marque du pluriel : vérifie le déterminant, le nom et, s’il y en a un, l’adjectif.";
+    if (g.split(/\s+/)[0] === e.split(/\s+/)[0] && g !== e)
+      return "Le début est juste. Observe surtout la fin du mot ou du groupe : c’est souvent là que se marque l’accord.";
+    if (/\b(ils|elles|les|des|ces|ses|nous|vous)\b/i.test(correct))
+      return "Repère le sujet ou le déterminant : il donne souvent l’indice nécessaire pour choisir la bonne terminaison ou le bon accord.";
+    return "Compare ta réponse avec la correction, lettre par lettre, et repère précisément ce qui change avant de poursuivre.";
+  };
   const pool = () => d.levels.slice(0, lvl + 1).flat(),
     pick = (a, n) =>
       [...a].sort(() => Math.random() - 0.5).slice(0, Math.min(n, a.length));
@@ -615,10 +629,12 @@
     } else {
       hard(reviewAnswer || answer);
       f.className = "feedback bad";
-      f.textContent = "La réponse complète était : " + answer;
+      f.innerHTML = "<strong>✗ À OBSERVER</strong><br>La bonne réponse est : <strong>" +
+        answer + "</strong><br><span>" + explainError(inp.value, answer) + "</span>";
     }
     updateStatus();
-    timer = setTimeout(next, 950);
+    // En cas d'erreur, on laisse réellement le temps de lire et comprendre la correction.
+    timer = setTimeout(next, f.classList.contains("bad") ? 6000 : 1200);
   }
   function start() {
     clearTimeout(timer);
@@ -718,14 +734,27 @@
     }
     const x = queue[index++],
       opts = [...x.options].sort(() => Math.random() - 0.5);
-    game.innerHTML = `<h2>JE CHOISIS · ${index}/${queue.length}</h2><p class="prompt">${x.prompt}</p><div class="choices">${opts.map((o) => `<button>${o}</button>`).join("")}</div>`;
+    game.innerHTML = `<h2>JE CHOISIS · ${index}/${queue.length}</h2><p class="prompt">${x.prompt}</p><div class="choices">${opts.map((o) => `<button>${o}</button>`).join("")}</div><div class="feedback" id="feed"></div>`;
     game.querySelectorAll(".choices button").forEach(
       (b) =>
         (b.onclick = () => {
-          if (same(b.textContent, x.answer)) points++;
-          else hard(x.review || x.answer);
-          updateStatus();
-          setTimeout(next, 600);
+          const buttons = game.querySelectorAll(".choices button"),
+            f = document.querySelector("#feed");
+          buttons.forEach((button) => (button.disabled = true));
+          if (same(b.textContent, x.answer)) {
+            points++;
+            f.className = "feedback ok";
+            f.textContent = "✓ Bravo !";
+            updateStatus();
+            timer = setTimeout(next, 1200);
+          } else {
+            hard(x.review || x.answer);
+            f.className = "feedback bad";
+            f.innerHTML = "<strong>✗ À OBSERVER</strong><br>La bonne réponse est : <strong>" +
+              x.answer + "</strong><br><span>" + explainError(b.textContent, x.answer) + "</span>";
+            updateStatus();
+            timer = setTimeout(next, 6000);
+          }
         }),
     );
   }
