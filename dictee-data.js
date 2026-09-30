@@ -2078,7 +2078,6 @@ window.DICTEES=[
         "imposer",
         "supprimer",
         "obligatoire",
-        "obligé",
         "plusieurs",
         "jusqu’à",
         "véritablement",
