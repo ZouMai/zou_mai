@@ -77,7 +77,17 @@ if(g){
  g.y.forEach((v,i)=>{let before=g.y.slice(0,i).reduce((a,b)=>a+b,0),cy=50+220*(before+v/2)/ty;let t=el('text',{x:466,y:cy+5,'text-anchor':'middle',class:'help-num'});t.textContent=v;S.append(t)});
  return;
 }
-const p=cur[5];for(let i=1;i<p;i++){let y=50+220*i/p;S.append(el('line',{x1:70,y1:y,x2:450,y2:y,class:'help-line'}))}for(let i=0;i<p;i++){let cy=50+220*(i+.5)/p;S.append(el('circle',{cx:470,cy,r:14,class:'help-dot'}));let t=el('text',{x:470,y:cy+5,'text-anchor':'middle',class:'help-num'});t.textContent=i+1;S.append(t)}}
+const p=cur[5],isWidth=cur[2].includes('largeur');
+if(isWidth){
+  // Pour une question sur la largeur, l'aide partage réellement le drapeau
+  // de gauche à droite en parts égales (ex. Bénin : 5 parts, le vert = 2).
+  for(let i=1;i<p;i++){let x=80+360*i/p;S.append(el('line',{x1:x,y1:42,x2:x,y2:278,class:'help-line'}))}
+  for(let i=0;i<p;i++){let cx=80+360*(i+.5)/p;S.append(el('circle',{cx,cy:30,r:14,class:'help-dot'}));let t=el('text',{x:cx,y:35,'text-anchor':'middle',class:'help-num'});t.textContent=i+1;S.append(t)}
+}else{
+  // Pour une question sur la hauteur, partage de haut en bas.
+  for(let i=1;i<p;i++){let y=50+220*i/p;S.append(el('line',{x1:70,y1:y,x2:450,y2:y,class:'help-line'}))}
+  for(let i=0;i<p;i++){let cy=50+220*(i+.5)/p;S.append(el('circle',{cx:470,cy,r:14,class:'help-dot'}));let t=el('text',{x:470,y:cy+5,'text-anchor':'middle',class:'help-num'});t.textContent=i+1;S.append(t)}
+}}
 function visualHelp(){
  if(!help)return;
  const name=cur[0],q=cur[2];
