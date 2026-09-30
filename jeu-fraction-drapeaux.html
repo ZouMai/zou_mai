@@ -49,11 +49,11 @@ const Q=[
 ['Émirats arabes unis','inter','Quelle fraction de la largeur est rouge ?',1,4,4,()=>{R(80,50,90,220,'#ff0000');H(['#00732f','#fff','#000'],[1,1,1]);R(80,50,90,220,'#ff0000')},'La bande rouge occupe 1/4 de la largeur.'],
 ['Bahamas','inter','Quelle fraction de la hauteur est jaune ?',1,3,3,()=>{H(['#00abc9','#fcd116','#00abc9'],[1,1,1]);S.append(el('polygon',{points:'80,50 80,270 190,160',fill:'#111'}))},'La bande jaune occupe 1/3 de la hauteur.'],
 ['Tchéquie','inter','Quelle fraction de la hauteur est rouge au bord droit ?',1,2,2,()=>{H(['#fff','#d7141a'],[1,1]);S.append(el('polygon',{points:'80,50 80,270 260,160',fill:'#11457e'}))},'Au bord droit, le drapeau est partagé en deux moitiés horizontales.'],
-['Danemark','defi','Quelle fraction de la hauteur représente l’épaisseur de la croix blanche ?',4,28,28,()=>Cross('#c8102e','#fff',[12,4,21],[12,4,12]),'La hauteur est 12–4–12 : la croix mesure 4/28 = 1/7.'],
-['Suède','defi','Quelle fraction de la hauteur représente l’épaisseur de la croix jaune ?',2,10,10,()=>Cross('#006aa7','#fecc00',[5,2,9],[4,2,4]),'La hauteur est 4–2–4 : la croix mesure 2/10 = 1/5.'],
+['Danemark','defi','La croix blanche occupe quelle fraction de la hauteur ?',1,7,7,()=>Cross('#c8102e','#fff',[12,4,21],[12,4,12]),'La hauteur est 12–4–12 : la croix mesure 4/28 = 1/7.'],
+['Suède','defi','La croix jaune occupe quelle fraction de la hauteur ?',1,5,5,()=>Cross('#006aa7','#fecc00',[5,2,9],[4,2,4]),'La hauteur est 4–2–4 : la croix mesure 2/10 = 1/5.'],
 ['Finlande','defi','Quelle fraction de la hauteur représente l’épaisseur de la croix bleue ?',3,11,11,()=>Cross('#fff','#003580',[5,3,10],[4,3,4]),'La hauteur est 4–3–4 : la croix mesure 3/11.'],
-['Norvège','defi','Quelle fraction de la hauteur représente l’épaisseur de la croix bleue ?',2,16,16,()=>Nordic2('#ba0c2f','#fff','#00205b',[6,1,2,1,12],[6,1,2,1,6]),'La hauteur est 6–1–2–1–6 : le bleu mesure 2/16 = 1/8.'],
-['Islande','defi','Quelle fraction de la hauteur représente l’épaisseur de la croix rouge ?',2,18,18,()=>Nordic2('#02529c','#fff','#dc1e35',[7,1,2,1,14],[7,1,2,1,7]),'La hauteur est 7–1–2–1–7 : le rouge mesure 2/18 = 1/9.'],
+['Norvège','defi','La croix bleue occupe quelle fraction de la hauteur ?',1,8,8,()=>Nordic2('#ba0c2f','#fff','#00205b',[6,1,2,1,12],[6,1,2,1,6]),'La hauteur est 6–1–2–1–6 : le bleu mesure 2/16 = 1/8.'],
+['Islande','defi','La croix rouge occupe quelle fraction de la hauteur ?',1,9,9,()=>Nordic2('#02529c','#fff','#dc1e35',[7,1,2,1,14],[7,1,2,1,7]),'La hauteur est 7–1–2–1–7 : le rouge mesure 2/18 = 1/9.'],
 ['Botswana','defi','Quelle fraction de la hauteur est occupée par la bande noire ?',4,24,24,()=>H(['#75aadb','#fff','#111','#fff','#75aadb'],[9,1,4,1,9]),'La construction est 9–1–4–1–9 : noir = 4/24 = 1/6.'],
 ['Botswana','defi','Quelle fraction de la hauteur est occupée par les deux liserés blancs ?',2,24,24,()=>H(['#75aadb','#fff','#111','#fff','#75aadb'],[9,1,4,1,9]),'Les deux liserés occupent 2/24 = 1/12.'],
 ['Grèce','defi','Dans les 9 bandes horizontales, quelle fraction sont bleues ?',5,9,9,()=>{H(['#0d5eaf','#fff','#0d5eaf','#fff','#0d5eaf','#fff','#0d5eaf','#fff','#0d5eaf'],[1,1,1,1,1,1,1,1,1]);R(80,50,122,122,'#0d5eaf');R(80,99,122,24,'#fff');R(129,50,24,122,'#fff')},'Il y a 5 bandes bleues sur 9.'],
@@ -90,23 +90,21 @@ if(isWidth){
 }}
 function visualHelp(){
  if(!help)return;
- const name=cur[0],q=cur[2];
- const cross={Danemark:[28,4,'#fff'],Suède:[10,2,'#fecc00'],Finlande:[11,3,'#003580'],Norvège:[16,2,'#00205b'],Islande:[18,2,'#dc1e35']};
- let d=cross[name];
- if(name==='Botswana')d=q.includes('noire')?[24,4,'#111']:[24,2,'#fff'];
- if(name==='Grèce')d=[9,5,'#0d5eaf'];
- if(name==='Suisse')d=[5,1,'#fff'];
- if(!d)return;
- const [total,chosen,col]=d;
- const x=90,y=292,w=340,h=22,unit=w/total;
- // fond représentant le total
- S.append(el('rect',{x,y,width:w,height:h,rx:5,fill:'#ddd',stroke:'#111','stroke-width':2}));
- // rassemble les unités recherchées à gauche en une seule bande
- S.append(el('rect',{x,y,width:unit*chosen,height:h,rx:4,fill:col,stroke:'#111','stroke-width':2}));
- // subdivisions du total
- for(let i=1;i<total;i++){let xx=x+unit*i;S.append(el('line',{x1:xx,y1:y,x2:xx,y2:y+h,stroke:'#555','stroke-width':total>18?.6:1}))}
- let a=el('text',{x:x+unit*chosen/2,y:y-6,'text-anchor':'middle',class:'help-num'});a.textContent=chosen+' parts rassemblées';S.append(a);
- let b=el('text',{x:x+w,y:y-6,'text-anchor':'end',class:'help-num'});b.textContent=total+' parts au total';S.append(b);
+ const p=cur[5],chosen=cur[3],isWidth=cur[2].includes('largeur');
+ const x=90,y=292,w=340,h=24,unit=w/p;
+ // Manipulation : on extrait mentalement les bandes du drapeau et on les range
+ // côte à côte dans une réglette de parts égales.
+ S.append(el('rect',{x,y,width:w,height:h,rx:4,fill:'#eee',stroke:'#111','stroke-width':2}));
+ for(let i=0;i<p;i++){
+   let xx=x+i*unit;
+   S.append(el('rect',{x:xx,y,width:unit,height:h,fill:i<chosen?'#f2d31c':'#fff',stroke:'#555','stroke-width':1}));
+ }
+ let lab=el('text',{x:x+w/2,y:y-7,'text-anchor':'middle',class:'help-num'});
+ lab.textContent='On range les bandes : '+chosen+' colorée'+(chosen>1?'s':'')+' sur '+p+' parts égales';
+ S.append(lab);
+ // petite flèche : du drapeau vers les bandes rangées
+ S.append(el('line',{x1:260,y1:274,x2:260,y2:286,stroke:'#ffea00','stroke-width':4}));
+ S.append(el('polygon',{points:'254,282 266,282 260,290',fill:'#ffea00'}));
 }
 function helpText(){
  if(!help)return '';
@@ -117,14 +115,14 @@ function helpText(){
    Finlande:'4 + 3 + 4 = 11. Regarde seulement la hauteur : la bande bleue de la croix mesure 3 unités.',
    'Norvège':'6 + 1 + 2 + 1 + 6 = 16. La partie bleue au centre de la croix mesure 2 unités de hauteur.',
    Islande:'7 + 1 + 2 + 1 + 7 = 18. La partie rouge au centre de la croix mesure 2 unités de hauteur.'};
-   return '💡 Étape 1 : regarde uniquement la HAUTEUR du drapeau. Étape 2 : '+m[name]+' Étape 3 : écris « unités de la couleur / unités au total », puis simplifie si tu peux.';
+   return '💡 On manipule : imagine que l’on découpe le drapeau en bandes de même hauteur, puis qu’on les détache et qu’on les range côte à côte. La réglette jaune montre les bandes de la croix. Compte les bandes jaunes puis toutes les bandes.';
  }
  if(name==='Botswana'&&q.includes('noire'))return '💡 Lis le drapeau de haut en bas : 9 + 1 + 4 + 1 + 9 = 24 unités. La bande noire en occupe 4. Écris « unités noires / unités totales », puis simplifie.';
  if(name==='Botswana')return '💡 Lis le drapeau de haut en bas : 9 + 1 + 4 + 1 + 9 = 24 unités. Il y a deux liserés blancs d’une unité chacun : combien d’unités blanches en tout ?';
  if(name==='Grèce')return '💡 Ne calcule pas l’aire de la croix. Compte seulement les 9 bandes horizontales du drapeau : combien sont bleues ?';
  if(name==='Suisse')return '💡 Observe seulement l’épaisseur de la barre horizontale de la croix. Imagine la hauteur partagée en 5 bandes égales : la barre blanche en occupe une.';
- if(q.includes('hauteur'))return '💡 Regarde le drapeau de haut en bas. Les traits partagent sa hauteur en '+cur[5]+' unités. Compte combien d’unités correspondent à la couleur demandée, puis écris « couleur / total ».';
- if(q.includes('largeur'))return '💡 Regarde le drapeau de gauche à droite. Repère la part de largeur occupée par la couleur demandée et compare-la à la largeur totale.';
+ if(q.includes('hauteur'))return '💡 Imagine que tu découpes ces bandes horizontales, puis que tu les ranges côte à côte. La réglette du bas les remet dans l’ordre : compte les bandes colorées sur le nombre total de bandes.';
+ if(q.includes('largeur'))return '💡 Imagine que tu découpes ces bandes verticales et que tu les ranges côte à côte. La réglette du bas montre les parts égales : compte les bandes colorées sur le nombre total de bandes.';
  return '💡 Compte d’abord le nombre total de parts égales, puis le nombre de parts de la couleur demandée. Le premier nombre va au dénominateur, le second au numérateur.';
 }
 function render(){S.replaceChildren();cur[6]();guides();S.append(el('rect',{x:80,y:50,width:360,height:220,fill:'none',stroke:'#111','stroke-width':5}));visualHelp();$('#country').textContent='🚩 '+cur[0];$('#question').textContent=cur[2];$('#hint').textContent=help?helpText():'';$('#help').textContent=help?'Masquer l’aide':'💡 Aide'}
