@@ -245,6 +245,7 @@
       apprendre: ["apprend", "apprennent"],
       comprendre: ["comprend", "comprennent"],
       permettre: ["permet", "permettent"],
+      transmettre: ["transmet", "transmettent"],
       attendre: ["attend", "attendent"],
       connaitre: ["connait", "connaissent"],
       connaître: ["connaît", "connaissent"],
