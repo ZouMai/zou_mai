@@ -12,6 +12,9 @@
 function el(t,a){const e=document.createElementNS(NS,t);Object.entries(a).forEach(([k,v])=>e.setAttribute(k,v));return e}function R(x,y,w,h,c){S.append(el('rect',{x,y,width:w,height:h,fill:c}))}
 function H(colors,weights){let y=50,T=weights.reduce((a,b)=>a+b,0);colors.forEach((c,i)=>{let h=220*weights[i]/T;R(80,y,360,h,c);y+=h})}
 function V(colors,weights){let x=80,T=weights.reduce((a,b)=>a+b,0);colors.forEach((c,i)=>{let w=360*weights[i]/T;R(x,50,w,220,c);x+=w})}
+function Cross(bg,cr,xs,ys){R(80,50,360,220,bg);let X=xs.reduce((a,b)=>a+b,0),Y=ys.reduce((a,b)=>a+b,0),x=80+360*xs[0]/X,w=360*xs[1]/X,y=50+220*ys[0]/Y,h=220*ys[1]/Y;R(x,50,w,220,cr);R(80,y,360,h,cr)}
+function Nordic2(bg,outer,inner,xs,ys){R(80,50,360,220,bg);let X=xs.reduce((a,b)=>a+b,0),Y=ys.reduce((a,b)=>a+b,0);let xo=80+360*xs[0]/X,wo=360*(xs[1]+xs[2]+xs[3])/X,yo=50+220*ys[0]/Y,ho=220*(ys[1]+ys[2]+ys[3])/Y;R(xo,50,wo,220,outer);R(80,yo,360,ho,outer);let xi=80+360*(xs[0]+xs[1])/X,wi=360*xs[2]/X,yi=50+220*(ys[0]+ys[1])/Y,hi=220*ys[2]/Y;R(xi,50,wi,220,inner);R(80,yi,360,hi,inner)}
+function Tri(base,tri){R(80,50,360,220,base);S.append(el('polygon',{points:'80,50 80,270 260,160',fill:tri}))}
 const Q=[
 ['France','simple','Quelle fraction est bleue ?',1,3,3,()=>V(['#002395','#fff','#ed2939'],[1,1,1]),'Une bande sur trois.'],
 ['Italie','simple','Quelle fraction est verte ?',1,3,3,()=>V(['#009246','#fff','#ce2b37'],[1,1,1]),'Une bande sur trois.'],
@@ -28,22 +31,34 @@ const Q=[
 ['Ukraine','simple','Quelle fraction est jaune ?',1,2,2,()=>H(['#0057b7','#ffd700'],[1,1]),'Une moitié.'],
 ['Indonésie','simple','Quelle fraction est rouge ?',1,2,2,()=>H(['#ce1126','#fff'],[1,1]),'Une moitié.'],
 ['Monaco','simple','Quelle fraction est blanche ?',1,2,2,()=>H(['#ce1126','#fff'],[1,1]),'Une moitié.'],
+['Gabon','simple','Quelle fraction est bleue ?',1,3,3,()=>H(['#009e60','#fcd116','#3a75c4'],[1,1,1]),'Une bande sur trois.'],
+['Luxembourg','simple','Quelle fraction est bleu clair ?',1,3,3,()=>H(['#ef3340','#fff','#00a3e0'],[1,1,1]),'Une bande sur trois.'],
+['Estonie','simple','Quelle fraction est noire ?',1,3,3,()=>H(['#4891d9','#111','#fff'],[1,1,1]),'Une bande sur trois.'],
+['Lituanie','simple','Quelle fraction est verte ?',1,3,3,()=>H(['#fdb913','#006a44','#c1272d'],[1,1,1]),'Une bande sur trois.'],
+['Bulgarie','simple','Quelle fraction est blanche ?',1,3,3,()=>H(['#fff','#00966e','#d62612'],[1,1,1]),'Une bande sur trois.'],
 ['Maurice','inter','Quelle fraction est verte ?',1,4,4,()=>H(['#ea2839','#1a206d','#ffd500','#00a551'],[1,1,1,1]),'Une bande sur quatre.'],
-['Maurice','inter','Quelle fraction est rouge ou bleue ?',2,4,4,()=>H(['#ea2839','#1a206d','#ffd500','#00a551'],[1,1,1,1]),'Deux bandes sur quatre, soit aussi 1/2.'],
 ['Colombie','inter','Quelle fraction de la hauteur est jaune ?',2,4,4,()=>H(['#fcd116','#003893','#ce1126'],[2,1,1]),'Le jaune occupe 2 parts sur 4, soit 1/2.'],
-['Colombie','inter','Quelle fraction de la hauteur est rouge ?',1,4,4,()=>H(['#fcd116','#003893','#ce1126'],[2,1,1]),'Le rouge occupe 1 part sur 4.'],
-['Espagne','inter','Quelle fraction de la hauteur est jaune ?',2,4,4,()=>H(['#aa151b','#f1bf00','#aa151b'],[1,2,1]),'Le jaune occupe 2 parts sur 4, soit 1/2.'],
-['Espagne','inter','Quelle fraction de la hauteur est rouge ?',2,4,4,()=>H(['#aa151b','#f1bf00','#aa151b'],[1,2,1]),'Les deux bandes rouges occupent ensemble 2/4.'],
-['Lettonie','inter','Quelle fraction de la hauteur est blanche ?',1,5,5,()=>H(['#9e3039','#fff','#9e3039'],[2,1,2]),'Les bandes sont dans le rapport 2–1–2 : blanc = 1/5.'],
+['Espagne','inter','Quelle fraction de la hauteur est jaune ? (sans tenir compte des armoiries)',2,4,4,()=>H(['#aa151b','#f1bf00','#aa151b'],[1,2,1]),'La bande jaune occupe 2 parts sur 4.'],
+['Lettonie','inter','Quelle fraction de la hauteur est blanche ?',1,5,5,()=>H(['#9e3039','#fff','#9e3039'],[2,1,2]),'Le découpage vertical est 2–1–2.'],
 ['Thaïlande','inter','Quelle fraction de la hauteur est bleue ?',2,6,6,()=>H(['#a51931','#fff','#2d2a4a','#fff','#a51931'],[1,1,2,1,1]),'Le bleu occupe 2 parts sur 6, soit 1/3.'],
-['Thaïlande','inter','Quelle fraction de la hauteur est rouge ?',2,6,6,()=>H(['#a51931','#fff','#2d2a4a','#fff','#a51931'],[1,1,2,1,1]),'Les deux bandes rouges occupent 2/6.'],
-['Costa Rica','inter','Quelle fraction de la hauteur est rouge ?',2,6,6,()=>H(['#002b7f','#fff','#ce1126','#fff','#002b7f'],[1,1,2,1,1]),'La bande rouge occupe 2 parts sur 6, soit 1/3.'],
-['Costa Rica','inter','Quelle fraction de la hauteur est bleue ?',2,6,6,()=>H(['#002b7f','#fff','#ce1126','#fff','#002b7f'],[1,1,2,1,1]),'Les deux bandes bleues occupent ensemble 2/6.'],
-['Laos','inter','Quelle fraction de la hauteur est bleue ? (sans tenir compte du disque blanc)',2,4,4,()=>H(['#ce1126','#002868','#ce1126'],[1,2,1]),'La bande bleue a une hauteur égale à la moitié du drapeau.'],
-['Liban','inter','Quelle fraction de la hauteur est blanche ? (on ne compte pas le cèdre)',2,4,4,()=>H(['#ed1c24','#fff','#ed1c24'],[1,2,1]),'La bande blanche occupe la moitié de la hauteur.'],
-['Botswana','defi','Quelle fraction de la hauteur est occupée par la bande noire ?',4,24,24,()=>H(['#75aadb','#fff','#111','#fff','#75aadb'],[9,1,4,1,9]),'La construction réelle est 9–1–4–1–9 : le noir occupe 4/24 = 1/6.'],
-['Botswana','defi','Quelle fraction de la hauteur est occupée par les deux liserés blancs ?',2,24,24,()=>H(['#75aadb','#fff','#111','#fff','#75aadb'],[9,1,4,1,9]),'Les deux liserés blancs occupent 2 unités sur 24, soit 1/12.']
-];
+['Costa Rica','inter','Quelle fraction de la hauteur est rouge ?',2,6,6,()=>H(['#002b7f','#fff','#ce1126','#fff','#002b7f'],[1,1,2,1,1]),'La bande rouge occupe 2 parts sur 6.'],
+['Laos','inter','Quelle fraction de la hauteur est bleue ? (sans tenir compte du disque)',2,4,4,()=>H(['#ce1126','#002868','#ce1126'],[1,2,1]),'La bande bleue occupe la moitié de la hauteur.'],
+['Liban','inter','Quelle fraction de la hauteur est blanche ? (sans tenir compte du cèdre)',2,4,4,()=>H(['#ed1c24','#fff','#ed1c24'],[1,2,1]),'La bande blanche occupe la moitié.'],
+['Bénin','inter','Quelle fraction de la largeur est occupée par la partie verte ?',2,5,5,()=>{R(80,50,144,220,'#008751');R(224,50,216,110,'#fcd116');R(224,160,216,110,'#e8112d')},'La partie verte occupe 2/5 de la largeur.'],
+['Madagascar','inter','Quelle fraction de la largeur est blanche ?',1,3,3,()=>{R(80,50,120,220,'#fff');R(200,50,240,110,'#fc3d32');R(200,160,240,110,'#007e3a')},'La bande blanche occupe 1/3 de la largeur.'],
+['Émirats arabes unis','inter','Quelle fraction de la largeur est rouge ?',1,4,4,()=>{R(80,50,90,220,'#ff0000');H(['#00732f','#fff','#000'],[1,1,1]);R(80,50,90,220,'#ff0000')},'La bande rouge occupe 1/4 de la largeur.'],
+['Bahamas','inter','Quelle fraction de la hauteur est jaune ?',1,3,3,()=>{H(['#00abc9','#fcd116','#00abc9'],[1,1,1]);S.append(el('polygon',{points:'80,50 80,270 190,160',fill:'#111'}))},'La bande jaune occupe 1/3 de la hauteur.'],
+['Tchéquie','inter','Quelle fraction de la hauteur est rouge au bord droit ?',1,2,2,()=>{H(['#fff','#d7141a'],[1,1]);S.append(el('polygon',{points:'80,50 80,270 260,160',fill:'#11457e'}))},'Au bord droit, le drapeau est partagé en deux moitiés horizontales.'],
+['Danemark','defi','Quelle fraction de la hauteur représente l’épaisseur de la croix blanche ?',4,28,28,()=>Cross('#c8102e','#fff',[12,4,21],[12,4,12]),'La hauteur est 12–4–12 : la croix mesure 4/28 = 1/7.'],
+['Suède','defi','Quelle fraction de la hauteur représente l’épaisseur de la croix jaune ?',2,10,10,()=>Cross('#006aa7','#fecc00',[5,2,9],[4,2,4]),'La hauteur est 4–2–4 : la croix mesure 2/10 = 1/5.'],
+['Finlande','defi','Quelle fraction de la hauteur représente l’épaisseur de la croix bleue ?',3,11,11,()=>Cross('#fff','#003580',[5,3,10],[4,3,4]),'La hauteur est 4–3–4 : la croix mesure 3/11.'],
+['Norvège','defi','Quelle fraction de la hauteur représente l’épaisseur de la croix bleue ?',2,16,16,()=>Nordic2('#ba0c2f','#fff','#00205b',[6,1,2,1,12],[6,1,2,1,6]),'La hauteur est 6–1–2–1–6 : le bleu mesure 2/16 = 1/8.'],
+['Islande','defi','Quelle fraction de la hauteur représente l’épaisseur de la croix rouge ?',2,18,18,()=>Nordic2('#02529c','#fff','#dc1e35',[7,1,2,1,14],[7,1,2,1,7]),'La hauteur est 7–1–2–1–7 : le rouge mesure 2/18 = 1/9.'],
+['Botswana','defi','Quelle fraction de la hauteur est occupée par la bande noire ?',4,24,24,()=>H(['#75aadb','#fff','#111','#fff','#75aadb'],[9,1,4,1,9]),'La construction est 9–1–4–1–9 : noir = 4/24 = 1/6.'],
+['Botswana','defi','Quelle fraction de la hauteur est occupée par les deux liserés blancs ?',2,24,24,()=>H(['#75aadb','#fff','#111','#fff','#75aadb'],[9,1,4,1,9]),'Les deux liserés occupent 2/24 = 1/12.'],
+['Grèce','defi','Dans les 9 bandes horizontales, quelle fraction sont bleues ?',5,9,9,()=>{H(['#0d5eaf','#fff','#0d5eaf','#fff','#0d5eaf','#fff','#0d5eaf','#fff','#0d5eaf'],[1,1,1,1,1,1,1,1,1]);R(80,50,122,122,'#0d5eaf');R(80,99,122,24,'#fff');R(129,50,24,122,'#fff')},'Il y a 5 bandes bleues sur 9.'],
+['Suisse','defi','Le drapeau est partagé mentalement en 5 bandes égales : quelle fraction de la hauteur occupe la barre horizontale de la croix ?',1,5,5,()=>{R(80,50,360,220,'#d52b1e');R(224,94,72,132,'#fff');R(170,127,180,66,'#fff')},'La barre horizontale de la croix occupe 1/5 de la hauteur dans cette construction simplifiée.']
+]
 function guides(){if(!help)return;const p=cur[5];for(let i=1;i<p;i++){let y=50+220*i/p;S.append(el('line',{x1:70,y1:y,x2:450,y2:y,class:'help-line'}))}for(let i=0;i<p;i++){let cy=50+220*(i+.5)/p;S.append(el('circle',{cx:470,cy,r:14,class:'help-dot'}));let t=el('text',{x:470,y:cy+5,'text-anchor':'middle',class:'help-num'});t.textContent=i+1;S.append(t)}}
 function render(){S.replaceChildren();cur[6]();guides();S.append(el('rect',{x:80,y:50,width:360,height:220,fill:'none',stroke:'#111','stroke-width':5}));$('#country').textContent='🚩 '+cur[0];$('#question').textContent=cur[2];$('#hint').textContent=help?'💡 Les traits montrent des parts égales.':'';$('#help').textContent=help?'Masquer l’aide':'💡 Aide'}
 function pick(){let pool=mode==='mix'?Q:Q.filter(x=>x[1]===mode);let i=Math.floor(Math.random()*pool.length);cur=pool[i];help=false;$('#num').value='';$('#den').value='';$('#feedback').textContent='';$('#explain').textContent='';render()}
