@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lecture syllabique CP | Zou Maï</title>
+<link rel="stylesheet" href="zoumai.css"><link rel="stylesheet" href="zoumai-brand.css">
+<style>
+:root{--ink:#101114;--paper:#f5f0e5;--yellow:#f2d31c;--red:#e04435;--blue:#244b78}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:var(--paper);font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
+.wrap{width:min(920px,92vw);margin:auto;padding:24px 0 60px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;border-bottom:3px solid #111;padding-bottom:18px}
+.brand{font-weight:1000;letter-spacing:.08em;text-decoration:none;color:#111}.back{color:#111;font-weight:800;text-decoration:none}
+.hero{text-align:center;padding:36px 0 18px}.hero h1{font-size:clamp(2.2rem,7vw,4.6rem);margin:0;text-transform:uppercase}.hero p{font-size:1.05rem}
+.game{background:#fff;border:3px solid #111;border-radius:24px;padding:clamp(18px,4vw,34px);box-shadow:8px 8px 0 #111}
+.levels{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}.levels button,.actions button{border:2px solid #111;background:#fff;border-radius:14px;padding:12px 16px;font-weight:900;font-size:1rem;cursor:pointer}.levels button.active{background:var(--yellow)}
+.prompt{text-align:center;color:#555;font-weight:800;margin-top:26px}.word{text-align:center;font-size:clamp(4rem,15vw,8rem);font-weight:1000;line-height:1.1;margin:18px 0}.split{text-align:center;font-size:clamp(1.8rem,6vw,3rem);font-weight:900;color:var(--blue);min-height:1.2em}
+.mic{display:block;margin:25px auto 12px;border:3px solid #111;border-radius:999px;background:var(--red);color:#fff;padding:17px 28px;font-size:1.35rem;font-weight:1000;cursor:pointer;min-width:190px}.mic.listening{animation:pulse .8s infinite alternate}.feedback{text-align:center;min-height:42px;font-size:1.25rem;font-weight:900;margin:12px}.heard{text-align:center;color:#666;min-height:24px}
+.actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:18px}.stats{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin-top:25px;padding-top:18px;border-top:1px solid #bbb;font-weight:800}.note{text-align:center;font-size:.85rem;color:#666;margin-top:18px}
+@keyframes pulse{to{transform:scale(1.06);box-shadow:0 0 0 10px rgba(224,68,53,.15)}}@media(max-width:600px){.game{box-shadow:5px 5px 0 #111}.word{margin:12px 0}.top{justify-content:center}}
+</style></head>
+<body><a class="zm-corner-logo" href="index.html" aria-label="Accueil Zou Maï"><img src="images/logo-zou-mai-sensei.png" alt="Logo Sensei Zou Maï"></a>
+<div class="wrap"><div class="top"><a class="brand" href="index.html">ZOU MAÏ</a><a class="back" href="cp-experimentation.html">← Expérimentation CP</a></div>
+<section class="hero"><h1>Lecture syllabique</h1><p>Je lis des syllabes et des mots à voix haute.</p></section>
+<section class="game">
+<div class="levels"><button data-l="0" class="active">1 · Syllabes</button><button data-l="1">2 · Mots</button><button data-l="2">3 · Sons</button></div>
+<div class="prompt">Lis à voix haute</div><div id="word" class="word">ma</div><div id="split" class="split"></div>
+<div id="pictureCard" style="display:none;text-align:center;margin:14px auto 18px;background:#fff8cf;border:3px solid #111;border-radius:22px;padding:16px;width:min(280px,85%);box-shadow:5px 5px 0 #111"><div id="picture" style="font-size:7rem;line-height:1.05"></div><div id="pictureWord" style="font-size:1.6rem;font-weight:1000;margin-top:8px"></div></div><button id="mic" class="mic">🎙️ JE LIS</button><div id="feedback" class="feedback" aria-live="polite">Appuie sur le micro, puis lis.</div><div id="heard" class="heard"></div>
+<div class="actions"><button id="listen">🔊 Écouter le mot</button><button id="next">Mot suivant →</button></div>
+<div class="stats"><span>⭐ Réussites : <b id="score">0</b></span><span>Mot <b id="num">1</b>/10</span></div>
+<div class="note">Expérimentation : la reconnaissance vocale peut parfois mal interpréter une voix d’enfant. Le jeu encourage à recommencer plutôt que de sanctionner.</div>
+</section></div><script src="site-tracking.js" defer></script>
+<script>
+(()=>{
+const sets=[
+[{w:"ma",s:"ma"},{w:"lu",s:"lu"},{w:"ri",s:"ri"},{w:"vé",s:"vé"},{w:"to",s:"to"},{w:"sa",s:"sa"},{w:"mi",s:"mi"},{w:"ro",s:"ro"},{w:"la",s:"la"},{w:"pu",s:"pu"}],
+[{w:"moto",s:"mo • to",pic:"🏍️"},{w:"vélo",s:"vé • lo",pic:"🚲"},{w:"lune",s:"lu • ne",pic:"🌙"},{w:"salade",s:"sa • la • de",pic:"🥗"},{w:"pirate",s:"pi • ra • te",pic:"🏴‍☠️"},{w:"tomate",s:"to • ma • te",pic:"🍅"},{w:"rame",s:"ra • me",pic:"🚣"},{w:"minute",s:"mi • nu • te",pic:"⏱️"},{w:"robe",s:"ro • be",pic:"👗"},{w:"animal",s:"a • ni • mal",pic:"🐾"}],
+[{w:"chat",s:"chat"},{w:"mouche",s:"mou • che"},{w:"lapin",s:"la • pin"},{w:"bateau",s:"ba • teau"},{w:"rouge",s:"rou • ge"},{w:"chapeau",s:"cha • peau"},{w:"maison",s:"mai • son"},{w:"poisson",s:"pois • son"},{w:"chemin",s:"che • min"},{w:"journal",s:"jour • nal"}]];
+let level=0,i=0,errors=0,score=0,busy=false;
+const word=document.getElementById("word"),split=document.getElementById("split"),fb=document.getElementById("feedback"),heard=document.getElementById("heard"),mic=document.getElementById("mic"),pictureCard=document.getElementById("pictureCard"),picture=document.getElementById("picture"),pictureWord=document.getElementById("pictureWord");
+const norm=x=>(x||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z]/g,"");
+const aliases={"ma":["ma","m'a","mât"],"lu":["lu","lue","lut"],"ri":["ri","rit","riz"],"vé":["vé","vais","v"],"to":["to","tôt","taux"],"sa":["sa","ça"],"mi":["mi","mie","mis"],"ro":["ro","rot"],"la":["la","là"],"pu":["pu","pue","pus"]};
+function isSpelling(t,expected){
+ const raw=(t||"").toLowerCase().trim();
+ const letters=norm(expected).split("");
+ if(letters.length<2)return false;
+ const compact=norm(raw);
+ const letterNames={a:["a"],b:["be"],c:["ce"],d:["de"],e:["e"],f:["effe"],g:["ge"],h:["ache"],i:["i"],j:["ji"],k:["ka"],l:["elle"],m:["emme"],n:["enne"],o:["o"],p:["pe"],q:["ku"],r:["erre"],s:["esse"],t:["te"],u:["u"],v:["ve"],w:["doubleve"],x:["ix"],y:["igrec"],z:["zede"]};
+ const spelled=letters.map(l=>(letterNames[l]||[l])[0]).join("");
+ return compact===spelled || /[- .]/.test(raw)&&letters.every(l=>raw.includes(l));
+}
+function isCorrect(expected,alternatives){
+ const accepted=(aliases[expected]||[expected]).map(norm);
+ return alternatives.some(t=>{
+   if(isSpelling(t,expected))return false;
+   const n=norm(t);
+   return accepted.some(a=>n===a || (a.length>=2 && (n.startsWith(a)||n.endsWith(a))));
+ });
+}
+function show(){word.textContent=sets[level][i].w;split.textContent="";heard.textContent="";pictureCard.style.display="none";fb.textContent="Appuie sur le micro, puis lis.";document.getElementById("num").textContent=i+1;errors=0}
+function showPicture(){if(level!==1||!sets[level][i].pic)return;picture.textContent=sets[level][i].pic;pictureWord.textContent=sets[level][i].w;pictureCard.style.display="block"}
+function next(){i=(i+1)%10;show()}
+function speak(){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(sets[level][i].w);u.lang="fr-FR";u.rate=.72;speechSynthesis.speak(u)}
+document.getElementById("listen").addEventListener("click",speak);document.getElementById("next").addEventListener("click",next);
+document.querySelectorAll("[data-l]").forEach(b=>b.addEventListener("click",()=>{level=+b.dataset.l;i=0;document.querySelectorAll("[data-l]").forEach(x=>x.classList.toggle("active",x===b));show()}));
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+if(!SR){mic.disabled=true;mic.textContent="🎙️ Micro non compatible";fb.textContent="Essaie avec Chrome ou Edge pour cette expérimentation."}
+else mic.addEventListener("click",()=>{if(busy)return;busy=true;let gotResult=false;const r=new SR();r.lang="fr-FR";r.interimResults=false;r.continuous=false;r.maxAlternatives=5;mic.classList.add("listening");mic.textContent="👂 J'ÉCOUTE…";fb.textContent="🎙️ Je t'écoute : lis maintenant.";heard.textContent="";
+let validated=false;let timer=setTimeout(()=>{try{r.stop()}catch(_){}},3500);
+r.onresult=e=>{
+ gotResult=true;
+ const alts=[];
+ for(let k=0;k<e.results.length;k++)for(let a=0;a<e.results[k].length;a++)alts.push(e.results[k][a].transcript);
+ const said=alts[0]||"";
+ heard.textContent=said?"Le micro a entendu : « "+said+" »":"Le micro n’a reconnu aucun mot.";
+ if(!validated && isCorrect(sets[level][i].w,alts)){
+   validated=true;clearTimeout(timer);score++;document.getElementById("score").textContent=score;
+   fb.textContent="✅ BRAVO ! C'EST BIEN LU !";
+   showPicture();
+   try{r.stop()}catch(_){}
+   setTimeout(next,1800);
+ }else if(!validated){
+   if(isSpelling(said,sets[level][i].w)){fb.textContent="👄 Dis le SON directement, sans nommer les lettres.";heard.textContent="Exemple : pour M A, dis « ma »."}
+   else fb.textContent="👂 J'ai entendu « "+said+" ». Termine de lire…";
+ }
+};
+r.onnomatch=()=>{gotResult=true;errors++;fb.textContent="❓ JE N'AI PAS COMPRIS. RECOMMENCE.";heard.textContent="Le micro n’a reconnu aucun mot.";if(errors>=2)split.textContent=sets[level][i].s};
+r.onerror=e=>{gotResult=true;const msg={not_allowed:"Micro non autorisé.",audio_capture:"Je ne trouve pas le micro.",no_speech:"Je n’ai entendu aucun mot."}[String(e.error).replaceAll("-","_")]||("Problème micro : "+e.error);fb.textContent="⚠️ "+msg+" Recommence.";heard.textContent="Code : "+e.error};
+r.onend=()=>{clearTimeout(timer);busy=false;mic.classList.remove("listening");mic.textContent="🎙️ JE LIS";if(validated)return;if(!gotResult){fb.textContent="❓ JE N'AI PAS COMPRIS. RECOMMENCE.";heard.textContent="Je n’ai reçu aucun mot exploitable."}else{errors++;fb.textContent="❌ PAS ENCORE. RECOMMENCE.";if(errors>=2){split.textContent=sets[level][i].s;fb.textContent="💡 LIS LES MORCEAUX, PUIS RECOMMENCE."}}};
+r.onaudiostart=()=>{heard.textContent="🎤 Micro actif — je t’entends…"};r.onspeechstart=()=>{heard.textContent="🗣️ Voix détectée — analyse en cours…"};r.onspeechend=()=>{heard.textContent="⏳ Voix reçue — j’attends le résultat…"};try{r.start()}catch(e){busy=false;mic.classList.remove("listening");mic.textContent="🎙️ JE LIS";fb.textContent="⚠️ Impossible de démarrer le micro. Réessaie.";heard.textContent=String(e.message||e)}});
+
+show();
+})();
+</script>
+<script>
+(()=>{
+ const words=["roi","loi","moi","toi","soi","joie","voie","voix","bois","noix","pois","trois","croix","froid","droit","noir","soir","voir","boire","foire","poire","toile","boîte","étoile","voiture","poisson","oiseau","voisin","toiture","armoire","histoire","miroir","couloir","mouchoir","arrosoir","balançoire"];
+ const paint=w=>w.replace(/oi/gi,m=>'<span style="color:#e53935">'+m+'</span>');
+ let pos=0,good=0,errors=0,left=60,timer=null,running=false;
+ const $=id=>document.getElementById(id), strip=$("oiStrip"), actions=$("oiActions"), result=$("oiResult");
+ function render(){ $("oiNow").innerHTML=paint(words[pos%words.length]);$("oiNext").innerHTML=paint(words[(pos+1)%words.length]);$("oiAfter").innerHTML=paint(words[(pos+2)%words.length]); }
+ function finish(){running=false;clearInterval(timer);strip.style.display="none";actions.style.display="none";$("startOI").style.display="inline-block";const score=good;let msg=score<10?"🌱 Bravo, tu t'es lancé ! Chaque lecture te fait progresser.":score<20?"😊 Bravo ! Tu as gardé un bon rythme.":score<30?"🌟 Super lecture ! Tes yeux avancent de plus en plus vite.":"🚀 Waouh ! Quelle lecture fluide ! Tu peux être fier de toi !";result.innerHTML=msg+"<br><strong>"+score+" mot"+(score>1?"s":"")+" correctement lu"+(score>1?"s":"")+" en 1 minute</strong>"+(errors?" · "+errors+" mot"+(errors>1?"s":"")+" passé"+(errors>1?"s":""):"");}
+ $("startOI").onclick=()=>{pos=good=errors=0;left=60;running=true;result.textContent="";$("startOI").style.display="none";strip.style.display="flex";actions.style.display="flex";$("oiTimer").textContent="1:00";render();timer=setInterval(()=>{left--;$("oiTimer").textContent="0:"+String(left).padStart(2,"0");if(left<=0)finish()},1000)};
+ $("oiGood").onclick=()=>{if(!running)return;good++;pos++;render()};
+ $("oiError").onclick=()=>{if(!running)return;errors++;pos++;render()};
+})();
+</script></body></html
+<section class="game">
+<div class="levels"><button data-l="0" class="active">1 · Syllabes</button><button data-l="1">2 · Mots</button><button data-l="2">3 · Sons</button></div>
+<div class="prompt">Lis à voix haute</div><div id="word" class="word">ma</div><div id="split" class="split"></div>
+<div id="pictureCard" style="display:none;text-align:center;margin:14px auto 18px;background:#fff8cf;border:3px solid #111;border-radius:22px;padding:16px;width:min(280px,85%);box-shadow:5px 5px 0 #111"><div id="picture" style="font-size:7rem;line-height:1.05"></div><div id="pictureWord" style="font-size:1.6rem;font-weight:1000;margin-top:8px"></div></div><button id="mic" class="mic">🎙️ JE LIS</button><div id="feedback" class="feedback" aria-live="polite">Appuie sur le micro, puis lis.</div><div id="heard" class="heard"></div>
+<div class="actions"><button id="listen">🔊 Écouter le mot</button><button id="next">Mot suivant →</button></div>
+<div class="stats"><span>⭐ Réussites : <b id="score">0</b></span><span>Mot <b id="num">1</b>/10</span></div>
+<div class="note">Expérimentation : la reconnaissance vocale peut parfois mal interpréter une voix d’enfant. Le jeu encourage à recommencer plutôt que de sanctionner.</div>
+</section></div><script src="site-tracking.js" defer></script>
+
+<script>
+(()=>{
+ const words=["roi","loi","moi","toi","soi","joie","voie","voix","bois","noix","pois","trois","croix","froid","droit","noir","soir","voir","boire","foire","poire","toile","boîte","étoile","voiture","poisson","oiseau","voisin","toiture","armoire","histoire","miroir","couloir","mouchoir","arrosoir","balançoire"];
+ const paint=w=>w.replace(/oi/gi,m=>'<span style="color:#e53935">'+m+'</span>');
+ let pos=0,good=0,errors=0,left=60,timer=null,running=false;
+ const $=id=>document.getElementById(id), strip=$("oiStrip"), actions=$("oiActions"), result=$("oiResult");
+ function render(){ $("oiNow").innerHTML=paint(words[pos%words.length]);$("oiNext").innerHTML=paint(words[(pos+1)%words.length]);$("oiAfter").innerHTML=paint(words[(pos+2)%words.length]); }
+ function finish(){running=false;clearInterval(timer);strip.style.display="none";actions.style.display="none";$("startOI").style.display="inline-block";const score=good;let msg=score<10?"🌱 Bravo, tu t'es lancé ! Chaque lecture te fait progresser.":score<20?"😊 Bravo ! Tu as gardé un bon rythme.":score<30?"🌟 Super lecture ! Tes yeux avancent de plus en plus vite.":"🚀 Waouh ! Quelle lecture fluide ! Tu peux être fier de toi !";result.innerHTML=msg+"<br><strong>"+score+" mot"+(score>1?"s":"")+" correctement lu"+(score>1?"s":"")+" en 1 minute</strong>"+(errors?" · "+errors+" mot"+(errors>1?"s":"")+" passé"+(errors>1?"s":""):"");}
+ $("startOI").onclick=()=>{pos=good=errors=0;left=60;running=true;result.textContent="";$("startOI").style.display="none";strip.style.display="flex";actions.style.display="flex";$("oiTimer").textContent="1:00";render();timer=setInterval(()=>{left--;$("oiTimer").textContent="0:"+String(left).padStart(2,"0");if(left<=0)finish()},1000)};
+ $("oiGood").onclick=()=>{if(!running)return;good++;pos++;render()};
+ $("oiError").onclick=()=>{if(!running)return;errors++;pos++;render()};
+})();
+</script></body></html>
