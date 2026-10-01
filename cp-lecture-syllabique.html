@@ -25,13 +25,13 @@
 <div class="actions"><button id="listen">🔊 Écouter le mot</button><button id="next">Mot suivant →</button></div>
 <div class="stats"><span>⭐ Réussites : <b id="score">0</b></span><span>Mot <b id="num">1</b>/10</span></div>
 <div class="note">Expérimentation : la reconnaissance vocale peut parfois mal interpréter une voix d’enfant. Le jeu encourage à recommencer plutôt que de sanctionner.</div>
-</section></div><script src="site-tracking.js" defer></script>
+</section></div><script src="rased-word-bank.js"></script><script src="site-tracking.js" defer></script>
 <script>
 (()=>{
-const sets=[
-[{w:"ma",s:"ma"},{w:"lu",s:"lu"},{w:"ri",s:"ri"},{w:"vé",s:"vé"},{w:"to",s:"to"},{w:"sa",s:"sa"},{w:"mi",s:"mi"},{w:"ro",s:"ro"},{w:"la",s:"la"},{w:"pu",s:"pu"}],
-[{w:"moto",s:"mo • to",pic:"🏍️"},{w:"vélo",s:"vé • lo",pic:"🚲"},{w:"lune",s:"lu • ne",pic:"🌙"},{w:"salade",s:"sa • la • de",pic:"🥗"},{w:"pirate",s:"pi • ra • te",pic:"🏴‍☠️"},{w:"tomate",s:"to • ma • te",pic:"🍅"},{w:"rame",s:"ra • me",pic:"🚣"},{w:"minute",s:"mi • nu • te",pic:"⏱️"},{w:"robe",s:"ro • be",pic:"👗"},{w:"animal",s:"a • ni • mal",pic:"🐾"}],
-[{w:"chat",s:"chat"},{w:"mouche",s:"mou • che"},{w:"lapin",s:"la • pin"},{w:"bateau",s:"ba • teau"},{w:"rouge",s:"rou • ge"},{w:"chapeau",s:"cha • peau"},{w:"maison",s:"mai • son"},{w:"poisson",s:"pois • son"},{w:"chemin",s:"che • min"},{w:"journal",s:"jour • nal"}]];
+const bank=window.ZM_WORD_BANK;
+const simple=ZM_PICK(bank.words.filter(x=>x.level==="simple"),10);
+const sounds=ZM_PICK(bank.words.filter(x=>x.level==="son"||x.level==="complexe"),10);
+const sets=[ZM_PICK(bank.syllables,10,x=>x).map(w=>({w,s:w})),simple,sounds];
 let level=0,i=0,errors=0,score=0,busy=false;
 const word=document.getElementById("word"),split=document.getElementById("split"),fb=document.getElementById("feedback"),heard=document.getElementById("heard"),mic=document.getElementById("mic"),pictureCard=document.getElementById("pictureCard"),picture=document.getElementById("picture"),pictureWord=document.getElementById("pictureWord");
 const norm=x=>(x||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z]/g,"");
@@ -55,7 +55,7 @@ function isCorrect(expected,alternatives){
 }
 function show(){word.textContent=sets[level][i].w;split.textContent="";heard.textContent="";pictureCard.style.display="none";fb.textContent="Appuie sur le micro, puis lis.";document.getElementById("num").textContent=i+1;errors=0}
 function showPicture(){if(level!==1||!sets[level][i].pic)return;picture.textContent=sets[level][i].pic;pictureWord.textContent=sets[level][i].w;pictureCard.style.display="block"}
-function next(){i=(i+1)%10;show()}
+function next(){i=(i+1)%sets[level].length;show()}
 function speak(){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(sets[level][i].w);u.lang="fr-FR";u.rate=.72;speechSynthesis.speak(u)}
 document.getElementById("listen").addEventListener("click",speak);document.getElementById("next").addEventListener("click",next);
 document.querySelectorAll("[data-l]").forEach(b=>b.addEventListener("click",()=>{level=+b.dataset.l;i=0;document.querySelectorAll("[data-l]").forEach(x=>x.classList.toggle("active",x===b));show()}));
