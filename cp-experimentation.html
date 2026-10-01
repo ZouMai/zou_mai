@@ -87,4 +87,17 @@ r.onaudiostart=()=>{heard.textContent="🎤 Micro actif — je t’entends…"};
 
 show();
 })();
+</script>
+<script>
+(()=>{
+ const words=["roi","loi","moi","toi","soi","joie","voie","voix","bois","noix","pois","trois","croix","froid","droit","noir","soir","voir","boire","foire","poire","toile","boîte","étoile","voiture","poisson","oiseau","voisin","toiture","armoire","histoire","miroir","couloir","mouchoir","arrosoir","balançoire"];
+ const paint=w=>w.replace(/oi/gi,m=>'<span style="color:#e53935">'+m+'</span>');
+ let pos=0,good=0,errors=0,left=60,timer=null,running=false;
+ const $=id=>document.getElementById(id), strip=$("oiStrip"), actions=$("oiActions"), result=$("oiResult");
+ function render(){ $("oiNow").innerHTML=paint(words[pos%words.length]);$("oiNext").innerHTML=paint(words[(pos+1)%words.length]);$("oiAfter").innerHTML=paint(words[(pos+2)%words.length]); }
+ function finish(){running=false;clearInterval(timer);strip.style.display="none";actions.style.display="none";$("startOI").style.display="inline-block";const score=good;let msg=score<10?"🌱 Bravo, tu t'es lancé ! Chaque lecture te fait progresser.":score<20?"😊 Bravo ! Tu as gardé un bon rythme.":score<30?"🌟 Super lecture ! Tes yeux avancent de plus en plus vite.":"🚀 Waouh ! Quelle lecture fluide ! Tu peux être fier de toi !";result.innerHTML=msg+"<br><strong>"+score+" mot"+(score>1?"s":"")+" correctement lu"+(score>1?"s":"")+" en 1 minute</strong>"+(errors?" · "+errors+" mot"+(errors>1?"s":"")+" passé"+(errors>1?"s":""):"");}
+ $("startOI").onclick=()=>{pos=good=errors=0;left=60;running=true;result.textContent="";$("startOI").style.display="none";strip.style.display="flex";actions.style.display="flex";$("oiTimer").textContent="1:00";render();timer=setInterval(()=>{left--;$("oiTimer").textContent="0:"+String(left).padStart(2,"0");if(left<=0)finish()},1000)};
+ $("oiGood").onclick=()=>{if(!running)return;good++;pos++;render()};
+ $("oiError").onclick=()=>{if(!running)return;errors++;pos++;render()};
+})();
 </script></body></html>
