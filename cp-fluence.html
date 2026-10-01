@@ -9,12 +9,14 @@ const paint=w=>w.replace(/oi/gi,m=>'<span class="oi">'+m+'</span>');
 function render(){$("now").innerHTML=paint(words[pos%words.length]);$("next").innerHTML=paint(words[(pos+1)%words.length]);$("after").innerHTML=paint(words[(pos+2)%words.length]);}
 function status(t){$("micStatus").textContent=t}
 function advance(){good++;pos++;status("✅ Bravo !");render();setTimeout(()=>{if(running)status("🎤 J'écoute… lis le mot en grand.")},350)}
-function heard(text){const target=norm(words[pos%words.length]);const parts=(text||"").split(/\s+/).map(norm).filter(Boolean);if(parts.includes(target)||norm(text)===target)advance();else status("🔁 Réessaie : "+words[pos%words.length]);}
+function phon(s){return norm(s).replace(/oi/g,"wa").replace(/ph/g,"f").replace(/qu/g,"k").replace(/c(?=[aou])/g,"k").replace(/e?s$/,"").replace(/ent$/,"").replace(/h/g,"")}
+function dist(a,b){a=phon(a);b=phon(b);const m=a.length,n=b.length,d=Array.from({length:m+1},()=>Array(n+1).fill(0));for(let i=0;i<=m;i++)d[i][0]=i;for(let j=0;j<=n;j++)d[0][j]=j;for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return d[m][n]}
+function heard(text){const target=words[pos%words.length],t=phon(target);const candidates=[text,...(text||"").split(/\\s+/)].filter(Boolean);let ok=false;for(const x of candidates){const p=phon(x);const tolerance=Math.max(1,Math.floor(t.length*.28));if(p===t||p.includes(t)||t.includes(p)||dist(p,t)<=tolerance){ok=true;break}}if(ok)advance();else status("🔁 Je n’ai pas bien entendu. Relis : "+target);}
 function listen(){
  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
  if(!SR){status("⚠️ Ce navigateur ne permet pas la reconnaissance vocale. Essaie Chrome sur Android ou ordinateur.");return false}
- rec=new SR();rec.lang="fr-FR";rec.continuous=true;rec.interimResults=false;rec.maxAlternatives=5;
- rec.onresult=e=>{if(!running)return;const r=e.results[e.results.length-1];for(let i=0;i<r.length;i++){const t=r[i].transcript;if((t||"").trim()){heard(t);if(norm(t).split(target=>target).length)break}}};
+ rec=new SR();rec.lang="fr-FR";rec.continuous=true;rec.interimResults=false;rec.maxAlternatives=10;
+ rec.onresult=e=>{if(!running)return;const r=e.results[e.results.length-1];for(let i=0;i<r.length;i++){const before=pos;const t=r[i].transcript;if((t||"").trim())heard(t);if(pos!==before)break}};
  rec.onerror=e=>{if(e.error==="not-allowed"||e.error==="service-not-allowed")status("🎤 Micro refusé : autorise le micro puis relance.");else if(running)status("🎤 Je réécoute…");};
  rec.onend=()=>{if(running){try{rec.start()}catch(e){setTimeout(()=>{try{rec.start()}catch(_){}},250)}}};
  try{rec.start();return true}catch(e){status("🎤 Impossible de démarrer le micro.");return false}
