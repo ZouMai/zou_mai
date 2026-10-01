@@ -34,7 +34,9 @@ const sets=[
 [{w:"chat",s:"chat"},{w:"mouche",s:"mou • che"},{w:"lapin",s:"la • pin"},{w:"bateau",s:"ba • teau"},{w:"rouge",s:"rou • ge"},{w:"chapeau",s:"cha • peau"},{w:"maison",s:"mai • son"},{w:"poisson",s:"pois • son"},{w:"chemin",s:"che • min"},{w:"journal",s:"jour • nal"}]];
 let level=0,i=0,errors=0,score=0,busy=false;
 const word=document.getElementById("word"),split=document.getElementById("split"),fb=document.getElementById("feedback"),heard=document.getElementById("heard"),mic=document.getElementById("mic");
-const norm=x=>x.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z]/g,"");
+const norm=x=>(x||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z]/g,"");
+const aliases={"ma":["ma","m'a","mât"],"lu":["lu","lue","lut"],"ri":["ri","rit","riz"],"vé":["vé","vais","v"],"to":["to","tôt","taux"],"sa":["sa","ça"],"mi":["mi","mie","mis"],"ro":["ro","rot"],"la":["la","là"],"pu":["pu","pue","pus"]};
+function isCorrect(expected,alternatives){const accepted=(aliases[expected]||[expected]).map(norm);return alternatives.some(t=>accepted.includes(norm(t)));}
 function show(){word.textContent=sets[level][i].w;split.textContent="";heard.textContent="";fb.textContent="Appuie sur le micro, puis lis.";document.getElementById("num").textContent=i+1;errors=0}
 function next(){i=(i+1)%10;show()}
 function speak(){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(sets[level][i].w);u.lang="fr-FR";u.rate=.72;speechSynthesis.speak(u)}
