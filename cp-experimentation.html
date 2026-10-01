@@ -36,9 +36,19 @@ let level=0,i=0,errors=0,score=0,busy=false;
 const word=document.getElementById("word"),split=document.getElementById("split"),fb=document.getElementById("feedback"),heard=document.getElementById("heard"),mic=document.getElementById("mic");
 const norm=x=>(x||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z]/g,"");
 const aliases={"ma":["ma","m'a","mât"],"lu":["lu","lue","lut"],"ri":["ri","rit","riz"],"vé":["vé","vais","v"],"to":["to","tôt","taux"],"sa":["sa","ça"],"mi":["mi","mie","mis"],"ro":["ro","rot"],"la":["la","là"],"pu":["pu","pue","pus"]};
+function isSpelling(t,expected){
+ const raw=(t||"").toLowerCase().trim();
+ const letters=norm(expected).split("");
+ if(letters.length<2)return false;
+ const compact=norm(raw);
+ const letterNames={a:["a"],b:["be"],c:["ce"],d:["de"],e:["e"],f:["effe"],g:["ge"],h:["ache"],i:["i"],j:["ji"],k:["ka"],l:["elle"],m:["emme"],n:["enne"],o:["o"],p:["pe"],q:["ku"],r:["erre"],s:["esse"],t:["te"],u:["u"],v:["ve"],w:["doubleve"],x:["ix"],y:["igrec"],z:["zede"]};
+ const spelled=letters.map(l=>(letterNames[l]||[l])[0]).join("");
+ return compact===spelled || /[- .]/.test(raw)&&letters.every(l=>raw.includes(l));
+}
 function isCorrect(expected,alternatives){
  const accepted=(aliases[expected]||[expected]).map(norm);
  return alternatives.some(t=>{
+   if(isSpelling(t,expected))return false;
    const n=norm(t);
    return accepted.some(a=>n===a || (a.length>=2 && (n.startsWith(a)||n.endsWith(a))));
  });
@@ -64,7 +74,8 @@ r.onresult=e=>{
    try{r.stop()}catch(_){}
    setTimeout(next,700);
  }else if(!validated){
-   fb.textContent="👂 J'ai entendu « "+said+" ». Termine de lire…";
+   if(isSpelling(said,sets[level][i].w)){fb.textContent="👄 Dis le SON directement, sans nommer les lettres.";heard.textContent="Exemple : pour M A, dis « ma »."}
+   else fb.textContent="👂 J'ai entendu « "+said+" ». Termine de lire…";
  }
 };
 r.onnomatch=()=>{gotResult=true;errors++;fb.textContent="❓ JE N'AI PAS COMPRIS. RECOMMENCE.";heard.textContent="Le micro n’a reconnu aucun mot.";if(errors>=2)split.textContent=sets[level][i].s};
