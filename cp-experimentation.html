@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CP — Expérimentation | Zou Maï</title>
+<link rel="stylesheet" href="zoumai.css"><link rel="stylesheet" href="zoumai-brand.css">
+<style>
+:root{--ink:#101114;--paper:#f5f0e5;--yellow:#f2d31c;--red:#e04435;--blue:#244b78}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:var(--paper);font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
+.wrap{width:min(920px,92vw);margin:auto;padding:24px 0 60px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;border-bottom:3px solid #111;padding-bottom:18px}
+.brand{font-weight:1000;letter-spacing:.08em;text-decoration:none;color:#111}.back{color:#111;font-weight:800;text-decoration:none}
+.hero{text-align:center;padding:36px 0 18px}.hero h1{font-size:clamp(2.2rem,7vw,4.6rem);margin:0;text-transform:uppercase}.hero p{font-size:1.05rem}
+.game{background:#fff;border:3px solid #111;border-radius:24px;padding:clamp(18px,4vw,34px);box-shadow:8px 8px 0 #111}
+.levels{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}.levels button,.actions button{border:2px solid #111;background:#fff;border-radius:14px;padding:12px 16px;font-weight:900;font-size:1rem;cursor:pointer}.levels button.active{background:var(--yellow)}
+.prompt{text-align:center;color:#555;font-weight:800;margin-top:26px}.word{text-align:center;font-size:clamp(4rem,15vw,8rem);font-weight:1000;line-height:1.1;margin:18px 0}.split{text-align:center;font-size:clamp(1.8rem,6vw,3rem);font-weight:900;color:var(--blue);min-height:1.2em}
+.mic{display:block;margin:25px auto 12px;border:3px solid #111;border-radius:999px;background:var(--red);color:#fff;padding:17px 28px;font-size:1.35rem;font-weight:1000;cursor:pointer;min-width:190px}.mic.listening{animation:pulse .8s infinite alternate}.feedback{text-align:center;min-height:42px;font-size:1.25rem;font-weight:900;margin:12px}.heard{text-align:center;color:#666;min-height:24px}
+.actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:18px}.stats{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin-top:25px;padding-top:18px;border-top:1px solid #bbb;font-weight:800}.note{text-align:center;font-size:.85rem;color:#666;margin-top:18px}
+@keyframes pulse{to{transform:scale(1.06);box-shadow:0 0 0 10px rgba(224,68,53,.15)}}@media(max-width:600px){.game{box-shadow:5px 5px 0 #111}.word{margin:12px 0}.top{justify-content:center}}
+</style></head>
+<body><a class="zm-corner-logo" href="index.html" aria-label="Accueil Zou Maï"><img src="images/logo-zou-mai-sensei.png" alt="Logo Sensei Zou Maï"></a>
+<div class="wrap"><div class="top"><a class="brand" href="index.html">ZOU MAÏ</a><a class="back" href="index.html">← Accueil</a></div>
+<section class="hero"><h1>CP — Expérimentation</h1><p>Premier laboratoire : <strong>Je lis !</strong> — lire un mot à voix haute.</p></section>
+<section class="game">
+<div class="levels"><button data-l="0" class="active">1 · Syllabes</button><button data-l="1">2 · Mots</button><button data-l="2">3 · Sons</button></div>
+<div class="prompt">Lis à voix haute</div><div id="word" class="word">ma</div><div id="split" class="split"></div>
+<button id="mic" class="mic">🎙️ JE LIS</button><div id="feedback" class="feedback" aria-live="polite">Appuie sur le micro, puis lis.</div><div id="heard" class="heard"></div>
+<div class="actions"><button id="listen">🔊 Écouter le mot</button><button id="next">Mot suivant →</button></div>
+<div class="stats"><span>⭐ Réussites : <b id="score">0</b></span><span>Mot <b id="num">1</b>/10</span></div>
+<div class="note">Expérimentation : la reconnaissance vocale peut parfois mal interpréter une voix d’enfant. Le jeu encourage à recommencer plutôt que de sanctionner.</div>
+</section></div><script src="site-tracking.js" defer></script>
+<script>
+(()=>{
+const sets=[
+[{w:"ma",s:"ma"},{w:"lu",s:"lu"},{w:"ri",s:"ri"},{w:"vé",s:"vé"},{w:"to",s:"to"},{w:"sa",s:"sa"},{w:"mi",s:"mi"},{w:"ro",s:"ro"},{w:"la",s:"la"},{w:"pu",s:"pu"}],
+[{w:"moto",s:"mo • to"},{w:"vélo",s:"vé • lo"},{w:"lune",s:"lu • ne"},{w:"salade",s:"sa • la • de"},{w:"pirate",s:"pi • ra • te"},{w:"tomate",s:"to • ma • te"},{w:"rame",s:"ra • me"},{w:"minute",s:"mi • nu • te"},{w:"robe",s:"ro • be"},{w:"animal",s:"a • ni • mal"}],
+[{w:"chat",s:"chat"},{w:"mouche",s:"mou • che"},{w:"lapin",s:"la • pin"},{w:"bateau",s:"ba • teau"},{w:"rouge",s:"rou • ge"},{w:"chapeau",s:"cha • peau"},{w:"maison",s:"mai • son"},{w:"poisson",s:"pois • son"},{w:"chemin",s:"che • min"},{w:"journal",s:"jour • nal"}]];
+let level=0,i=0,errors=0,score=0,busy=false;
+const word=document.getElementById("word"),split=document.getElementById("split"),fb=document.getElementById("feedback"),heard=document.getElementById("heard"),mic=document.getElementById("mic");
+const norm=x=>x.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z]/g,"");
+function show(){word.textContent=sets[level][i].w;split.textContent="";heard.textContent="";fb.textContent="Appuie sur le micro, puis lis.";document.getElementById("num").textContent=i+1;errors=0}
+function next(){i=(i+1)%10;show()}
+function speak(){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(sets[level][i].w);u.lang="fr-FR";u.rate=.72;speechSynthesis.speak(u)}
+document.getElementById("listen").addEventListener("click",speak);document.getElementById("next").addEventListener("click",next);
+document.querySelectorAll("[data-l]").forEach(b=>b.addEventListener("click",()=>{level=+b.dataset.l;i=0;document.querySelectorAll("[data-l]").forEach(x=>x.classList.toggle("active",x===b));show()}));
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+if(!SR){mic.disabled=true;mic.textContent="🎙️ Micro non compatible";fb.textContent="Essaie avec Chrome ou Edge pour cette expérimentation."}
+else mic.addEventListener("click",()=>{if(busy)return;busy=true;const r=new SR();r.lang="fr-FR";r.interimResults=false;r.maxAlternatives=5;mic.classList.add("listening");mic.textContent="👂 J'ÉCOUTE…";fb.textContent="Lis le mot maintenant.";
+r.onresult=e=>{const target=norm(sets[level][i].w);const alts=[];for(let a=0;a<e.results[0].length;a++)alts.push(e.results[0][a].transcript);heard.textContent="J’ai entendu : "+alts[0];if(alts.some(x=>norm(x)===target)){score++;document.getElementById("score").textContent=score;fb.textContent="🌟 Bravo !";setTimeout(next,1100)}else{errors++;fb.textContent=errors===1?"👂 Essaie encore une fois.":"💡 Lis les morceaux, puis recommence.";if(errors>=2)split.textContent=sets[level][i].s}};
+r.onerror=e=>{fb.textContent=e.error==="not-allowed"?"Le micro doit être autorisé pour jouer.":"Je n’ai pas bien entendu. Recommence."};
+r.onend=()=>{busy=false;mic.classList.remove("listening");mic.textContent="🎙️ JE LIS"};try{r.start()}catch(e){busy=false}});
+show();
+})();
+</script></body></html>
