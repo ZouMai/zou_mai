@@ -42,10 +42,13 @@ document.getElementById("listen").addEventListener("click",speak);document.getEl
 document.querySelectorAll("[data-l]").forEach(b=>b.addEventListener("click",()=>{level=+b.dataset.l;i=0;document.querySelectorAll("[data-l]").forEach(x=>x.classList.toggle("active",x===b));show()}));
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
 if(!SR){mic.disabled=true;mic.textContent="🎙️ Micro non compatible";fb.textContent="Essaie avec Chrome ou Edge pour cette expérimentation."}
-else mic.addEventListener("click",()=>{if(busy)return;busy=true;const r=new SR();r.lang="fr-FR";r.interimResults=false;r.maxAlternatives=5;mic.classList.add("listening");mic.textContent="👂 J'ÉCOUTE…";fb.textContent="Lis le mot maintenant.";
-r.onresult=e=>{const target=norm(sets[level][i].w);const alts=[];for(let a=0;a<e.results[0].length;a++)alts.push(e.results[0][a].transcript);heard.textContent="J’ai entendu : "+alts[0];if(isCorrect(sets[level][i].w,alts)){score++;document.getElementById("score").textContent=score;fb.textContent="🌟 BRAVO, BIEN LU !";heard.textContent="✓ « "+sets[level][i].w+" » est bien lu.";setTimeout(next,350)}else{errors++;fb.textContent=errors===1?"❌ PAS ENCORE. RECOMMENCE.":"💡 PAS ENCORE. LIS LES MORCEAUX ET RECOMMENCE.";heard.textContent="J’ai entendu : "+alts[0]+" — ce n’est pas « "+sets[level][i].w+" ».";if(errors>=2)split.textContent=sets[level][i].s}};
-r.onerror=e=>{fb.textContent=e.error==="not-allowed"?"Le micro doit être autorisé pour jouer.":"Je n’ai pas bien entendu. Recommence."};
-r.onend=()=>{busy=false;mic.classList.remove("listening");mic.textContent="🎙️ JE LIS"};try{r.start()}catch(e){busy=false}});
+else mic.addEventListener("click",()=>{if(busy)return;busy=true;let gotResult=false;const r=new SR();r.lang="fr-FR";r.interimResults=false;r.continuous=false;r.maxAlternatives=10;mic.classList.add("listening");mic.textContent="👂 J'ÉCOUTE…";fb.textContent="🎙️ Je t'écoute : lis maintenant.";heard.textContent="";
+r.onresult=e=>{gotResult=true;const alts=[];for(let k=0;k<e.results.length;k++){for(let a=0;a<e.results[k].length;a++)alts.push(e.results[k][a].transcript)};const said=alts[0]||"";heard.textContent=said?"Le micro a entendu : « "+said+" »":"Le micro n’a reconnu aucun mot.";if(isCorrect(sets[level][i].w,alts)){score++;document.getElementById("score").textContent=score;fb.textContent="✅ BRAVO ! C'EST BIEN LU !";setTimeout(next,500)}else{errors++;fb.textContent="❌ PAS ENCORE. RECOMMENCE.";if(errors>=2){split.textContent=sets[level][i].s;fb.textContent="💡 PAS ENCORE. LIS LES MORCEAUX ET RECOMMENCE."}}};
+r.onnomatch=()=>{gotResult=true;errors++;fb.textContent="❓ JE N'AI PAS COMPRIS. RECOMMENCE.";heard.textContent="Le micro n’a reconnu aucun mot.";if(errors>=2)split.textContent=sets[level][i].s};
+r.onerror=e=>{gotResult=true;const msg={not_allowed:"Micro non autorisé.",audio_capture:"Je ne trouve pas le micro.",no_speech:"Je n’ai entendu aucun mot."}[String(e.error).replaceAll("-","_")]||("Problème micro : "+e.error);fb.textContent="⚠️ "+msg+" Recommence.";heard.textContent="Code : "+e.error};
+r.onend=()=>{busy=false;mic.classList.remove("listening");mic.textContent="🎙️ JE LIS";if(!gotResult){fb.textContent="⚠️ JE N'AI REÇU AUCUN MOT. APPUIE ET RECOMMENCE.";heard.textContent="Le micro s’est arrêté sans transmettre de mot au jeu."}};
+try{r.start()}catch(e){busy=false;mic.classList.remove("listening");mic.textContent="🎙️ JE LIS";fb.textContent="⚠️ Impossible de démarrer le micro. Réessaie.";heard.textContent=String(e.message||e)}});
+
 show();
 })();
 </script></body></html>
