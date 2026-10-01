@@ -36,7 +36,13 @@ let level=0,i=0,errors=0,score=0,busy=false;
 const word=document.getElementById("word"),split=document.getElementById("split"),fb=document.getElementById("feedback"),heard=document.getElementById("heard"),mic=document.getElementById("mic");
 const norm=x=>(x||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z]/g,"");
 const aliases={"ma":["ma","m'a","mât"],"lu":["lu","lue","lut"],"ri":["ri","rit","riz"],"vé":["vé","vais","v"],"to":["to","tôt","taux"],"sa":["sa","ça"],"mi":["mi","mie","mis"],"ro":["ro","rot"],"la":["la","là"],"pu":["pu","pue","pus"]};
-function isCorrect(expected,alternatives){const accepted=(aliases[expected]||[expected]).map(norm);return alternatives.some(t=>accepted.includes(norm(t)));}
+function isCorrect(expected,alternatives){
+ const accepted=(aliases[expected]||[expected]).map(norm);
+ return alternatives.some(t=>{
+   const n=norm(t);
+   return accepted.some(a=>n===a || (a.length>=2 && (n.startsWith(a)||n.endsWith(a))));
+ });
+}
 function show(){word.textContent=sets[level][i].w;split.textContent="";heard.textContent="";fb.textContent="Appuie sur le micro, puis lis.";document.getElementById("num").textContent=i+1;errors=0}
 function next(){i=(i+1)%10;show()}
 function speak(){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(sets[level][i].w);u.lang="fr-FR";u.rate=.72;speechSynthesis.speak(u)}
@@ -44,11 +50,26 @@ document.getElementById("listen").addEventListener("click",speak);document.getEl
 document.querySelectorAll("[data-l]").forEach(b=>b.addEventListener("click",()=>{level=+b.dataset.l;i=0;document.querySelectorAll("[data-l]").forEach(x=>x.classList.toggle("active",x===b));show()}));
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
 if(!SR){mic.disabled=true;mic.textContent="🎙️ Micro non compatible";fb.textContent="Essaie avec Chrome ou Edge pour cette expérimentation."}
-else mic.addEventListener("click",()=>{if(busy)return;busy=true;let gotResult=false;const r=new SR();r.lang="fr-FR";r.interimResults=false;r.continuous=false;r.maxAlternatives=10;mic.classList.add("listening");mic.textContent="👂 J'ÉCOUTE…";fb.textContent="🎙️ Je t'écoute : lis maintenant.";heard.textContent="";
-r.onresult=e=>{gotResult=true;const alts=[];for(let k=0;k<e.results.length;k++){for(let a=0;a<e.results[k].length;a++)alts.push(e.results[k][a].transcript)};const said=alts[0]||"";heard.textContent=said?"Le micro a entendu : « "+said+" »":"Le micro n’a reconnu aucun mot.";if(isCorrect(sets[level][i].w,alts)){score++;document.getElementById("score").textContent=score;fb.textContent="✅ BRAVO ! C'EST BIEN LU !";setTimeout(next,500)}else{errors++;fb.textContent="❌ PAS ENCORE. RECOMMENCE.";if(errors>=2){split.textContent=sets[level][i].s;fb.textContent="💡 PAS ENCORE. LIS LES MORCEAUX ET RECOMMENCE."}}};
+else mic.addEventListener("click",()=>{if(busy)return;busy=true;let gotResult=false;const r=new SR();r.lang="fr-FR";r.interimResults=true;r.continuous=true;r.maxAlternatives=10;mic.classList.add("listening");mic.textContent="👂 J'ÉCOUTE…";fb.textContent="🎙️ Je t'écoute : lis maintenant.";heard.textContent="";
+let validated=false;let timer=setTimeout(()=>{try{r.stop()}catch(_){}},6000);
+r.onresult=e=>{
+ gotResult=true;
+ const alts=[];
+ for(let k=0;k<e.results.length;k++)for(let a=0;a<e.results[k].length;a++)alts.push(e.results[k][a].transcript);
+ const said=alts[0]||"";
+ heard.textContent=said?"Le micro a entendu : « "+said+" »":"Le micro n’a reconnu aucun mot.";
+ if(!validated && isCorrect(sets[level][i].w,alts)){
+   validated=true;clearTimeout(timer);score++;document.getElementById("score").textContent=score;
+   fb.textContent="✅ BRAVO ! C'EST BIEN LU !";
+   try{r.stop()}catch(_){}
+   setTimeout(next,700);
+ }else if(!validated){
+   fb.textContent="👂 J'ai entendu « "+said+" ». Termine de lire…";
+ }
+};
 r.onnomatch=()=>{gotResult=true;errors++;fb.textContent="❓ JE N'AI PAS COMPRIS. RECOMMENCE.";heard.textContent="Le micro n’a reconnu aucun mot.";if(errors>=2)split.textContent=sets[level][i].s};
 r.onerror=e=>{gotResult=true;const msg={not_allowed:"Micro non autorisé.",audio_capture:"Je ne trouve pas le micro.",no_speech:"Je n’ai entendu aucun mot."}[String(e.error).replaceAll("-","_")]||("Problème micro : "+e.error);fb.textContent="⚠️ "+msg+" Recommence.";heard.textContent="Code : "+e.error};
-r.onend=()=>{busy=false;mic.classList.remove("listening");mic.textContent="🎙️ JE LIS";if(!gotResult){fb.textContent="⚠️ JE N'AI REÇU AUCUN MOT. APPUIE ET RECOMMENCE.";heard.textContent="Le micro s’est arrêté sans transmettre de mot au jeu."}};
+r.onend=()=>{clearTimeout(timer);busy=false;mic.classList.remove("listening");mic.textContent="🎙️ JE LIS";if(validated)return;if(!gotResult){fb.textContent="❓ JE N'AI PAS COMPRIS. RECOMMENCE.";heard.textContent="Je n’ai reçu aucun mot exploitable."}else{errors++;fb.textContent="❌ PAS ENCORE. RECOMMENCE.";if(errors>=2){split.textContent=sets[level][i].s;fb.textContent="💡 LIS LES MORCEAUX, PUIS RECOMMENCE."}}};
 try{r.start()}catch(e){busy=false;mic.classList.remove("listening");mic.textContent="🎙️ JE LIS";fb.textContent="⚠️ Impossible de démarrer le micro. Réessaie.";heard.textContent=String(e.message||e)}});
 
 show();
