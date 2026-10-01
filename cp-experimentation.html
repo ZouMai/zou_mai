@@ -21,7 +21,7 @@
 <section class="game">
 <div class="levels"><button data-l="0" class="active">1 · Syllabes</button><button data-l="1">2 · Mots</button><button data-l="2">3 · Sons</button></div>
 <div class="prompt">Lis à voix haute</div><div id="word" class="word">ma</div><div id="split" class="split"></div>
-<button id="mic" class="mic">🎙️ JE LIS</button><div id="feedback" class="feedback" aria-live="polite">Appuie sur le micro, puis lis.</div><div id="heard" class="heard"></div>
+<div id="pictureCard" style="display:none;text-align:center;margin:14px auto 18px;background:#fff8cf;border:3px solid #111;border-radius:22px;padding:16px;width:min(280px,85%);box-shadow:5px 5px 0 #111"><div id="picture" style="font-size:7rem;line-height:1.05"></div><div id="pictureWord" style="font-size:1.6rem;font-weight:1000;margin-top:8px"></div></div><button id="mic" class="mic">🎙️ JE LIS</button><div id="feedback" class="feedback" aria-live="polite">Appuie sur le micro, puis lis.</div><div id="heard" class="heard"></div>
 <div class="actions"><button id="listen">🔊 Écouter le mot</button><button id="next">Mot suivant →</button></div>
 <div class="stats"><span>⭐ Réussites : <b id="score">0</b></span><span>Mot <b id="num">1</b>/10</span></div>
 <div class="note">Expérimentation : la reconnaissance vocale peut parfois mal interpréter une voix d’enfant. Le jeu encourage à recommencer plutôt que de sanctionner.</div>
@@ -30,10 +30,10 @@
 (()=>{
 const sets=[
 [{w:"ma",s:"ma"},{w:"lu",s:"lu"},{w:"ri",s:"ri"},{w:"vé",s:"vé"},{w:"to",s:"to"},{w:"sa",s:"sa"},{w:"mi",s:"mi"},{w:"ro",s:"ro"},{w:"la",s:"la"},{w:"pu",s:"pu"}],
-[{w:"moto",s:"mo • to"},{w:"vélo",s:"vé • lo"},{w:"lune",s:"lu • ne"},{w:"salade",s:"sa • la • de"},{w:"pirate",s:"pi • ra • te"},{w:"tomate",s:"to • ma • te"},{w:"rame",s:"ra • me"},{w:"minute",s:"mi • nu • te"},{w:"robe",s:"ro • be"},{w:"animal",s:"a • ni • mal"}],
+[{w:"moto",s:"mo • to",pic:"🏍️"},{w:"vélo",s:"vé • lo",pic:"🚲"},{w:"lune",s:"lu • ne",pic:"🌙"},{w:"salade",s:"sa • la • de",pic:"🥗"},{w:"pirate",s:"pi • ra • te",pic:"🏴‍☠️"},{w:"tomate",s:"to • ma • te",pic:"🍅"},{w:"rame",s:"ra • me",pic:"🚣"},{w:"minute",s:"mi • nu • te",pic:"⏱️"},{w:"robe",s:"ro • be",pic:"👗"},{w:"animal",s:"a • ni • mal",pic:"🐾"}],
 [{w:"chat",s:"chat"},{w:"mouche",s:"mou • che"},{w:"lapin",s:"la • pin"},{w:"bateau",s:"ba • teau"},{w:"rouge",s:"rou • ge"},{w:"chapeau",s:"cha • peau"},{w:"maison",s:"mai • son"},{w:"poisson",s:"pois • son"},{w:"chemin",s:"che • min"},{w:"journal",s:"jour • nal"}]];
 let level=0,i=0,errors=0,score=0,busy=false;
-const word=document.getElementById("word"),split=document.getElementById("split"),fb=document.getElementById("feedback"),heard=document.getElementById("heard"),mic=document.getElementById("mic");
+const word=document.getElementById("word"),split=document.getElementById("split"),fb=document.getElementById("feedback"),heard=document.getElementById("heard"),mic=document.getElementById("mic"),pictureCard=document.getElementById("pictureCard"),picture=document.getElementById("picture"),pictureWord=document.getElementById("pictureWord");
 const norm=x=>(x||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z]/g,"");
 const aliases={"ma":["ma","m'a","mât"],"lu":["lu","lue","lut"],"ri":["ri","rit","riz"],"vé":["vé","vais","v"],"to":["to","tôt","taux"],"sa":["sa","ça"],"mi":["mi","mie","mis"],"ro":["ro","rot"],"la":["la","là"],"pu":["pu","pue","pus"]};
 function isSpelling(t,expected){
@@ -53,7 +53,8 @@ function isCorrect(expected,alternatives){
    return accepted.some(a=>n===a || (a.length>=2 && (n.startsWith(a)||n.endsWith(a))));
  });
 }
-function show(){word.textContent=sets[level][i].w;split.textContent="";heard.textContent="";fb.textContent="Appuie sur le micro, puis lis.";document.getElementById("num").textContent=i+1;errors=0}
+function show(){word.textContent=sets[level][i].w;split.textContent="";heard.textContent="";pictureCard.style.display="none";fb.textContent="Appuie sur le micro, puis lis.";document.getElementById("num").textContent=i+1;errors=0}
+function showPicture(){if(level!==1||!sets[level][i].pic)return;picture.textContent=sets[level][i].pic;pictureWord.textContent=sets[level][i].w;pictureCard.style.display="block"}
 function next(){i=(i+1)%10;show()}
 function speak(){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(sets[level][i].w);u.lang="fr-FR";u.rate=.72;speechSynthesis.speak(u)}
 document.getElementById("listen").addEventListener("click",speak);document.getElementById("next").addEventListener("click",next);
@@ -71,8 +72,9 @@ r.onresult=e=>{
  if(!validated && isCorrect(sets[level][i].w,alts)){
    validated=true;clearTimeout(timer);score++;document.getElementById("score").textContent=score;
    fb.textContent="✅ BRAVO ! C'EST BIEN LU !";
+   showPicture();
    try{r.stop()}catch(_){}
-   setTimeout(next,700);
+   setTimeout(next,1800);
  }else if(!validated){
    if(isSpelling(said,sets[level][i].w)){fb.textContent="👄 Dis le SON directement, sans nommer les lettres.";heard.textContent="Exemple : pour M A, dis « ma »."}
    else fb.textContent="👂 J'ai entendu « "+said+" ». Termine de lire…";
