@@ -1,84 +1,157 @@
 <!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>RASED · Parcours du code</title><style>
-:root{--ink:#18202a;--cream:#fffaf0;--sun:#ffd85a;--mint:#bfe8d0;--sky:#bcdcf7;--coral:#ff8b79;--white:#fff}
-*{box-sizing:border-box}body{margin:0;font-family:ui-rounded,"Arial Rounded MT Bold",system-ui,sans-serif;background:linear-gradient(#bde8ff 0 44%,#d9efc2 44%);color:var(--ink);min-height:100dvh;overflow-x:hidden}
-button{font:inherit}.app{width:min(720px,100%);margin:auto;min-height:100dvh;padding:18px 18px 36px;position:relative}.top{display:flex;align-items:center;justify-content:space-between}.logo{font-weight:1000;letter-spacing:.08em;background:#fff;border:2px solid #18202a;border-radius:999px;padding:8px 14px;box-shadow:0 4px 0 #18202a}.stars{background:#fff;border-radius:999px;padding:9px 14px;font-weight:1000;box-shadow:0 4px 16px #38608022}
-.world{position:relative;height:280px;margin:10px 0}.hill{position:absolute;left:-25%;bottom:0;width:150%;height:160px;background:#7fc46c;border-radius:50% 50% 0 0}.path{position:absolute;left:50%;bottom:-5px;transform:translateX(-50%);width:125px;height:230px;background:#f5d7a0;clip-path:polygon(36% 100%,66% 100%,100% 0,0 0)}
-.node{position:absolute;width:68px;height:68px;border:0;border-radius:50%;display:grid;place-items:center;font-size:2rem;font-weight:1000;box-shadow:0 7px 0 #26344244;transition:.2s}.node.done{background:#fff}.node.active{background:var(--sun);width:84px;height:84px;animation:bob 1.6s ease-in-out infinite}.node.lock{background:#d9dfdf;filter:saturate(.3)}.n1{left:18%;bottom:22px}.n2{left:42%;bottom:95px}.n3{right:17%;bottom:170px}@keyframes bob{50%{transform:translateY(-7px)}}
-.card{background:#fff;border-radius:32px;padding:24px;box-shadow:0 12px 34px #34556b25;min-height:310px;display:none}.card.on{display:block}.progress{height:10px;background:#edf0f0;border-radius:99px;overflow:hidden;margin-bottom:20px}.progress i{display:block;height:100%;background:#64c486;width:10%;transition:.35s}
-.demo{height:62px;display:flex;align-items:center;justify-content:center;gap:16px;margin:6px}.hand{font-size:2.4rem;animation:tap 1.4s infinite}.demo .sound{font-size:2rem;font-weight:1000}@keyframes tap{50%{transform:translateY(9px) scale(.9)}}
-.choices{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin-top:15px}.choice{min-height:110px;border:3px solid #dfe6e8;background:#fff;border-radius:24px;font-size:clamp(2.2rem,11vw,4rem);font-weight:1000;box-shadow:0 6px 0 #dfe6e8;cursor:pointer}.choice:active{transform:translateY(4px);box-shadow:0 2px 0 #dfe6e8}.choice.good{background:#dff5e7;border-color:#67c487}.choice.bad{animation:shake .28s;background:#fff0ec;border-color:#ff8b79}@keyframes shake{25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
-.listen{display:grid;place-items:center;margin:8px auto 14px;width:92px;height:92px;border:0;border-radius:50%;background:var(--sky);font-size:2.6rem;box-shadow:0 7px 0 #78a9ce;cursor:pointer}.big{font-size:clamp(5rem,22vw,9rem);font-weight:1000;text-align:center;line-height:1.05}.ipa{font:700 1rem system-ui;text-align:center;opacity:.45;margin-top:5px}
-.mic{display:grid;place-items:center;margin:20px auto;width:100px;height:100px;border:0;border-radius:50%;background:var(--coral);font-size:2.8rem;box-shadow:0 8px 0 #cf6255}.mic.live{animation:pulse .7s infinite alternate}@keyframes pulse{to{box-shadow:0 8px 0 #cf6255,0 0 0 16px #ff8b7935}}
-.feedback{height:46px;text-align:center;font-size:2rem;font-weight:1000}.tiny{text-align:center;font:700 .82rem system-ui;opacity:.5}.teacher{position:fixed;right:12px;bottom:12px;border:0;background:#18202a;color:#fff;border-radius:50%;width:46px;height:46px;opacity:.35}
-@media(min-width:700px){.app{padding-top:28px}.world{height:330px}.card{padding:32px}}
-</style></head><body><main class="app"><header class="top"><div class="logo">RASED</div><div class="stars">⭐ <span id="stars">0</span></div></header>
-<section id="world" class="world"><div class="hill"></div><div class="path"></div><button class="node done n1">a</button><button class="node active n2" id="go">▶</button><button class="node lock n3">🔒</button></section>
-<section id="game" class="card"><div class="progress"><i id="bar"></i></div><div id="stage"></div><div id="feedback" class="feedback"></div><div id="tiny" class="tiny"></div></section>
+:root{--ink:#18202a;--cream:#fffaf0;--sun:#ffd85a;--mint:#bfe8d0;--sky:#bcdcf7;--coral:#ff8b79;--white:#fff;--green:#63bd78;--muted:#edf1f1}
+*{box-sizing:border-box}body{margin:0;font-family:ui-rounded,"Arial Rounded MT Bold",system-ui,sans-serif;background:linear-gradient(#bde8ff 0 29%,#d9efc2 29%);color:var(--ink);min-height:100dvh;overflow-x:hidden}
+button{font:inherit}.app{width:min(820px,100%);margin:auto;min-height:100dvh;padding:18px 18px 42px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px}.logo{font-weight:1000;letter-spacing:.08em;background:#fff;border:2px solid var(--ink);border-radius:999px;padding:8px 14px;box-shadow:0 4px 0 var(--ink)}.stars{background:#fff;border-radius:999px;padding:9px 14px;font-weight:1000;box-shadow:0 4px 16px #38608022}
+.hero{text-align:center;padding:25px 6px 12px}.hero h1{font-size:clamp(2.1rem,8vw,4.3rem);margin:0}.hero p{max-width:650px;margin:10px auto 0;font-weight:800;line-height:1.35}.path{display:grid;gap:12px;margin-top:18px}.level{width:100%;border:3px solid var(--ink);background:#fff;border-radius:24px;padding:16px 18px;display:grid;grid-template-columns:58px 1fr auto;align-items:center;gap:14px;text-align:left;box-shadow:5px 6px 0 #18202a22;cursor:pointer}.level .badge{width:54px;height:54px;border-radius:18px;background:var(--sky);display:grid;place-items:center;font-size:1.45rem;font-weight:1000}.level strong{display:block;font-size:1.08rem}.level small{display:block;margin-top:4px;opacity:.66;font-weight:750}.level .state{font-size:1.3rem}.level.current{background:var(--sun);box-shadow:6px 7px 0 var(--ink)}.level.done .badge{background:#dff5e7}.level.locked{opacity:.48;filter:saturate(.45);cursor:not-allowed}
+.card{background:#fff;border-radius:30px;padding:clamp(18px,4vw,30px);box-shadow:0 12px 34px #34556b25;min-height:390px;display:none;margin-top:18px}.card.on{display:block}.gamehead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:13px}.back{border:0;background:var(--muted);border-radius:14px;padding:9px 12px;font-weight:900;cursor:pointer}.levelname{font-weight:1000;text-align:right}.progress{height:11px;background:var(--muted);border-radius:99px;overflow:hidden;margin-bottom:20px}.progress i{display:block;height:100%;background:var(--green);width:0;transition:.35s}
+.prompt{text-align:center;font-weight:900;opacity:.66;margin:4px 0 8px}.demo{min-height:74px;display:flex;align-items:center;justify-content:center;gap:15px;margin:8px}.hand{font-size:2.3rem;animation:tap 1.35s infinite}.demo .sound{font-size:clamp(2.1rem,9vw,4rem);font-weight:1000}@keyframes tap{50%{transform:translateX(7px) scale(.94)}}
+.choices{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:16px}.choice{min-height:92px;border:3px solid #dfe6e8;background:#fff;border-radius:22px;font-size:clamp(2rem,9vw,3.7rem);font-weight:1000;box-shadow:0 5px 0 #dfe6e8;cursor:pointer}.choice:active{transform:translateY(3px)}.choice.good{background:#dff5e7;border-color:#67c487}.choice.bad{animation:shake .28s;background:#fff0ec;border-color:#ff8b79}@keyframes shake{25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.listen{display:grid;place-items:center;margin:8px auto 14px;width:88px;height:88px;border:0;border-radius:50%;background:var(--sky);font-size:2.5rem;box-shadow:0 7px 0 #78a9ce;cursor:pointer}.big{font-size:clamp(4.5rem,20vw,8.6rem);font-weight:1000;text-align:center;line-height:1.02}.ipa{text-align:center;font:800 1rem system-ui;opacity:.5;margin-top:5px}
+.mic{display:grid;place-items:center;margin:18px auto 10px;width:98px;height:98px;border:0;border-radius:50%;background:var(--coral);font-size:2.7rem;box-shadow:0 8px 0 #cf6255;cursor:pointer}.mic.live{animation:pulse .7s infinite alternate}@keyframes pulse{to{box-shadow:0 8px 0 #cf6255,0 0 0 16px #ff8b7935}}
+.feedback{min-height:52px;text-align:center;font-size:1.55rem;font-weight:1000;margin-top:9px}.tiny{text-align:center;font:750 .87rem system-ui;opacity:.57;min-height:22px}.teach{display:grid;place-items:center;text-align:center;padding:10px}.teach .gr{font-size:clamp(5rem,22vw,9rem);font-weight:1000}.teach .arrow{font-size:2rem}.teach .soundcue{font-size:2rem;font-weight:1000}.teach .example{margin-top:10px;font-size:1.35rem;font-weight:900}.continue{border:3px solid var(--ink);border-radius:16px;background:var(--sun);padding:13px 20px;font-weight:1000;cursor:pointer;margin-top:14px}
+.finish{text-align:center;padding:18px}.finish .cup{font-size:5.2rem}.finish h2{font-size:2rem;margin:8px}.teacher{position:fixed;right:12px;bottom:12px;border:0;background:#18202a;color:#fff;border-radius:50%;width:46px;height:46px;opacity:.35}
+@media(max-width:520px){.level{grid-template-columns:48px 1fr auto;padding:13px}.level .badge{width:46px;height:46px}.choices{gap:10px}.choice{min-height:82px}.card{border-radius:25px}}
+</style></head><body><main class="app">
+<header class="top"><div class="logo">RASED</div><div class="stars">⭐ <span id="stars">0</span></div></header>
+<section id="world"><div class="hero"><h1>Le chemin du code</h1><p>Je maîtrise un palier, puis j'ouvre le suivant. On commence par les syllabes simples avant d'introduire les graphèmes complexes.</p></div><div id="levels" class="path"></div></section>
+<section id="game" class="card"><div class="gamehead"><button id="back" class="back">← Paliers</button><div id="levelname" class="levelname"></div></div><div class="progress"><i id="bar"></i></div><div id="stage"></div><div id="feedback" class="feedback"></div><div id="tiny" class="tiny"></div></section>
 <button class="teacher" onclick="location.href='rased-enseignant.html'" aria-label="Espace enseignant">⚙</button></main>
 <script src="rased-phonemes.js"></script><script>
 (()=>{"use strict";
-const $=id=>document.getElementById(id), world=$("world"),game=$("game"),stage=$("stage"),fb=$("feedback"),tiny=$("tiny"),bar=$("bar");
-let step=0,stars=+(localStorage.getItem("rased-stars")||0),attempt=0; $("stars").textContent=stars;
-const plan=[
- {type:"hear",target:"a",choices:["a","i"]},
- {type:"hear",target:"m",choices:["m","l"]},
-
- /* Série M : uniquement consonne + voyelle. Aucune inversion automatique. */
- {type:"blend",parts:["m","a"],answer:"ma"},
- {type:"blend",parts:["m","schwa"],answer:"me"},
- {type:"blend",parts:["m","i"],answer:"mi"},
- {type:"blend",parts:["m","o"],answer:"mo"},
- {type:"blend",parts:["m","u"],answer:"mu"},
-
- /* On enchaîne seulement des syllabes déjà rencontrées. */
- {type:"read",target:"momu",aliases:["mot mou","mots mous","maux mous"]},
- {type:"read",target:"mami",aliases:["mamie"]},
- {type:"read",target:"mima"},
-
- /* Nouvelle consonne, même logique CV. */
- {type:"hear",target:"l",choices:["l","m"]},
- {type:"blend",parts:["l","a"],answer:"la"},
- {type:"blend",parts:["l","schwa"],answer:"le"},
- {type:"blend",parts:["l","i"],answer:"li"},
- {type:"blend",parts:["l","o"],answer:"lo"},
- {type:"blend",parts:["l","u"],answer:"lu"},
-
- /* Puis CV + CV, sans graphèmes nasaux parasites. */
- {type:"read",target:"lali"},
- {type:"read",target:"lami"},
- {type:"read",target:"lulu",aliases:["loulou"]},
- {type:"read",target:"molu"},
-
- {type:"encode",target:"mi",choices:["ma","mi","li","la"]}
-]
-function ph(id){return RASED_PHONEME_BY_ID[id]}
-function log(ok,item,detail={}){const data=JSON.parse(localStorage.getItem("rased-events")||"[]");data.push({at:Date.now(),skill:item.type,target:item.target||item.answer||item.parts?.join(""),ok,attempt,...detail});localStorage.setItem("rased-events",JSON.stringify(data.slice(-1000)))}
+const $=id=>document.getElementById(id),world=$("world"),game=$("game"),levelsEl=$("levels"),stage=$("stage"),fb=$("feedback"),tiny=$("tiny"),bar=$("bar"),levelname=$("levelname");
+let stars=+(localStorage.getItem("rased-stars")||0),unlocked=+(localStorage.getItem("rased-code-unlocked")||0),levelIndex=0,step=0,attempt=0; $("stars").textContent=stars;
+const R=(target,aliases=[])=>({type:"read",target,aliases}), B=(a,b,answer)=>({type:"blend",parts:[a,b],answer}), H=(target,choices)=>({type:"hear",target,choices}), E=(target,choices,aliases=[])=>({type:"encode",target,choices,aliases}), T=(grapheme,sound,example,say)=>({type:"teach",grapheme,sound,example,say});
+/*
+ Progression RASED : synthèse des recommandations Eduscol et de progressions usuelles de CP.
+ Principe : régularité + fréquence + facilité articulatoire + complexité syllabique croissante.
+ Les graphèmes nasaux et contextuels ne sont JAMAIS produits par inversion mécanique.
+*/
+const LEVELS=[
+ {name:"Syllabes très simples",icon:"🌱",desc:"a, i, o, u, e · m, l · fusion CV",items:[
+   H("a",["a","i"]),H("m",["m","l"]),B("m","a","ma"),B("m","schwa","me"),B("m","i","mi"),B("m","o","mo"),B("m","u","mu"),
+   B("l","a","la"),B("l","i","li"),B("l","o","lo"),B("l","u","lu"),R("momu",["mot mou","mots mous","maux mous"]),R("lami"),R("mima")
+ ]},
+ {name:"J'élargis mes syllabes",icon:"🪴",desc:"r, f, v, s, n, j · CV et CV-CV",items:[
+   H("r",["r","l"]),H("f",["f","v"]),H("s",["s","ch"]),B("r","a","ra"),B("f","i","fi"),B("v","o","vo"),B("s","a","sa"),B("n","u","nu"),B("j","o","jo"),
+   R("ravi"),R("fini"),R("joli"),R("salami")
+ ]},
+ {name:"Premiers graphèmes complexes",icon:"🧩",desc:"ou puis ch · deux lettres peuvent coder un son",items:[
+   T("ou","/u/","mou · lou · fou","mou"),H("ou",["ou","u"]),B("m","ou","mou"),B("l","ou","lou"),B("f","ou","fou"),R("moulou",["mou loup","mou lou"]),
+   T("ch","/ʃ/","cha · chi · chou","chat"),B("ch","a","cha"),B("ch","i","chi"),B("ch","ou","chou"),R("chami"),R("choumi")
+ ]},
+ {name:"Consonnes courtes",icon:"⚙️",desc:"p, t, b, d · oppositions et automatisation",items:[
+   H("p",["p","b"]),H("t",["t","d"]),B("p","a","pa"),B("t","i","ti"),B("b","o","bo"),B("d","u","du"),
+   E("bi",["bi","di","pi","ti"],["bille"]),E("da",["ta","da","ba","pa"]),R("papi"),R("dodu"),R("badi"),R("tomi",["tommy"])
+ ]},
+ {name:"Le graphème oi",icon:"🚀",desc:"oi → /wa/ · moi, roi, voi…",items:[
+   T("oi","/wa/","moi · roi · voi","moi"),E("moi",["moi","mou","mi","ma"],["mois"]),R("moi",["mois"]),R("roi"),R("voi",["voie","voix","voit"]),
+   R("foi",["foie","fois"]),R("soi",["soie","soit"]),R("joie"),E("voi",["vou","voi","vi","va"],["voie","voix","voit"])
+ ]},
+ {name:"Syllabes plus complexes",icon:"🛠️",desc:"CVC puis CCV · fil, four, fra, plu…",items:[
+   T("CVC","consonne + voyelle + consonne","fil · mur · four","four"),R("fil"),R("mur"),R("four"),R("jour"),
+   T("CCV","deux consonnes + voyelle","fra · fli · plu","fla"),R("fra"),R("fli"),R("plu",["plus"]),R("tri"),R("vra")
+ ]},
+ {name:"Voyelles nasales",icon:"🌊",desc:"on · an/en · in/im · un, appris comme unités",items:[
+   T("on","/ɔ̃/","mon · ton · non","mon"),R("mon"),R("ton"),R("non"),
+   T("an / en","/ɑ̃/","maman · enfant","maman"),R("maman"),R("panda"),R("tante"),
+   T("in / im","/ɛ̃/","lapin · matin","lapin"),R("lapin"),R("matin"),
+   T("un","/œ̃/","un · brun","un"),R("un"),R("brun")
+ ]},
+ {name:"Autres écritures des voyelles",icon:"🎨",desc:"au/eau · ai/ei · è/ê · eu/œu · er/ez",items:[
+   T("au / eau","/o/","auto · bateau","auto"),R("auto"),R("bateau"),
+   T("ai / ei","/ɛ/","lait · reine","reine"),R("reine"),
+   T("è / ê","/ɛ/","père · tête","père"),R("père"),R("tête"),
+   T("eu / œu","/ø/ ou /œ/","feu · sœur","feu"),R("feu"),R("sœur",["soeur"]),
+   T("er / ez","/e/ en finale","parler · nez","parler"),R("parler"),R("nez")
+ ]},
+ {name:"Règles de graphèmes",icon:"🧠",desc:"c/k/qu · g/gu · s/ss · c/ç · g/ge · ph",items:[
+   T("c · k · qu","/k/","car · kilo · qui","kilo"),R("car"),R("kilo"),R("qui"),
+   T("g · gu","/g/","gare · guitare","gare"),R("gare"),R("guitare"),
+   T("s · ss","/s/","sac · tasse","tasse"),R("tasse"),
+   T("c · ç","/s/","citron · garçon","citron"),R("citron"),R("garçon",["garcon"]),
+   T("g · ge","/ʒ/","girafe · pigeon","girafe"),R("girafe"),R("pigeon"),
+   T("ph","/f/","photo","photo"),R("photo")
+ ]},
+ {name:"Code expert",icon:"🏆",desc:"gn · oin · ill · x · révisions complexes",items:[
+   T("gn","/ɲ/","ligne · vigne","ligne"),R("ligne"),R("vigne"),
+   T("oin","/wɛ̃/","loin · coin","loin"),R("loin"),R("coin"),
+   T("ill","/j/ dans certains mots","fille · bille","fille"),R("fille"),R("bille"),
+   T("x","/ks/ ou /gz/","taxi · examen","taxi"),R("taxi"),R("examen"),
+   R("poisson"),R("chapeau"),R("montagne")
+ ]}
+];
+const SPEECH_ALIASES={
+ "ma":["m'a","mât"],"me":["mes","mais"],"mi":["mie","mis"],"mo":["mot","maux"],"mu":["mue","mû"],
+ "la":["là"],"li":["lit","lis"],"lo":["lot"],"lu":["lue","lut"],"ra":["rat"],"fi":["fit"],"vo":["vaut","veau"],
+ "sa":["ça"],"nu":["nue"],"jo":["jo"],"mou":["moue"],"lou":["loup"],"fou":["foux"],"cha":["chat"],"chi":["chi"],
+ "pa":["pas"],"ti":["tee","t'y"],"bo":["beau"],"du":["dû"],"fra":["fras"],"plu":["plus"],"tri":["tris"]
+};
+function ph(id){return window.RASED_PHONEME_BY_ID?.[id]}
+function norm(s){return (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/œ/g,"oe").replace(/[^a-z]/g,"")}
+function acceptedFor(q){return [q.target,...(SPEECH_ALIASES[q.target]||[]),...(q.aliases||[])].map(norm)}
+function log(ok,item,detail={}){const data=JSON.parse(localStorage.getItem("rased-events")||"[]");data.push({at:Date.now(),level:levelIndex+1,skill:item.type,target:item.target||item.answer||item.grapheme||item.parts?.join(""),ok,attempt,...detail});localStorage.setItem("rased-events",JSON.stringify(data.slice(-1600)))}
 function audioPhoneme(id){return RASED_AUDIO.phoneme(id)}
 function speakWord(s){return RASED_AUDIO.word(s)}
-function reward(){stars++;$("stars").textContent=stars;localStorage.setItem("rased-stars",stars);fb.textContent="✨";setTimeout(next,650)}
-function fail(btn,item){attempt++;log(false,item);btn?.classList.add("bad");setTimeout(()=>btn?.classList.remove("bad"),350);fb.textContent=attempt>1?"👀":"↻";if(attempt>=2){setTimeout(()=>{if(item.target&&ph(item.target))audioPhoneme(item.target);else if(item.target)speakWord(item.target)},300)}}
-function choices(items,answer,item){return '<div class="choices">'+items.map(x=>'<button class="choice" data-v="'+x+'">'+x+'</button>').join("")+'</div>'}
-function bindChoices(answer,item){document.querySelectorAll(".choice").forEach(b=>b.onclick=()=>{if(b.dataset.v===answer){b.classList.add("good");log(true,item);reward()}else fail(b,item)})}
-function render(){attempt=0;fb.textContent="";tiny.textContent="";bar.style.width=((step+1)/plan.length*100)+"%";const q=plan[step];
- if(!q){stage.innerHTML='<div class="big">🏆</div><div class="feedback">✨ ⭐ ✨</div>';bar.style.width="100%";return}
- if(q.type==="hear"){const p=ph(q.target);stage.innerHTML='<button class="listen" id="listen">🔊</button><div class="ipa">/'+p.ipa+'/</div>'+choices(q.choices,q.target,q);$("listen").onclick=()=>audioPhoneme(q.target);bindChoices(q.target,q);setTimeout(()=>audioPhoneme(q.target),250)}
- if(q.type==="blend"){const showPart=id=>ph(id)?.display||id;stage.innerHTML='<div class="demo"><span class="sound">'+showPart(q.parts[0])+'</span><span class="hand">👉</span><span class="sound">'+showPart(q.parts[1])+'</span></div><button class="listen" id="blend">🧲</button><div class="big" id="blendout">?</div>';$("blend").onclick=()=>{$("blendout").textContent=q.answer;speakWord(q.answer);log(true,q);reward()}}
- if(q.type==="hearSyllable"||q.type==="encode"){stage.innerHTML='<button class="listen" id="listen">🔊</button>'+choices(q.choices,q.target,q);$("listen").onclick=()=>speakWord(q.target);bindChoices(q.target,q);setTimeout(()=>speakWord(q.target),250)}
- if(q.type==="read"){stage.innerHTML='<div class="big">'+q.target+'</div><button class="mic" id="mic">🎙️</button><div class="tiny">●</div>';$("mic").onclick=()=>recognize(q)}
+function showPart(id){return ph(id)?.display||id}
+function renderLevels(){
+ levelsEl.innerHTML=LEVELS.map((l,i)=>{const done=i<unlocked,current=i===unlocked,locked=i>unlocked;return '<button class="level '+(done?"done ":"")+(current?"current ":"")+(locked?"locked":"")+'" data-level="'+i+'" '+(locked?"disabled":"")+'><span class="badge">'+(done?"✓":(i+1))+'</span><span><strong>'+l.icon+' Palier '+(i+1)+' · '+l.name+'</strong><small>'+l.desc+'</small></span><span class="state">'+(done?"⭐":current?"▶":"🔒")+'</span></button>'}).join("");
+ document.querySelectorAll("[data-level]").forEach(b=>b.onclick=()=>openLevel(+b.dataset.level));
+}
+function openLevel(i){levelIndex=i;step=0;attempt=0;world.style.display="none";game.classList.add("on");levelname.textContent="Palier "+(i+1)+" · "+LEVELS[i].name;render()}
+function backToLevels(){game.classList.remove("on");world.style.display="block";renderLevels()}
+$("back").onclick=backToLevels;
+function choices(items){return '<div class="choices">'+items.map(x=>'<button class="choice" data-v="'+x+'">'+x+'</button>').join("")+'</div>'}
+function reward(item){log(true,item,{tries:attempt+1});stars++;$("stars").textContent=stars;localStorage.setItem("rased-stars",stars);fb.textContent="✨ Bravo !";setTimeout(next,650)}
+function fail(btn,item){attempt++;log(false,item);btn?.classList.add("bad");setTimeout(()=>btn?.classList.remove("bad"),350);fb.textContent=attempt>1?"👀 Encore une fois":"↻ Réessaie";if(attempt>=2)setTimeout(()=>{if(item.target&&ph(item.target))audioPhoneme(item.target);else if(item.target)speakWord(item.target)},280)}
+function bindChoices(answer,item){document.querySelectorAll(".choice").forEach(b=>b.onclick=()=>{if(b.dataset.v===answer){b.classList.add("good");reward(item)}else fail(b,item)})}
+function finishLevel(){
+ const isNewest=levelIndex===unlocked;
+ if(isNewest && unlocked<LEVELS.length){unlocked=Math.min(LEVELS.length,unlocked+1);localStorage.setItem("rased-code-unlocked",unlocked)}
+ bar.style.width="100%";
+ const last=levelIndex===LEVELS.length-1;
+ stage.innerHTML='<div class="finish"><div class="cup">'+(last?"🏆":"🌟")+'</div><h2>Palier maîtrisé !</h2><p>'+(last?"Tu as parcouru tout le chemin du code.":"Le palier suivant est maintenant ouvert.")+'</p><button class="continue" id="finishBtn">'+(last?"Revoir les paliers":"Continuer →")+'</button></div>';
+ fb.textContent="";tiny.textContent="";
+ $("finishBtn").onclick=()=>{renderLevels();if(!last&&levelIndex+1<LEVELS.length)openLevel(levelIndex+1);else backToLevels()}
+}
+function render(){
+ attempt=0;fb.textContent="";tiny.textContent="";
+ const plan=LEVELS[levelIndex].items,q=plan[step];bar.style.width=(step/plan.length*100)+"%";
+ if(!q){finishLevel();return}
+ if(q.type==="hear"){
+   const p=ph(q.target);stage.innerHTML='<div class="prompt">Écoute le son et choisis</div><button class="listen" id="listen">🔊</button>'+(p?'<div class="ipa">/'+p.ipa+'/</div>':'')+choices(q.choices);
+   $("listen").onclick=()=>audioPhoneme(q.target);bindChoices(q.target,q);setTimeout(()=>audioPhoneme(q.target),220)
+ }
+ if(q.type==="blend"){
+   stage.innerHTML='<div class="prompt">Fusionne les deux morceaux</div><div class="demo"><span class="sound">'+showPart(q.parts[0])+'</span><span class="hand">➜</span><span class="sound">'+showPart(q.parts[1])+'</span></div><button class="listen" id="blend">🧲</button><div class="big" id="blendout">?</div>';
+   $("blend").onclick=()=>{$("blendout").textContent=q.answer;speakWord(q.answer);reward(q)}
+ }
+ if(q.type==="encode"){
+   stage.innerHTML='<div class="prompt">Écoute puis choisis ce que tu entends</div><button class="listen" id="listen">🔊</button>'+choices(q.choices);
+   $("listen").onclick=()=>speakWord(q.target);bindChoices(q.target,q);setTimeout(()=>speakWord(q.target),220)
+ }
+ if(q.type==="teach"){
+   stage.innerHTML='<div class="teach"><div class="prompt">Nouveau code à découvrir</div><div class="gr">'+q.grapheme+'</div><div class="arrow">↓</div><div class="soundcue">'+q.sound+'</div><div class="example">'+q.example+'</div><button class="listen" id="listen">🔊</button><button class="continue" id="okTeach">J\'ai compris →</button></div>';
+   $("listen").onclick=()=>speakWord(q.say);$("okTeach").onclick=()=>{log(true,q);next()};setTimeout(()=>speakWord(q.say),260)
+ }
+ if(q.type==="read"){
+   stage.innerHTML='<div class="prompt">Lis à voix haute</div><div class="big">'+q.target+'</div><button class="mic" id="mic">🎙️</button><div class="tiny">Le mot suivant apparaît quand ta lecture est reconnue.</div>';
+   $("mic").onclick=()=>recognize(q)
+ }
 }
 function next(){step++;render()}
 async function recognize(q){
- const mic=$("mic");mic.classList.add("live");fb.textContent="👂";tiny.textContent="";
- const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){mic.classList.remove("live");tiny.textContent="Micro indisponible";return}
- const r=new SR();r.lang="fr-FR";r.continuous=false;r.interimResults=true;r.maxAlternatives=10;
+ const mic=$("mic"),SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+ if(!SR){tiny.textContent="Reconnaissance vocale indisponible sur ce navigateur.";return}
+ mic.classList.add("live");fb.textContent="👂 J'écoute";tiny.textContent="";
+ const r=new SR();r.lang="fr-FR";r.continuous=false;r.interimResults=true;r.maxAlternatives=12;
  if("processLocally" in r)try{r.processLocally=true}catch(_){}
- let all=[],ended=false,timer=setTimeout(()=>{try{r.stop()}catch(_){}},4200);
+ let all=[],ended=false;const timer=setTimeout(()=>{try{r.stop()}catch(_){}},4400);
  r.onresult=e=>{for(let i=e.resultIndex;i<e.results.length;i++)for(let j=0;j<e.results[i].length;j++)all.push(e.results[i][j].transcript)};
- r.onerror=e=>{tiny.textContent=e.error==="no-speech"?"👂 ↻":"🎙️ ↻"};
- r.onend=()=>{if(ended)return;ended=true;clearTimeout(timer);mic.classList.remove("live");const n=s=>s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z]/g,"");const target=n(q.target),accepted=[target,...(q.aliases||[]).map(n)],alts=all.map(n);const ok=alts.some(x=>accepted.some(a=>x===a||x.endsWith(a)||x.startsWith(a)));if(ok){log(true,q,{alts:all.slice(0,5)});reward()}else{fail(null,q);tiny.textContent=all[0]?"« "+all[0]+" »":"👂 ↻"}};
- try{r.start()}catch(e){mic.classList.remove("live");tiny.textContent="🎙️ ↻"}
+ r.onerror=e=>{tiny.textContent=e.error==="no-speech"?"Je n'ai pas entendu de voix.":"Micro : "+e.error};
+ r.onend=()=>{if(ended)return;ended=true;clearTimeout(timer);mic.classList.remove("live");const accepted=acceptedFor(q),alts=all.map(norm);const ok=alts.some(x=>accepted.includes(x));if(ok){reward(q)}else{fail(null,q);tiny.textContent=all[0]?"Le micro a entendu : « "+all[0]+" »":"Je n'ai rien pu reconnaître."}};
+ try{r.start()}catch(e){mic.classList.remove("live");tiny.textContent="Impossible de démarrer le micro."}
 }
-$("go").onclick=()=>{world.style.display="none";game.classList.add("on");render()};
+renderLevels();
 })();
 </script></body></html>
