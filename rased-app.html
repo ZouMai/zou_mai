@@ -21,9 +21,9 @@ button{font:inherit}.app{width:min(820px,100%);margin:auto;min-height:100dvh;pad
 (()=>{"use strict";
 const $=id=>document.getElementById(id),world=$("world"),game=$("game"),levelsEl=$("levels"),stage=$("stage"),fb=$("feedback"),tiny=$("tiny"),bar=$("bar"),levelname=$("levelname");
 let stars=+(localStorage.getItem("rased-stars")||0),unlocked=+(localStorage.getItem("rased-code-unlocked")||0),levelIndex=0,step=0,attempt=0,advancing=false; $("stars").textContent=stars;
-const R=(target,aliases=[])=>({type:"read",target,aliases}), B=(a,b,answer)=>({type:"blend",parts:[a,b],answer}), H=(target,choices)=>({type:"hear",target,choices}), E=(target,choices,aliases=[])=>({type:"encode",target,choices,aliases}), T=(grapheme,sound,example,say)=>({type:"teach",grapheme,sound,example,say});
+const R=(target,aliases=[])=>({type:"read",target,aliases}), B=(a,b,answer,say=answer)=>({type:"blend",parts:[a,b],answer,say}), H=(target,choices)=>({type:"hear",target,choices}), E=(target,choices,aliases=[])=>({type:"encode",target,choices,aliases}), T=(grapheme,sound,example,say)=>({type:"teach",grapheme,sound,example,say});
 /*
- Progression RASED : synthèse des recommandations Eduscol et de progressions usuelles de CP.
+ Progression RASED : synthèse des recommandations Eduscol et de progressions usuelles de CP.\n Étape dédiée VC après automatisation des CV transparents.
  Principe : régularité + fréquence + facilité articulatoire + complexité syllabique croissante.
  Les graphèmes nasaux et contextuels ne sont JAMAIS produits par inversion mécanique.
 */
@@ -35,6 +35,15 @@ const LEVELS=[
  {name:"J'élargis mes syllabes",icon:"🪴",desc:"r, f, v, s, n, j · CV et CV-CV",items:[
    H("r",["r","l"]),H("f",["f","v"]),H("s",["s","ch"]),B("r","a","ra"),B("f","i","fi"),B("v","o","vo"),B("s","a","sa"),B("n","u","nu"),B("j","o","jo"),
    R("ravi"),R("fini"),R("joli"),R("salami")
+ ]},
+ {name:"Je lis dans l'autre sens",icon:"↩️",desc:"VC transparents · al, il, ol, ul · ar, ir, or, ur",items:[
+   T("VC","voyelle + consonne","al · il · or · ur","or"),
+   /* Inversion uniquement quand les deux phonèmes restent audibles.
+      Pas de M/N ici : am/an/em/en/im/in/om/on/um/un relèvent d'autres CGP. */
+   B("a","l","al","alle"),B("i","l","il"),B("o","l","ol","hol"),B("u","l","ul","hulle"),
+   R("al",["alle","halle"]),R("il"),R("ol",["hol","hall"]),R("ul",["hulle"]),
+   B("a","r","ar","art"),B("i","r","ir","ire"),B("o","r","or"),B("u","r","ur","hure"),
+   R("ar",["art"]),R("ir",["ire"]),R("or"),R("ur",["hure"])
  ]},
  {name:"Premiers graphèmes complexes",icon:"🧩",desc:"ou puis ch · deux lettres peuvent coder un son",items:[
    T("ou","/u/","mou · lou · fou","mou"),H("ou",["ou","u"]),B("m","ou","mou"),B("l","ou","lou"),B("f","ou","fou"),R("moulou",["mou loup","mou lou"]),
@@ -84,7 +93,7 @@ const LEVELS=[
 const SPEECH_ALIASES={
  "ma":["m'a","mât"],"me":["mes","mais"],"mi":["mie","mis"],"mo":["mot","maux"],"mu":["mue","mû"],
  "la":["là"],"li":["lit","lis"],"lo":["lot"],"lu":["lue","lut"],"ra":["rat"],"fi":["fit"],"vo":["vaut","veau"],
- "sa":["ça"],"nu":["nue"],"jo":["jo"],"mou":["moue"],"lou":["loup"],"fou":["foux"],"cha":["chat"],"chi":["chi"],
+ "sa":["ça"],"nu":["nue"],"jo":["jo"],"al":["alle","halle"],"ol":["hol","hall"],"ul":["hulle"],"ar":["art"],"ir":["ire"],"ur":["hure"],"mou":["moue"],"lou":["loup"],"fou":["foux"],"cha":["chat"],"chi":["chi"],
  "pa":["pas"],"ti":["tee","t'y"],"bo":["beau"],"du":["dû"],"fra":["fras"],"plu":["plus"],"tri":["tris"]
 };
 function ph(id){return window.RASED_PHONEME_BY_ID?.[id]}
@@ -124,7 +133,7 @@ function render(){
  }
  if(q.type==="blend"){
    stage.innerHTML='<div class="prompt">Fusionne les deux morceaux</div><div class="demo"><span class="sound">'+showPart(q.parts[0])+'</span><span class="hand">➜</span><span class="sound">'+showPart(q.parts[1])+'</span></div><button class="listen" id="blend">🧲</button><div class="big" id="blendout">?</div>';
-   $("blend").onclick=()=>{$("blendout").textContent=q.answer;speakWord(q.answer);reward(q)}
+   $("blend").onclick=()=>{$("blendout").textContent=q.answer;speakWord(q.say||q.answer);reward(q)}
  }
  if(q.type==="encode"){
    stage.innerHTML='<div class="prompt">Écoute puis choisis ce que tu entends</div><button class="listen" id="listen">🔊</button>'+choices(q.choices);
