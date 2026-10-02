@@ -21,7 +21,7 @@ button{font:inherit}.app{width:min(820px,100%);margin:auto;min-height:100dvh;pad
 (()=>{"use strict";
 const $=id=>document.getElementById(id),world=$("world"),game=$("game"),levelsEl=$("levels"),stage=$("stage"),fb=$("feedback"),tiny=$("tiny"),bar=$("bar"),levelname=$("levelname");
 let stars=+(localStorage.getItem("rased-stars")||0),unlocked=+(localStorage.getItem("rased-code-unlocked")||0),levelIndex=0,step=0,attempt=0,advancing=false; $("stars").textContent=stars;
-const R=(target,aliases=[])=>({type:"read",target,aliases}), B=(a,b,answer,say=answer)=>({type:"blend",parts:[a,b],answer,say}), H=(target,choices)=>({type:"hear",target,choices}), E=(target,choices,aliases=[])=>({type:"encode",target,choices,aliases}), T=(grapheme,sound,example,say)=>({type:"teach",grapheme,sound,example,say});
+const R=(target,aliases=[])=>({type:"read",target,aliases}), B=(a,b,answer,aliases=[])=>({type:"blend",parts:[a,b],answer,aliases}), C=(parts,target,aliases=[])=>({type:"chain",parts,target,aliases}), H=(target,choices)=>({type:"hear",target,choices}), E=(target,choices,aliases=[])=>({type:"encode",target,choices,aliases}), T=(grapheme,sound,example,say)=>({type:"teach",grapheme,sound,example,say});
 /*
  Progression RASED : synthèse des recommandations Eduscol et de progressions usuelles de CP.\n Étape dédiée VC après automatisation des CV transparents.
  Principe : régularité + fréquence + facilité articulatoire + complexité syllabique croissante.
@@ -30,11 +30,11 @@ const R=(target,aliases=[])=>({type:"read",target,aliases}), B=(a,b,answer,say=a
 const LEVELS=[
  {name:"Syllabes très simples",icon:"🌱",desc:"a, i, o, u, e · m, l · fusion CV",items:[
    H("a",["a","i"]),H("m",["m","l"]),B("m","a","ma"),B("m","schwa","me"),B("m","i","mi"),B("m","o","mo"),B("m","u","mu"),
-   B("l","a","la"),B("l","i","li"),B("l","o","lo"),B("l","u","lu"),R("momu",["mot mou","mots mous","maux mous"]),R("lami"),R("mima")
+   B("l","a","la"),B("l","i","li"),B("l","o","lo"),B("l","u","lu"),C(["mo","mu"],"momu",["mot mou","mots mous","maux mous"]),C(["la","mi"],"lami"),C(["mi","ma"],"mima")
  ]},
  {name:"J'élargis mes syllabes",icon:"🪴",desc:"r, f, v, s, n, j · CV et CV-CV",items:[
    H("r",["r","l"]),H("f",["f","v"]),H("s",["s","ch"]),B("r","a","ra"),B("f","i","fi"),B("v","o","vo"),B("s","a","sa"),B("n","u","nu"),B("j","o","jo"),
-   R("ravi"),R("fini"),R("joli"),R("salami")
+   C(["ra","vi"],"ravi"),C(["fi","ni"],"fini"),C(["jo","li"],"joli"),C(["sa","la","mi"],"salami")
  ]},
  {name:"Je lis dans l'autre sens",icon:"↩️",desc:"VC transparents · al, il, ol, ul · ar, ir, or, ur",items:[
    T("VC","voyelle + consonne","al · il · or · ur","or"),
@@ -46,12 +46,12 @@ const LEVELS=[
    R("ar",["art"]),R("ir",["ire"]),R("or"),R("ur",["hure"])
  ]},
  {name:"Premiers graphèmes complexes",icon:"🧩",desc:"ou puis ch · deux lettres peuvent coder un son",items:[
-   T("ou","/u/","mou · lou · fou","mou"),H("ou",["ou","u"]),B("m","ou","mou"),B("l","ou","lou"),B("f","ou","fou"),R("moulou",["mou loup","mou lou"]),
-   T("ch","/ʃ/","cha · chi · chou","chat"),B("ch","a","cha"),B("ch","i","chi"),B("ch","ou","chou"),R("chami"),R("choumi")
+   T("ou","/u/","mou · lou · fou","mou"),H("ou",["ou","u"]),B("m","ou","mou"),B("l","ou","lou"),B("f","ou","fou"),C(["mou","lou"],"moulou",["mou loup","mou lou"]),
+   T("ch","/ʃ/","cha · chi · chou","chat"),B("ch","a","cha"),B("ch","i","chi"),B("ch","ou","chou"),C(["cha","mi"],"chami"),C(["chou","mi"],"choumi")
  ]},
  {name:"Consonnes courtes",icon:"⚙️",desc:"p, t, b, d · oppositions et automatisation",items:[
    H("p",["p","b"]),H("t",["t","d"]),B("p","a","pa"),B("t","i","ti"),B("b","o","bo"),B("d","u","du"),
-   E("bi",["bi","di","pi","ti"],["bille"]),E("da",["ta","da","ba","pa"]),R("papi"),R("dodu"),R("badi"),R("tomi",["tommy"])
+   E("bi",["bi","di","pi","ti"],["bille"]),E("da",["ta","da","ba","pa"]),C(["pa","pi"],"papi"),C(["do","du"],"dodu"),C(["ba","di"],"badi"),C(["to","mi"],"tomi",["tommy"])
  ]},
  {name:"Le graphème oi",icon:"🚀",desc:"oi → /wa/ · moi, roi, voi…",items:[
    T("oi","/wa/","moi · roi · voi","moi"),E("moi",["moi","mou","mi","ma"],["mois"]),R("moi",["mois"]),R("roi"),R("voi",["voie","voix","voit"]),
@@ -98,7 +98,7 @@ const SPEECH_ALIASES={
 };
 function ph(id){return window.RASED_PHONEME_BY_ID?.[id]}
 function norm(s){return (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/œ/g,"oe").replace(/[^a-z]/g,"")}
-function acceptedFor(q){return [q.target,...(SPEECH_ALIASES[q.target]||[]),...(q.aliases||[])].map(norm)}
+function acceptedFor(q){const target=q.target||q.answer;return [target,...(SPEECH_ALIASES[target]||[]),...(q.aliases||[])].map(norm)}
 function log(ok,item,detail={}){const data=JSON.parse(localStorage.getItem("rased-events")||"[]");data.push({at:Date.now(),level:levelIndex+1,skill:item.type,target:item.target||item.answer||item.grapheme||item.parts?.join(""),ok,attempt,...detail});localStorage.setItem("rased-events",JSON.stringify(data.slice(-1600)))}
 function audioPhoneme(id){return RASED_AUDIO.phoneme(id)}
 function speakWord(s){return RASED_AUDIO.word(s)}
@@ -112,7 +112,7 @@ function backToLevels(){game.classList.remove("on");world.style.display="block";
 $("back").onclick=backToLevels;
 function choices(items){return '<div class="choices">'+items.map(x=>'<button class="choice" data-v="'+x+'">'+x+'</button>').join("")+'</div>'}
 function reward(item){if(advancing)return;advancing=true;log(true,item,{tries:attempt+1});stars++;$("stars").textContent=stars;localStorage.setItem("rased-stars",stars);fb.textContent="✨ Bravo !";setTimeout(()=>{advancing=false;next()},650)}
-function fail(btn,item){attempt++;log(false,item);btn?.classList.add("bad");setTimeout(()=>btn?.classList.remove("bad"),350);fb.textContent=attempt>1?"👀 Encore une fois":"↻ Réessaie";if(attempt>=2)setTimeout(()=>{if(item.target&&ph(item.target))audioPhoneme(item.target);else if(item.target)speakWord(item.target)},280)}
+function fail(btn,item){attempt++;log(false,item);btn?.classList.add("bad");setTimeout(()=>btn?.classList.remove("bad"),350);fb.textContent=attempt>1?"👀 Encore une fois":"↻ Réessaie";if(attempt>=2){const h=$("help");if(h)h.style.display="block"}}
 function bindChoices(answer,item){document.querySelectorAll(".choice").forEach(b=>b.onclick=()=>{if(b.dataset.v===answer){b.classList.add("good");reward(item)}else fail(b,item)})}
 function finishLevel(){
  const isNewest=levelIndex===unlocked;
@@ -132,8 +132,14 @@ function render(){
    $("listen").onclick=()=>audioPhoneme(q.target);bindChoices(q.target,q);setTimeout(()=>audioPhoneme(q.target),220)
  }
  if(q.type==="blend"){
-   stage.innerHTML='<div class="prompt">Fusionne les deux morceaux</div><div class="demo"><span class="sound">'+showPart(q.parts[0])+'</span><span class="hand">➜</span><span class="sound">'+showPart(q.parts[1])+'</span></div><button class="listen" id="blend">🧲</button><div class="big" id="blendout">?</div>';
-   $("blend").onclick=()=>{$("blendout").textContent=q.answer;speakWord(q.say||q.answer);reward(q)}
+   stage.innerHTML='<div class="prompt">Approche les sons, puis LIS la syllabe</div><div class="demo" id="pieces"><span class="sound">'+showPart(q.parts[0])+'</span><span class="hand">➜</span><span class="sound">'+showPart(q.parts[1])+'</span></div><button class="continue" id="blend">J’assemble</button><div class="big" id="blendout" style="display:none">'+q.answer+'</div><button class="mic" id="mic" style="display:none">🎙️</button><button class="back" id="help" style="display:none;margin:10px auto">🔊 Aide</button><div class="tiny">Assemble d’abord. Ensuite, c’est toi qui lis.</div>';
+   $("blend").onclick=()=>{$("pieces").style.display="none";$("blend").style.display="none";$("blendout").style.display="block";$("mic").style.display="grid";$("mic").onclick=()=>recognize({...q,target:q.answer});};
+   $("help").onclick=()=>speakWord(q.answer)
+ }
+ if(q.type==="chain"){
+   stage.innerHTML='<div class="prompt">Tu connais ces syllabes. Assemble-les, puis LIS le tout.</div><div class="demo" id="pieces">'+q.parts.map((p,i)=>'<span class="sound">'+p+'</span>'+(i<q.parts.length-1?'<span class="hand">+</span>':'')).join("")+'</div><button class="continue" id="blend">J’assemble</button><div class="big" id="blendout" style="display:none">'+q.target+'</div><button class="mic" id="mic" style="display:none">🎙️</button><button class="back" id="help" style="display:none;margin:10px auto">🔊 Aide</button><div class="tiny">Même règle : la machine n’avance que lorsque tu lis.</div>';
+   $("blend").onclick=()=>{$("pieces").style.display="none";$("blend").style.display="none";$("blendout").style.display="block";$("mic").style.display="grid";$("mic").onclick=()=>recognize(q);};
+   $("help").onclick=()=>speakWord(q.target)
  }
  if(q.type==="encode"){
    stage.innerHTML='<div class="prompt">Écoute puis choisis ce que tu entends</div><button class="listen" id="listen">🔊</button>'+choices(q.choices);
@@ -144,8 +150,8 @@ function render(){
    $("listen").onclick=()=>speakWord(q.say);$("okTeach").onclick=()=>{log(true,q);next()};setTimeout(()=>speakWord(q.say),260)
  }
  if(q.type==="read"){
-   stage.innerHTML='<div class="prompt">Lis à voix haute</div><div class="big">'+q.target+'</div><button class="mic" id="mic">🎙️</button><div class="tiny">Le mot suivant apparaît quand ta lecture est reconnue.</div>';
-   $("mic").onclick=()=>recognize(q)
+   stage.innerHTML='<div class="prompt">Lis à voix haute</div><div class="big">'+q.target+'</div><button class="mic" id="mic">🎙️</button><button class="back" id="help" style="display:none;margin:10px auto">🔊 Aide</button><div class="tiny">Le mot suivant apparaît seulement quand ta lecture est reconnue.</div>';
+   $("mic").onclick=()=>recognize(q);$("help").onclick=()=>speakWord(q.target)
  }
 }
 function next(){step++;render()}
