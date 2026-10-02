@@ -21,7 +21,7 @@ button{font:inherit}.app{width:min(720px,100%);margin:auto;min-height:100dvh;pad
 const $=id=>document.getElementById(id), world=$("world"),game=$("game"),stage=$("stage"),fb=$("feedback"),tiny=$("tiny"),bar=$("bar");
 let step=0,stars=+(localStorage.getItem("rased-stars")||0),attempt=0; $("stars").textContent=stars;
 const plan=[
- {type:"hear",target:"a",choices:["a","i"]},{type:"hear",target:"m",choices:["m","l"]},
+ {type:"hear",target:"a",choices:["a","i"]},{type:"hear",target:"m",choices:["m","l"]},{type:"hear",target:"ch",choices:["ch","j"]},{type:"hear",target:"ou",choices:["ou","u"]},
  {type:"blend",parts:["m","a"],answer:"ma"},{type:"hearSyllable",target:"ma",choices:["ma","mi"]},
  {type:"blend",parts:["l","i"],answer:"li"},{type:"hearSyllable",target:"li",choices:["li","la"]},
  {type:"read",target:"ma"},{type:"encode",target:"mi",choices:["ma","mi","li","la"]},
@@ -29,9 +29,8 @@ const plan=[
 ];
 function ph(id){return RASED_PHONEME_BY_ID[id]}
 function log(ok,item,detail={}){const data=JSON.parse(localStorage.getItem("rased-events")||"[]");data.push({at:Date.now(),skill:item.type,target:item.target||item.answer||item.parts?.join(""),ok,attempt,...detail});localStorage.setItem("rased-events",JSON.stringify(data.slice(-1000)))}
-function audioPhoneme(id){const p=ph(id),a=new Audio("audio/phonemes/"+p.audio+".mp3");a.play().catch(()=>fallbackPhoneme(p))}
-function fallbackPhoneme(p){const u=new SpeechSynthesisUtterance(p.examples[0]);u.lang="fr-FR";u.rate=.55;u.volume=.95;speechSynthesis.cancel();speechSynthesis.speak(u)}
-function speakWord(s){const u=new SpeechSynthesisUtterance(s);u.lang="fr-FR";u.rate=.62;speechSynthesis.cancel();speechSynthesis.speak(u)}
+function audioPhoneme(id){return RASED_AUDIO.phoneme(id)}
+function speakWord(s){return RASED_AUDIO.word(s)}
 function reward(){stars++;$("stars").textContent=stars;localStorage.setItem("rased-stars",stars);fb.textContent="✨";setTimeout(next,650)}
 function fail(btn,item){attempt++;log(false,item);btn?.classList.add("bad");setTimeout(()=>btn?.classList.remove("bad"),350);fb.textContent=attempt>1?"👀":"↻";if(attempt>=2){setTimeout(()=>{if(item.target&&ph(item.target))audioPhoneme(item.target);else if(item.target)speakWord(item.target)},300)}}
 function choices(items,answer,item){return '<div class="choices">'+items.map(x=>'<button class="choice" data-v="'+x+'">'+x+'</button>').join("")+'</div>'}
