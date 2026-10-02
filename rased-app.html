@@ -21,12 +21,37 @@ button{font:inherit}.app{width:min(720px,100%);margin:auto;min-height:100dvh;pad
 const $=id=>document.getElementById(id), world=$("world"),game=$("game"),stage=$("stage"),fb=$("feedback"),tiny=$("tiny"),bar=$("bar");
 let step=0,stars=+(localStorage.getItem("rased-stars")||0),attempt=0; $("stars").textContent=stars;
 const plan=[
- {type:"hear",target:"a",choices:["a","i"]},{type:"hear",target:"m",choices:["m","l"]},{type:"hear",target:"ch",choices:["ch","j"]},{type:"hear",target:"ou",choices:["ou","u"]},
- {type:"blend",parts:["m","a"],answer:"ma"},{type:"hearSyllable",target:"ma",choices:["ma","mi"]},
- {type:"blend",parts:["l","i"],answer:"li"},{type:"hearSyllable",target:"li",choices:["li","la"]},
- {type:"read",target:"ma"},{type:"encode",target:"mi",choices:["ma","mi","li","la"]},
- {type:"read",target:"lami"},{type:"encode",target:"mali",choices:["mali","lami","mila","mali"]}
-];
+ {type:"hear",target:"a",choices:["a","i"]},
+ {type:"hear",target:"m",choices:["m","l"]},
+
+ /* Série M : uniquement consonne + voyelle. Aucune inversion automatique. */
+ {type:"blend",parts:["m","a"],answer:"ma"},
+ {type:"blend",parts:["m","schwa"],answer:"me"},
+ {type:"blend",parts:["m","i"],answer:"mi"},
+ {type:"blend",parts:["m","o"],answer:"mo"},
+ {type:"blend",parts:["m","u"],answer:"mu"},
+
+ /* On enchaîne seulement des syllabes déjà rencontrées. */
+ {type:"read",target:"momu",aliases:["mot mou","mots mous","maux mous"]},
+ {type:"read",target:"mami",aliases:["mamie"]},
+ {type:"read",target:"mima"},
+
+ /* Nouvelle consonne, même logique CV. */
+ {type:"hear",target:"l",choices:["l","m"]},
+ {type:"blend",parts:["l","a"],answer:"la"},
+ {type:"blend",parts:["l","schwa"],answer:"le"},
+ {type:"blend",parts:["l","i"],answer:"li"},
+ {type:"blend",parts:["l","o"],answer:"lo"},
+ {type:"blend",parts:["l","u"],answer:"lu"},
+
+ /* Puis CV + CV, sans graphèmes nasaux parasites. */
+ {type:"read",target:"lali"},
+ {type:"read",target:"lami"},
+ {type:"read",target:"lulu",aliases:["loulou"]},
+ {type:"read",target:"molu"},
+
+ {type:"encode",target:"mi",choices:["ma","mi","li","la"]}
+]
 function ph(id){return RASED_PHONEME_BY_ID[id]}
 function log(ok,item,detail={}){const data=JSON.parse(localStorage.getItem("rased-events")||"[]");data.push({at:Date.now(),skill:item.type,target:item.target||item.answer||item.parts?.join(""),ok,attempt,...detail});localStorage.setItem("rased-events",JSON.stringify(data.slice(-1000)))}
 function audioPhoneme(id){return RASED_AUDIO.phoneme(id)}
@@ -38,7 +63,7 @@ function bindChoices(answer,item){document.querySelectorAll(".choice").forEach(b
 function render(){attempt=0;fb.textContent="";tiny.textContent="";bar.style.width=((step+1)/plan.length*100)+"%";const q=plan[step];
  if(!q){stage.innerHTML='<div class="big">🏆</div><div class="feedback">✨ ⭐ ✨</div>';bar.style.width="100%";return}
  if(q.type==="hear"){const p=ph(q.target);stage.innerHTML='<button class="listen" id="listen">🔊</button><div class="ipa">/'+p.ipa+'/</div>'+choices(q.choices,q.target,q);$("listen").onclick=()=>audioPhoneme(q.target);bindChoices(q.target,q);setTimeout(()=>audioPhoneme(q.target),250)}
- if(q.type==="blend"){stage.innerHTML='<div class="demo"><span class="sound">'+q.parts[0]+'</span><span class="hand">👉</span><span class="sound">'+q.parts[1]+'</span></div><button class="listen" id="blend">🧲</button><div class="big" id="blendout">?</div>';$("blend").onclick=()=>{$("blendout").textContent=q.answer;speakWord(q.answer);log(true,q);reward()}}
+ if(q.type==="blend"){const showPart=id=>ph(id)?.display||id;stage.innerHTML='<div class="demo"><span class="sound">'+showPart(q.parts[0])+'</span><span class="hand">👉</span><span class="sound">'+showPart(q.parts[1])+'</span></div><button class="listen" id="blend">🧲</button><div class="big" id="blendout">?</div>';$("blend").onclick=()=>{$("blendout").textContent=q.answer;speakWord(q.answer);log(true,q);reward()}}
  if(q.type==="hearSyllable"||q.type==="encode"){stage.innerHTML='<button class="listen" id="listen">🔊</button>'+choices(q.choices,q.target,q);$("listen").onclick=()=>speakWord(q.target);bindChoices(q.target,q);setTimeout(()=>speakWord(q.target),250)}
  if(q.type==="read"){stage.innerHTML='<div class="big">'+q.target+'</div><button class="mic" id="mic">🎙️</button><div class="tiny">●</div>';$("mic").onclick=()=>recognize(q)}
 }
@@ -51,7 +76,7 @@ async function recognize(q){
  let all=[],ended=false,timer=setTimeout(()=>{try{r.stop()}catch(_){}},4200);
  r.onresult=e=>{for(let i=e.resultIndex;i<e.results.length;i++)for(let j=0;j<e.results[i].length;j++)all.push(e.results[i][j].transcript)};
  r.onerror=e=>{tiny.textContent=e.error==="no-speech"?"👂 ↻":"🎙️ ↻"};
- r.onend=()=>{if(ended)return;ended=true;clearTimeout(timer);mic.classList.remove("live");const n=s=>s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z]/g,"");const target=n(q.target),alts=all.map(n);const ok=alts.some(x=>x===target||x.endsWith(target)||x.startsWith(target));if(ok){log(true,q,{alts:all.slice(0,5)});reward()}else{fail(null,q);tiny.textContent=all[0]?"« "+all[0]+" »":"👂 ↻"}};
+ r.onend=()=>{if(ended)return;ended=true;clearTimeout(timer);mic.classList.remove("live");const n=s=>s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z]/g,"");const target=n(q.target),accepted=[target,...(q.aliases||[]).map(n)],alts=all.map(n);const ok=alts.some(x=>accepted.some(a=>x===a||x.endsWith(a)||x.startsWith(a)));if(ok){log(true,q,{alts:all.slice(0,5)});reward()}else{fail(null,q);tiny.textContent=all[0]?"« "+all[0]+" »":"👂 ↻"}};
  try{r.start()}catch(e){mic.classList.remove("live");tiny.textContent="🎙️ ↻"}
 }
 $("go").onclick=()=>{world.style.display="none";game.classList.add("on");render()};
