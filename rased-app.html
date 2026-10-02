@@ -1,0 +1,60 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>RASED · Parcours du code</title><style>
+:root{--ink:#18202a;--cream:#fffaf0;--sun:#ffd85a;--mint:#bfe8d0;--sky:#bcdcf7;--coral:#ff8b79;--white:#fff}
+*{box-sizing:border-box}body{margin:0;font-family:ui-rounded,"Arial Rounded MT Bold",system-ui,sans-serif;background:linear-gradient(#bde8ff 0 44%,#d9efc2 44%);color:var(--ink);min-height:100dvh;overflow-x:hidden}
+button{font:inherit}.app{width:min(720px,100%);margin:auto;min-height:100dvh;padding:18px 18px 36px;position:relative}.top{display:flex;align-items:center;justify-content:space-between}.logo{font-weight:1000;letter-spacing:.08em;background:#fff;border:2px solid #18202a;border-radius:999px;padding:8px 14px;box-shadow:0 4px 0 #18202a}.stars{background:#fff;border-radius:999px;padding:9px 14px;font-weight:1000;box-shadow:0 4px 16px #38608022}
+.world{position:relative;height:280px;margin:10px 0}.hill{position:absolute;left:-25%;bottom:0;width:150%;height:160px;background:#7fc46c;border-radius:50% 50% 0 0}.path{position:absolute;left:50%;bottom:-5px;transform:translateX(-50%);width:125px;height:230px;background:#f5d7a0;clip-path:polygon(36% 100%,66% 100%,100% 0,0 0)}
+.node{position:absolute;width:68px;height:68px;border:0;border-radius:50%;display:grid;place-items:center;font-size:2rem;font-weight:1000;box-shadow:0 7px 0 #26344244;transition:.2s}.node.done{background:#fff}.node.active{background:var(--sun);width:84px;height:84px;animation:bob 1.6s ease-in-out infinite}.node.lock{background:#d9dfdf;filter:saturate(.3)}.n1{left:18%;bottom:22px}.n2{left:42%;bottom:95px}.n3{right:17%;bottom:170px}@keyframes bob{50%{transform:translateY(-7px)}}
+.card{background:#fff;border-radius:32px;padding:24px;box-shadow:0 12px 34px #34556b25;min-height:310px;display:none}.card.on{display:block}.progress{height:10px;background:#edf0f0;border-radius:99px;overflow:hidden;margin-bottom:20px}.progress i{display:block;height:100%;background:#64c486;width:10%;transition:.35s}
+.demo{height:62px;display:flex;align-items:center;justify-content:center;gap:16px;margin:6px}.hand{font-size:2.4rem;animation:tap 1.4s infinite}.demo .sound{font-size:2rem;font-weight:1000}@keyframes tap{50%{transform:translateY(9px) scale(.9)}}
+.choices{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin-top:15px}.choice{min-height:110px;border:3px solid #dfe6e8;background:#fff;border-radius:24px;font-size:clamp(2.2rem,11vw,4rem);font-weight:1000;box-shadow:0 6px 0 #dfe6e8;cursor:pointer}.choice:active{transform:translateY(4px);box-shadow:0 2px 0 #dfe6e8}.choice.good{background:#dff5e7;border-color:#67c487}.choice.bad{animation:shake .28s;background:#fff0ec;border-color:#ff8b79}@keyframes shake{25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.listen{display:grid;place-items:center;margin:8px auto 14px;width:92px;height:92px;border:0;border-radius:50%;background:var(--sky);font-size:2.6rem;box-shadow:0 7px 0 #78a9ce;cursor:pointer}.big{font-size:clamp(5rem,22vw,9rem);font-weight:1000;text-align:center;line-height:1.05}.ipa{font:700 1rem system-ui;text-align:center;opacity:.45;margin-top:5px}
+.mic{display:grid;place-items:center;margin:20px auto;width:100px;height:100px;border:0;border-radius:50%;background:var(--coral);font-size:2.8rem;box-shadow:0 8px 0 #cf6255}.mic.live{animation:pulse .7s infinite alternate}@keyframes pulse{to{box-shadow:0 8px 0 #cf6255,0 0 0 16px #ff8b7935}}
+.feedback{height:46px;text-align:center;font-size:2rem;font-weight:1000}.tiny{text-align:center;font:700 .82rem system-ui;opacity:.5}.teacher{position:fixed;right:12px;bottom:12px;border:0;background:#18202a;color:#fff;border-radius:50%;width:46px;height:46px;opacity:.35}
+@media(min-width:700px){.app{padding-top:28px}.world{height:330px}.card{padding:32px}}
+</style></head><body><main class="app"><header class="top"><div class="logo">RASED</div><div class="stars">⭐ <span id="stars">0</span></div></header>
+<section id="world" class="world"><div class="hill"></div><div class="path"></div><button class="node done n1">a</button><button class="node active n2" id="go">▶</button><button class="node lock n3">🔒</button></section>
+<section id="game" class="card"><div class="progress"><i id="bar"></i></div><div id="stage"></div><div id="feedback" class="feedback"></div><div id="tiny" class="tiny"></div></section>
+<button class="teacher" onclick="location.href='rased-enseignant.html'" aria-label="Espace enseignant">⚙</button></main>
+<script src="rased-phonemes.js"></script><script>
+(()=>{"use strict";
+const $=id=>document.getElementById(id), world=$("world"),game=$("game"),stage=$("stage"),fb=$("feedback"),tiny=$("tiny"),bar=$("bar");
+let step=0,stars=+(localStorage.getItem("rased-stars")||0),attempt=0; $("stars").textContent=stars;
+const plan=[
+ {type:"hear",target:"a",choices:["a","i"]},{type:"hear",target:"m",choices:["m","l"]},
+ {type:"blend",parts:["m","a"],answer:"ma"},{type:"hearSyllable",target:"ma",choices:["ma","mi"]},
+ {type:"blend",parts:["l","i"],answer:"li"},{type:"hearSyllable",target:"li",choices:["li","la"]},
+ {type:"read",target:"ma"},{type:"encode",target:"mi",choices:["ma","mi","li","la"]},
+ {type:"read",target:"lami"},{type:"encode",target:"mali",choices:["mali","lami","mila","mali"]}
+];
+function ph(id){return RASED_PHONEME_BY_ID[id]}
+function log(ok,item,detail={}){const data=JSON.parse(localStorage.getItem("rased-events")||"[]");data.push({at:Date.now(),skill:item.type,target:item.target||item.answer||item.parts?.join(""),ok,attempt,...detail});localStorage.setItem("rased-events",JSON.stringify(data.slice(-1000)))}
+function audioPhoneme(id){const p=ph(id),a=new Audio("audio/phonemes/"+p.audio+".mp3");a.play().catch(()=>fallbackPhoneme(p))}
+function fallbackPhoneme(p){const u=new SpeechSynthesisUtterance(p.examples[0]);u.lang="fr-FR";u.rate=.55;u.volume=.95;speechSynthesis.cancel();speechSynthesis.speak(u)}
+function speakWord(s){const u=new SpeechSynthesisUtterance(s);u.lang="fr-FR";u.rate=.62;speechSynthesis.cancel();speechSynthesis.speak(u)}
+function reward(){stars++;$("stars").textContent=stars;localStorage.setItem("rased-stars",stars);fb.textContent="✨";setTimeout(next,650)}
+function fail(btn,item){attempt++;log(false,item);btn?.classList.add("bad");setTimeout(()=>btn?.classList.remove("bad"),350);fb.textContent=attempt>1?"👀":"↻";if(attempt>=2){setTimeout(()=>{if(item.target&&ph(item.target))audioPhoneme(item.target);else if(item.target)speakWord(item.target)},300)}}
+function choices(items,answer,item){return '<div class="choices">'+items.map(x=>'<button class="choice" data-v="'+x+'">'+x+'</button>').join("")+'</div>'}
+function bindChoices(answer,item){document.querySelectorAll(".choice").forEach(b=>b.onclick=()=>{if(b.dataset.v===answer){b.classList.add("good");log(true,item);reward()}else fail(b,item)})}
+function render(){attempt=0;fb.textContent="";tiny.textContent="";bar.style.width=((step+1)/plan.length*100)+"%";const q=plan[step];
+ if(!q){stage.innerHTML='<div class="big">🏆</div><div class="feedback">✨ ⭐ ✨</div>';bar.style.width="100%";return}
+ if(q.type==="hear"){const p=ph(q.target);stage.innerHTML='<button class="listen" id="listen">🔊</button><div class="ipa">/'+p.ipa+'/</div>'+choices(q.choices,q.target,q);$("listen").onclick=()=>audioPhoneme(q.target);bindChoices(q.target,q);setTimeout(()=>audioPhoneme(q.target),250)}
+ if(q.type==="blend"){stage.innerHTML='<div class="demo"><span class="sound">'+q.parts[0]+'</span><span class="hand">👉</span><span class="sound">'+q.parts[1]+'</span></div><button class="listen" id="blend">🧲</button><div class="big" id="blendout">?</div>';$("blend").onclick=()=>{$("blendout").textContent=q.answer;speakWord(q.answer);log(true,q);reward()}}
+ if(q.type==="hearSyllable"||q.type==="encode"){stage.innerHTML='<button class="listen" id="listen">🔊</button>'+choices(q.choices,q.target,q);$("listen").onclick=()=>speakWord(q.target);bindChoices(q.target,q);setTimeout(()=>speakWord(q.target),250)}
+ if(q.type==="read"){stage.innerHTML='<div class="big">'+q.target+'</div><button class="mic" id="mic">🎙️</button><div class="tiny">●</div>';$("mic").onclick=()=>recognize(q)}
+}
+function next(){step++;render()}
+async function recognize(q){
+ const mic=$("mic");mic.classList.add("live");fb.textContent="👂";tiny.textContent="";
+ const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){mic.classList.remove("live");tiny.textContent="Micro indisponible";return}
+ const r=new SR();r.lang="fr-FR";r.continuous=false;r.interimResults=true;r.maxAlternatives=10;
+ if("processLocally" in r)try{r.processLocally=true}catch(_){}
+ let all=[],ended=false,timer=setTimeout(()=>{try{r.stop()}catch(_){}},4200);
+ r.onresult=e=>{for(let i=e.resultIndex;i<e.results.length;i++)for(let j=0;j<e.results[i].length;j++)all.push(e.results[i][j].transcript)};
+ r.onerror=e=>{tiny.textContent=e.error==="no-speech"?"👂 ↻":"🎙️ ↻"};
+ r.onend=()=>{if(ended)return;ended=true;clearTimeout(timer);mic.classList.remove("live");const n=s=>s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z]/g,"");const target=n(q.target),alts=all.map(n);const ok=alts.some(x=>x===target||x.endsWith(target)||x.startsWith(target));if(ok){log(true,q,{alts:all.slice(0,5)});reward()}else{fail(null,q);tiny.textContent=all[0]?"« "+all[0]+" »":"👂 ↻"}};
+ try{r.start()}catch(e){mic.classList.remove("live");tiny.textContent="🎙️ ↻"}
+}
+$("go").onclick=()=>{world.style.display="none";game.classList.add("on");render()};
+})();
+</script></body></html>
