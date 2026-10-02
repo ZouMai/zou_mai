@@ -20,7 +20,7 @@ button{font:inherit}.app{width:min(820px,100%);margin:auto;min-height:100dvh;pad
 <script src="rased-phonemes.js"></script><script>
 (()=>{"use strict";
 const $=id=>document.getElementById(id),world=$("world"),game=$("game"),levelsEl=$("levels"),stage=$("stage"),fb=$("feedback"),tiny=$("tiny"),bar=$("bar"),levelname=$("levelname");
-let stars=+(localStorage.getItem("rased-stars")||0),unlocked=+(localStorage.getItem("rased-code-unlocked")||0),levelIndex=0,step=0,attempt=0; $("stars").textContent=stars;
+let stars=+(localStorage.getItem("rased-stars")||0),unlocked=+(localStorage.getItem("rased-code-unlocked")||0),levelIndex=0,step=0,attempt=0,advancing=false; $("stars").textContent=stars;
 const R=(target,aliases=[])=>({type:"read",target,aliases}), B=(a,b,answer)=>({type:"blend",parts:[a,b],answer}), H=(target,choices)=>({type:"hear",target,choices}), E=(target,choices,aliases=[])=>({type:"encode",target,choices,aliases}), T=(grapheme,sound,example,say)=>({type:"teach",grapheme,sound,example,say});
 /*
  Progression RASED : synthèse des recommandations Eduscol et de progressions usuelles de CP.
@@ -98,11 +98,11 @@ function renderLevels(){
  levelsEl.innerHTML=LEVELS.map((l,i)=>{const done=i<unlocked,current=i===unlocked,locked=i>unlocked;return '<button class="level '+(done?"done ":"")+(current?"current ":"")+(locked?"locked":"")+'" data-level="'+i+'" '+(locked?"disabled":"")+'><span class="badge">'+(done?"✓":(i+1))+'</span><span><strong>'+l.icon+' Palier '+(i+1)+' · '+l.name+'</strong><small>'+l.desc+'</small></span><span class="state">'+(done?"⭐":current?"▶":"🔒")+'</span></button>'}).join("");
  document.querySelectorAll("[data-level]").forEach(b=>b.onclick=()=>openLevel(+b.dataset.level));
 }
-function openLevel(i){levelIndex=i;step=0;attempt=0;world.style.display="none";game.classList.add("on");levelname.textContent="Palier "+(i+1)+" · "+LEVELS[i].name;render()}
+function openLevel(i){levelIndex=i;step=0;attempt=0;advancing=false;world.style.display="none";game.classList.add("on");levelname.textContent="Palier "+(i+1)+" · "+LEVELS[i].name;render()}
 function backToLevels(){game.classList.remove("on");world.style.display="block";renderLevels()}
 $("back").onclick=backToLevels;
 function choices(items){return '<div class="choices">'+items.map(x=>'<button class="choice" data-v="'+x+'">'+x+'</button>').join("")+'</div>'}
-function reward(item){log(true,item,{tries:attempt+1});stars++;$("stars").textContent=stars;localStorage.setItem("rased-stars",stars);fb.textContent="✨ Bravo !";setTimeout(next,650)}
+function reward(item){if(advancing)return;advancing=true;log(true,item,{tries:attempt+1});stars++;$("stars").textContent=stars;localStorage.setItem("rased-stars",stars);fb.textContent="✨ Bravo !";setTimeout(()=>{advancing=false;next()},650)}
 function fail(btn,item){attempt++;log(false,item);btn?.classList.add("bad");setTimeout(()=>btn?.classList.remove("bad"),350);fb.textContent=attempt>1?"👀 Encore une fois":"↻ Réessaie";if(attempt>=2)setTimeout(()=>{if(item.target&&ph(item.target))audioPhoneme(item.target);else if(item.target)speakWord(item.target)},280)}
 function bindChoices(answer,item){document.querySelectorAll(".choice").forEach(b=>b.onclick=()=>{if(b.dataset.v===answer){b.classList.add("good");reward(item)}else fail(b,item)})}
 function finishLevel(){
@@ -115,7 +115,7 @@ function finishLevel(){
  $("finishBtn").onclick=()=>{renderLevels();if(!last&&levelIndex+1<LEVELS.length)openLevel(levelIndex+1);else backToLevels()}
 }
 function render(){
- attempt=0;fb.textContent="";tiny.textContent="";
+ attempt=0;advancing=false;fb.textContent="";tiny.textContent="";
  const plan=LEVELS[levelIndex].items,q=plan[step];bar.style.width=(step/plan.length*100)+"%";
  if(!q){finishLevel();return}
  if(q.type==="hear"){
