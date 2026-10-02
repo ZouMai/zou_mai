@@ -11,6 +11,7 @@ window.RASED_PHONEMES={
   P("u","u","y","Close_front_rounded_vowel.ogg",["lune","mur"]),
   P("ou","ou","u","Close_back_rounded_vowel.ogg",["roue","loup"]),
   P("e","é","e","Close-mid_front_unrounded_vowel.ogg",["été","clé"]),
+  P("schwa","e","ə",null,["menu","le"]),
   P("e_open","è / ai","ɛ","Open-mid_front_unrounded_vowel.ogg",["père","lait"]),
   P("eu_closed","eu / œu","ø","Close-mid_front_rounded_vowel.ogg",["feu","nœud"]),
   P("eu_open","eu / œu","œ","Open-mid_front_rounded_vowel.ogg",["peur","sœur"]),
