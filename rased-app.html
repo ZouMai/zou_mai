@@ -23,13 +23,13 @@ button{font:inherit}.app{width:min(820px,100%);margin:auto;min-height:100dvh;pad
 @media(max-width:520px){.visualSteps{grid-template-columns:1fr auto 1fr auto 1fr;gap:4px}.vstep{min-height:78px;padding:6px;font-size:.79rem}.vstep b{font-size:1.7rem}.instructionHead{align-items:flex-start}.instructionAudio{padding:7px 9px;font-size:.82rem}.level{grid-template-columns:48px 1fr auto;padding:13px}.level .badge{width:46px;height:46px}.choices{gap:10px}.choice{min-height:82px}.card{border-radius:25px}}
 </style></head><body><main class="app">
 <header class="top"><div class="logo">RASED</div><div class="stars">⭐ <span id="stars">0</span></div></header>
-<section id="world"><div class="hero"><h1>Le chemin du code</h1><p>Je maîtrise un palier, puis j'ouvre le suivant. On commence par les syllabes simples avant d'introduire les graphèmes complexes.</p></div><div id="levels" class="path"></div></section>
+<section id="world"><div class="hero"><h1>Le laboratoire du code</h1><p>Mode mise au point : ouvre directement chaque jeu pour le tester, le corriger et le valider avant de construire le parcours définitif.</p></div><div style="text-align:center;margin:12px 0 22px"><button class="continue" id="toggleMode">🧪 Tous les jeux accessibles</button></div><div id="levels" class="path"></div></section>
 <section id="game" class="card"><div class="gamehead"><button id="back" class="back">← Paliers</button><div id="levelname" class="levelname"></div></div><div class="progress"><i id="bar"></i></div><div id="stage"></div><div id="feedback" class="feedback"></div><div id="tiny" class="tiny"></div></section>
 <button class="teacher" onclick="location.href='rased-enseignant.html'" aria-label="Espace enseignant">⚙</button></main>
 <script src="rased-phonemes.js?v=20261002-2317"></script><script>
 (()=>{"use strict";
 const $=id=>document.getElementById(id),world=$("world"),game=$("game"),levelsEl=$("levels"),stage=$("stage"),fb=$("feedback"),tiny=$("tiny"),bar=$("bar"),levelname=$("levelname");
-const unlockKey="rased-code-unlocked-v4"; let stars=+(localStorage.getItem("rased-stars")||0),unlocked=+(localStorage.getItem(unlockKey)||0),levelIndex=0,step=0,attempt=0,advancing=false,voiceRun=0,spokenInstructions=new Set(); $("stars").textContent=stars;
+const unlockKey="rased-code-unlocked-v4"; let stars=+(localStorage.getItem("rased-stars")||0),unlocked=+(localStorage.getItem(unlockKey)||0),levelIndex=0,step=0,attempt=0,advancing=false,voiceRun=0,spokenInstructions=new Set(),labMode=true; $("stars").textContent=stars;
 const A=x=>Array.isArray(x)?x:(x?[x]:[]), R=(target,aliases=[])=>({type:"read",target,aliases:A(aliases)}), B=(a,b,answer,aliases=[])=>({type:"blend",parts:[a,b],answer,aliases:A(aliases)}), C=(parts,target,aliases=[])=>({type:"chain",parts,target,aliases:A(aliases)}), H=(target,choices)=>({type:"hear",target,choices}), E=(target,choices,aliases=[])=>({type:"encode",target,choices,aliases:A(aliases)}), T=(grapheme,sound,example,say)=>({type:"teach",grapheme,sound,example,say});
 /*
  Progression RASED : synthèse des recommandations Eduscol et de progressions usuelles de CP.\n Étape dédiée VC après automatisation des CV transparents.
@@ -159,12 +159,12 @@ async function audioPhoneme(id){const ok=await RASED_AUDIO.phoneme(id);if(ok===f
 function speakWord(s){return RASED_AUDIO.word(s)}
 function showPart(id){return ph(id)?.display||id}
 function renderLevels(){
- levelsEl.innerHTML=LEVELS.map((l,i)=>{const done=i<unlocked,current=i===unlocked,locked=i>unlocked;return '<button class="level '+(done?"done ":"")+(current?"current ":"")+(locked?"locked":"")+'" data-level="'+i+'" '+(locked?"disabled":"")+'><span class="badge">'+(done?"✓":(i+1))+'</span><span><strong>'+l.icon+' Palier '+(i+1)+' · '+l.name+'</strong><small>'+l.desc+'</small></span><span class="state">'+(done?"⭐":current?"▶":"🔒")+'</span></button>'}).join("");
+ levelsEl.innerHTML=LEVELS.map((l,i)=>{const done=i<unlocked,current=i===unlocked,locked=!labMode&&i>unlocked;return '<button class="level '+(done?"done ":"")+(current?"current ":"")+(locked?"locked":"")+'" data-level="'+i+'" '+(locked?"disabled":"")+'><span class="badge">'+(labMode?(i+1):(done?"✓":(i+1)))+'</span><span><strong>'+l.icon+' Jeu '+(i+1)+' · '+l.name+'</strong><small>'+l.desc+'</small></span><span class="state">'+(labMode?"🧪":done?"⭐":current?"▶":"🔒")+'</span></button>'}).join("");
  document.querySelectorAll("[data-level]").forEach(b=>b.onclick=()=>openLevel(+b.dataset.level));
 }
-function openLevel(i){levelIndex=i;step=0;attempt=0;advancing=false;spokenInstructions=new Set();world.style.display="none";game.classList.add("on");levelname.textContent="Palier "+(i+1)+" · "+LEVELS[i].name;render()}
+function openLevel(i){levelIndex=i;step=0;attempt=0;advancing=false;spokenInstructions=new Set();world.style.display="none";game.classList.add("on");levelname.textContent=(labMode?"Jeu ":"Palier ")+(i+1)+" · "+LEVELS[i].name;render()}
 function backToLevels(){game.classList.remove("on");world.style.display="block";renderLevels()}
-$("back").onclick=backToLevels;
+$("back").onclick=backToLevels; const toggle=$("toggleMode");if(toggle)toggle.onclick=()=>{labMode=!labMode;toggle.textContent=labMode?"🧪 Tous les jeux accessibles":"🛤️ Parcours progressif";renderLevels()};
 function choices(items){return '<div class="choices">'+items.map(x=>'<button class="choice" data-v="'+x+'">'+x+'</button>').join("")+'</div>'}
 function reward(item){if(advancing)return;advancing=true;log(true,item,{tries:attempt+1});stars++;$("stars").textContent=stars;localStorage.setItem("rased-stars",stars);fb.textContent="✨ Bravo !";setTimeout(()=>{advancing=false;next()},650)}
 function fail(btn,item){attempt++;log(false,item);btn?.classList.add("bad");setTimeout(()=>btn?.classList.remove("bad"),350);fb.textContent=attempt>1?"👀 Encore une fois":"↻ Réessaie";if(attempt>=2){const h=$("help");if(h)h.style.display="block"}}
