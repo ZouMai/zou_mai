@@ -324,7 +324,7 @@ window.DICTEES=[
   {
     "id": 4,
     "title": "L’artisanat gaulois",
-    "query": "Gaul Celtic craftsmanship torc",
+    "query": "Casque d'Agris casque gaulois",
     "levels": [
       [
         "les Gaulois",
