@@ -29,7 +29,7 @@ button{font:inherit}.app{width:min(820px,100%);margin:auto;min-height:100dvh;pad
 <script src="rased-phonemes.js?v=20261002-2317"></script><script>
 (()=>{"use strict";
 const $=id=>document.getElementById(id),world=$("world"),game=$("game"),levelsEl=$("levels"),stage=$("stage"),fb=$("feedback"),tiny=$("tiny"),bar=$("bar"),levelname=$("levelname");
-const unlockKey="rased-code-unlocked-v4"; let stars=+(localStorage.getItem("rased-stars")||0),unlocked=+(localStorage.getItem(unlockKey)||0),levelIndex=0,step=0,attempt=0,advancing=false,voiceRun=0; $("stars").textContent=stars;
+const unlockKey="rased-code-unlocked-v4"; let stars=+(localStorage.getItem("rased-stars")||0),unlocked=+(localStorage.getItem(unlockKey)||0),levelIndex=0,step=0,attempt=0,advancing=false,voiceRun=0,spokenInstructions=new Set(); $("stars").textContent=stars;
 const A=x=>Array.isArray(x)?x:(x?[x]:[]), R=(target,aliases=[])=>({type:"read",target,aliases:A(aliases)}), B=(a,b,answer,aliases=[])=>({type:"blend",parts:[a,b],answer,aliases:A(aliases)}), C=(parts,target,aliases=[])=>({type:"chain",parts,target,aliases:A(aliases)}), H=(target,choices)=>({type:"hear",target,choices}), E=(target,choices,aliases=[])=>({type:"encode",target,choices,aliases:A(aliases)}), T=(grapheme,sound,example,say)=>({type:"teach",grapheme,sound,example,say});
 /*
  Progression RASED : synthèse des recommandations Eduscol et de progressions usuelles de CP.\n Étape dédiée VC après automatisation des CV transparents.
@@ -146,7 +146,9 @@ function speakInstruction(type,after){
  speechSynthesis.speak(u);
 }
 function mountInstruction(type,after){
- const b=$("instructionAudio");if(b)b.onclick=()=>speakInstruction(type);
+ const b=$("instructionAudio");if(b)b.onclick=()=>speakInstruction(type,after);
+ if(spokenInstructions.has(type)){setTimeout(()=>after?.(),120);return}
+ spokenInstructions.add(type);
  setTimeout(()=>speakInstruction(type,after),180);
 }
 function ph(id){return window.RASED_PHONEME_BY_ID?.[id]}
@@ -160,7 +162,7 @@ function renderLevels(){
  levelsEl.innerHTML=LEVELS.map((l,i)=>{const done=i<unlocked,current=i===unlocked,locked=i>unlocked;return '<button class="level '+(done?"done ":"")+(current?"current ":"")+(locked?"locked":"")+'" data-level="'+i+'" '+(locked?"disabled":"")+'><span class="badge">'+(done?"✓":(i+1))+'</span><span><strong>'+l.icon+' Palier '+(i+1)+' · '+l.name+'</strong><small>'+l.desc+'</small></span><span class="state">'+(done?"⭐":current?"▶":"🔒")+'</span></button>'}).join("");
  document.querySelectorAll("[data-level]").forEach(b=>b.onclick=()=>openLevel(+b.dataset.level));
 }
-function openLevel(i){levelIndex=i;step=0;attempt=0;advancing=false;world.style.display="none";game.classList.add("on");levelname.textContent="Palier "+(i+1)+" · "+LEVELS[i].name;render()}
+function openLevel(i){levelIndex=i;step=0;attempt=0;advancing=false;spokenInstructions=new Set();world.style.display="none";game.classList.add("on");levelname.textContent="Palier "+(i+1)+" · "+LEVELS[i].name;render()}
 function backToLevels(){game.classList.remove("on");world.style.display="block";renderLevels()}
 $("back").onclick=backToLevels;
 function choices(items){return '<div class="choices">'+items.map(x=>'<button class="choice" data-v="'+x+'">'+x+'</button>').join("")+'</div>'}
@@ -187,7 +189,8 @@ function render(){
    $("listen").onclick=()=>audioPhoneme(q.target);bindChoices(q.target,q);mountInstruction("hear",()=>audioPhoneme(q.target))
  }
  if(q.type==="blend"){
-   stage.innerHTML=mission+instructionHTML("blend")+'<div class="demo" id="pieces"><span class="sound">'+showPart(q.parts[0])+'</span><span class="hand">➜</span><span class="sound">'+showPart(q.parts[1])+'</span></div><button class="continue" id="blend">J’assemble</button><div class="big" id="blendout" style="display:none">'+q.answer+'</div><button class="mic" id="mic" style="display:none">🎙️</button><button class="back" id="help" style="display:none;margin:10px auto">🔊 Aide</button><div class="tiny">La machine ne lit pas la syllabe à ta place.</div>';
+   stage.innerHTML=mission+instructionHTML("blend")+'<div class="demo" id="pieces"><button class="sound soundBtn" data-ph="'+q.parts[0]+'" aria-label="Écouter le son">'+showPart(q.parts[0])+'</button><span class="hand">➜</span><button class="sound soundBtn" data-ph="'+q.parts[1]+'" aria-label="Écouter le son">'+showPart(q.parts[1])+'</button></div><button class="continue" id="blend">J’assemble</button><div class="big" id="blendout" style="display:none">'+q.answer+'</div><button class="mic" id="mic" style="display:none">🎙️</button><button class="back" id="help" style="display:none;margin:10px auto">🔊 Aide</button><div class="tiny">La machine ne lit pas la syllabe à ta place.</div>';
+   document.querySelectorAll(".soundBtn").forEach(b=>b.onclick=()=>audioPhoneme(b.dataset.ph));
    $("blend").onclick=()=>{$("pieces").style.display="none";$("blend").style.display="none";$("blendout").style.display="block";$("mic").style.display="grid";$("mic").onclick=()=>recognize({...q,target:q.answer});};
    $("help").onclick=()=>speakWord(q.answer);mountInstruction("blend")
  }
