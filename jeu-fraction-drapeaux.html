@@ -16,39 +16,39 @@ function Cross(bg,cr,xs,ys){R(80,50,360,220,bg);let X=xs.reduce((a,b)=>a+b,0),Y=
 function Nordic2(bg,outer,inner,xs,ys){R(80,50,360,220,bg);let X=xs.reduce((a,b)=>a+b,0),Y=ys.reduce((a,b)=>a+b,0);let xo=80+360*xs[0]/X,wo=360*(xs[1]+xs[2]+xs[3])/X,yo=50+220*ys[0]/Y,ho=220*(ys[1]+ys[2]+ys[3])/Y;R(xo,50,wo,220,outer);R(80,yo,360,ho,outer);let xi=80+360*(xs[0]+xs[1])/X,wi=360*xs[2]/X,yi=50+220*(ys[0]+ys[1])/Y,hi=220*ys[2]/Y;R(xi,50,wi,220,inner);R(80,yi,360,hi,inner)}
 function Tri(base,tri){R(80,50,360,220,base);S.append(el('polygon',{points:'80,50 80,270 260,160',fill:tri}))}
 const Q=[
-['France','simple','Quelle fraction est bleue ?',1,3,3,()=>V(['#002395','#fff','#ed2939'],[1,1,1]),'Une bande sur trois.'],
-['Italie','simple','Quelle fraction est verte ?',1,3,3,()=>V(['#009246','#fff','#ce2b37'],[1,1,1]),'Une bande sur trois.'],
-['Irlande','simple','Quelle fraction est orange ?',1,3,3,()=>V(['#169b62','#fff','#ff883e'],[1,1,1]),'Une bande sur trois.'],
-['Belgique','simple','Quelle fraction est jaune ?',1,3,3,()=>V(['#111','#fdda24','#ef3340'],[1,1,1]),'Une bande sur trois.'],
-['Roumanie','simple','Quelle fraction est rouge ?',1,3,3,()=>V(['#002b7f','#fcd116','#ce1126'],[1,1,1]),'Une bande sur trois.'],
-['Allemagne','simple','Quelle fraction est jaune ?',1,3,3,()=>H(['#111','#dd0000','#ffce00'],[1,1,1]),'Une bande sur trois.'],
-['Pays-Bas','simple','Quelle fraction est bleue ?',1,3,3,()=>H(['#ae1c28','#fff','#21468b'],[1,1,1]),'Une bande sur trois.'],
-['Hongrie','simple','Quelle fraction est verte ?',1,3,3,()=>H(['#ce2939','#fff','#477050'],[1,1,1]),'Une bande sur trois.'],
-['Arménie','simple','Quelle fraction est bleue ?',1,3,3,()=>H(['#d90012','#0033a0','#f2a800'],[1,1,1]),'Une bande sur trois.'],
-['Autriche','simple','Quelle fraction est rouge ?',2,3,3,()=>H(['#ed2939','#fff','#ed2939'],[1,1,1]),'Deux bandes sur trois.'],
-['Nigeria','simple','Quelle fraction est verte ?',2,3,3,()=>V(['#008751','#fff','#008751'],[1,1,1]),'Deux bandes sur trois.'],
-['Pologne','simple','Quelle fraction est rouge ?',1,2,2,()=>H(['#fff','#dc143c'],[1,1]),'Une moitié.'],
-['Ukraine','simple','Quelle fraction est jaune ?',1,2,2,()=>H(['#0057b7','#ffd700'],[1,1]),'Une moitié.'],
-['Indonésie','simple','Quelle fraction est rouge ?',1,2,2,()=>H(['#ce1126','#fff'],[1,1]),'Une moitié.'],
-['Monaco','simple','Quelle fraction est blanche ?',1,2,2,()=>H(['#ce1126','#fff'],[1,1]),'Une moitié.'],
-['Gabon','simple','Quelle fraction est bleue ?',1,3,3,()=>H(['#009e60','#fcd116','#3a75c4'],[1,1,1]),'Une bande sur trois.'],
-['Luxembourg','simple','Quelle fraction est bleu clair ?',1,3,3,()=>H(['#ef3340','#fff','#00a3e0'],[1,1,1]),'Une bande sur trois.'],
-['Estonie','simple','Quelle fraction est noire ?',1,3,3,()=>H(['#4891d9','#111','#fff'],[1,1,1]),'Une bande sur trois.'],
-['Lituanie','simple','Quelle fraction est verte ?',1,3,3,()=>H(['#fdb913','#006a44','#c1272d'],[1,1,1]),'Une bande sur trois.'],
-['Bulgarie','simple','Quelle fraction est blanche ?',1,3,3,()=>H(['#fff','#00966e','#d62612'],[1,1,1]),'Une bande sur trois.'],
-['Maurice','inter','Quelle fraction est verte ?',1,4,4,()=>H(['#ea2839','#1a206d','#ffd500','#00a551'],[1,1,1,1]),'Une bande sur quatre.'],
-['Colombie','inter','Quelle fraction de la hauteur est jaune ?',2,4,4,()=>H(['#fcd116','#003893','#ce1126'],[2,1,1]),'Le jaune occupe 2 parts sur 4, soit 1/2.'],
-['Espagne','inter','Quelle fraction de la hauteur est jaune ? (sans tenir compte des armoiries)',2,4,4,()=>H(['#aa151b','#f1bf00','#aa151b'],[1,2,1]),'La bande jaune occupe 2 parts sur 4.'],
-['Lettonie','inter','Quelle fraction de la hauteur est blanche ?',1,5,5,()=>H(['#9e3039','#fff','#9e3039'],[2,1,2]),'Le découpage vertical est 2–1–2.'],
-['Thaïlande','inter','Quelle fraction de la hauteur est bleue ?',2,6,6,()=>H(['#a51931','#fff','#2d2a4a','#fff','#a51931'],[1,1,2,1,1]),'Le bleu occupe 2 parts sur 6, soit 1/3.'],
-['Costa Rica','inter','Quelle fraction de la hauteur est rouge ?',2,6,6,()=>H(['#002b7f','#fff','#ce1126','#fff','#002b7f'],[1,1,2,1,1]),'La bande rouge occupe 2 parts sur 6.'],
-['Laos','inter','Quelle fraction de la hauteur est bleue ? (sans tenir compte du disque)',2,4,4,()=>H(['#ce1126','#002868','#ce1126'],[1,2,1]),'La bande bleue occupe la moitié de la hauteur.'],
-['Liban','inter','Quelle fraction de la hauteur est blanche ? (sans tenir compte du cèdre)',2,4,4,()=>H(['#ed1c24','#fff','#ed1c24'],[1,2,1]),'La bande blanche occupe la moitié.'],
-['Bénin','inter','Quelle fraction de la largeur est occupée par la partie verte ?',2,5,5,()=>{R(80,50,144,220,'#008751');R(224,50,216,110,'#fcd116');R(224,160,216,110,'#e8112d')},'La partie verte occupe 2/5 de la largeur.'],
-['Madagascar','inter','Quelle fraction de la largeur est blanche ?',1,3,3,()=>{R(80,50,120,220,'#fff');R(200,50,240,110,'#fc3d32');R(200,160,240,110,'#007e3a')},'La bande blanche occupe 1/3 de la largeur.'],
-['Émirats arabes unis','inter','Quelle fraction de la largeur est rouge ?',1,4,4,()=>{R(80,50,90,220,'#ff0000');H(['#00732f','#fff','#000'],[1,1,1]);R(80,50,90,220,'#ff0000')},'La bande rouge occupe 1/4 de la largeur.'],
-['Bahamas','inter','Quelle fraction de la hauteur est jaune ?',1,3,3,()=>{H(['#00abc9','#fcd116','#00abc9'],[1,1,1]);S.append(el('polygon',{points:'80,50 80,270 190,160',fill:'#111'}))},'La bande jaune occupe 1/3 de la hauteur.'],
-['Tchéquie','inter','Quelle fraction de la hauteur est rouge au bord droit ?',1,2,2,()=>{H(['#fff','#d7141a'],[1,1]);S.append(el('polygon',{points:'80,50 80,270 260,160',fill:'#11457e'}))},'Au bord droit, le drapeau est partagé en deux moitiés horizontales.'],
+['France','simple','Quelle fraction de l’aire du drapeau est bleue ?',1,3,3,()=>V(['#002395','#fff','#ed2939'],[1,1,1]),'Une bande sur trois.'],
+['Italie','simple','Quelle fraction de l’aire du drapeau est verte ?',1,3,3,()=>V(['#009246','#fff','#ce2b37'],[1,1,1]),'Une bande sur trois.'],
+['Irlande','simple','Quelle fraction de l’aire du drapeau est orange ?',1,3,3,()=>V(['#169b62','#fff','#ff883e'],[1,1,1]),'Une bande sur trois.'],
+['Belgique','simple','Quelle fraction de l’aire du drapeau est jaune ?',1,3,3,()=>V(['#111','#fdda24','#ef3340'],[1,1,1]),'Une bande sur trois.'],
+['Roumanie','simple','Quelle fraction de l’aire du drapeau est rouge ?',1,3,3,()=>V(['#002b7f','#fcd116','#ce1126'],[1,1,1]),'Une bande sur trois.'],
+['Allemagne','simple','Quelle fraction de l’aire du drapeau est jaune ?',1,3,3,()=>H(['#111','#dd0000','#ffce00'],[1,1,1]),'Une bande sur trois.'],
+['Pays-Bas','simple','Quelle fraction de l’aire du drapeau est bleue ?',1,3,3,()=>H(['#ae1c28','#fff','#21468b'],[1,1,1]),'Une bande sur trois.'],
+['Hongrie','simple','Quelle fraction de l’aire du drapeau est verte ?',1,3,3,()=>H(['#ce2939','#fff','#477050'],[1,1,1]),'Une bande sur trois.'],
+['Arménie','simple','Quelle fraction de l’aire du drapeau est bleue ?',1,3,3,()=>H(['#d90012','#0033a0','#f2a800'],[1,1,1]),'Une bande sur trois.'],
+['Autriche','simple','Quelle fraction de l’aire du drapeau est rouge ?',2,3,3,()=>H(['#ed2939','#fff','#ed2939'],[1,1,1]),'Deux bandes sur trois.'],
+['Nigeria','simple','Quelle fraction de l’aire du drapeau est verte ?',2,3,3,()=>V(['#008751','#fff','#008751'],[1,1,1]),'Deux bandes sur trois.'],
+['Pologne','simple','Quelle fraction de l’aire du drapeau est rouge ?',1,2,2,()=>H(['#fff','#dc143c'],[1,1]),'Une moitié.'],
+['Ukraine','simple','Quelle fraction de l’aire du drapeau est jaune ?',1,2,2,()=>H(['#0057b7','#ffd700'],[1,1]),'Une moitié.'],
+['Indonésie','simple','Quelle fraction de l’aire du drapeau est rouge ?',1,2,2,()=>H(['#ce1126','#fff'],[1,1]),'Une moitié.'],
+['Monaco','simple','Quelle fraction de l’aire du drapeau est blanche ?',1,2,2,()=>H(['#ce1126','#fff'],[1,1]),'Une moitié.'],
+['Gabon','simple','Quelle fraction de l’aire du drapeau est bleue ?',1,3,3,()=>H(['#009e60','#fcd116','#3a75c4'],[1,1,1]),'Une bande sur trois.'],
+['Luxembourg','simple','Quelle fraction de l’aire du drapeau est bleu clair ?',1,3,3,()=>H(['#ef3340','#fff','#00a3e0'],[1,1,1]),'Une bande sur trois.'],
+['Estonie','simple','Quelle fraction de l’aire du drapeau est noire ?',1,3,3,()=>H(['#4891d9','#111','#fff'],[1,1,1]),'Une bande sur trois.'],
+['Lituanie','simple','Quelle fraction de l’aire du drapeau est verte ?',1,3,3,()=>H(['#fdb913','#006a44','#c1272d'],[1,1,1]),'Une bande sur trois.'],
+['Bulgarie','simple','Quelle fraction de l’aire du drapeau est blanche ?',1,3,3,()=>H(['#fff','#00966e','#d62612'],[1,1,1]),'Une bande sur trois.'],
+['Maurice','inter','Quelle fraction de l’aire du drapeau est verte ?',1,4,4,()=>H(['#ea2839','#1a206d','#ffd500','#00a551'],[1,1,1,1]),'Une bande sur quatre.'],
+['Colombie','inter','Quelle fraction de l’aire du drapeau est jaune ?',2,4,4,()=>H(['#fcd116','#003893','#ce1126'],[2,1,1]),'Le jaune occupe 2 parts sur 4, soit 1/2.'],
+['Espagne','inter','Quelle fraction de l’aire du drapeau est jaune ? (sans tenir compte des armoiries)',2,4,4,()=>H(['#aa151b','#f1bf00','#aa151b'],[1,2,1]),'La zone jaune occupe 2/4 de l’aire totale, soit 1/2.'],
+['Lettonie','inter','Quelle fraction de l’aire du drapeau est blanche ?',1,5,5,()=>H(['#9e3039','#fff','#9e3039'],[2,1,2]),'Le découpage vertical est 2–1–2.'],
+['Thaïlande','inter','Quelle fraction de l’aire du drapeau est bleue ?',2,6,6,()=>H(['#a51931','#fff','#2d2a4a','#fff','#a51931'],[1,1,2,1,1]),'Le bleu occupe 2/6 de l’aire totale, soit 1/3.'],
+['Costa Rica','inter','Quelle fraction de l’aire du drapeau est rouge ?',2,6,6,()=>H(['#002b7f','#fff','#ce1126','#fff','#002b7f'],[1,1,2,1,1]),'Le rouge occupe 2/6 de l’aire totale, soit 1/3.'],
+['Laos','inter','Quelle fraction de l’aire du drapeau est bleue ? (sans tenir compte du disque)',2,4,4,()=>H(['#ce1126','#002868','#ce1126'],[1,2,1]),'La zone bleue occupe la moitié de l’aire totale.'],
+['Liban','inter','Quelle fraction de l’aire du drapeau est blanche ? (sans tenir compte du cèdre)',2,4,4,()=>H(['#ed1c24','#fff','#ed1c24'],[1,2,1]),'La zone blanche occupe la moitié de l’aire totale.'],
+['Bénin','inter','Quelle fraction de l’aire du drapeau est verte ?',2,5,5,()=>{R(80,50,144,220,'#008751');R(224,50,216,110,'#fcd116');R(224,160,216,110,'#e8112d')},'La partie verte occupe 2/5 de l’aire totale.'],
+['Madagascar','inter','Quelle fraction de l’aire du drapeau est blanche ?',1,3,3,()=>{R(80,50,120,220,'#fff');R(200,50,240,110,'#fc3d32');R(200,160,240,110,'#007e3a')},'La partie blanche occupe 1/3 de l’aire totale.'],
+['Émirats arabes unis','inter','Quelle fraction de l’aire du drapeau est rouge ?',1,4,4,()=>{R(80,50,90,220,'#ff0000');H(['#00732f','#fff','#000'],[1,1,1]);R(80,50,90,220,'#ff0000')},'La partie rouge occupe 1/4 de l’aire totale.'],
+['Bahamas','inter','Quelle fraction de l’aire du drapeau est jaune ?',1,3,3,()=>{H(['#00abc9','#fcd116','#00abc9'],[1,1,1]);S.append(el('polygon',{points:'80,50 80,270 190,160',fill:'#111'}))},'La bande jaune occupe 1/3 de l’aire totale.'],
+['Tchéquie','inter','Sur le bord droit, quelle fraction de la hauteur est rouge ?',1,2,2,()=>{H(['#fff','#d7141a'],[1,1]);S.append(el('polygon',{points:'80,50 80,270 260,160',fill:'#11457e'}))},'Au bord droit, le drapeau est partagé en deux moitiés horizontales.'],
 ['Danemark','defi','La croix blanche occupe quelle fraction de la hauteur ?',1,7,7,()=>Cross('#c8102e','#fff',[12,4,21],[12,4,12]),'La hauteur est 12–4–12 : la croix mesure 4/28 = 1/7.'],
 ['Suède','defi','La croix jaune occupe quelle fraction de la hauteur ?',1,5,5,()=>Cross('#006aa7','#fecc00',[5,2,9],[4,2,4]),'La hauteur est 4–2–4 : la croix mesure 2/10 = 1/5.'],
 ['Finlande','defi','Quelle fraction de la hauteur représente l’épaisseur de la croix bleue ?',3,11,11,()=>Cross('#fff','#003580',[5,3,10],[4,3,4]),'La hauteur est 4–3–4 : la croix mesure 3/11.'],
@@ -77,7 +77,7 @@ if(g){
  g.y.forEach((v,i)=>{let before=g.y.slice(0,i).reduce((a,b)=>a+b,0),cy=50+220*(before+v/2)/ty;let t=el('text',{x:466,y:cy+5,'text-anchor':'middle',class:'help-num'});t.textContent=v;S.append(t)});
  return;
 }
-const p=cur[5],isWidth=cur[2].includes('largeur');
+const p=cur[5],isWidth=['France','Italie','Irlande','Belgique','Roumanie','Nigeria','Bénin','Madagascar','Émirats arabes unis'].includes(cur[0]);
 if(isWidth){
   // Pour une question sur la largeur, l'aide partage réellement le drapeau
   // de gauche à droite en parts égales (ex. Bénin : 5 parts, le vert = 2).
@@ -90,7 +90,7 @@ if(isWidth){
 }}
 function visualHelp(){
  if(!help)return;
- const p=cur[5],chosen=cur[3],isWidth=cur[2].includes('largeur');
+ const p=cur[5],chosen=cur[3],isWidth=['France','Italie','Irlande','Belgique','Roumanie','Nigeria','Bénin','Madagascar','Émirats arabes unis'].includes(cur[0]);
  const x=90,y=292,w=340,h=24,unit=w/p;
  // Manipulation : on extrait mentalement les bandes du drapeau et on les range
  // côte à côte dans une réglette de parts égales.
@@ -121,11 +121,11 @@ function helpText(){
  if(name==='Botswana')return '💡 Lis le drapeau de haut en bas : 9 + 1 + 4 + 1 + 9 = 24 unités. Il y a deux liserés blancs d’une unité chacun : combien d’unités blanches en tout ?';
  if(name==='Grèce')return '💡 Ne calcule pas l’aire de la croix. Compte seulement les 9 bandes horizontales du drapeau : combien sont bleues ?';
  if(name==='Suisse')return '💡 Observe seulement l’épaisseur de la barre horizontale de la croix. Imagine la hauteur partagée en 5 bandes égales : la barre blanche en occupe une.';
- if(q.includes('hauteur'))return '💡 Imagine que tu découpes ces bandes horizontales, puis que tu les ranges côte à côte. La réglette du bas les remet dans l’ordre : compte les bandes colorées sur le nombre total de bandes.';
- if(q.includes('largeur'))return '💡 Imagine que tu découpes ces bandes verticales et que tu les ranges côte à côte. La réglette du bas montre les parts égales : compte les bandes colorées sur le nombre total de bandes.';
+ if(q.includes('aire du drapeau'))return '💡 Imagine le drapeau découpé en parts de même aire. Compte combien de parts composent toute la surface, puis combien appartiennent à la couleur demandée.';
+ if(q.includes('hauteur'))return '💡 Ici, la question porte seulement sur une dimension du drapeau. Repère les parts égales le long de la hauteur.';
  return '💡 Compte d’abord le nombre total de parts égales, puis le nombre de parts de la couleur demandée. Le premier nombre va au dénominateur, le second au numérateur.';
 }
 function render(){S.replaceChildren();cur[6]();guides();S.append(el('rect',{x:80,y:50,width:360,height:220,fill:'none',stroke:'#111','stroke-width':5}));visualHelp();$('#country').textContent='🚩 '+cur[0];$('#question').textContent=cur[2];$('#hint').textContent=help?helpText():'';$('#help').textContent=help?'Masquer l’aide':'💡 Aide'}
-function pick(){let pool=mode==='mix'?Q:Q.filter(x=>x[1]===mode);let i=Math.floor(Math.random()*pool.length);cur=pool[i];help=false;tries=0;$('#num').value='';$('#den').value='';$('#feedback').textContent='';$('#explain').textContent='';render()}
+let levelPos={simple:0,inter:0,defi:0};function pick(){let pool=mode==='mix'?Q:Q.filter(x=>x[1]===mode);let i;if(mode==='mix'){i=Math.floor(Math.random()*pool.length)}else{i=levelPos[mode]%pool.length;levelPos[mode]++}cur=pool[i];help=false;tries=0;$('#num').value='';$('#den').value='';$('#feedback').textContent='';$('#explain').textContent='';render()}
 document.querySelectorAll('[data-level]').forEach(b=>b.onclick=()=>{mode=b.dataset.level;document.querySelectorAll('[data-level]').forEach(x=>x.classList.toggle('on',x===b));pick()});$('#help').onclick=()=>{help=!help;render()};$('#next').onclick=pick;$('#form').onsubmit=e=>{e.preventDefault();let a=parseInt($('#num').value),b=parseInt($('#den').value);if(!Number.isInteger(a)||!Number.isInteger(b)||!b){$('#feedback').textContent='Écris une fraction complète.';return}let ok=a*cur[4]===b*cur[3];$('#feedback').textContent=ok?'✅ Exact ! '+a+'/'+b+' convient.':'🧐 Pas encore.';$('#explain').textContent=ok?cur[7]:(help?'Relis les étapes de l’aide : trouve d’abord le total, puis les unités de la couleur demandée.':'Utilise 💡 Aide si tu en as besoin.');if(ok){tries=0;setTimeout(pick,900)}else{tries++;if(tries>=3){$('#feedback').textContent='💡 La réponse est '+cur[3]+'/'+cur[4]+'.';$('#explain').textContent=cur[7]+' Regarde bien la correction avant le drapeau suivant.';help=true;render();setTimeout(pick,3500)}}};pick()})();
 </script><script src="site-tracking.js" defer></script></body></html>
