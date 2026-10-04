@@ -126,7 +126,13 @@ body{background:radial-gradient(circle at 50% -8%,#5a66ff33 0,transparent 34%),r
 .target-zone:after{content:"";position:absolute;left:50%;bottom:0;width:230px;height:12px;transform:translateX(-50%);border-radius:50%;background:#17223a22;filter:blur(7px)}
 @media(max-width:600px){.target-zone{margin-bottom:28px}.target-zone .target{width:min(285px,82vw)!important;height:150px!important;font-size:6.3rem!important;border-radius:24px!important;box-shadow:0 8px 0 #090e1d,0 14px 26px #17223a3b,0 0 0 7px #5664ff18!important}}
 </style>
-</head>
+<style id="target-display-final">
+#game .target-zone{position:relative!important;width:100%!important;max-width:460px!important;margin:18px auto 38px!important;padding:0!important;text-align:center!important}
+#game .target-label{display:inline-block!important;margin:0 auto 10px!important;padding:6px 14px!important;border-radius:999px!important;background:#ffd447!important;color:#10182c!important;font:1000 .7rem/1 system-ui,sans-serif!important;letter-spacing:.18em!important;box-shadow:0 3px 0 #10182c!important}
+#game #target.target-display{box-sizing:border-box!important;display:flex!important;align-items:center!important;justify-content:center!important;width:min(360px,88vw)!important;height:190px!important;margin:0 auto!important;padding:20px!important;border:5px solid #fff!important;outline:5px solid #10182c!important;border-radius:30px!important;background:#10182c!important;background-image:linear-gradient(145deg,#202d68 0%,#10182c 58%,#070b16 100%)!important;color:#ffd447!important;font-family:system-ui,sans-serif!important;font-size:clamp(6rem,16vw,9rem)!important;font-weight:1000!important;line-height:1!important;letter-spacing:-.08em!important;text-align:center!important;text-shadow:0 4px 0 #000!important;box-shadow:0 12px 0 #070b16,0 20px 38px #10182c55!important}
+#game #target.target-display::before,#game #target.target-display::after{content:none!important}
+@media(max-width:600px){#game #target.target-display{height:155px!important;width:min(300px,86vw)!important;font-size:6.5rem!important;border-radius:24px!important}}
+</style></head>
 <body>
 <main class="wrap">
 <header class="top"><a href="calcul-mental-series.html">← Arcade du calcul</a><a href="maths-lecons-cm2.html">Leçons de maths</a></header>
@@ -138,7 +144,7 @@ body{background:radial-gradient(circle at 50% -8%,#5a66ff33 0,transparent 34%),r
 <section class="panel" id="game" hidden aria-label="Tirage Mathador">
 <div class="game-head"><strong id="series-label"></strong><span class="stat" id="clock" role="timer">04:00</span><span class="stat" id="best">Score du défi : 0 point</span></div>
 <div class="mission-banner"><span>⚡ MISSION</span><strong id="challenge-goal"></strong></div>
-<p class="caption" style="text-align:center">🎯 TA CIBLE</p><div class="target-zone"><div class="target" id="target"></div><div class="target-win" id="target-win" hidden role="status" aria-live="assertive"><span>🎉 BRAVO !</span><strong>CIBLE ATTEINTE</strong><b id="target-win-score">0 POINT</b><small>Tu peux valider ou continuer pour améliorer ton score.</small></div></div>
+<div class="target-zone"><div class="target-label">CIBLE À ATTEINDRE</div><div class="target-display" id="target"></div><div class="target-win" id="target-win" hidden role="status" aria-live="assertive"><span>🎉 BRAVO !</span><strong>CIBLE ATTEINTE</strong><b id="target-win-score">0 POINT</b><small>Tu peux valider ou continuer pour améliorer ton score.</small></div></div>
 <p class="caption">Cartes disponibles</p><div class="tokens" id="tokens"></div>
 <div class="play-guide" aria-live="polite"><span class="guide-step active" id="guide-number">1 <b>NOMBRE</b></span><span class="guide-arrow">→</span><span class="guide-step" id="guide-op">2 <b>OPÉRATION</b></span><span class="guide-arrow">→</span><span class="guide-step" id="guide-number2">3 <b>NOMBRE</b></span></div>
 <p class="instructions" id="instructions">Choisis un nombre, une opération, puis un autre nombre.</p>
