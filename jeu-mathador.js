@@ -22,7 +22,7 @@
   let profiles = loadProfiles(), player = null, currentLevel = 0;
   let chosen = null, operation = null, nextId = 5, seconds = TOTAL_SECONDS;
   let timer = null, active = false, hintUsed = false, best = 0, bestExpression = '';
-  let loading = false, remoteDraw = false, remoteChallengeId = null;
+  let loading = false, remoteDraw = false, remoteChallengeId = null, autoNextTimer = null;
   async function request(body) {
     const response = await fetch(API, body ? {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)} : {});
     const result = await response.json();
@@ -370,10 +370,15 @@
       $('ranking-note').textContent = 'Ce score est enregistré ici, mais pas encore dans le classement de la classe.';
       showRankings();
     }
-    finish((best === 18 ? 'Coup Mathador !' : 'Défi réussi ! ' + best + ' points.') +
-      (API && !sharedSaved ? ' Score conservé sur cet appareil uniquement.' : ''));
-    $('next').hidden = player.completed >= levels.length;
+    const hasNext = player.completed < levels.length;
+    finish((best === 18 ? 'BRAVO ! Coup Mathador !' : 'BRAVO ! Défi réussi · ' + best + ' points !') +
+      (API && !sharedSaved ? ' Score conservé sur cet appareil uniquement.' : '') +
+      (hasNext ? ' Défi suivant dans 3 secondes…' : ' Parcours terminé !'));
+    $('next').hidden = !hasNext;
+    $('next').textContent = 'Défi suivant →';
     showLevel();
+    clearTimeout(autoNextTimer);
+    if (hasNext) autoNextTimer = setTimeout(() => start(Math.min(player.completed,levels.length-1)),3000);
   }
   function finish(message) {
     if (!active) return;
@@ -465,7 +470,7 @@
     try { localStorage.setItem('zoumai-mathador-last-name',cleanName($('player-name').value)); } catch (error) {}
     start();
   });
-  $('next').addEventListener('click', () => start(Math.min(player.completed,levels.length-1)));
+  $('next').addEventListener('click', () => { clearTimeout(autoNextTimer); start(Math.min(player.completed,levels.length-1)); });
   $('validate').addEventListener('click', validate);
   $('undo').addEventListener('click', () => {
     if (!active || !undoStack.length) return;
