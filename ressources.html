@@ -445,7 +445,7 @@ if(mathGrid){
 (function(){
  const content=document.getElementById('resource-content');
  if(!content)return;
- function sync(){content.classList.toggle('has-selection',!!document.querySelector('.shelf.active'))}
+ function sync(){const selected=!!document.querySelector('.shelf.active');content.classList.toggle('has-selection',selected);const weekly=document.querySelector('.weekly');if(weekly)weekly.hidden=selected}
  const observer=new MutationObserver(sync);
  document.querySelectorAll('.shelf').forEach(s=>observer.observe(s,{attributes:true,attributeFilter:['class']}));
  sync();
