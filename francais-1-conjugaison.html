@@ -141,13 +141,36 @@ function resetConj(){const pool=tensePool();citems=shuffle(pool.length?pool:pres
 
 let citems=shuffle(present),ci=0,cscore=0,cattempt=0;
 let cgame='duel';
-function wrongForms(e){const right=e.forms[e.p],all=[...new Set(e.forms.filter(x=>x!==right))];return shuffle(all).slice(0,2)}
+function isCompound(){return selectedTense==='passe-compose'||selectedTense==='plus-que-parfait'}
+function compoundParts(form){const a=cNorm(form).split(/\s+/);return {aux:a[0]||'',pp:a.slice(1).join(' ')}}
+function compoundDistractors(e){
+ const right=e.forms[e.p],r=compoundParts(right),avoir=selectedTense==='passe-compose'?['ai','as','a','avons','avez','ont']:['avais','avais','avait','avions','aviez','avaient'],etre=selectedTense==='passe-compose'?['suis','es','est','sommes','êtes','sont']:['étais','étais','était','étions','étiez','étaient'];
+ const usesEtre=['aller','venir'].includes(e.inf),other=(usesEtre?avoir:etre)[e.p];
+ const badAux=other+' '+r.pp;
+ let badPP=r.aux+' '+(e.inf.endsWith('er')?e.inf.slice(0,-2)+'er':e.inf);
+ let badAgree=r.aux+' '+r.pp;
+ if(usesEtre){if(/s$/.test(r.pp))badAgree=r.aux+' '+r.pp.replace(/s$/,'');else badAgree=r.aux+' '+r.pp+'s'}
+ else badAgree=r.aux+' '+r.pp+'s';
+ return [...new Set([badAux,badPP,badAgree].filter(x=>cNorm(x)!==cNorm(right)))]
+}
+function compoundError(e,v){
+ const right=compoundParts(e.forms[e.p]),got=compoundParts(v);
+ const avoir=selectedTense==='passe-compose'?['ai','as','a','avons','avez','ont']:['avais','avais','avait','avions','aviez','avaient'],etre=selectedTense==='passe-compose'?['suis','es','est','sommes','êtes','sont']:['étais','étais','était','étions','étiez','étaient'];
+ const expectedSet=['aller','venir'].includes(e.inf)?etre:avoir;
+ if(!expectedSet.includes(got.aux))return '🔧 Auxiliaire : '+e.inf.toUpperCase()+' se construit ici avec '+(['aller','venir'].includes(e.inf)?'ÊTRE':'AVOIR')+'.';
+ if(got.aux!==right.aux)return '👀 Auxiliaire : regarde le sujet → '+pron[e.p]+'.';
+ if(got.pp===right.pp)return '👀 Regarde l’accord du participe passé.';
+ const baseRight=right.pp.replace(/[es]+$/,'');const baseGot=got.pp.replace(/[es]+$/,'');
+ if(baseRight===baseGot)return '🎯 Participe passé : vérifie son accord avec le sujet.';
+ return '🧩 Participe passé : retrouve d’abord la bonne forme de '+e.inf.toUpperCase()+'.'
+}
+function wrongForms(e){if(isCompound())return shuffle(compoundDistractors(e)).slice(0,2);const right=e.forms[e.p],all=[...new Set(e.forms.filter(x=>x!==right))];return shuffle(all).slice(0,2)}
 function nextFun(){setTimeout(()=>{ci++;if(ci>=citems.length){citems=shuffle(tensePool());if(!citems.length)citems=shuffle(present);ci=0;cscore=0}cRender()},650)}
 function chooseFun(v){
  const e=citems[ci],right=e.forms[e.p],box=$('fun-choices');[...box.children].forEach(b=>b.disabled=true);
  const ok=cNorm(v)===cNorm(right);if(ok)cscore++;
  [...box.children].forEach(b=>{if(cNorm(b.dataset.v)===cNorm(right))b.classList.add('correct');else if(b.dataset.v===v&&!ok)b.classList.add('wrong')});
- $('c-repair').hidden=false;$('c-repair').textContent=ok?'🎉 Bravo !':'👀 '+right;$('c-score').textContent=cscore+' bonne'+(cscore>1?'s':'')+' réponse'+(cscore>1?'s':'');nextFun()
+ $('c-repair').hidden=false;$('c-repair').textContent=ok?'🎉 Bravo !':(isCompound()?compoundError(e,v):'👀 '+right);$('c-score').textContent=cscore+' bonne'+(cscore>1?'s':'')+' réponse'+(cscore>1?'s':'');if(ok)nextFun();else setTimeout(()=>{[...box.children].forEach(b=>b.disabled=false)},650)
 }
 function renderFun(e){
  const box=$('fun-choices');box.replaceChildren();box.hidden=false;$('write-actions').hidden=true;
