@@ -274,7 +274,7 @@
     $('game').hidden = false;
     $('solution').hidden = true;
     $('series-label').textContent = player.name + ' · Défi ' + (currentLevel + 1) + '/9';
-    $('challenge-goal').textContent = 'Étape '+(draw.level+1)+'/9 · '+levels[draw.level].aim;
+    $('challenge-goal').textContent = 'CIBLE = 5 pts · + / × = +1 · − = +2 · ÷ = +3 · 5 nombres + 4 opérations = 18 pts';
     resetMoves();
     showLevel(); if (API) refreshRankings(); else showRankings(); persist();
     say(networkError ? 'Défi hors ligne : tu peux jouer, mais ce score ne rejoindra pas le classement de la classe.' :
@@ -329,56 +329,28 @@
   }
   async function validate() {
     if (!active) return;
-    let matches = tokens.filter(x => x.value === draw.target && x.ops.length === levels[currentLevel].steps);
-    const required = currentLevel === 0 ? '+' : currentLevel === 1 ? '−' :
-      currentLevel === 2 ? '×' : currentLevel === 4 || currentLevel === 6 ? '÷' : null;
-    if (required) matches = matches.filter(x => x.ops.includes(required));
-    if (currentLevel >= 7) matches = matches.filter(x => x.used.length === 5);
-    if (currentLevel === 8) matches = matches.filter(x => operations.every(op => x.ops.includes(op)));
+    let matches = tokens.filter(x => x.value === draw.target && x.ops.length > 0);
     if (!matches.length) {
-      say('Atteins la cible en ' + levels[currentLevel].steps + ' calcul' +
-        (levels[currentLevel].steps > 1 ? 's' : '') +
-        (required ? ' avec ' + ({'+':'une addition','−':'une soustraction','×':'une multiplication','÷':'une division'})[required] + '.' :
-          currentLevel >= 7 ? ' avec les cinq cartes.' : '.') , 'error');
+      say('Atteins d’abord la cible. Tu peux utiliser de 2 à 5 nombres, comme tu veux.', 'error');
       return;
     }
     let token = matches.sort((a,b) => score(b) - score(a))[0];
     best = score(token);
     bestExpression = token.expr;
-    let sharedSaved = false;
-    if (remoteDraw) {
-      clearInterval(timer); timer = null;
-      active = false; render();
-      say('Calcul réussi ! Enregistrement dans le classement de la classe…');
-      try {
-        const result = await request({action:'finish',playerId:player.id,challengeId:remoteChallengeId,moves,hintUsed});
-        best = result.score;
-        player.points = result.points;
-        player.completed = result.completed;
-        sharedSaved = true;
-      } catch (error) {
-        say('Ton calcul est correct, mais le classement de la classe n’a pas reçu ce score.', 'error');
-      }
-      active = true;
-    }
     player.points[currentLevel] = Math.max(player.points[currentLevel] || 0,best);
     player.completed = Math.max(player.completed,currentLevel + 1);
     persist();
-    if (sharedSaved) refreshRankings();
-    else {
-      $('ranking-title').textContent = 'Top 10 sur cet appareil';
-      $('ranking-note').textContent = 'Ce score est enregistré ici, mais pas encore dans le classement de la classe.';
-      showRankings();
-    }
-    const hasNext = player.completed < levels.length;
-    finish((best === 18 ? 'BRAVO ! Coup Mathador !' : 'BRAVO ! Défi réussi · ' + best + ' points !') +
-      (API && !sharedSaved ? ' Score conservé sur cet appareil uniquement.' : '') +
-      (hasNext ? ' Défi suivant dans 3 secondes…' : ' Parcours terminé !'));
-    $('next').hidden = !hasNext;
-    $('next').textContent = 'Défi suivant →';
-    showLevel();
+    showRankings();
+    const usedCount=token.used.length;
+    const opPoints=token.ops.map(op=>op+' '+weights[op]+' pt'+(weights[op]>1?'s':'')).join(' · ');
+    const isMathador=usedCount===5 && token.ops.length===4 && operations.every(op=>token.ops.includes(op));
+    finish((isMathador ? 'BRAVO ! COUP MATHADOR · 18 POINTS !' :
+      'BRAVO ! Cible atteinte · '+best+' points · '+usedCount+' nombres utilisés'+(opPoints?' · '+opPoints:''))+
+      (player.completed < levels.length ? ' Défi suivant dans 3 secondes…' : ' Parcours terminé !'));
+    const hasNext=player.completed < levels.length;
+    $('next').hidden=!hasNext;$('next').textContent='Défi suivant →';showLevel();
     clearTimeout(autoNextTimer);
-    if (hasNext) autoNextTimer = setTimeout(() => start(Math.min(player.completed,levels.length-1)),3000);
+    if(hasNext)autoNextTimer=setTimeout(()=>start(Math.min(player.completed,levels.length-1)),3000);
   }
   function finish(message) {
     if (!active) return;
@@ -431,7 +403,7 @@
       button.className = 'op' + (operation === op ? ' selected' : '');
       button.textContent = op;
       button.title = (op === '+' ? 'Addition' : op === '−' ? 'Soustraction' : op === '×' ? 'Multiplication' : 'Division') + ' · ' + weights[op] + ' point' + (weights[op] > 1 ? 's' : '');
-      button.disabled = !active || !allowed[currentLevel].includes(op);
+      button.disabled = !active;
       button.addEventListener('click',() => {
         if (chosen === null) { say('Choisis d’abord une carte.', 'error'); return; }
         operation = op;
