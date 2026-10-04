@@ -119,13 +119,12 @@ body{background:radial-gradient(circle at 50% -8%,#5a66ff33 0,transparent 34%),r
 </style>
 
 <style id="mathador-target-v5">
-/* La cible est un objectif de calcul, pas une cible de tir */
-.target-zone{width:min(390px,92%);margin:8px auto 34px}
-.target-zone .target{position:relative;width:clamp(155px,25vw,210px);height:clamp(125px,20vw,165px);display:grid;place-items:center;margin:14px auto 0;border:3px solid #17223a!important;outline:0!important;border-radius:30px!important;background:linear-gradient(145deg,#fff 0,#f7f8ff 62%,#e8ecff 100%)!important;color:#17223a;font-size:clamp(4rem,10vw,6rem)!important;font-weight:1000;letter-spacing:-.07em;line-height:1;box-shadow:0 11px 0 #17223a,0 18px 35px #26345d2c,0 0 0 7px #5664ff18!important;text-shadow:none!important}
-.target-zone .target:before{content:"OBJECTIF";position:absolute;top:11px;left:50%;transform:translateX(-50%);padding:4px 9px;border-radius:999px;background:#5664ff;color:#fff;font-size:.58rem;font-weight:1000;letter-spacing:.16em;line-height:1}
-.target-zone .target:after{content:"À ATTEINDRE";position:absolute;bottom:10px;left:50%;transform:translateX(-50%);font-size:.52rem;font-weight:1000;letter-spacing:.14em;color:#748099;white-space:nowrap}
-.target-zone:before,.target-zone:after{content:"";display:block;position:absolute;pointer-events:none}
-@media(max-width:600px){.target-zone{margin-bottom:26px}.target-zone .target{width:160px;height:130px;border-radius:25px!important;font-size:4.2rem!important;box-shadow:0 8px 0 #17223a,0 13px 25px #26345d26,0 0 0 5px #5664ff18!important}}
+.target-zone{position:relative;width:min(420px,94%);margin:4px auto 36px;padding:20px 0 12px;text-align:center}
+.target-zone .target{position:relative;width:auto!important;height:auto!important;min-width:0!important;display:inline-block!important;margin:0 auto!important;padding:27px 42px 19px!important;border:0!important;outline:0!important;border-radius:0!important;background:transparent!important;color:#17223a!important;font-size:clamp(5rem,13vw,8rem)!important;font-weight:1000!important;letter-spacing:-.08em!important;line-height:.82!important;box-shadow:none!important;text-shadow:0 5px 0 #fff,0 10px 25px #5664ff30!important;isolation:isolate}
+.target-zone .target:before{content:"CIBLE";position:absolute;z-index:-1;top:0;left:50%;transform:translateX(-50%);padding:5px 13px;border:2px solid #17223a;border-radius:999px;background:#ffd447;color:#17223a;font-size:.62rem;font-weight:1000;letter-spacing:.2em;line-height:1;box-shadow:0 3px 0 #17223a}
+.target-zone .target:after{content:"";position:absolute;z-index:-2;width:150px;height:150px;left:50%;top:52%;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,#5664ff24 0,#42d9ff14 42%,transparent 70%);filter:blur(2px)}
+.target-zone:after{content:"";position:absolute;left:50%;bottom:0;width:180px;height:5px;transform:translateX(-50%);border-radius:999px;background:linear-gradient(90deg,transparent,#5664ff 25% 75%,transparent);opacity:.8}
+@media(max-width:600px){.target-zone{margin-bottom:26px;padding-top:17px}.target-zone .target{padding:25px 30px 16px!important;font-size:5.2rem!important}.target-zone .target:after{width:125px;height:125px}}
 </style>
 </head>
 <body>
