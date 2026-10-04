@@ -80,6 +80,16 @@ html,body{width:100%;max-width:100%;overflow-x:hidden}
 }
 @media(prefers-reduced-motion:reduce){.token.selected{animation:none}}
 </style>
+
+<style id="mathador-target-feedback">
+.target-zone{position:relative;width:max-content;max-width:100%;margin:0 auto 30px}
+.target-zone .target{margin:15px auto 0}
+.target-win{position:absolute;z-index:8;inset:50% auto auto 50%;transform:translate(-50%,-50%) scale(.88);width:clamp(230px,72vw,390px);padding:18px 20px;text-align:center;border:4px solid #17223a;border-radius:22px;background:linear-gradient(145deg,#fff7b8,#ffcf49);color:#17223a;box-shadow:0 12px 0 #17223a,0 0 0 6px #fff,0 0 38px #ffcf49aa;animation:targetWin .34s cubic-bezier(.2,.9,.25,1.25) forwards}
+.target-win span,.target-win strong,.target-win b,.target-win small{display:block}.target-win span{font-size:1.05rem;font-weight:1000;letter-spacing:.08em}.target-win strong{font-size:clamp(1.45rem,5vw,2.15rem);line-height:1;margin:5px 0}.target-win b{font-size:clamp(2rem,8vw,3.5rem);line-height:1;color:#343cc4;text-shadow:0 2px #fff}.target-win small{margin-top:8px;font-weight:850;line-height:1.2}
+@keyframes targetWin{to{transform:translate(-50%,-50%) scale(1)}}
+@media(max-width:600px){.target-zone{margin-bottom:18px}.target-win{width:230px;padding:13px 12px;border-width:3px;box-shadow:0 7px 0 #17223a,0 0 0 4px #fff,0 0 26px #ffcf4999}.target-win small{font-size:.65rem}}
+@media(prefers-reduced-motion:reduce){.target-win{animation:none;transform:translate(-50%,-50%)}}
+</style>
 </head>
 <body>
 <main class="wrap">
@@ -92,7 +102,7 @@ html,body{width:100%;max-width:100%;overflow-x:hidden}
 <section class="panel" id="game" hidden aria-label="Tirage Mathador">
 <div class="game-head"><strong id="series-label"></strong><span class="stat" id="clock" role="timer">04:00</span><span class="stat" id="best">Score du défi : 0 point</span></div>
 <div class="mission-banner"><span>⚡ MISSION</span><strong id="challenge-goal"></strong></div>
-<p class="caption" style="text-align:center">🎯 TA CIBLE</p><div class="target" id="target"></div>
+<p class="caption" style="text-align:center">🎯 TA CIBLE</p><div class="target-zone"><div class="target" id="target"></div><div class="target-win" id="target-win" hidden role="status" aria-live="assertive"><span>🎉 BRAVO !</span><strong>CIBLE ATTEINTE</strong><b id="target-win-score">0 POINT</b><small>Tu peux valider ou continuer pour améliorer ton score.</small></div></div>
 <p class="caption">Cartes disponibles</p><div class="tokens" id="tokens"></div>
 <div class="play-guide" aria-live="polite"><span class="guide-step active" id="guide-number">1 <b>NOMBRE</b></span><span class="guide-arrow">→</span><span class="guide-step" id="guide-op">2 <b>OPÉRATION</b></span><span class="guide-arrow">→</span><span class="guide-step" id="guide-number2">3 <b>NOMBRE</b></span></div>
 <p class="instructions" id="instructions">Choisis un nombre, une opération, puis un autre nombre.</p>
