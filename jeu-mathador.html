@@ -95,6 +95,28 @@ html,body{width:100%;max-width:100%;overflow-x:hidden}
 /* Matador est désormais un jeu direct, sans affichage de parcours */
 #journey,#level-info{display:none!important}
 </style>
+
+<style id="mathador-arena-v4">
+:root{--ink:#111a31;--gold:#ffd447;--electric:#5664ff;--cyan:#42d9ff;--paper:#f8faff}
+body{background:radial-gradient(circle at 50% -8%,#5a66ff33 0,transparent 34%),radial-gradient(circle at 90% 28%,#42d9ff1f 0,transparent 24%),linear-gradient(180deg,#0c1225 0,#111a31 30%,#eef3ff 30.1%,#f8faff 100%);min-height:100vh}
+.wrap{max-width:1060px}
+.top{border:1px solid #ffffff22;background:#0d152bd9;backdrop-filter:blur(12px);border-radius:999px;padding:8px 14px;margin-top:12px}.top a{color:#eef4ff}
+.hero{position:relative;min-height:250px;margin:18px 0 24px;padding:34px 38px;overflow:hidden;border:2px solid #ffffff22;border-radius:30px;background:radial-gradient(circle at 75% 35%,#42d9ff2e,transparent 26%),linear-gradient(135deg,#111a31,#242e68 70%,#17213f);color:#fff;box-shadow:0 24px 60px #080d1f66}
+.hero:before{content:"×  ÷  +  −";position:absolute;right:2%;bottom:-18px;font-size:clamp(4rem,12vw,8rem);font-weight:1000;letter-spacing:-.12em;color:#ffffff09;white-space:nowrap}.hero h1{font-size:clamp(3.7rem,10vw,7rem);line-height:.78;letter-spacing:-.07em;margin:14px 0 18px;color:#fff;text-shadow:0 5px 0 #2634a0,0 0 28px #42d9ff55}.hero .kicker{display:inline-block;padding:7px 12px;border:1px solid #42d9ff77;border-radius:999px;background:#42d9ff12;color:#8deaff}.hero p{max-width:570px;font-size:1.05rem;color:#dbe4ff}.hero img{width:min(220px,27vw);filter:drop-shadow(0 15px 20px #0008);transform:rotate(3deg)}
+.panel{border:1px solid #dce4f4;border-radius:24px;box-shadow:0 12px 35px #26345d12;background:#fff}
+#regles{font-size:1.45rem}.rules{display:grid;grid-template-columns:repeat(2,1fr);gap:10px 28px}.rules li{padding:9px 0}
+.setup{display:grid;grid-template-columns:minmax(220px,1fr) auto;align-items:end;gap:12px 18px;background:linear-gradient(135deg,#fff,#f2f5ff);border:2px solid #cbd5ff}.setup label{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em}.setup input{margin-top:7px;font-size:1.1rem;border-width:2px}.setup .primary{min-height:51px;padding-inline:28px}.setup>.fine{grid-column:1/-1}
+#game{position:relative;overflow:hidden;border:0;background:radial-gradient(circle at 50% 18%,#fff9d8 0,transparent 22%),linear-gradient(180deg,#fff 0,#f3f6ff 100%);box-shadow:0 20px 60px #17223a25,0 0 0 1px #d9e1f2}
+.game-head{position:sticky;top:8px;z-index:12;margin:-2px -2px 16px;padding:10px 12px;border-radius:17px;background:#10182ceF;color:#fff;box-shadow:0 8px 20px #10182c44;backdrop-filter:blur(10px)}.game-head strong{color:#fff}.stat{border-color:#ffffff2b;background:#ffffff0f;color:#fff}
+.mission-banner{border:0;background:linear-gradient(100deg,#303fd0,#5969ff);color:#fff;box-shadow:0 8px 0 #17223a}.mission-banner span{color:#ffd447}
+.target{width:clamp(112px,18vw,150px);height:clamp(112px,18vw,150px);font-size:clamp(3.2rem,8vw,5rem);border:8px solid #fff;outline:4px solid #17223a;background:radial-gradient(circle,#fff 0 27%,#ffda52 28% 50%,#fff 51% 68%,#5664ff 69% 100%);box-shadow:0 12px 0 #17223a,0 0 0 8px #5664ff22,0 0 38px #5664ff44;text-shadow:0 2px #fff}
+.caption{text-transform:uppercase;letter-spacing:.12em;font-size:.68rem;color:#65728a;font-weight:1000}
+.tokens{gap:13px}.token{min-width:78px;min-height:82px;border:3px solid #17223a;border-radius:18px;font-size:2rem;box-shadow:0 7px 0 #17223a,0 10px 20px #26345d20}.token:hover{transform:translateY(-4px);box-shadow:0 11px 0 #17223a,0 15px 24px #26345d28}
+.ops{gap:12px}.op{width:62px;height:62px;border:3px solid #17223a;border-radius:18px;font-size:1.8rem;background:#fff;box-shadow:0 6px 0 #17223a}.op:hover{transform:translateY(-3px);background:#eef1ff}
+.actions{margin-top:20px;padding-top:18px;border-top:1px dashed #cbd5e8}.actions .primary{min-height:48px}
+#ranking-title{text-align:center;font-size:1.45rem}.rankings{max-width:650px;margin-inline:auto}.rankings li{border-radius:14px;background:#f6f8ff;border:1px solid #e0e6f4;margin:7px 0;padding:10px 14px}.rankings li:nth-child(1){background:linear-gradient(90deg,#fff2ad,#fff)}.rankings li:nth-child(2){background:linear-gradient(90deg,#e9edf4,#fff)}.rankings li:nth-child(3){background:linear-gradient(90deg,#f3d5bd,#fff)}
+@media(max-width:700px){body{background:linear-gradient(180deg,#0c1225 0,#111a31 20%,#f8faff 20.1%)}.hero{min-height:205px;padding:24px 20px;border-radius:23px}.hero img{width:120px;opacity:.9}.hero p{font-size:.88rem;max-width:70%}.rules{grid-template-columns:1fr}.setup{grid-template-columns:1fr}.setup .primary{width:100%}.game-head{top:4px}.token{min-width:62px;min-height:68px;font-size:1.65rem}.op{width:54px;height:54px}.panel{border-radius:19px}}
+</style>
 </head>
 <body>
 <main class="wrap">
