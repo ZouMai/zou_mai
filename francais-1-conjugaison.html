@@ -142,8 +142,8 @@ function cHint(e,answer){
 function cCheck(){
  const e=citems[ci],v=cNorm($('c-input').value);if(!v)return;
  if(v===cNorm(e.forms[e.p])){
-  if(cattempt===0)cscore++;$('c-input').classList.add('okflash');$('c-repair').hidden=false;$('c-repair').textContent='✓ '+e.forms[e.p];
-  $('c-input').disabled=true;$('c-ok').disabled=true;setTimeout(()=>{$('c-input').classList.remove('okflash');ci++;if(ci>=citems.length){citems=shuffle(present);ci=0;cscore=0}cRender()},850);return
+  if(cattempt===0)cscore++;$('c-input').classList.add('okflash');$('c-repair').hidden=false;$('c-repair').textContent=cattempt===0?'🎉 Bravo !':'✓ Bien corrigé !';
+  $('c-input').disabled=true;$('c-ok').disabled=true;setTimeout(()=>{$('c-input').classList.remove('okflash');ci++;if(ci>=citems.length){citems=shuffle(present);ci=0;cscore=0}cRender()},750);return
  }
  cattempt++;$('c-input').classList.add('badflash');setTimeout(()=>$('c-input').classList.remove('badflash'),300);
  $('c-repair').hidden=false;$('c-repair').textContent=cattempt===1?cHint(e,v):cattempt===2?'🔁 '+pron[e.p]+' + '+e.inf.toUpperCase():'✏️ Corrige encore';
