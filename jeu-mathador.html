@@ -18,19 +18,19 @@ h1{font-size:clamp(2.3rem,7vw,4.6rem);line-height:.97;letter-spacing:-.05em;marg
 .setup{display:flex;align-items:end;gap:12px;flex-wrap:wrap}.setup label{display:grid;gap:5px;font-weight:800}input{padding:11px 15px;border:2px solid #aab9de;border-radius:11px;background:#fff;min-width:145px}
 .primary,.secondary{border:0;border-radius:12px;padding:12px 17px;font-weight:850}.primary{color:white;background:var(--blue);box-shadow:0 4px 0 #202a8b}.secondary{color:#263588;background:#edf0fd;border:1px solid #b7c4e8}.primary:hover:not(:disabled),.secondary:hover:not(:disabled){filter:brightness(1.08)}
 .game-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.stat{padding:7px 12px;border-radius:50px;background:#edf1ff;font-weight:900}
-.target{font-size:clamp(4rem,13vw,7rem);font-weight:1000;line-height:1;color:var(--blue);text-align:center;margin:8px 0 24px}
+
 .caption{font-weight:850;margin:15px 0 9px}.tokens{display:flex;flex-wrap:wrap;gap:10px;min-height:72px}.token{min-width:68px;min-height:68px;border:2px solid #9aaddd;background:#f6f8ff;color:var(--ink);border-radius:14px;padding:8px 12px;font-size:1.55rem;font-weight:900}.token.selected{background:#fff0bd;border-color:#e8a919;box-shadow:0 0 0 3px #ffd96688}.token.result{background:#dff7ee;border-color:#16a57a}.token:hover:not(:disabled){transform:translateY(-2px)}
 .ops{display:flex;gap:9px;flex-wrap:wrap;margin:19px 0}.op{min-width:60px;min-height:55px;border:2px solid #bdc8e3;border-radius:12px;background:#fff;color:#253382;font-size:1.45rem;font-weight:900}.op.selected{background:var(--blue);border-color:var(--blue);color:#fff}
 .instructions{font-weight:750;color:#4e5a70}.steps{margin:12px 0 0;padding-left:24px;font-weight:750}.steps li{padding:3px 0}.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:22px}.feedback{margin:15px 0 0;padding:12px 15px;border-radius:12px;background:#eaf1ff;color:#24316d;font-weight:800;min-height:48px}.feedback.success{background:#dcf8eb;color:#075f46}.feedback.error{background:#fff0e3;color:#8c390c}
 .solution{margin-top:16px;padding:17px;border-left:5px solid var(--green);background:#e6f8f0}.solution ol{margin-bottom:0}.fine{color:#526072;font-size:.82rem}.fine a{color:#233a96}
 .level-note{flex-basis:100%;padding:11px 14px;border-radius:12px;background:#e9f5ee;color:#145548;font-weight:800}.level-note strong{color:#0e4f72}.goal{flex-basis:100%;color:#2b4a73;font-weight:850}
 .journey{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:15px}.stage{border:2px solid #d5def1;border-radius:12px;padding:10px;background:#f8faff;text-align:left;font-weight:750}.stage.current{border-color:#343cc4;background:#edf0ff}.stage.done{border-color:#17a47e;background:#e7f9ef}.stage:disabled{opacity:.6}.rankings{padding-left:28px}.rankings li{padding:7px;border-bottom:1px solid #e3e9f2}.rankings strong{float:right}.notice{color:#704a16;background:#fff4dc;border-radius:10px;padding:10px}
-@media(max-width:600px){.rules,.journey{grid-template-columns:1fr}.hero img{width:72px;height:95px}.token{min-width:61px;min-height:61px}.target{margin:6px 0 15px}.panel{border-radius:17px}}
+@media(max-width:600px){.rules,.journey{grid-template-columns:1fr}.hero img{width:72px;height:95px}.token{min-width:61px;min-height:61px}.panel{border-radius:17px}}
 /* Arène visuelle Zou Maï */
 body{background:radial-gradient(circle at 50% 22%,#fff7c7 0 8%,transparent 30%),linear-gradient(135deg,#d9efff 0 35%,#f8f0dc 35% 68%,#d8f4e9 68%)}
 .wrap{width:min(1040px,95vw)}.hero{background:#10182c;color:#fff;border:4px solid #10182c;border-radius:30px;padding:22px 28px;box-shadow:10px 10px 0 #ffcf49;overflow:hidden}.hero .kicker{color:#ffcf49}.hero img{width:125px;height:145px}.panel{border:3px solid #17223a;box-shadow:8px 8px 0 #17223a22}
 #game{position:relative;overflow:hidden;background:linear-gradient(#fff,#f8fbff)}.mission-banner{margin:14px 0 18px;padding:13px 18px;display:flex;align-items:center;gap:14px;background:#ffcf49;color:#17223a;border:4px solid #17223a;border-radius:14px;box-shadow:5px 5px 0 #17223a}.mission-banner span{flex:0 0 auto;background:#17223a;color:#fff;padding:6px 9px;border-radius:7px;font-size:.72rem;font-weight:1000;letter-spacing:.08em}.mission-banner strong{font-size:1.05rem;font-weight:1000;text-transform:uppercase}#game:before{content:"ARÈNE";position:absolute;right:-12px;top:52px;font-size:6rem;font-weight:1000;color:#343cc408;transform:rotate(-9deg);pointer-events:none}
-.target{width:clamp(150px,28vw,220px);height:clamp(150px,28vw,220px);margin:15px auto 30px;border-radius:50%;display:grid;place-items:center;color:#fff;background:radial-gradient(circle,#343cc4 0 31%,#fff 32% 38%,#ef4b43 39% 55%,#fff 56% 63%,#17223a 64% 100%);border:7px solid #fff;outline:5px solid #17223a;text-shadow:0 4px 0 #17223a;box-shadow:0 16px 32px #17223a33;font-size:clamp(3.8rem,11vw,6.2rem)}
+
 .tokens{justify-content:center;gap:15px}.token{min-width:82px;min-height:100px;border:4px solid #17223a;border-radius:18px;background:linear-gradient(145deg,#fff,#eaf0ff);box-shadow:0 7px 0 #17223a;font-size:2rem;transition:.16s}.token:hover:not(:disabled){transform:translateY(-6px);box-shadow:0 13px 0 #17223a}.token.selected{background:#ffda5b;border-color:#17223a;box-shadow:0 7px 0 #17223a,0 0 0 5px #ffcf4966}.token.result{background:#bdf0dc}
 .ops{justify-content:center}.op{min-width:74px;min-height:66px;border:4px solid #17223a;border-radius:18px;box-shadow:0 5px 0 #17223a;font-size:2rem}.op.selected{background:#343cc4;transform:translateY(4px);box-shadow:0 1px 0 #17223a}
 .game-head{background:#17223a;color:#fff;padding:12px 15px;border-radius:16px}.stat{background:#fff;color:#17223a}.goal{color:#ffda5b}
@@ -43,7 +43,7 @@ html,body{width:100%;max-width:100%;overflow-x:hidden}
 .panel{width:100%;max-width:100%;margin:10px 0;padding:12px;border-width:2px;border-radius:14px;box-shadow:3px 3px 0 #17223a22;overflow:hidden}
 .rules{font-size:.76rem;padding-left:18px}.setup{gap:8px}.setup label{width:100%}.setup input{width:100%;min-width:0}.setup .primary{width:100%}.fine{font-size:.7rem}
 #game{padding:10px 8px}.game-head{display:grid;grid-template-columns:1fr auto;gap:5px;padding:8px}.game-head strong{grid-column:1/-1;font-size:.75rem}.stat{font-size:.68rem;padding:5px 7px}.mission-banner{margin:8px 0 12px;padding:9px 10px;gap:8px;border-width:2px;box-shadow:3px 3px 0 #17223a;flex-direction:column;text-align:center}.mission-banner span{font-size:.6rem;padding:5px 8px}.mission-banner strong{font-size:.82rem;line-height:1.15}
-.caption{font-size:.72rem;margin:8px 0 5px}.target{width:104px;height:104px;margin:8px auto 14px;border-width:4px;outline-width:3px;font-size:2.8rem}
+.caption{font-size:.72rem;margin:8px 0 5px}
 .tokens{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;width:min(250px,88%);margin:0 auto;min-height:0}.token{width:100%;min-width:0;min-height:54px;padding:5px;border-width:2px;border-radius:10px;box-shadow:0 3px 0 #17223a;font-size:1.25rem}.token:nth-child(5):last-child{grid-column:1/-1;width:calc(50% - 4px);justify-self:center}.token:hover:not(:disabled){transform:none;box-shadow:0 3px 0 #17223a}
 .ops{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin:11px auto;width:min(210px,78%)}.op{width:100%;min-width:0;min-height:43px;border-width:2px;border-radius:10px;box-shadow:0 3px 0 #17223a;font-size:1.35rem}
 .instructions{font-size:.74rem;margin:7px 0}.steps{font-size:.74rem;margin-top:5px;padding-left:20px}.actions{display:flex;flex-direction:column;gap:6px;margin:10px auto 0;width:min(280px,100%)}.actions button{width:100%;min-width:0;padding:9px 7px;font-size:.7rem}.actions .primary{order:-1}.feedback{font-size:.74rem;padding:8px 9px;min-height:38px;margin-top:9px}.solution{font-size:.72rem;padding:9px;margin-top:9px}
@@ -83,7 +83,7 @@ html,body{width:100%;max-width:100%;overflow-x:hidden}
 
 <style id="mathador-target-feedback">
 .target-zone{position:relative;width:max-content;max-width:100%;margin:0 auto 30px}
-.target-zone .target{margin:15px auto 0}
+.target-zone 
 .target-win{position:absolute;z-index:8;inset:50% auto auto 50%;transform:translate(-50%,-50%) scale(.88);width:clamp(230px,72vw,390px);padding:18px 20px;text-align:center;border:4px solid #17223a;border-radius:22px;background:linear-gradient(145deg,#fff7b8,#ffcf49);color:#17223a;box-shadow:0 12px 0 #17223a,0 0 0 6px #fff,0 0 38px #ffcf49aa;animation:targetWin .34s cubic-bezier(.2,.9,.25,1.25) forwards}
 .target-win span,.target-win strong,.target-win b,.target-win small{display:block}.target-win span{font-size:1.05rem;font-weight:1000;letter-spacing:.08em}.target-win strong{font-size:clamp(1.45rem,5vw,2.15rem);line-height:1;margin:5px 0}.target-win b{font-size:clamp(2rem,8vw,3.5rem);line-height:1;color:#343cc4;text-shadow:0 2px #fff}.target-win small{margin-top:8px;font-weight:850;line-height:1.2}
 @keyframes targetWin{to{transform:translate(-50%,-50%) scale(1)}}
@@ -109,7 +109,7 @@ body{background:radial-gradient(circle at 50% -8%,#5a66ff33 0,transparent 34%),r
 #game{position:relative;overflow:hidden;border:0;background:radial-gradient(circle at 50% 18%,#fff9d8 0,transparent 22%),linear-gradient(180deg,#fff 0,#f3f6ff 100%);box-shadow:0 20px 60px #17223a25,0 0 0 1px #d9e1f2}
 .game-head{position:sticky;top:8px;z-index:12;margin:-2px -2px 16px;padding:10px 12px;border-radius:17px;background:#10182ceF;color:#fff;box-shadow:0 8px 20px #10182c44;backdrop-filter:blur(10px)}.game-head strong{color:#fff}.stat{border-color:#ffffff2b;background:#ffffff0f;color:#fff}
 .mission-banner{border:0;background:linear-gradient(100deg,#303fd0,#5969ff);color:#fff;box-shadow:0 8px 0 #17223a}.mission-banner span{color:#ffd447}
-.target{width:clamp(112px,18vw,150px);height:clamp(112px,18vw,150px);font-size:clamp(3.2rem,8vw,5rem);border:8px solid #fff;outline:4px solid #17223a;background:radial-gradient(circle,#fff 0 27%,#ffda52 28% 50%,#fff 51% 68%,#5664ff 69% 100%);box-shadow:0 12px 0 #17223a,0 0 0 8px #5664ff22,0 0 38px #5664ff44;text-shadow:0 2px #fff}
+
 .caption{text-transform:uppercase;letter-spacing:.12em;font-size:.68rem;color:#65728a;font-weight:1000}
 .tokens{gap:13px}.token{min-width:78px;min-height:82px;border:3px solid #17223a;border-radius:18px;font-size:2rem;box-shadow:0 7px 0 #17223a,0 10px 20px #26345d20}.token:hover{transform:translateY(-4px);box-shadow:0 11px 0 #17223a,0 15px 24px #26345d28}
 .ops{gap:12px}.op{width:62px;height:62px;border:3px solid #17223a;border-radius:18px;font-size:1.8rem;background:#fff;box-shadow:0 6px 0 #17223a}.op:hover{transform:translateY(-3px);background:#eef1ff}
@@ -151,7 +151,7 @@ body{background:radial-gradient(circle at 50% -8%,#5a66ff33 0,transparent 34%),r
 </section>
 <section class="panel"><h2 id="ranking-title">🏆 PODIUM · TOP 10 DE LA CLASSE</h2><p class="notice" id="ranking-note">Chargement du classement… Seuls les prénoms ou pseudos sont affichés.</p><ol class="rankings" id="rankings"></ol></section>
 </main>
-<script src="mathador-config.js?v=4"></script>
-<script src="jeu-mathador.js?v=4" defer></script>
+<script src="mathador-config.js?v=6"></script>
+<script src="jeu-mathador.js?v=6" defer></script>
 <script src="site-tracking.js" defer></script>
 </body></html>
