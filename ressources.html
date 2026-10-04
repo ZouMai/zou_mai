@@ -75,6 +75,27 @@ body.resources-page:before{
 .ribbon-panel a:hover{transform:translateY(-2px);background:#1b2636;color:#fff;box-shadow:0 0 15px #36c8ff88;border-color:#7de0ff}
 @media(max-width:600px){.resource-ribbon{padding:10px 8px 11px}.resource-ribbon:before{font-size:.62rem}.ribbon-scroll{gap:8px}.ribbon-tab{min-width:116px;padding:14px 14px;border-radius:14px;font-size:.78rem}.ribbon-panel{flex-wrap:nowrap;overflow-x:auto}}
 </style>
+
+<style id="neon-content-cards">
+/* Les cartes À la une reprennent exactement le code couleur des matières */
+.weekly-card{--wc:#56d8ff;position:relative;overflow:hidden;background:linear-gradient(145deg,#171d29,#090d14);color:#fff;border:2px solid var(--wc);border-radius:17px;box-shadow:inset 0 0 0 1px #ffffff0d,0 0 11px color-mix(in srgb,var(--wc) 28%,transparent);text-shadow:none}
+.weekly-card.weekly-fr{--wc:#ff4f73}
+.weekly-card.weekly-ma{--wc:#36c8ff}
+.weekly-card.weekly-an{--wc:#ff7b45}
+.weekly-card.weekly-hi{--wc:#ffc83d}
+.weekly-card.weekly-ge{--wc:#62e38d}
+.weekly-card.weekly-hd{--wc:#c47cff}
+.weekly-card.weekly-em{--wc:#ff5ec4}
+.weekly-card.weekly-mu{--wc:#61e7df}
+.weekly-card.weekly-ci{--wc:#ff4f4f}
+.weekly-card.weekly-world{--wc:#45f0b5}
+.weekly-card:after{content:"";position:absolute;inset:6px;border:1px solid color-mix(in srgb,var(--wc) 25%,transparent);border-radius:12px;pointer-events:none}
+.weekly-card span{color:var(--wc);text-shadow:0 0 10px color-mix(in srgb,var(--wc) 65%,transparent)}
+.weekly-card strong{color:#fff}
+.weekly-card small{color:#d9e0e8}
+.weekly-card b{color:var(--wc);text-shadow:0 0 9px color-mix(in srgb,var(--wc) 55%,transparent)}
+.weekly-card:hover,.weekly-card:focus-visible{transform:translateY(-5px) scale(1.025);background:linear-gradient(145deg,color-mix(in srgb,var(--wc) 18%,#171d29),#090d14);box-shadow:0 0 8px var(--wc),0 0 24px color-mix(in srgb,var(--wc) 62%,transparent),0 0 45px color-mix(in srgb,var(--wc) 30%,transparent),inset 0 0 20px color-mix(in srgb,var(--wc) 10%,transparent)}
+</style>
 </head>
 <body id="top" class="resources-page"><a class="zm-corner-logo" href="index.html" aria-label="Accueil Zou Maï"><img src="images/logo-zou-mai-sensei.png" alt="Logo Sensei Zou_Maï"></a>
 <nav class="site-nav" aria-label="Navigation principale">
@@ -112,14 +133,14 @@ body.resources-page:before{
 <a class="weekly-card weekly-ma" href="maths-lecons-cm2.html"><span>📘 MATHÉMATIQUES</span><strong>M3 · Fractions</strong><small>Retrouve la leçon M3 sur les fractions</small><b>REVOIR →</b></a>
 <a class="weekly-card weekly-ma" href="jeu-fractions-m3.html"><span>🍕 FRACTIONS</span><strong>La première aventure des fractions</strong><small>Reconnais l’unité, compte les parts égales et lis les fractions</small><b>JOUER →</b></a>
 <a class="weekly-card weekly-ma" href="jeu-fraction-drapeaux.html"><span>🏳️ FRACTIONS</span><strong>Fraction’Drapeaux</strong><small>Explore les fractions à travers les drapeaux</small><b>JOUER →</b></a>
-<a class="weekly-card weekly-ma" href="ressources/mysteresdumonde/index.html"><span>🌍 MYSTÈRES DU MONDE</span><strong>Explore les destinations</strong><small>Islande, Sahara, Japon et Amazonie : retrouve les découvertes de la classe</small><b>EXPLORER →</b></a>
+<a class="weekly-card weekly-world" href="ressources/mysteresdumonde/index.html"><span>🌍 MYSTÈRES DU MONDE</span><strong>Explore les destinations</strong><small>Islande, Sahara, Japon et Amazonie : retrouve les découvertes de la classe</small><b>EXPLORER →</b></a>
 
 <a class="weekly-card weekly-fr" href="marine-verlaine.html"><span>🌊 POÉSIE</span><strong>Marine · Paul Verlaine</strong><small>Découvre une tempête en poésie, avec son illustration</small><b>LIRE →</b></a>
 <a class="weekly-card weekly-fr" href="g2-noms-adjectifs.html"><span>🧩 GRAMMAIRE</span><strong>G2 · Noms et adjectifs</strong><small>Repère les noms et les adjectifs et entraîne-toi</small><b>JOUER →</b></a>
 <a class="weekly-card weekly-fr" href="o4-verbe-se-conjugue.html"><span>✍️ ORTHOGRAPHE</span><strong>O4 · Le verbe se conjugue</strong><small>Retrouve le vrai sujet et accorde correctement le verbe</small><b>JOUER →</b></a>
 <a class="weekly-card weekly-fr" href="dictee-04-artisanat-gaulois.html"><span>✍️ DICTÉE</span><strong>Dictée 4 · L’artisanat gaulois</strong><small>Révise les mots, les accords et prépare la dictée</small><b>S’ENTRAÎNER →</b></a>
 <a class="weekly-card weekly-an" href="ressources/anglais/index.html#lesson-2"><span>💬 ANGLAIS</span><strong>Drinks</strong><small>Choisis les exercices, la BD ou la BD sonorisée</small><b>DÉCOUVRIR →</b></a>
-<a class="weekly-card weekly-fr" href="#mu"><span>🎵 MUSIQUE</span><strong>Aux arbres citoyens</strong><small>Écouter et chanter ensemble</small><b>CHANTER →</b></a>
+<a class="weekly-card weekly-mu" href="#mu"><span>🎵 MUSIQUE</span><strong>Aux arbres citoyens</strong><small>Écouter et chanter ensemble</small><b>CHANTER →</b></a>
 <a class="weekly-card weekly-ma" href="jeu-aires-cm2.html"><span>📐 MATHÉMATIQUES</span><strong>Les aires</strong><small>Comparer et mesurer des surfaces</small><b>JOUER →</b></a>
 <a class="weekly-card weekly-ma" href="tables-multiplication.html"><span>✖️ CALCUL</span><strong>Tables de multiplication</strong><small>Choisis tes tables et entraîne-toi</small><b>JOUER →</b></a>
 <a class="weekly-card weekly-ma" href="jeu-mathador.html"><span>🎯 GÉOMATHÉMATIQUES</span><strong>Matador</strong><small>Combine les nombres et les opérations pour atteindre la cible</small><b>JOUER →</b></a>
