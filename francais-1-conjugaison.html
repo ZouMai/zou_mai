@@ -147,7 +147,7 @@ function cCheck(){
  $('c-repair').hidden=false;$('c-repair').textContent=cattempt===1?cHint(e,v):cattempt===2?'🔁 '+pron[e.p]+' + '+e.inf.toUpperCase():'✏️ Corrige encore';
  $('c-input').select()
 }
-$('c-ok').addEventListener('click',cCheck);$('c-input').addEventListener('keydown',e=>{if(e.key==='Enter')cCheck()});
+$('c-ok').addEventListener('click',cCheck);$('c-sentence').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='c-input')cCheck()});
 document.querySelectorAll('#challenge-picks button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('#challenge-picks button').forEach(x=>x.classList.remove('active'));b.classList.add('active');selectedFamily=b.dataset.family;resetConj()}));
 document.querySelectorAll('#tense-picks button').forEach(b=>b.addEventListener('click',()=>{if(b.dataset.tense!=='present'){const r=$('c-repair');r.hidden=false;r.textContent='🐺 Bientôt !';setTimeout(()=>r.hidden=true,900);return}document.querySelectorAll('#tense-picks button').forEach(x=>x.classList.remove('active'));b.classList.add('active');selectedTense='present';resetConj()}));
 
