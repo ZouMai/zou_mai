@@ -230,6 +230,7 @@
     chosen = null;
     operation = null;
     nextId = 5;
+    const win=$('target-win'); if(win)win.hidden=true;
     render();
   }
   async function start(requestedLevel) {
@@ -319,7 +320,15 @@
     chosen = null;
     operation = null;
     render();
-    say(value === draw.target ? 'Cible atteinte ! Valide ton calcul, ou cherche un meilleur score.' : 'Bien joué. Continue avec les cartes restantes.');
+    if(value === draw.target){
+      const winScore=score(result);
+      const win=$('target-win'),winScoreBox=$('target-win-score');
+      if(win&&winScoreBox){winScoreBox.textContent=winScore+' POINT'+(winScore>1?'S':'');win.hidden=false;}
+      say('Bravo ! Cible atteinte : '+winScore+' points. Tu peux valider ou chercher un meilleur score.','success');
+    } else {
+      const win=$('target-win'); if(win)win.hidden=true;
+      say('Bien joué. Continue avec les cartes restantes.');
+    }
   }
   function score(token) {
     let mathador = token.used.length === 5 &&
