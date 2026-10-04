@@ -132,6 +132,26 @@ body{background:radial-gradient(circle at 50% -8%,#5a66ff33 0,transparent 34%),r
 #game #target.target-display{box-sizing:border-box!important;display:flex!important;align-items:center!important;justify-content:center!important;width:min(360px,88vw)!important;height:190px!important;margin:0 auto!important;padding:20px!important;border:5px solid #fff!important;outline:5px solid #10182c!important;border-radius:30px!important;background:#10182c!important;background-image:linear-gradient(145deg,#202d68 0%,#10182c 58%,#070b16 100%)!important;color:#ffd447!important;font-family:system-ui,sans-serif!important;font-size:clamp(6rem,16vw,9rem)!important;font-weight:1000!important;line-height:1!important;letter-spacing:-.08em!important;text-align:center!important;text-shadow:0 4px 0 #000!important;box-shadow:0 12px 0 #070b16,0 20px 38px #10182c55!important}
 #game #target.target-display::before,#game #target.target-display::after{content:none!important}
 @media(max-width:600px){#game #target.target-display{height:155px!important;width:min(300px,86vw)!important;font-size:6.5rem!important;border-radius:24px!important}}
+</style><style id="target-contrast-hotfix">
+/* Correctif final : cible immédiatement lisible, notamment sur mobile. */
+#game .target-zone .target-label{
+  background:transparent!important;color:#5f6b80!important;box-shadow:none!important;
+  padding:0!important;margin:0 auto 12px!important;font-size:.72rem!important;
+}
+#game #target.target-display{
+  width:min(250px,70vw)!important;height:min(250px,70vw)!important;
+  padding:0!important;border:8px solid #fff!important;outline:7px solid #10182c!important;
+  border-radius:50%!important;background:#ffd447!important;background-image:none!important;
+  color:#10182c!important;font-size:clamp(6rem,24vw,9rem)!important;font-weight:1000!important;
+  letter-spacing:-.08em!important;line-height:1!important;text-shadow:none!important;
+  box-shadow:0 12px 0 #10182c,0 18px 32px #10182c38!important;
+  overflow:hidden!important;
+}
+#game #target.target-display::before,#game #target.target-display::after{content:none!important;display:none!important}
+@media(max-width:600px){
+ #game #target.target-display{width:min(210px,62vw)!important;height:min(210px,62vw)!important;
+ font-size:clamp(6rem,27vw,8rem)!important;border-width:7px!important;outline-width:6px!important}
+}
 </style></head>
 <body>
 <main class="wrap">
