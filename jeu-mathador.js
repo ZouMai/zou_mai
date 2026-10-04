@@ -36,7 +36,7 @@
       $('rankings').replaceChildren();
       result.ranking.forEach(p => {
         const item = document.createElement('li');
-        item.textContent = p.name + ' · ' + p.completed + '/9 défis';
+        item.textContent = p.name;
         const points = document.createElement('strong');
         points.textContent = p.points + ' pts';
         item.appendChild(points); $('rankings').appendChild(item);
@@ -45,8 +45,8 @@
         const item = document.createElement('li'); item.textContent = 'Le classement attend ses premiers joueurs.';
         $('rankings').appendChild(item);
       }
-      $('ranking-title').textContent = 'Top 10 de la classe';
-      $('ranking-note').textContent = 'Prénoms ou pseudos et meilleurs scores enregistrés dans le parcours commun.';
+      $('ranking-title').textContent = '🏆 TOP 10 DE LA CLASSE';
+      $('ranking-note').textContent = 'Prénoms ou pseudos et meilleurs scores enregistrés.';
     } catch (error) {
       $('ranking-title').textContent = 'Top 10 sur cet appareil';
       $('ranking-note').textContent = 'Le classement de la classe est momentanément indisponible. Voici les scores de cet appareil.';
@@ -110,7 +110,7 @@
     if (!ranking.length) { const item = document.createElement('li'); item.textContent = 'Aucun parcours commencé.'; list.appendChild(item); }
     ranking.forEach(p => {
       const item = document.createElement('li');
-      item.textContent = p.name + ' · ' + p.completed + '/9 défis';
+      item.textContent = p.name;
       const points = document.createElement('strong'); points.textContent = p.points + ' pts';
       item.appendChild(points); list.appendChild(item);
     });
@@ -274,7 +274,7 @@
     $('next').hidden = true;
     $('game').hidden = false;
     $('solution').hidden = true;
-    $('series-label').textContent = player.name + ' · Défi ' + (currentLevel + 1) + '/9';
+    $('series-label').textContent = player.name + ' · MATADOR';
     $('challenge-goal').textContent = 'CIBLE = 5 pts · + / × = +1 · − = +2 · ÷ = +3 · 5 nombres + 4 opérations = 18 pts';
     resetMoves();
     showLevel(); if (API) refreshRankings(); else showRankings(); persist();
@@ -366,7 +366,7 @@
     active = false;
     clearInterval(timer); timer = null;
     $('player-name').disabled = false;
-    $('series-label').textContent = player.name + ' · Défi ' + (currentLevel + 1) + '/9 terminé';
+    $('series-label').textContent = player.name + ' · MATADOR';
     render();
     say(message + (best ? ' Ton parcours est enregistré.' : ' Réessaie pour avancer.'), best ? 'success' : '');
     let solution = $('solution'); solution.replaceChildren();
@@ -450,7 +450,7 @@
       detail.textContent=steps.length ? 'Cible : 5 pts · opérations déjà jouées : '+running+' pt'+(running>1?'s':'') : (candidate ? 'Carte '+candidate.value+' choisie : sélectionne maintenant une opération.' : 'Atteindre la cible rapporte déjà 5 points.');
     }
     $('launch').disabled = active;
-    $('launch').textContent = player && !active ? 'Rejouer ou continuer →' : 'Commencer mon parcours →';
+    $('launch').textContent = player && !active ? 'Rejouer →' : 'Jouer →';
   }
   try {
     const last = localStorage.getItem('zoumai-mathador-last-name');
