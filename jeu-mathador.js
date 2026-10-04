@@ -403,6 +403,7 @@
       button.className = 'op' + (operation === op ? ' selected' : '');
       button.textContent = op;
       button.title = (op === '+' ? 'Addition' : op === '−' ? 'Soustraction' : op === '×' ? 'Multiplication' : 'Division') + ' · ' + weights[op] + ' point' + (weights[op] > 1 ? 's' : '');
+      button.dataset.points = '+' + weights[op];
       button.disabled = !active;
       button.addEventListener('click',() => {
         if (chosen === null) { say('Choisis d’abord une carte.', 'error'); return; }
@@ -425,6 +426,20 @@
     $('give-up').disabled = !active;
     $('instructions').textContent = chosen === null ? 'Choisis un nombre, une opération, puis un autre nombre.' :
       operation === null ? 'Choisis une opération.' : 'Choisis le deuxième nombre.';
+    const g1=$('guide-number'),go=$('guide-op'),g2=$('guide-number2');
+    if(g1&&go&&g2){
+      [g1,go,g2].forEach(x=>x.className='guide-step');
+      if(chosen===null) g1.classList.add('active');
+      else { g1.classList.add('done'); if(operation===null) go.classList.add('active'); else { go.classList.add('done'); g2.classList.add('active'); } }
+    }
+    const live=$('live-score'),detail=$('live-score-detail');
+    if(live&&detail){
+      const candidate=tokens.find(x=>x.id===chosen);
+      const usedOps=steps.length ? steps.map(line=>operations.find(op=>line.includes(' '+op+' '))).filter(Boolean) : [];
+      const running=usedOps.reduce((sum,op)=>sum+weights[op],0);
+      live.textContent=(steps.length ? 5+running : 5)+' pts';
+      detail.textContent=steps.length ? 'Cible : 5 pts · opérations déjà jouées : '+running+' pt'+(running>1?'s':'') : (candidate ? 'Carte '+candidate.value+' choisie : sélectionne maintenant une opération.' : 'Atteindre la cible rapporte déjà 5 points.');
+    }
     $('launch').disabled = active;
     $('launch').textContent = player && !active ? 'Rejouer ou continuer →' : 'Commencer mon parcours →';
   }
