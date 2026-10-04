@@ -26,10 +26,11 @@ body:has(#detecter:target) #game-back,body:has(#classer:target) #game-back,body:
 <main>
 <div class="game-menu" id="game-menu">
 <h2>Choisis ton jeu</h2>
-<p class="intro">Trois façons de travailler les verbes et la conjugaison.</p>
+<p class="intro">Cinq façons de travailler les verbes et la conjugaison.</p>
 <div class="game-cards">
 <a href="#detecter" data-open-game="detecter"><span class="game-icon">🔎</span><strong>Reconnais le verbe</strong><small>Retrouve le ou les verbes conjugués dans la phrase.</small></a>
 <a href="#classer" data-open-game="classer"><span class="game-icon">🧩</span><strong>Trouve le groupe</strong><small>1er, 2e ou 3e groupe ? À toi de trouver.</small></a>
+<a href="francais-1-conjugaison.html?mode=write#conjuguer"><span class="game-icon">🥋</span><strong>Konju Dojo</strong><small>Conjugue toi-même le verbe et corrige tes erreurs avec les indices du Sensei.</small></a>
 <a href="francais-1-conjugaison.html?mode=duel#conjuguer"><span class="game-icon">⚡</span><strong>Duel éclair</strong><small>Choisis rapidement la bonne forme conjuguée.</small></a>
 <a href="francais-1-conjugaison.html?mode=mission#conjuguer"><span class="game-icon">🐺</span><strong>Mission Sensei</strong><small>Repère l’erreur et répare la phrase.</small></a>
 </div></div>
@@ -167,7 +168,8 @@ function familyMatch(e,f){if(f==='ALL')return true;if(f==='G1')return e.family==
 function resetConj(){const pool=tensePool();citems=shuffle(pool.length?pool:present);ci=0;cscore=0;cRender()}
 
 let citems=shuffle(present),ci=0,cscore=0,cattempt=0;
-let cgame=new URLSearchParams(location.search).get('mode')==='mission'?'mission':'duel';
+const requestedMode=new URLSearchParams(location.search).get('mode');
+let cgame=requestedMode==='mission'?'mission':requestedMode==='write'?'write':'duel';
 function isCompound(){return selectedTense==='passe-compose'||selectedTense==='plus-que-parfait'}
 function compoundParts(form){const a=cNorm(form).split(/\s+/);return {aux:a[0]||'',pp:a.slice(1).join(' ')}}
 function compoundDistractors(e){
@@ -210,7 +212,7 @@ function renderFun(e){
 
 function cNorm(v){return v.trim().toLocaleLowerCase('fr').replace(/[’']/g,"'")}
 function cRender(){
- const e=citems[ci];cattempt=0;$('conjuguer').querySelector('h2').textContent=cgame==='mission'?'🐺 Mission Sensei · Konju Dojo':'⚡ Duel éclair · Konju Dojo';$('c-progress').textContent=(ci+1)+' / '+citems.length;$('c-choice').textContent=tenseNames[selectedTense]+' · '+challengeNames[selectedFamily];$('c-repair').hidden=true;
+ const e=citems[ci];cattempt=0;$('conjuguer').querySelector('h2').textContent=cgame==='mission'?'🐺 Mission Sensei':cgame==='write'?'🥋 Konju Dojo':'⚡ Duel éclair';$('c-progress').textContent=(ci+1)+' / '+citems.length;$('c-choice').textContent=tenseNames[selectedTense]+' · '+challengeNames[selectedFamily];$('c-repair').hidden=true;
  if(cgame!=='write'){renderFun(e);return}
  $('fun-choices').hidden=true;$('write-actions').hidden=false;$('c-sentence').innerHTML=e.s.replace('___','<input class="conj-input" id="c-input" autocomplete="off" autocapitalize="none" spellcheck="false" aria-label="Écris le verbe conjugué">')+' <small>('+e.inf+')</small>';
  $('c-input').value='';$('c-input').disabled=false;$('c-ok').disabled=false;$('c-score').textContent=cscore+' réussi'+(cscore>1?'s':'')+' sans aide';setTimeout(()=>$('c-input').focus(),50)
