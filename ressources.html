@@ -135,6 +135,12 @@ body.resources-page:before{
 <article class="item"><span class="type">CONJUGAISON · JEUX</span><h4>🥋 Konju Dojo</h4><p>Reconnais les verbes, trouve leur groupe ou relève les défis du dojo.</p><a href="francais-1-conjugaison.html?v=20261004-2326">CHOISIR UN JEU →</a></article>
 </div></div>
 <div class="shelf" id="lexique" style="--a:#ef4b43"><h3>Français · Lexique</h3><div class="grid"><article class="item soon"><span class="type">À VENIR</span><h4>Leçons et jeux de lexique</h4><p>Les prochaines ressources seront rangées ici.</p></article></div></div>
+<div class="shelf" id="geomaths" style="--a:#23a3df">
+<h3>Mathématiques · Géomathématiques</h3>
+<div class="grid">
+<article class="item"><span class="type">JEU · CALCUL & STRATÉGIE</span><h4>🎯 Matador</h4><p>Combine les nombres et les opérations pour atteindre la cible.</p><a href="jeu-mathador.html">JOUER À MATADOR →</a></article>
+</div>
+</div>
 <div class="shelf" id="hi" style="--a:#d7a320">
 <h3>Histoire</h3>
 <div class="grid">
@@ -242,7 +248,7 @@ if(dictGrid && window.DICTEES){dictGrid.innerHTML=window.DICTEES.map((d,n)=>`<ar
 <script>
 const mathGrid=document.querySelector('#ma .grid');
 if(mathGrid){
-  mathGrid.innerHTML='<article class="item"><span class="type">LEÇONS · M1 À M35</span><h4>Leçons M1, M2, M3…</h4><p>Retrouve les jeux et activités dans l’ordre du porte-vue.</p><a href="maths-lecons-cm2.html">VOIR LES LEÇONS →</a></article><article class="item"><span class="type">CALCUL MENTAL · 35 SÉRIES</span><h4>L’arcade du calcul</h4><p>Trois jeux par série pour automatiser les stratégies de calcul mental.</p><a href="calcul-mental-series.html">JOUER →</a></article><article class="item" id="geomaths"><span class="type">GÉOMATHÉMATIQUES · JEU</span><h4>Matador</h4><p>Combine les nombres et les opérations pour atteindre la cible.</p><a href="jeu-mathador.html">JOUER →</a></article>';
+  mathGrid.innerHTML='<article class="item"><span class="type">LEÇONS · M1 À M35</span><h4>Leçons M1, M2, M3…</h4><p>Retrouve les jeux et activités dans l’ordre du porte-vue.</p><a href="maths-lecons-cm2.html">VOIR LES LEÇONS →</a></article><article class="item"><span class="type">CALCUL MENTAL · 35 SÉRIES</span><h4>L’arcade du calcul</h4><p>Trois jeux par série pour automatiser les stratégies de calcul mental.</p><a href="calcul-mental-series.html">JOUER →</a></article><article class="item"><span class="type">GÉOMATHÉMATIQUES</span><h4>Matador</h4><p>Jeu de calcul et de stratégie, rangé séparément du calcul mental.</p><a href="#geomaths">VOIR GÉOMATHÉMATIQUES →</a></article>';
   const mathCount=document.querySelector('.subject.ma .count');
   if(mathCount)mathCount.textContent='35 LEÇONS · 35 JEUX';
 }
