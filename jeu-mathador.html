@@ -90,6 +90,11 @@ html,body{width:100%;max-width:100%;overflow-x:hidden}
 @media(max-width:600px){.target-zone{margin-bottom:18px}.target-win{width:230px;padding:13px 12px;border-width:3px;box-shadow:0 7px 0 #17223a,0 0 0 4px #fff,0 0 26px #ffcf4999}.target-win small{font-size:.65rem}}
 @media(prefers-reduced-motion:reduce){.target-win{animation:none;transform:translate(-50%,-50%)}}
 </style>
+
+<style id="remove-mathador-journey">
+/* Matador est désormais un jeu direct, sans affichage de parcours */
+#journey,#level-info{display:none!important}
+</style>
 </head>
 <body>
 <main class="wrap">
@@ -98,7 +103,7 @@ html,body{width:100%;max-width:100%;overflow-x:hidden}
 <section class="panel" aria-labelledby="regles"><h2 id="regles">Comment jouer ?</h2>
 <ol class="rules"><li>Atteins le nombre cible avec tout ou partie des <strong>cinq nombres</strong>. Au début, une seule addition peut suffire.</li><li>Chaque carte ne sert qu’une fois. Combine deux cartes, puis réutilise le résultat.</li><li>Les opérations donnent des points : <strong>+ 1, − 2, × 1, ÷ 3</strong>. Atteindre la cible donne 5 points.</li><li>Plus tard, avec les cinq nombres et les quatre opérations différentes, essaie le <strong>coup Mathador : 18 points</strong>.</li></ol>
 <p class="fine">Quatre minutes par tirage. Seuls les résultats intermédiaires entiers positifs sont acceptés. Ce jeu Zou Maï est indépendant du <a href="https://www.mathador.fr/" target="_blank" rel="noopener noreferrer">jeu officiel Mathador ↗</a>.</p></section>
-<section class="panel setup"><label for="player-name">Ton prénom ou ton pseudo<input id="player-name" maxlength="18" autocomplete="nickname" placeholder="Ex. : Lou"></label><button class="primary" id="launch" type="button">Commencer mon parcours →</button><span class="fine">Utilise toujours le même prénom ou pseudo sur cet appareil pour retrouver ton parcours. N’écris pas ton nom de famille.</span><div class="level-note" id="level-info" aria-live="polite"></div><div id="journey" class="journey" aria-label="Étapes du parcours"></div></section>
+<section class="panel setup"><label for="player-name">Ton prénom ou ton pseudo<input id="player-name" maxlength="18" autocomplete="nickname" placeholder="Ex. : Lou"></label><button class="primary" id="launch" type="button">Jouer →</button><span class="fine">Utilise un prénom ou un pseudo. N’écris pas ton nom de famille.</span><div class="level-note" id="level-info" aria-live="polite"></div><div id="journey" class="journey" aria-label="Étapes du parcours"></div></section>
 <section class="panel" id="game" hidden aria-label="Tirage Mathador">
 <div class="game-head"><strong id="series-label"></strong><span class="stat" id="clock" role="timer">04:00</span><span class="stat" id="best">Score du défi : 0 point</span></div>
 <div class="mission-banner"><span>⚡ MISSION</span><strong id="challenge-goal"></strong></div>
