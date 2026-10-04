@@ -88,6 +88,7 @@ body.resources-page:before{
 <a class="weekly-card weekly-fr" href="#mu"><span>🎵 MUSIQUE</span><strong>Aux arbres citoyens</strong><small>Écouter et chanter ensemble</small><b>CHANTER →</b></a>
 <a class="weekly-card weekly-ma" href="jeu-aires-cm2.html"><span>📐 MATHÉMATIQUES</span><strong>Les aires</strong><small>Comparer et mesurer des surfaces</small><b>JOUER →</b></a>
 <a class="weekly-card weekly-ma" href="tables-multiplication.html"><span>✖️ CALCUL</span><strong>Tables de multiplication</strong><small>Choisis tes tables et entraîne-toi</small><b>JOUER →</b></a>
+<a class="weekly-card weekly-ma" href="jeu-mathador.html"><span>🎯 GÉOMATHÉMATIQUES</span><strong>Matador</strong><small>Combine les nombres et les opérations pour atteindre la cible</small><b>JOUER →</b></a>
 </div>
 </section>
 <h2 class="section-label">TOUTES LES <span>MATIÈRES</span></h2>
@@ -212,7 +213,7 @@ if(artsGrid){
 <script>
 const folders={
 fr:[["DICTÉES","#dictees",1],["ORTHOGRAPHE","#orthographe",1],["GRAMMAIRE","#grammaire",1],["CONJUGAISON","#conjugaison",1],["LEXIQUE","#lexique",1]],
-ma:[["LEÇONS M1, M2, M3…","maths-lecons-cm2.html",1],["NUMÉRATION","jeu-nombres-cm2.html",1],["GÉOMÉTRIE","maths-lecons-cm2.html",1],["GRANDEURS & MESURES","jeu-aires-cm2.html",1],["CALCUL MENTAL","calcul-mental-series.html",1],["TABLES DE MULTIPLICATION","tables-multiplication.html",1]],
+ma:[["LEÇONS M1, M2, M3…","maths-lecons-cm2.html",1],["CALCUL MENTAL","calcul-mental-series.html",1],["GÉOMATHÉMATIQUES","#geomaths",1]],
 hi:[["REPÈRES CHRONOLOGIQUES","histoire-periodes.html",1],["NOMBRES ROMAINS","nombres-romains-cm2.html",1],["PRÉHISTOIRE","#hi"],["ANTIQUITÉ","#hi"],["MOYEN ÂGE","#hi"],["TEMPS MODERNES","#hi"],["ÉPOQUE CONTEMPORAINE","#hi"]],
 ge:[["JEU FRANCE · PACA · VAUCLUSE","jeu-geographie-france-paca-vaucluse.html",1],["FRANCE","#ge"],["EUROPE","#ge"],["MONDE","#ge"],["CARTES & REPÈRES","#ge"]],
 sc:[["VIVANT","#sc"],["MATIÈRE","#sc"],["ÉNERGIE","#sc"],["OBJETS TECHNIQUES","#sc"],["ESPACE","#sc"]],
@@ -241,7 +242,7 @@ if(dictGrid && window.DICTEES){dictGrid.innerHTML=window.DICTEES.map((d,n)=>`<ar
 <script>
 const mathGrid=document.querySelector('#ma .grid');
 if(mathGrid){
-  mathGrid.innerHTML='<article class="item"><span class="type">PROGRESSION DU PORTE-VUE · M1 À M35</span><h4>Toutes les leçons de mathématiques</h4><p>Retrouve les jeux par numéro de leçon, dans l’ordre du porte-vue.</p><a href="maths-lecons-cm2.html">VOIR LES LEÇONS →</a></article><article class="item"><span class="type">NUMÉRATION · M1</span><h4>Les nombres jusqu’à 999 999</h4><p>Écriture, décomposition et comparaison.</p><a href="jeu-nombres-cm2.html">JOUER →</a></article><article class="item"><span class="type">CALCUL · TABLES</span><h4>Tables de multiplication</h4><p>Choisir ses tables et s’entraîner.</p><a href="tables-multiplication.html">JOUER →</a></article><article class="item"><span class="type">CALCUL MENTAL · 3 JEUX PAR SÉRIE · 35 SÉRIES</span><h4>L’arcade du calcul</h4><p>Trois jeux choisis pour chaque série, avec des défis qui changent au fil de la progression.</p><a href="calcul-mental-series.html">JOUER →</a><a href="jeu-mathador.html">DÉFI MATHADOR →</a></article><article class="item"><span class="type">GRANDEURS ET MESURES · M2</span><h4>Les aires (1)</h4><p>Comparer et mesurer les surfaces sur quadrillage.</p><a href="jeu-aires-cm2.html">JOUER →</a></article><article class="item"><span class="type">NOMBRES ET CALCULS · M3</span><h4>Le laboratoire des fractions</h4><p>Partager l’unité, lire et décomposer les fractions.</p><a href="jeu-fractions-m3.html">JOUER →</a></article><article class="item"><span class="type">FRACTIONS · JEU AUTONOME</span><h4>Fraction’Drapeaux 🌍</h4><p>Observe de vrais drapeaux, trouve la fraction d’une couleur et utilise l’aide visuelle quand le partage est plus difficile.</p><a href="jeu-fraction-drapeaux.html">JOUER →</a></article>';
+  mathGrid.innerHTML='<article class="item"><span class="type">LEÇONS · M1 À M35</span><h4>Leçons M1, M2, M3…</h4><p>Retrouve les jeux et activités dans l’ordre du porte-vue.</p><a href="maths-lecons-cm2.html">VOIR LES LEÇONS →</a></article><article class="item"><span class="type">CALCUL MENTAL · 35 SÉRIES</span><h4>L’arcade du calcul</h4><p>Trois jeux par série pour automatiser les stratégies de calcul mental.</p><a href="calcul-mental-series.html">JOUER →</a></article><article class="item" id="geomaths"><span class="type">GÉOMATHÉMATIQUES · JEU</span><h4>Matador</h4><p>Combine les nombres et les opérations pour atteindre la cible.</p><a href="jeu-mathador.html">JOUER →</a></article>';
   const mathCount=document.querySelector('.subject.ma .count');
   if(mathCount)mathCount.textContent='35 LEÇONS · 35 JEUX';
 }
