@@ -274,8 +274,12 @@ $('tense-picks').addEventListener('change',e=>{selectedTense=e.target.value;rese
 
 document.querySelectorAll('#subgames button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('#subgames button').forEach(x=>x.classList.remove('active'));b.classList.add('active');cgame=b.dataset.game;ci=0;cscore=0;cRender()}));
 
-// Initialise le moteur même lorsque la navigation vers le jeu se fait uniquement par ancre CSS.
+
+// Initialisation indépendante de tous les jeux.
+renderDetecter();
+renderClasser();
 resetConj();
+
 
 </script>
 </body>
