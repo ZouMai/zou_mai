@@ -117,6 +117,16 @@ body{background:radial-gradient(circle at 50% -8%,#5a66ff33 0,transparent 34%),r
 #ranking-title{text-align:center;font-size:1.45rem}.rankings{max-width:650px;margin-inline:auto}.rankings li{border-radius:14px;background:#f6f8ff;border:1px solid #e0e6f4;margin:7px 0;padding:10px 14px}.rankings li:nth-child(1){background:linear-gradient(90deg,#fff2ad,#fff)}.rankings li:nth-child(2){background:linear-gradient(90deg,#e9edf4,#fff)}.rankings li:nth-child(3){background:linear-gradient(90deg,#f3d5bd,#fff)}
 @media(max-width:700px){body{background:linear-gradient(180deg,#0c1225 0,#111a31 20%,#f8faff 20.1%)}.hero{min-height:205px;padding:24px 20px;border-radius:23px}.hero img{width:120px;opacity:.9}.hero p{font-size:.88rem;max-width:70%}.rules{grid-template-columns:1fr}.setup{grid-template-columns:1fr}.setup .primary{width:100%}.game-head{top:4px}.token{min-width:62px;min-height:68px;font-size:1.65rem}.op{width:54px;height:54px}.panel{border-radius:19px}}
 </style>
+
+<style id="mathador-target-v5">
+/* La cible est un objectif de calcul, pas une cible de tir */
+.target-zone{width:min(390px,92%);margin:8px auto 34px}
+.target-zone .target{position:relative;width:clamp(155px,25vw,210px);height:clamp(125px,20vw,165px);display:grid;place-items:center;margin:14px auto 0;border:3px solid #17223a!important;outline:0!important;border-radius:30px!important;background:linear-gradient(145deg,#fff 0,#f7f8ff 62%,#e8ecff 100%)!important;color:#17223a;font-size:clamp(4rem,10vw,6rem)!important;font-weight:1000;letter-spacing:-.07em;line-height:1;box-shadow:0 11px 0 #17223a,0 18px 35px #26345d2c,0 0 0 7px #5664ff18!important;text-shadow:none!important}
+.target-zone .target:before{content:"OBJECTIF";position:absolute;top:11px;left:50%;transform:translateX(-50%);padding:4px 9px;border-radius:999px;background:#5664ff;color:#fff;font-size:.58rem;font-weight:1000;letter-spacing:.16em;line-height:1}
+.target-zone .target:after{content:"À ATTEINDRE";position:absolute;bottom:10px;left:50%;transform:translateX(-50%);font-size:.52rem;font-weight:1000;letter-spacing:.14em;color:#748099;white-space:nowrap}
+.target-zone:before,.target-zone:after{content:"";display:block;position:absolute;pointer-events:none}
+@media(max-width:600px){.target-zone{margin-bottom:26px}.target-zone .target{width:160px;height:130px;border-radius:25px!important;font-size:4.2rem!important;box-shadow:0 8px 0 #17223a,0 13px 25px #26345d26,0 0 0 5px #5664ff18!important}}
+</style>
 </head>
 <body>
 <main class="wrap">
