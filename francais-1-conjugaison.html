@@ -30,8 +30,8 @@ body:has(#detecter:target) #game-back,body:has(#classer:target) #game-back,body:
 <div class="game-cards">
 <a href="#detecter" data-open-game="detecter"><span class="game-icon">🔎</span><strong>Reconnais le verbe</strong><small>Retrouve le ou les verbes conjugués dans la phrase.</small></a>
 <a href="#classer" data-open-game="classer"><span class="game-icon">🧩</span><strong>Trouve le groupe</strong><small>1er, 2e ou 3e groupe ? À toi de trouver.</small></a>
-<a href="#conjuguer" data-start-mode="duel"><span class="game-icon">⚡</span><strong>Duel éclair</strong><small>Choisis rapidement la bonne forme conjuguée.</small></a>
-<a href="#conjuguer" data-start-mode="mission"><span class="game-icon">🐺</span><strong>Mission Sensei</strong><small>Repère l’erreur et répare la phrase.</small></a>
+<a href="francais-1-conjugaison.html?mode=duel#conjuguer"><span class="game-icon">⚡</span><strong>Duel éclair</strong><small>Choisis rapidement la bonne forme conjuguée.</small></a>
+<a href="francais-1-conjugaison.html?mode=mission#conjuguer"><span class="game-icon">🐺</span><strong>Mission Sensei</strong><small>Repère l’erreur et répare la phrase.</small></a>
 </div></div>
 <div class="game-back" id="game-back"><a href="francais-1-conjugaison.html">← Choisir un autre jeu</a></div>
 <section class="panel game-panel" id="detecter"><h2>Retrouve les verbes conjugués</h2><p class="instruction">Touche toutes les étiquettes du ou des verbes conjugués. Au temps composé, touche l’auxiliaire et le participe passé, même s’ils sont séparés par « pas » ou « jamais ». Touche à nouveau une étiquette pour l’enlever.</p><div class="levels" aria-label="Choisir un niveau"><button type="button" id="level-1" aria-pressed="true">1 · Temps simples</button><button type="button" id="level-2" aria-pressed="false">2 · Temps composés</button><button type="button" id="level-3" aria-pressed="false">3 · Phrases complexes</button></div><div class="progress" id="progress-detecter"></div><div class="sentence word-sentence" id="sentence-detecter" aria-label="Phrase : touche toutes les parties des verbes conjugués"></div><button class="action" id="check-detecter" type="button">Vérifier</button><div class="feedback" id="feedback-detecter" role="status" aria-live="polite" hidden></div><button class="secondary" id="next-detecter" type="button" hidden aria-hidden="true" style="display:none"></button><p class="score" id="score-detecter"></p></section>
@@ -152,7 +152,7 @@ chanter:['ai chanté','as chanté','a chanté','avons chanté','avez chanté','o
 chanter:['avais chanté','avais chanté','avait chanté','avions chanté','aviez chanté','avaient chanté'],finir:['avais fini','avais fini','avait fini','avions fini','aviez fini','avaient fini'],manger:['avais mangé','avais mangé','avait mangé','avions mangé','aviez mangé','avaient mangé'],ranger:['avais rangé','avais rangé','avait rangé','avions rangé','aviez rangé','avaient rangé'],commencer:['avais commencé','avais commencé','avait commencé','avions commencé','aviez commencé','avaient commencé'],lancer:['avais lancé','avais lancé','avait lancé','avions lancé','aviez lancé','avaient lancé'],essuyer:['avais essuyé','avais essuyé','avait essuyé','avions essuyé','aviez essuyé','avaient essuyé'],envoyer:['avais envoyé','avais envoyé','avait envoyé','avions envoyé','aviez envoyé','avaient envoyé'],jeter:['avais jeté','avais jeté','avait jeté','avions jeté','aviez jeté','avaient jeté'],acheter:['avais acheté','avais acheté','avait acheté','avions acheté','aviez acheté','avaient acheté'],être:['avais été','avais été','avait été','avions été','aviez été','avaient été'],avoir:['avais eu','avais eu','avait eu','avions eu','aviez eu','avaient eu'],aller:['étais allé','étais allé','était allé','étions allés','étiez allés','étaient allés'],faire:['avais fait','avais fait','avait fait','avions fait','aviez fait','avaient fait'],prendre:['avais pris','avais pris','avait pris','avions pris','aviez pris','avaient pris'],pouvoir:['avais pu','avais pu','avait pu','avions pu','aviez pu','avaient pu'],vouloir:['avais voulu','avais voulu','avait voulu','avions voulu','aviez voulu','avaient voulu'],venir:['étais venu','étais venu','était venu','étions venus','étiez venus','étaient venus']},
 imperatif:{
 chanter:['chante','chantons','chantez'],finir:['finis','finissons','finissez'],manger:['mange','mangeons','mangez'],ranger:['range','rangeons','rangez'],commencer:['commence','commençons','commencez'],lancer:['lance','lançons','lancez'],essuyer:['essuie','essuyons','essuyez'],envoyer:['envoie','envoyons','envoyez'],jeter:['jette','jetons','jetez'],acheter:['achète','achetons','achetez'],être:['sois','soyons','soyez'],avoir:['aie','ayons','ayez'],aller:['va','allons','allez'],faire:['fais','faisons','faites'],prendre:['prends','prenons','prenez'],pouvoir:['—','—','—'],vouloir:['veuille','voulons','veuillez'],venir:['viens','venons','venez']}
-}};
+};
 function tensePool(){
  return present.map(e=>{if(selectedTense==='present')return {...e};const tf=tenseForms[selectedTense]?.[e.inf];if(!tf)return null;
  if(selectedTense==='imperatif'){if(e.inf==='pouvoir')return null;const map=[1,3,4],k=map.indexOf(e.p),ix=k>=0?k:Math.floor(Math.random()*3),p=map[ix],subs=['Tu','Nous','Vous'];return {...e,p,subject:subs[ix],s:subs[ix]+' ___ !',forms:[tf[0],tf[0],tf[0],tf[1],tf[2],tf[2]]}}
@@ -167,7 +167,7 @@ function familyMatch(e,f){if(f==='ALL')return true;if(f==='G1')return e.family==
 function resetConj(){const pool=tensePool();citems=shuffle(pool.length?pool:present);ci=0;cscore=0;cRender()}
 
 let citems=shuffle(present),ci=0,cscore=0,cattempt=0;
-let cgame='duel';
+let cgame=new URLSearchParams(location.search).get('mode')==='mission'?'mission':'duel';
 function isCompound(){return selectedTense==='passe-compose'||selectedTense==='plus-que-parfait'}
 function compoundParts(form){const a=cNorm(form).split(/\s+/);return {aux:a[0]||'',pp:a.slice(1).join(' ')}}
 function compoundDistractors(e){
@@ -210,7 +210,7 @@ function renderFun(e){
 
 function cNorm(v){return v.trim().toLocaleLowerCase('fr').replace(/[’']/g,"'")}
 function cRender(){
- const e=citems[ci];cattempt=0;$('c-progress').textContent=(ci+1)+' / '+citems.length;$('c-choice').textContent=tenseNames[selectedTense]+' · '+challengeNames[selectedFamily];$('c-repair').hidden=true;
+ const e=citems[ci];cattempt=0;$('conjuguer').querySelector('h2').textContent=cgame==='mission'?'🐺 Mission Sensei · Konju Dojo':'⚡ Duel éclair · Konju Dojo';$('c-progress').textContent=(ci+1)+' / '+citems.length;$('c-choice').textContent=tenseNames[selectedTense]+' · '+challengeNames[selectedFamily];$('c-repair').hidden=true;
  if(cgame!=='write'){renderFun(e);return}
  $('fun-choices').hidden=true;$('write-actions').hidden=false;$('c-sentence').innerHTML=e.s.replace('___','<input class="conj-input" id="c-input" autocomplete="off" autocapitalize="none" spellcheck="false" aria-label="Écris le verbe conjugué">')+' <small>('+e.inf+')</small>';
  $('c-input').value='';$('c-input').disabled=false;$('c-ok').disabled=false;$('c-score').textContent=cscore+' réussi'+(cscore>1?'s':'')+' sans aide';setTimeout(()=>$('c-input').focus(),50)
@@ -276,8 +276,6 @@ $('tense-picks').addEventListener('change',e=>{selectedTense=e.target.value;rese
 document.querySelectorAll('#subgames button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('#subgames button').forEach(x=>x.classList.remove('active'));b.classList.add('active');cgame=b.dataset.game;ci=0;cscore=0;cRender()}));
 
 
-// Les deux cartes de conjugaison lancent directement leur mode.
-document.querySelectorAll('[data-start-mode]').forEach(link=>link.addEventListener('click',()=>{cgame=link.dataset.startMode;ci=0;cscore=0;setTimeout(()=>resetConj(),0)}));
 // Initialisation indépendante de tous les jeux.
 renderDetecter();
 renderClasser();
