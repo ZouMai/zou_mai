@@ -159,6 +159,75 @@ body.resources-page:before{
 @media(max-width:600px){.weekly-card{min-height:170px;padding:16px}.weekly-card strong{font-size:1.2rem}.weekly-card:hover,.weekly-card:focus-visible{transform:translateY(-4px) scale(1.015)}}
 @media(prefers-reduced-motion:reduce){.weekly-card,.weekly-card:before{transition:none!important}}
 </style>
+
+<style id="resources-layout-v3">
+/* Refonte du décor général : plus de grand panneau blanc */
+body.resources-page{
+  background:
+    radial-gradient(circle at 12% 12%,#36c8ff18,transparent 24rem),
+    radial-gradient(circle at 88% 35%,#ff4f7312,transparent 27rem),
+    linear-gradient(180deg,#090d14 0,#101722 48%,#0a0f16 100%) !important;
+  background-attachment:fixed;
+  color:#eef4fa;
+}
+.resources-page header{
+  max-width:1180px;margin:24px auto 10px;padding:22px 22px 10px;
+  background:transparent!important;border:0!important;box-shadow:none!important;
+  min-height:0!important;
+}
+.resources-page header h1{
+  margin:0;color:#fff;font-size:clamp(2.8rem,8vw,6.5rem);line-height:.82;
+  letter-spacing:-.065em;text-shadow:0 0 18px #36c8ff55,0 8px 28px #000;
+}
+.resources-page header h1:after{
+  content:" / CM2";display:inline-block;margin-left:.18em;color:#36c8ff;
+  font-size:.24em;letter-spacing:.08em;vertical-align:middle;text-shadow:0 0 12px #36c8ffaa
+}
+.resources-page main{max-width:1180px;margin:0 auto;padding:0 20px 60px}
+.resources-page .weekly{
+  margin:8px 0 34px;padding:22px 0 10px;background:transparent;border:0;
+  box-shadow:none;color:#fff
+}
+.resources-page .weekly-guide{
+  padding:0 4px 13px;margin-bottom:7px;border-bottom:1px solid #ffffff20
+}
+.resources-page .weekly-guide img{width:92px;height:82px}
+.resources-page .weekly h2{color:#fff;text-shadow:0 0 15px #ffffff28}
+.resources-page .weekly-guide p{color:#aeb9c7}
+.resources-page .content{
+  margin:0!important;padding:0!important;max-width:none!important;
+  background:transparent!important;border:0!important;box-shadow:none!important;
+  backdrop-filter:none!important;-webkit-backdrop-filter:none!important
+}
+.resources-page .shelf{
+  background:linear-gradient(145deg,#141b26dd,#0b1018dd)!important;
+  border:1px solid color-mix(in srgb,var(--a,#36c8ff) 55%,#ffffff20)!important;
+  border-radius:20px!important;padding:22px!important;margin:18px 0!important;
+  box-shadow:0 12px 28px #0004,0 0 18px color-mix(in srgb,var(--a,#36c8ff) 10%,transparent)!important;
+  color:#eef4fa!important
+}
+.resources-page .shelf h3{color:#fff!important;text-shadow:0 0 12px color-mix(in srgb,var(--a,#36c8ff) 45%,transparent)}
+.resources-page .shelf>p{color:#b8c2ce!important}
+.resources-page .item{
+  background:linear-gradient(145deg,#18212d,#0d131c)!important;color:#eef4fa!important;
+  border:1px solid #ffffff1f!important;border-radius:16px!important;
+  box-shadow:0 8px 18px #0004!important
+}
+.resources-page .item h4,.resources-page .item h2{color:#fff!important}
+.resources-page .item p{color:#bfc8d3!important}
+.resources-page .item .type{color:var(--a,#36c8ff)!important}
+.resources-page .item a{color:var(--a,#36c8ff)!important}
+.resources-page .method-box{background:#111925!important;color:#eef4fa!important;border-color:#ffffff22!important;border-radius:16px!important}
+.resources-page .method-box h2,.resources-page .method-box strong{color:#fff!important}
+.resources-page .method-box p,.resources-page .method-box small{color:#bfc8d3!important}
+@media(max-width:600px){
+ .resources-page header{margin-top:16px;padding:18px 14px 5px}
+ .resources-page main{padding:0 12px 45px}
+ .resources-page header h1{font-size:clamp(2.5rem,16vw,4.5rem)}
+ .resources-page .weekly{padding-top:14px}
+ .resources-page .shelf{padding:16px!important;border-radius:16px!important}
+}
+</style>
 </head>
 <body id="top" class="resources-page"><a class="zm-corner-logo" href="index.html" aria-label="Accueil Zou Maï"><img src="images/logo-zou-mai-sensei.png" alt="Logo Sensei Zou_Maï"></a>
 <nav class="site-nav" aria-label="Navigation principale">
