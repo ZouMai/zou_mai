@@ -188,17 +188,49 @@ function cRender(){
  $('fun-choices').hidden=true;$('write-actions').hidden=false;$('c-sentence').innerHTML=e.s.replace('___','<input class="conj-input" id="c-input" autocomplete="off" autocapitalize="none" spellcheck="false" aria-label="Écris le verbe conjugué">')+' <small>('+e.inf+')</small>';
  $('c-input').value='';$('c-input').disabled=false;$('c-ok').disabled=false;$('c-score').textContent=cscore+' réussi'+(cscore>1?'s':'')+' sans aide';setTimeout(()=>$('c-input').focus(),50)
 }
+function endingsForTense(){
+ if(selectedTense==='present')return [['e','es','e','ons','ez','ent'],['is','is','it','issons','issez','issent']];
+ if(selectedTense==='imparfait')return [['ais','ais','ait','ions','iez','aient']];
+ if(selectedTense==='futur')return [['ai','as','a','ons','ez','ont']];
+ if(selectedTense==='passe-simple')return [['ai','as','a','âmes','âtes','èrent'],['is','is','it','îmes','îtes','irent']];
+ return []
+}
+function likelyEnding(e,a,right){
+ const sets=endingsForTense();if(!sets.length)return false;
+ const candidates=sets.flatMap(x=>x[e.p]?[x[e.p]]:[]);
+ return candidates.some(end=>a.endsWith(end)&&right.endsWith(end))
+}
 function cHint(e,answer){
- const a=cNorm(answer),right=e.forms[e.p];
- if(e.p===5&&!a.endsWith('ent'))return '👀 '+e.subject+' → ILS';
- if(e.p===3&&!a.endsWith('ons'))return '👀 '+e.subject+' → NOUS';
- if(e.p===4&&!a.endsWith('ez')&&e.inf!=='faire')return '👀 '+e.subject+' → VOUS';
- if(e.family==='GER'&&e.p===3)return '🔎 G + ? + ONS';
- if(e.family==='CER'&&e.p===3)return '🔎 C → Ç';
- if(e.family==='YER')return '🔎 Y ↔ I';
- if(e.family==='RAD')return '👀 Compare le radical';
- if(e.family==='IRR')return '🧠 '+e.inf.toUpperCase()+' : verbe particulier';
- return '👀 '+pron[e.p]
+ const a=cNorm(answer),right=cNorm(e.forms[e.p]);
+ if(isCompound())return compoundError(e,a);
+ const sets=endingsForTense(),expected=sets.map(x=>x[e.p]).filter(Boolean);
+ const sameEnding=expected.some(x=>a.endsWith(x)&&right.endsWith(x));
+ const rightStem=expected.reduce((z,x)=>right.endsWith(x)?right.slice(0,-x.length):z,'');
+ const gotStem=expected.reduce((z,x)=>a.endsWith(x)?a.slice(0,-x.length):z,'');
+ if(e.family==='GER'&&((selectedTense==='present'&&e.p===3)||(selectedTense==='imparfait'&&[0,1,2,5].includes(e.p)))){
+   return '👂 ORTHOGRAPHE DU SON : devant A ou O, ajoute E après G pour garder le son [ʒ] : G + E + …';
+ }
+ if(e.family==='CER'&&((selectedTense==='present'&&e.p===3)||(selectedTense==='imparfait'&&[0,1,2,5].includes(e.p)))){
+   return '👂 ORTHOGRAPHE DU SON : devant A ou O, C ferait [k]. Utilise Ç pour garder le son [s].';
+ }
+ if(e.family==='YER'&&['present','futur'].includes(selectedTense)){
+   return '🔄 RADICAL : regarde si le Y doit devenir I à cette personne. Relis le mot à voix basse.';
+ }
+ if(e.family==='RAD'){
+   if(e.inf==='jeter')return '🔄 RADICAL : JETER change son radical à certaines personnes. Vérifie si le T doit être doublé.';
+   if(e.inf==='acheter')return '🔄 RADICAL : ACHETER change de son. Vérifie l’accent du E dans le radical.';
+   return '🔄 RADICAL : la terminaison peut être juste, mais le radical change. Compare avec l’infinitif.';
+ }
+ if(e.family==='IRR'){
+   if(sameEnding&&gotStem!==rightStem)return '🧠 RADICAL IRRÉGULIER : ta terminaison semble convenir, mais '+e.inf.toUpperCase()+' change de radical à ce temps.';
+   return '🧠 FORME PARTICULIÈRE : '+e.inf.toUpperCase()+' ne suit pas complètement le modèle régulier. Repère d’abord la personne : '+pron[e.p]+'.';
+ }
+ if(sameEnding&&gotStem!==rightStem)return '🔄 RADICAL : ta terminaison semble correcte. C’est le début du verbe qu’il faut revoir.';
+ if(expected.length&&!expected.some(x=>a.endsWith(x)))return '🎯 TERMINAISON : le radical semble être ta piste. Vérifie surtout la terminaison correspondant à '+pron[e.p]+'.';
+ if(e.p===5)return '🎯 PERSONNE : '+e.subject+' peut être remplacé par ILS / ELLES. Vérifie la terminaison.';
+ if(e.p===3)return '🎯 PERSONNE : '+e.subject+' → NOUS. Vérifie la terminaison.';
+ if(e.p===4)return '🎯 PERSONNE : '+e.subject+' → VOUS. Vérifie la terminaison.';
+ return '🔎 Sépare le verbe en deux : RADICAL + TERMINAISON, puis vérifie chacun.'
 }
 function cCheck(){
  const e=citems[ci],v=cNorm($('c-input').value);if(!v)return;
