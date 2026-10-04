@@ -228,6 +228,12 @@ body.resources-page{
  .resources-page .shelf{padding:16px!important;border-radius:16px!important}
 }
 </style>
+
+<style id="hide-empty-resource-area">
+/* Aucun panneau vide sous À la une avant sélection d'une matière */
+#resource-content:not(.has-selection){display:none!important}
+#resource-content.has-selection{display:block!important}
+</style>
 </head>
 <body id="top" class="resources-page"><a class="zm-corner-logo" href="index.html" aria-label="Accueil Zou Maï"><img src="images/logo-zou-mai-sensei.png" alt="Logo Sensei Zou_Maï"></a>
 <nav class="site-nav" aria-label="Navigation principale">
@@ -433,6 +439,17 @@ if(mathGrid){
   const mathCount=document.querySelector('.subject.ma .count');
   if(mathCount)mathCount.textContent='35 LEÇONS · 35 JEUX';
 }
+</script>
+
+<script id="resource-selection-state">
+(function(){
+ const content=document.getElementById('resource-content');
+ if(!content)return;
+ function sync(){content.classList.toggle('has-selection',!!document.querySelector('.shelf.active'))}
+ const observer=new MutationObserver(sync);
+ document.querySelectorAll('.shelf').forEach(s=>observer.observe(s,{attributes:true,attributeFilter:['class']}));
+ sync();
+})();
 </script>
 <footer class="site-footer"><span>Choisir · Explorer · S’entraîner</span><a class="site-signature" href="apropos.html"><img src="images/logo-zou-mai-sensei.png" alt="Logo Sensei Zou_Mai"></a></footer>
 <script src="site-tracking.js" defer></script>
