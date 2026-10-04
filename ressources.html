@@ -234,6 +234,36 @@ body.resources-page{
 #resource-content:not(.has-selection){display:none!important}
 #resource-content.has-selection{display:block!important}
 </style>
+
+<style id="large-subject-ribbon">
+/* Menu matières plus généreux : véritables bandeaux/cartes néon */
+.resource-ribbon{padding:17px 18px 18px}
+.resource-ribbon:before{margin:0 0 14px 5px;font-size:.82rem;letter-spacing:.22em}
+.ribbon-scroll{gap:14px;padding:5px 6px 15px}
+.ribbon-tab{
+  min-width:170px;min-height:88px;padding:17px 19px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:20px;font-size:1rem;letter-spacing:.01em;
+  box-shadow:0 8px 18px #0006,0 0 12px color-mix(in srgb,var(--neon) 28%,transparent),inset 0 1px #ffffff18;
+}
+.ribbon-tab:before{inset:6px;border-radius:14px}
+.ribbon-tab:hover,.ribbon-tab:focus-visible,.ribbon-tab.active{
+  transform:translateY(-6px) scale(1.045);
+  box-shadow:0 12px 24px #0008,0 0 7px #fff,0 0 20px var(--neon),0 0 42px color-mix(in srgb,var(--neon) 42%,transparent),inset 0 0 22px color-mix(in srgb,var(--neon) 14%,transparent)
+}
+.ribbon-panel{gap:12px;padding:15px;border-radius:16px}
+.ribbon-panel a{min-height:42px;display:flex;align-items:center;padding:11px 16px;border-radius:12px;font-size:.82rem}
+@media(min-width:1000px){
+ .ribbon-scroll{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));overflow:visible}
+ .ribbon-tab{min-width:0;width:100%}
+}
+@media(max-width:600px){
+ .resource-ribbon{padding:13px 9px 14px}
+ .resource-ribbon:before{font-size:.68rem;margin-bottom:11px}
+ .ribbon-scroll{gap:10px;padding-bottom:12px}
+ .ribbon-tab{min-width:145px;min-height:76px;padding:15px 13px;font-size:.88rem;border-radius:17px}
+}
+</style>
 </head>
 <body id="top" class="resources-page"><a class="zm-corner-logo" href="index.html" aria-label="Accueil Zou Maï"><img src="images/logo-zou-mai-sensei.png" alt="Logo Sensei Zou_Maï"></a>
 <nav class="site-nav" aria-label="Navigation principale">
