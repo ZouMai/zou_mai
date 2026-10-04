@@ -12,10 +12,11 @@
 .game-menu{text-align:center}.game-menu h2{font-size:clamp(1.8rem,5vw,2.7rem);margin:12px 0 4px}.game-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:28px 0}.game-cards button,.game-cards a{min-height:220px;padding:24px 18px;border:3px solid #151923;border-radius:18px;background:#fff;box-shadow:6px 6px #151923;cursor:pointer;font:inherit;display:flex;text-decoration:none;color:inherit;flex-direction:column;align-items:center;justify-content:center;gap:10px}.game-cards button:hover,.game-cards a:hover{transform:translate(-2px,-2px);box-shadow:8px 8px #151923}.game-cards strong{font-size:1.35rem}.game-cards small{font-size:.95rem;line-height:1.35;max-width:240px}.game-icon{font-size:3rem}.game-back{margin:4px 0 14px}.game-back button{font:inherit;font-weight:900;border:2px solid #151923;border-radius:10px;background:#ffcf39;padding:8px 12px;cursor:pointer}@media(max-width:700px){.game-cards{grid-template-columns:1fr;gap:14px;margin-top:18px}.game-cards button,.game-cards a{min-height:150px;padding:18px}.game-icon{font-size:2.5rem}}
 
 /* Navigation robuste sans dépendre de JavaScript */
-.game-panel{display:none}
-.game-panel:target{display:block}
-body:has(.game-panel:target) #game-menu{display:none}
-body:has(.game-panel:target) #game-back{display:block!important}
+.game-panel{display:none!important}
+.game-panel:target{display:block!important}
+#game-back{display:none}
+body:has(#detecter:target) #game-menu,body:has(#classer:target) #game-menu,body:has(#conjuguer:target) #game-menu{display:none}
+body:has(#detecter:target) #game-back,body:has(#classer:target) #game-back,body:has(#conjuguer:target) #game-back{display:block}
 .game-back a{display:inline-block;font:inherit;font-weight:900;border:2px solid #151923;border-radius:10px;background:#ffcf39;padding:8px 12px;cursor:pointer;text-decoration:none;color:#151923}
 </style>
 </head>
@@ -31,7 +32,7 @@ body:has(.game-panel:target) #game-back{display:block!important}
 <a href="#classer" data-open-game="classer"><span class="game-icon">🧩</span><strong>Trouve le groupe</strong><small>1er, 2e ou 3e groupe ? À toi de trouver.</small></a>
 <a href="#conjuguer" data-open-game="conjuguer"><span class="game-icon">⚡</span><strong>Conjugue !</strong><small>Choisis ton temps, ton défi et entraîne-toi.</small></a>
 </div></div>
-<div class="game-back" id="game-back" hidden><a href="#">← Choisir un autre jeu</a></div>
+<div class="game-back" id="game-back"><a href="francais-1-conjugaison.html">← Choisir un autre jeu</a></div>
 <section class="panel game-panel" id="detecter"><h2>Retrouve les verbes conjugués</h2><p class="instruction">Touche toutes les étiquettes du ou des verbes conjugués. Au temps composé, touche l’auxiliaire et le participe passé, même s’ils sont séparés par « pas » ou « jamais ». Touche à nouveau une étiquette pour l’enlever.</p><div class="levels" aria-label="Choisir un niveau"><button type="button" id="level-1" aria-pressed="true">1 · Temps simples</button><button type="button" id="level-2" aria-pressed="false">2 · Temps composés</button><button type="button" id="level-3" aria-pressed="false">3 · Phrases complexes</button></div><div class="progress" id="progress-detecter"></div><div class="sentence word-sentence" id="sentence-detecter" aria-label="Phrase : touche toutes les parties des verbes conjugués"></div><button class="action" id="check-detecter" type="button">Vérifier</button><div class="feedback" id="feedback-detecter" role="status" aria-live="polite" hidden></div><button class="secondary" id="next-detecter" type="button" hidden aria-hidden="true" style="display:none"></button><p class="score" id="score-detecter"></p></section>
 <section class="panel game-panel" id="classer"><h2>Trouve le groupe</h2><p class="instruction">Le verbe est à l’infinitif. Choisis son groupe. Pour tous les verbes en -ir, compare leur forme au présent avec « nous » : seuls ceux du 2e groupe font « -issons ».</p><div class="progress" id="progress-classer"></div><p class="sentence" id="sentence-classer"></p><fieldset class="choices" id="groups-classer"><legend>Quel est son groupe ?</legend><label><input type="radio" name="group-classer" value="1">1er</label><label><input type="radio" name="group-classer" value="2">2e</label><label><input type="radio" name="group-classer" value="3">3e</label></fieldset><button class="action" id="check-classer" type="button">Vérifier</button><div class="feedback" id="feedback-classer" role="status" aria-live="polite" hidden></div><button class="secondary" id="next-classer" type="button" hidden aria-hidden="true" style="display:none"></button><p class="score" id="score-classer"></p></section>
 <section class="panel game-panel" id="conjuguer"><h2>Conjugue !</h2><div class="picker compact-picker"><label>⏱️ Temps <select id="tense-picks"><option value="present">Présent</option><option value="imparfait">Imparfait</option><option value="futur">Futur</option><option value="passe-simple">Passé simple</option><option value="passe-compose">Passé composé</option><option value="plus-que-parfait">Plus-que-parfait</option><option value="imperatif">⭐ Impératif</option></select></label><label>🎯 Défi <select id="challenge-picks"><option value="G1">1er groupe régulier</option><option value="G1P">1er groupe irrégulier</option><option value="G2">2e groupe</option><option value="G3">3e groupe</option><option value="ALL" selected>🏆 Mix de tout</option></select></label></div><div class="subgames" id="subgames"><button class="active" data-game="duel">⚡ Duel éclair</button><button data-game="mission">🐺 Mission</button></div><div class="game-choice" id="c-choice">PRÉSENT · MIX TOTAL</div><div class="progress" id="c-progress"></div><div class="conj-card"><div class="build" id="c-sentence"></div><div class="choice-grid" id="fun-choices" hidden></div><div class="mini-actions" id="write-actions"><button type="button" id="c-ok">GO !</button></div><div class="repair" id="c-repair" hidden></div><p class="score" id="c-score"></p></div></section>
@@ -273,11 +274,6 @@ $('tense-picks').addEventListener('change',e=>{selectedTense=e.target.value;rese
 
 document.querySelectorAll('#subgames button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('#subgames button').forEach(x=>x.classList.remove('active'));b.classList.add('active');cgame=b.dataset.game;ci=0;cscore=0;cRender()}));
 
-function openGame(id){$('game-menu').hidden=true;$('game-back').hidden=false;['detecter','classer','conjuguer'].forEach(x=>$(x).hidden=x!==id);if(id==='detecter')renderDetecter();if(id==='classer')renderClasser();if(id==='conjuguer')resetConj();location.hash=id}
-document.querySelectorAll('[data-open-game]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();openGame(b.dataset.openGame)}));
-function openHashGame(){const id=location.hash.slice(1);if(['detecter','classer','conjuguer'].includes(id))openGame(id)}
-window.addEventListener('hashchange',openHashGame);
-const backLink=$('game-back').querySelector('a');if(backLink)backLink.addEventListener('click',()=>{['detecter','classer','conjuguer'].forEach(x=>$(x).hidden=false);$('game-back').hidden=true;$('game-menu').hidden=false});
 </script>
 </body>
 </html>
