@@ -47,5 +47,5 @@ function finish(){cancelAudio();const s=session;state.best[s.mode]=Math.max(stat
 let initial='';try{initial=clean(localStorage.getItem('zoumai-player-nickname'))}catch{}if(initial)loadPlayer(initial);else refreshHome();
 document.addEventListener('visibilitychange',()=>{if(document.hidden)cancelAudio()});window.addEventListener('pagehide',cancelAudio);
 
-document.querySelectorAll('[data-comic]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();location.href='https://zoumai.github.io/zou_mai/ressources/anglais/index.html#'+a.dataset.comic}));
+document.querySelectorAll('[data-comic]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();location.href=(location.hostname==='htmlpreview.github.io'?'https://htmlpreview.github.io/?'+new URL('../../index.html',location.search.slice(1)).href:'https://zoumai.github.io/zou_mai/ressources/anglais/index.html')+'#'+a.dataset.comic}));
 </script><script src="../../../../zoumai-scores.js?v=2"></script></body></html>
