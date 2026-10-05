@@ -279,7 +279,7 @@ function renderFun(e){
  $('c-sentence').innerHTML=(selectedTense==='imperatif'?'<small>Pour « '+e.subject.toLowerCase()+' » · '+e.inf+'</small><br>':'')+prompt;for(const v of choices){const b=document.createElement('button');b.type='button';b.textContent=v;b.dataset.v=v;b.addEventListener('click',()=>chooseFun(v));box.append(b)}
 }
 
-function cNorm(v){return v.trim().toLocaleLowerCase('fr').replace(/[’']/g,"'")}
+function cNorm(v){return v.trim().replace(/\s+/g,' ').toLocaleLowerCase('fr').replace(/[’']/g,"'")}
 function cRender(){
  if(ci>=citems.length){finishConj();return}
  const e=citems[ci];cattempt=0;$('c-play').hidden=false;$('c-summary').hidden=true;$('c-next').hidden=true;
