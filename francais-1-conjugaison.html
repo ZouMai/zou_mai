@@ -40,7 +40,7 @@ body:has(#detecter:target) #game-back,body:has(#classer:target) #game-back,body:
 .dojo-next{display:block;min-height:52px;margin:14px auto 0;padding:12px 24px;background:#ffcf39;border:2px solid #151923;border-radius:12px;font:inherit;font-weight:900;cursor:pointer}
 .dojo-next[hidden]{display:none}
 .dojo-summary[hidden],#c-play[hidden],#write-actions[hidden],#fun-choices[hidden]{display:none!important}
-@media(max-width:550px){#conjuguer{padding:20px 16px}#conjuguer .compact-picker{display:grid;gap:10px}.dojo-status{font-size:.91rem}#conjuguer .build{min-height:145px}#conjuguer .conj-input{width:min(16ch,76vw)}}
+@media(max-width:550px){.zm-corner-logo{display:none}#conjuguer{padding:20px 16px}#conjuguer .compact-picker{display:grid;gap:10px}.dojo-status{font-size:.91rem}#conjuguer .build{min-height:145px}#conjuguer .conj-input{width:min(16ch,76vw)}}
 @media(prefers-reduced-motion:reduce){.dojo-track span{transition:none}}
 </style>
 </head>
@@ -339,7 +339,7 @@ function cHint(e,answer){
 function cCheck(){
  const e=citems[ci],v=cNorm($('c-input').value);if(!v){$('c-repair').hidden=false;$('c-repair').textContent='Écris une réponse avant de vérifier.';return}
  if(v===cNorm(e.forms[e.p])){
-  if(cattempt===0){cscore++;cstreak++}$('c-input').classList.add('okflash');$('c-repair').hidden=false;$('c-repair').textContent=cattempt===0?'🎉 Bravo, du premier coup !':'✓ Bien corrigé !';
+  if(cattempt===0){cscore++;cstreak++}$('c-score').textContent=cscore+' réussi'+(cscore>1?'s':'')+' du premier coup';$('c-input').classList.add('okflash');$('c-repair').hidden=false;$('c-repair').textContent=cattempt===0?'🎉 Bravo, du premier coup !':'✓ Bien corrigé !';
   $('c-input').disabled=true;$('c-ok').disabled=true;nextFun();return
  }
  cattempt++;cstreak=0;$('c-input').classList.add('badflash');setTimeout(()=>$('c-input')?.classList.remove('badflash'),300);
