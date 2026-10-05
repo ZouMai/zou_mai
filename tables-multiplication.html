@@ -75,6 +75,7 @@ main{position:relative;z-index:1;width:min(980px,93vw);margin:auto;padding:20px 
 </div>
 <script>
 const KEY='zoumai-tables-progress-v2',PLAYER_KEY='zoumai-player-nickname';
+const isPreview=location.hostname==='htmlpreview.github.io';
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const setup=$('#setup'),review=$('#review'),game=$('#game'),result=$('#result'),start=$('#start');
 const answer=$('#answer'),feedback=$('#feedback'),timer=$('#timer'),bar=timer.querySelector('span');
@@ -111,7 +112,7 @@ function makeQuestions(){
 }
 start.onclick=begin;$('#reviewStart').onclick=begin;
 $('#resetReview').onclick=()=>{if(!confirm('Effacer les calculs à revoir de '+(player||'ce joueur')+' sur cet appareil ?'))return;progress={};saveProgress();renderReview()};
-function begin(){if(!$('#playerForm').hidden&&!savePlayer())return;questions=makeQuestions();if(!questions.length)return;clearInterval(tick);index=score=0;answers=[];setup.hidden=review.hidden=result.hidden=true;game.hidden=false;showQuestion();game.scrollIntoView({block:'start'})}
+function begin(){if(!$('#playerForm').hidden&&!savePlayer())return;questions=makeQuestions();if(!questions.length){if(playType==='review')selectTab('review');return}clearInterval(tick);index=score=0;answers=[];setup.hidden=review.hidden=result.hidden=true;game.hidden=false;showQuestion();game.scrollIntoView({block:'start'})}
 function showQuestion(){
  clearInterval(tick);locked=false;correctionRequired=false;feedback.textContent='';feedback.className='feedback';answer.value='';answer.disabled=false;answer.placeholder='';$('#validate').disabled=false;$('#validate').textContent='Vérifier';$('#nextQuestion').hidden=true;
  $('#counter').textContent='Calcul '+(index+1)+' / '+questions.length;$('#score').textContent=score+' / '+questions.length;
@@ -149,8 +150,8 @@ function showResult(){
  clearInterval(tick);game.hidden=true;result.hidden=false;const difficult=[...new Map(answers.filter(a=>!a.ok||a.slow).map(a=>[key(a.q),a])).values()];
  $('#resultPanel').innerHTML='<div class="result"><p class="eyebrow">PARTIE TERMINÉE</p><div class="big">'+score+' / '+questions.length+'</div><h2>'+message()+'</h2><p>Réponses justes avant correction.</p><div class="report">'+tableReport()+'</div>'+(difficult.length?'<h3>Mes calculs à consolider</h3><div class="fact-list">'+difficult.map(a=>'<span class="fact '+(!a.ok?'red':'yellow')+'">'+a.q.a+' × '+a.q.b+' = '+a.q.result+'</span>').join('')+'</div>':'<p>Tu as réussi tous les calculs de cette partie.</p>')+'<div class="actions"><button class="again" id="again">Rejouer avec ces réglages</button><button id="settings">Changer mes tables</button>'+(weakKeys().length?'<button class="weak" id="weak">Revoir mes difficultés</button>':'')+'</div></div>';
  $('#again').onclick=begin;$('#settings').onclick=()=>selectTab('choose');if($('#weak'))$('#weak').onclick=()=>selectTab('review');
- result.scrollIntoView({block:'start'});window.zoumaiTrackResult?.('Tables multiplication',score,questions.length);
- if(window.ZoumaiScores&&player)ZoumaiScores.save('tables',score,questions.length).then(()=>ZoumaiScores.render('tables','Champion des tables','#tablesRanking'));
+ result.scrollIntoView({block:'start'});if(!isPreview)window.zoumaiTrackResult?.('Tables multiplication',score,questions.length);
+ if(!isPreview&&window.ZoumaiScores&&player)ZoumaiScores.save('tables',score,questions.length).then(()=>ZoumaiScores.render('tables','Champion des tables','#tablesRanking'));
  if(score===20)showTotoro()
 }
 function message(){const p=score/questions.length;return p===1?'🏆 Sans faute !':p>=.8?'⭐ Excellent travail !':p>=.6?'👏 Tu progresses !':'🌱 On continue à apprendre !'}
