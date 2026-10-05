@@ -18,6 +18,30 @@
 body:has(#detecter:target) #game-menu,body:has(#classer:target) #game-menu,body:has(#conjuguer:target) #game-menu{display:none}
 body:has(#detecter:target) #game-back,body:has(#classer:target) #game-back,body:has(#conjuguer:target) #game-back{display:block}
 .game-back a{display:inline-block;font:inherit;font-weight:900;border:2px solid #151923;border-radius:10px;background:#ffcf39;padding:8px 12px;cursor:pointer;text-decoration:none;color:#151923}
+/* Espace de jeu : une mission lisible et des actions faciles à toucher. */
+#conjuguer{max-width:760px;margin:auto;background:#fffdf7}
+#conjuguer h2{font-size:clamp(2rem,6vw,3rem);letter-spacing:-.04em}
+#conjuguer .instruction{margin-bottom:18px}
+#conjuguer .compact-picker{padding:14px;background:#f3f0e8;border-radius:16px}
+#conjuguer .compact-picker select{min-height:50px}
+.dojo-status{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:18px 0 8px;font-weight:900}
+.dojo-track{height:12px;border-radius:99px;background:#ebe6d9;overflow:hidden}
+.dojo-track span{display:block;height:100%;width:0;background:#e84d3f;transition:width .3s}
+#conjuguer .build{margin-top:20px;padding:clamp(22px,5vw,38px) 16px;border:2px solid #151923;background:#fff2c9;min-height:170px;line-height:1.7}
+#conjuguer .conj-input{min-height:52px;border:2px solid #151923;border-bottom-width:5px;background:#fff;outline-offset:3px}
+#conjuguer .mini-actions button{min-width:180px;min-height:54px;background:#e84d3f;color:#fff;font-size:1.05rem}
+#conjuguer .choice-grid button{min-height:72px;text-align:center}
+#conjuguer .repair{margin:0;padding:16px;line-height:1.4}
+#conjuguer .score{text-align:center;color:#3d4650}
+.dojo-summary{text-align:center;padding:25px 12px}
+.dojo-summary strong{display:block;font-size:clamp(2.7rem,12vw,4.5rem);line-height:1.1;color:#151923}
+.dojo-summary p{font-size:1.1rem;line-height:1.5}
+.dojo-restart{min-height:52px;padding:12px 20px;background:#ffcf39;border:2px solid #151923;border-radius:12px;font:inherit;font-weight:900;cursor:pointer}
+.dojo-next{display:block;min-height:52px;margin:14px auto 0;padding:12px 24px;background:#ffcf39;border:2px solid #151923;border-radius:12px;font:inherit;font-weight:900;cursor:pointer}
+.dojo-next[hidden]{display:none}
+.dojo-summary[hidden],#c-play[hidden]{display:none!important}
+@media(max-width:550px){#conjuguer{padding:20px 16px}#conjuguer .compact-picker{display:grid;gap:10px}.dojo-status{font-size:.91rem}#conjuguer .build{min-height:145px}#conjuguer .conj-input{width:min(16ch,76vw)}}
+@media(prefers-reduced-motion:reduce){.dojo-track span{transition:none}}
 </style>
 </head>
 <body>
@@ -37,7 +61,7 @@ body:has(#detecter:target) #game-back,body:has(#classer:target) #game-back,body:
 <div class="game-back" id="game-back"><a href="francais-1-conjugaison.html">← Choisir un autre jeu</a></div>
 <section class="panel game-panel" id="detecter"><h2>Retrouve les verbes conjugués</h2><p class="instruction">Touche toutes les étiquettes du ou des verbes conjugués. Au temps composé, touche l’auxiliaire et le participe passé, même s’ils sont séparés par « pas » ou « jamais ». Touche à nouveau une étiquette pour l’enlever.</p><div class="levels" aria-label="Choisir un niveau"><button type="button" id="level-1" aria-pressed="true">1 · Temps simples</button><button type="button" id="level-2" aria-pressed="false">2 · Temps composés</button><button type="button" id="level-3" aria-pressed="false">3 · Phrases complexes</button></div><div class="progress" id="progress-detecter"></div><div class="sentence word-sentence" id="sentence-detecter" aria-label="Phrase : touche toutes les parties des verbes conjugués"></div><button class="action" id="check-detecter" type="button">Vérifier</button><div class="feedback" id="feedback-detecter" role="status" aria-live="polite" hidden></div><button class="secondary" id="next-detecter" type="button" hidden aria-hidden="true" style="display:none"></button><p class="score" id="score-detecter"></p></section>
 <section class="panel game-panel" id="classer"><h2>Trouve le groupe</h2><p class="instruction">Le verbe est à l’infinitif. Choisis son groupe. Pour tous les verbes en -ir, compare leur forme au présent avec « nous » : seuls ceux du 2e groupe font « -issons ».</p><div class="progress" id="progress-classer"></div><p class="sentence" id="sentence-classer"></p><fieldset class="choices" id="groups-classer"><legend>Quel est son groupe ?</legend><label><input type="radio" name="group-classer" value="1">1er</label><label><input type="radio" name="group-classer" value="2">2e</label><label><input type="radio" name="group-classer" value="3">3e</label></fieldset><button class="action" id="check-classer" type="button">Vérifier</button><div class="feedback" id="feedback-classer" role="status" aria-live="polite" hidden></div><button class="secondary" id="next-classer" type="button" hidden aria-hidden="true" style="display:none"></button><p class="score" id="score-classer"></p></section>
-<section class="panel game-panel" id="conjuguer"><h2>🥋 Konju Dojo</h2><div class="picker compact-picker"><label>⏱️ Temps <select id="tense-picks"><option value="present">Présent</option><option value="imparfait">Imparfait</option><option value="futur">Futur</option><option value="passe-simple">Passé simple</option><option value="passe-compose">Passé composé</option><option value="plus-que-parfait">Plus-que-parfait</option><option value="imperatif">⭐ Impératif</option></select></label><label>🎯 Défi <select id="challenge-picks"><option value="G1">1er groupe régulier</option><option value="G1P">1er groupe irrégulier</option><option value="G2">2e groupe</option><option value="G3">3e groupe</option><option value="ALL" selected>🏆 Mix de tout</option></select></label></div><div class="subgames" id="subgames" hidden><button class="active" data-game="duel">⚡ Duel éclair</button><button data-game="mission">🐺 Mission Sensei</button></div><div class="game-choice" id="c-choice">PRÉSENT · MIX TOTAL</div><div class="progress" id="c-progress"></div><div class="conj-card"><div class="build" id="c-sentence"></div><div class="choice-grid" id="fun-choices" hidden></div><div class="mini-actions" id="write-actions"><button type="button" id="c-ok">GO !</button></div><div class="repair" id="c-repair" hidden></div><p class="score" id="c-score"></p></div></section>
+<section class="panel game-panel" id="conjuguer"><h2>🥋 Konju Dojo</h2><p class="instruction">Une mission de 10 questions. Lis la phrase, conjugue le verbe, puis utilise l’indice pour corriger si besoin.</p><div class="picker compact-picker"><label>Temps <select id="tense-picks"><option value="present">Présent</option><option value="imparfait">Imparfait</option><option value="futur">Futur</option><option value="passe-simple">Passé simple</option><option value="passe-compose">Passé composé</option><option value="plus-que-parfait">Plus-que-parfait</option><option value="imperatif">Impératif</option></select></label><label>Famille de verbes <select id="challenge-picks"><option value="G1">1er groupe régulier</option><option value="G1P">1er groupe irrégulier</option><option value="G2">2e groupe</option><option value="G3">3e groupe</option><option value="ALL" selected>Mix de tout</option></select></label></div><div class="game-choice" id="c-choice">PRÉSENT · MIX DE TOUT</div><div class="dojo-status"><span id="c-progress" aria-live="polite"></span><span id="c-streak"></span></div><div class="dojo-track" role="progressbar" aria-label="Progression de la mission" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0"><span id="c-track-fill"></span></div><div class="conj-card" id="c-play"><div class="build" id="c-sentence"></div><div class="choice-grid" id="fun-choices" hidden></div><div class="mini-actions" id="write-actions"><button type="button" id="c-ok">Vérifier ma réponse</button></div><div class="repair" id="c-repair" role="status" aria-live="polite" hidden></div><button class="dojo-next" id="c-next" type="button" hidden>Continuer →</button><p class="score" id="c-score"></p></div><div class="dojo-summary" id="c-summary" hidden></div></section>
 <div class="rule"><strong>Le truc du 2e groupe</strong><p>Un verbe en <strong>-ir</strong> appartient au 2e groupe s’il fait <strong>-issons</strong> avec « nous » au présent : <em>finir → nous finissons</em>. Compare avec <em>courir → nous courons</em> : courir est du 3e groupe.</p></div>
 <section class="panel" id="conj-ranking"><h2>🏆 Champion de conjugaison</h2><p>Le meilleur score de chaque pseudo est conservé.</p><div id="conjugaisonRanking"></div></section></main>
 <script>
@@ -122,6 +146,12 @@ $('next-classer').addEventListener('click',()=>{if(classer.index===classer.items
 const present=[
 {inf:'chanter',forms:['chante','chantes','chante','chantons','chantez','chantent'],family:'ER',subject:'Les élèves',p:5,s:'Les élèves ___ dans la cour.'},
 {inf:'finir',forms:['finis','finis','finit','finissons','finissez','finissent'],family:'IR',subject:'Nous',p:3,s:'Nous ___ notre travail.'},
+{inf:'jouer',forms:['joue','joues','joue','jouons','jouez','jouent'],family:'ER',subject:'Tu',p:1,s:'Tu ___ dehors.'},
+{inf:'parler',forms:['parle','parles','parle','parlons','parlez','parlent'],family:'ER',subject:'Je',p:0,s:'Je ___ à mon ami.'},
+{inf:'marcher',forms:['marche','marches','marche','marchons','marchez','marchent'],family:'ER',subject:'Ils',p:5,s:'Ils ___ vite.'},
+{inf:'choisir',forms:['choisis','choisis','choisit','choisissons','choisissez','choisissent'],family:'IR',subject:'Elle',p:2,s:'Elle ___ un livre.'},
+{inf:'grandir',forms:['grandis','grandis','grandit','grandissons','grandissez','grandissent'],family:'IR',subject:'Nous',p:3,s:'Nous ___ chaque année.'},
+{inf:'réussir',forms:['réussis','réussis','réussit','réussissons','réussissez','réussissent'],family:'IR',subject:'Vous',p:4,s:'Vous ___ le défi.'},
 {inf:'manger',forms:['mange','manges','mange','mangeons','mangez','mangent'],family:'GER',subject:'Nous',p:3,s:'Nous ___ à la cantine.'},
 {inf:'ranger',forms:['range','ranges','range','rangeons','rangez','rangent'],family:'GER',subject:'Nous',p:3,s:'Nous ___ la classe.'},
 {inf:'commencer',forms:['commence','commences','commence','commençons','commencez','commencent'],family:'CER',subject:'Nous',p:3,s:'Nous ___ le défi.'},
@@ -154,9 +184,22 @@ chanter:['avais chanté','avais chanté','avait chanté','avions chanté','aviez
 imperatif:{
 chanter:['chante','chantons','chantez'],finir:['finis','finissons','finissez'],manger:['mange','mangeons','mangez'],ranger:['range','rangeons','rangez'],commencer:['commence','commençons','commencez'],lancer:['lance','lançons','lancez'],essuyer:['essuie','essuyons','essuyez'],envoyer:['envoie','envoyons','envoyez'],jeter:['jette','jetons','jetez'],acheter:['achète','achetons','achetez'],être:['sois','soyons','soyez'],avoir:['aie','ayons','ayez'],aller:['va','allons','allez'],faire:['fais','faisons','faites'],prendre:['prends','prenons','prenez'],pouvoir:['—','—','—'],vouloir:['veuille','voulons','veuillez'],venir:['viens','venons','venez']}
 };
+function regularForms(inf,tense,family){
+ if(!['ER','IR'].includes(family))return null;
+ const root=inf.slice(0,-2),er=family==='ER',part=root+(er?'é':'i');
+ const endings={
+   imparfait:er?['ais','ais','ait','ions','iez','aient']:['issais','issais','issait','issions','issiez','issaient'],
+   futur:['ai','as','a','ons','ez','ont'],
+   'passe-simple':er?['ai','as','a','âmes','âtes','èrent']:['is','is','it','îmes','îtes','irent'],
+   imperatif:er?['e','ons','ez']:['is','issons','issez']
+ };
+ if(tense==='passe-compose')return ['ai','as','a','avons','avez','ont'].map(a=>a+' '+part);
+ if(tense==='plus-que-parfait')return ['avais','avais','avait','avions','aviez','avaient'].map(a=>a+' '+part);
+ const suffix=endings[tense];return suffix?.map(s=>(tense==='futur'?inf:root)+s)||null;
+}
 function tensePool(){
- return present.map(e=>{if(selectedTense==='present')return {...e};const tf=tenseForms[selectedTense]?.[e.inf];if(!tf)return null;
- if(selectedTense==='imperatif'){if(e.inf==='pouvoir')return null;const map=[1,3,4],k=map.indexOf(e.p),ix=k>=0?k:Math.floor(Math.random()*3),p=map[ix],subs=['Tu','Nous','Vous'];return {...e,p,subject:subs[ix],s:subs[ix]+' ___ !',forms:[tf[0],tf[0],tf[0],tf[1],tf[2],tf[2]]}}
+ return present.map(e=>{if(selectedTense==='present')return {...e};const tf=tenseForms[selectedTense]?.[e.inf]||regularForms(e.inf,selectedTense,e.family);if(!tf)return null;
+ if(selectedTense==='imperatif'){if(e.inf==='pouvoir')return null;return {...e,p:1,subject:'tu',s:'___ !',forms:[tf[0],tf[0],tf[0],tf[1],tf[2],tf[2]]}}
  return {...e,forms:tf}
  }).filter(Boolean).filter(e=>familyMatch(e,selectedFamily))
 }
@@ -165,9 +208,17 @@ const tenseNames={present:'PRÉSENT',imparfait:'IMPARFAIT',futur:'FUTUR','passe-
 const challengeNames={G1:'1er GROUPE RÉGULIER',G1P:'1er GROUPE IRRÉGULIER',G2:'2e GROUPE',G3:'3e GROUPE',ALL:'MIX DE TOUT'};
 let selectedTense='present',selectedFamily='ALL';
 function familyMatch(e,f){if(f==='ALL')return true;if(f==='G1')return e.family==='ER';if(f==='G1P')return ['GER','CER','YER','RAD'].includes(e.family);if(f==='G2')return e.family==='IR';if(f==='G3')return e.family==='IRR';return true}
-function resetConj(){const pool=tensePool();citems=shuffle(pool.length?pool:present);ci=0;cscore=0;cRender()}
+const dojoSubjects=['Je','Tu','Il','Nous','Vous','Ils'];
+function dojoQuestions(){
+ const pool=tensePool(),variants=pool.flatMap(e=>(selectedTense==='imperatif'?[1,3,4]:[0,1,2,3,4,5]).map(p=>({
+   ...e,p,subject:dojoSubjects[p],s:selectedTense==='imperatif'?'___ !':
+   selectedTense==='present'&&p===e.p?e.s:(p===0&&/^(ai|avais|étais)/.test(e.forms[p])?'J’':dojoSubjects[p]+' ')+ '___ aujourd’hui.'
+ })));
+ return shuffle(variants).slice(0,Math.min(10,variants.length));
+}
+function resetConj(){citems=dojoQuestions();ci=0;cscore=0;cstreak=0;cattempt=0;cRender()}
 
-let citems=shuffle(present),ci=0,cscore=0,cattempt=0;
+let citems=[],ci=0,cscore=0,cstreak=0,cattempt=0;
 const requestedMode=new URLSearchParams(location.search).get('mode');
 let cgame=requestedMode==='mission'?'mission':requestedMode==='write'?'write':'duel';
 function isCompound(){return selectedTense==='passe-compose'||selectedTense==='plus-que-parfait'}
@@ -194,12 +245,30 @@ function compoundError(e,v){
  return '🧩 Participe passé : retrouve d’abord la bonne forme de '+e.inf.toUpperCase()+'.'
 }
 function wrongForms(e){if(isCompound())return shuffle(compoundDistractors(e)).slice(0,2);const right=e.forms[e.p],all=[...new Set(e.forms.filter(x=>x!==right))];return shuffle(all).slice(0,2)}
-function nextFun(){setTimeout(()=>{ci++;if(ci>=citems.length){ZoumaiScores.save('conjugaison',cscore,citems.length,'francais');ZoumaiScores.render('conjugaison','Champion de conjugaison','#conjugaisonRanking');citems=shuffle(tensePool());if(!citems.length)citems=shuffle(present);ci=0;cscore=0}cRender()},650)}
+function nextFun(){$('c-next').hidden=false}
+function finishConj(){
+ $('c-play').hidden=true;$('c-summary').hidden=false;
+ $('c-progress').textContent='Mission terminée';$('c-streak').textContent='';
+ $('c-track-fill').style.width='100%';
+ $('conjuguer').querySelector('.dojo-track').setAttribute('aria-valuenow',String(citems.length));
+ const summary=$('c-summary');summary.replaceChildren();
+ const title=document.createElement('strong');title.textContent=cscore+' / '+citems.length;
+ const message=document.createElement('p');message.textContent=cscore===citems.length?'Bravo ! Toutes les formes ont été trouvées du premier coup.':'Tu as terminé la mission. Rejoue pour consolider les formes qui t’ont résisté.';
+ const restart=document.createElement('button');restart.type='button';restart.className='dojo-restart';restart.textContent='Nouvelle mission';restart.addEventListener('click',resetConj);
+ summary.append(title,message,restart);
+ if(window.ZoumaiScores){
+   const record=()=>ZoumaiScores.save('conjugaison',cscore,citems.length).then(()=>ZoumaiScores.render('conjugaison','Champion de conjugaison','#conjugaisonRanking'));
+   if(localStorage.getItem('zoumai-player-nickname'))record();
+   else{const save=document.createElement('button');save.type='button';save.className='dojo-restart';save.textContent='Enregistrer mon score';save.style.marginLeft='10px';save.addEventListener('click',()=>{record();save.disabled=true});summary.append(save)}
+ }
+}
 function chooseFun(v){
  const e=citems[ci],right=e.forms[e.p],box=$('fun-choices');[...box.children].forEach(b=>b.disabled=true);
- const ok=cNorm(v)===cNorm(right);if(ok)cscore++;
+ const ok=cNorm(v)===cNorm(right);if(ok&&cattempt===0){cscore++;cstreak++}else if(!ok){cattempt++;cstreak=0}
  [...box.children].forEach(b=>{if(ok&&cNorm(b.dataset.v)===cNorm(right))b.classList.add('correct');else if(b.dataset.v===v&&!ok)b.classList.add('wrong')});
- $('c-repair').hidden=false;$('c-repair').textContent=ok?'🎉 Bravo !':cHint(e,v);$('c-score').textContent=cscore+' bonne'+(cscore>1?'s':'')+' réponse'+(cscore>1?'s':'');if(ok)nextFun();else setTimeout(()=>{[...box.children].forEach(b=>b.disabled=false)},650)
+ $('c-repair').hidden=false;$('c-repair').textContent=ok?(cattempt?'✓ Bien corrigé !':'🎉 Bravo, du premier coup !'):cattempt>=3?'La bonne réponse est « '+right+' ». La prochaine question arrive.':cHint(e,v);
+ $('c-score').textContent=cscore+' bonne'+(cscore>1?'s':'')+' réponse'+(cscore>1?'s':'')+' du premier coup';
+ if(ok||cattempt>=3)nextFun();else setTimeout(()=>{[...box.children].forEach(b=>b.disabled=false)},850)
 }
 function renderFun(e){
  const box=$('fun-choices');box.replaceChildren();box.hidden=false;$('write-actions').hidden=true;
@@ -207,15 +276,21 @@ function renderFun(e){
  if(cgame==='duel'){prompt=e.s.replace('___','_____')+' <small>('+e.inf+')</small>';choices=shuffle([e.forms[e.p],...wrongForms(e)])}
  if(cgame==='intrus'){const wrong=wrongForms(e)[0];prompt='🥷 Trouve la forme qui ne convient pas<br><small>'+e.subject+' · '+e.inf+'</small>';choices=shuffle([e.forms[e.p],wrong,...wrongForms(e).slice(0,1)]);choices=[...new Set(choices)];while(choices.length<3)choices.push(e.forms[(e.p+choices.length)%6])}
  if(cgame==='mission'){prompt='🐺 Répare la phrase<br><span>'+e.s.replace('___',wrongForms(e)[0])+'</span>';choices=shuffle([e.forms[e.p],...wrongForms(e)])}
- $('c-sentence').innerHTML=prompt;for(const v of choices){const b=document.createElement('button');b.type='button';b.textContent=v;b.dataset.v=v;b.addEventListener('click',()=>chooseFun(v));box.append(b)}
+ $('c-sentence').innerHTML=(selectedTense==='imperatif'?'<small>Pour « '+e.subject.toLowerCase()+' » · '+e.inf+'</small><br>':'')+prompt;for(const v of choices){const b=document.createElement('button');b.type='button';b.textContent=v;b.dataset.v=v;b.addEventListener('click',()=>chooseFun(v));box.append(b)}
 }
 
 function cNorm(v){return v.trim().toLocaleLowerCase('fr').replace(/[’']/g,"'")}
 function cRender(){
- const e=citems[ci];cattempt=0;$('conjuguer').querySelector('h2').textContent=cgame==='mission'?'🐺 Mission Sensei':cgame==='write'?'🥋 Konju Dojo':'⚡ Duel éclair';$('c-progress').textContent=(ci+1)+' / '+citems.length;$('c-choice').textContent=tenseNames[selectedTense]+' · '+challengeNames[selectedFamily];$('c-repair').hidden=true;
+ if(ci>=citems.length){finishConj();return}
+ const e=citems[ci];cattempt=0;$('c-play').hidden=false;$('c-summary').hidden=true;$('c-next').hidden=true;
+ $('conjuguer').querySelector('h2').textContent=cgame==='mission'?'🐺 Mission Sensei':cgame==='write'?'🥋 Konju Dojo':'⚡ Duel éclair';
+ $('c-progress').textContent='Question '+(ci+1)+' / '+citems.length;$('c-streak').textContent=cstreak>1?'🔥 '+cstreak+' de suite':'';
+ $('c-track-fill').style.width=(ci/citems.length*100)+'%';$('conjuguer').querySelector('.dojo-track').setAttribute('aria-valuenow',String(ci));
+ $('c-choice').textContent=tenseNames[selectedTense]+' · '+challengeNames[selectedFamily];$('c-repair').hidden=true;
+ $('c-score').textContent=cscore+' réussi'+(cscore>1?'s':'')+' du premier coup';
  if(cgame!=='write'){renderFun(e);return}
- $('fun-choices').hidden=true;$('write-actions').hidden=false;$('c-sentence').innerHTML=e.s.replace('___','<input class="conj-input" id="c-input" autocomplete="off" autocapitalize="none" spellcheck="false" aria-label="Écris le verbe conjugué">')+' <small>('+e.inf+')</small>';
- $('c-input').value='';$('c-input').disabled=false;$('c-ok').disabled=false;$('c-score').textContent=cscore+' réussi'+(cscore>1?'s':'')+' sans aide';setTimeout(()=>$('c-input').focus(),50)
+ $('fun-choices').hidden=true;$('write-actions').hidden=false;$('c-sentence').innerHTML=(selectedTense==='imperatif'?'<small>Pour « '+e.subject.toLowerCase()+' » · '+e.inf+'</small><br>':'')+e.s.replace('___','<input class="conj-input" id="c-input" autocomplete="off" autocapitalize="none" spellcheck="false" aria-label="Écris le verbe conjugué">')+' <small>('+e.inf+')</small>';
+ $('c-input').value='';$('c-input').disabled=false;$('c-ok').disabled=false;$('c-score').textContent=cscore+' réussi'+(cscore>1?'s':'')+' du premier coup';if(matchMedia('(pointer:fine)').matches)setTimeout(()=>$('c-input')?.focus(),50)
 }
 function endingsForTense(){
  if(selectedTense==='present')return [['e','es','e','ons','ez','ent'],['is','is','it','issons','issez','issent']];
@@ -262,16 +337,18 @@ function cHint(e,answer){
  return '🔎 Sépare le verbe en deux : RADICAL + TERMINAISON, puis vérifie chacun.'
 }
 function cCheck(){
- const e=citems[ci],v=cNorm($('c-input').value);if(!v)return;
+ const e=citems[ci],v=cNorm($('c-input').value);if(!v){$('c-repair').hidden=false;$('c-repair').textContent='Écris une réponse avant de vérifier.';return}
  if(v===cNorm(e.forms[e.p])){
-  if(cattempt===0)cscore++;$('c-input').classList.add('okflash');$('c-repair').hidden=false;$('c-repair').textContent=cattempt===0?'🎉 Bravo !':'✓ Bien corrigé !';
-  $('c-input').disabled=true;$('c-ok').disabled=true;setTimeout(()=>{$('c-input').classList.remove('okflash');ci++;if(ci>=citems.length){citems=shuffle(present);ci=0;cscore=0}cRender()},750);return
+  if(cattempt===0){cscore++;cstreak++}$('c-input').classList.add('okflash');$('c-repair').hidden=false;$('c-repair').textContent=cattempt===0?'🎉 Bravo, du premier coup !':'✓ Bien corrigé !';
+  $('c-input').disabled=true;$('c-ok').disabled=true;nextFun();return
  }
- cattempt++;$('c-input').classList.add('badflash');setTimeout(()=>$('c-input').classList.remove('badflash'),300);
- $('c-repair').hidden=false;$('c-repair').textContent=cattempt===1?cHint(e,v):cattempt===2?'🔁 '+pron[e.p]+' + '+e.inf.toUpperCase():'✏️ Corrige encore';
+ cattempt++;cstreak=0;$('c-input').classList.add('badflash');setTimeout(()=>$('c-input')?.classList.remove('badflash'),300);
+ $('c-repair').hidden=false;$('c-repair').textContent=cattempt===1?cHint(e,v):cattempt===2?'🔁 '+pron[e.p]+' + '+e.inf.toUpperCase():'La réponse est « '+e.forms[e.p]+' ». Observe-la, puis continue.';
+ if(cattempt>=3){$('c-input').disabled=true;$('c-ok').disabled=true;nextFun();return}
  $('c-input').select()
 }
 $('c-ok').addEventListener('click',cCheck);$('c-sentence').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='c-input')cCheck()});
+$('c-next').addEventListener('click',()=>{ci++;cRender()});
 $('challenge-picks').addEventListener('change',e=>{selectedFamily=e.target.value;resetConj()});
 $('tense-picks').addEventListener('change',e=>{selectedTense=e.target.value;resetConj()});
 
