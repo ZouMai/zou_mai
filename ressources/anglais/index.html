@@ -7,7 +7,7 @@ const playAll=document.getElementById('playAll'),stop=document.getElementById('s
 const synth=window.speechSynthesis;
 let activeLesson=null,buttons=[],token=0,timer=0,voices=[];
 const make=(tag,cls,text)=>{const x=document.createElement(tag);if(cls)x.className=cls;if(text!==undefined)x.textContent=text;return x;};
-function gameUrl(path){const file=path.endsWith('/')?path+'index.html':path;return location.hostname==='htmlpreview.github.io'?'https://htmlpreview.github.io/?'+new URL(file,location.search.slice(1)).href:file+'?v=20261006-english3';}
+function gameUrl(path){const file=path.endsWith('/')?path+'index.html':path;return location.hostname==='htmlpreview.github.io'?'https://htmlpreview.github.io/?'+new URL(file,location.search.slice(1)).href:file+'?v=20261006-english2';}
 function render(){let q=search.value.trim().toLocaleLowerCase('fr');let found=lessons.filter(l=>(l.id+' '+l.title+' '+l.subtitle).toLocaleLowerCase('fr').includes(q));grid.replaceChildren();for(const l of found){
 const card=make('article','card'),head=make('div','card-head');
 const visual=make('div','wolf'),pic=make('img');pic.src=l.icon;pic.alt='Illustration Zou Maï · '+l.title;pic.loading='lazy';pic.onerror=()=>{pic.src='./assets/logo-zoumai-chart.png';pic.onerror=null;};visual.append(pic);
