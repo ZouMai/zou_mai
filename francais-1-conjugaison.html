@@ -39,7 +39,7 @@ body:has(#detecter:target) #game-back,body:has(#classer:target) #game-back,body:
 .dojo-restart{min-height:52px;padding:12px 20px;background:#ffcf39;border:2px solid #151923;border-radius:12px;font:inherit;font-weight:900;cursor:pointer}
 .dojo-next{display:block;min-height:52px;margin:14px auto 0;padding:12px 24px;background:#ffcf39;border:2px solid #151923;border-radius:12px;font:inherit;font-weight:900;cursor:pointer}
 .dojo-next[hidden]{display:none}
-.dojo-summary[hidden],#c-play[hidden]{display:none!important}
+.dojo-summary[hidden],#c-play[hidden],#write-actions[hidden],#fun-choices[hidden]{display:none!important}
 @media(max-width:550px){#conjuguer{padding:20px 16px}#conjuguer .compact-picker{display:grid;gap:10px}.dojo-status{font-size:.91rem}#conjuguer .build{min-height:145px}#conjuguer .conj-input{width:min(16ch,76vw)}}
 @media(prefers-reduced-motion:reduce){.dojo-track span{transition:none}}
 </style>
@@ -54,9 +54,9 @@ body:has(#detecter:target) #game-back,body:has(#classer:target) #game-back,body:
 <div class="game-cards">
 <a href="#detecter" data-open-game="detecter"><span class="game-icon">🔎</span><strong>Reconnais le verbe</strong><small>Retrouve le ou les verbes conjugués dans la phrase.</small></a>
 <a href="#classer" data-open-game="classer"><span class="game-icon">🧩</span><strong>Trouve le groupe</strong><small>1er, 2e ou 3e groupe ? À toi de trouver.</small></a>
-<a href="francais-1-conjugaison.html?mode=write#conjuguer"><span class="game-icon">🥋</span><strong>Konju Dojo</strong><small>Conjugue toi-même le verbe et corrige tes erreurs avec les indices du Sensei.</small></a>
-<a href="francais-1-conjugaison.html?mode=duel#conjuguer"><span class="game-icon">⚡</span><strong>Duel éclair</strong><small>Choisis rapidement la bonne forme conjuguée.</small></a>
-<a href="francais-1-conjugaison.html?mode=mission#conjuguer"><span class="game-icon">🐺</span><strong>Mission Sensei</strong><small>Repère l’erreur et répare la phrase.</small></a>
+<a href="#conjuguer" data-play-mode="write"><span class="game-icon">🥋</span><strong>Konju Dojo</strong><small>Conjugue toi-même le verbe et corrige tes erreurs avec les indices du Sensei.</small></a>
+<a href="#conjuguer" data-play-mode="duel"><span class="game-icon">⚡</span><strong>Duel éclair</strong><small>Choisis rapidement la bonne forme conjuguée.</small></a>
+<a href="#conjuguer" data-play-mode="mission"><span class="game-icon">🐺</span><strong>Mission Sensei</strong><small>Repère l’erreur et répare la phrase.</small></a>
 </div></div>
 <div class="game-back" id="game-back"><a href="francais-1-conjugaison.html">← Choisir un autre jeu</a></div>
 <section class="panel game-panel" id="detecter"><h2>Retrouve les verbes conjugués</h2><p class="instruction">Touche toutes les étiquettes du ou des verbes conjugués. Au temps composé, touche l’auxiliaire et le participe passé, même s’ils sont séparés par « pas » ou « jamais ». Touche à nouveau une étiquette pour l’enlever.</p><div class="levels" aria-label="Choisir un niveau"><button type="button" id="level-1" aria-pressed="true">1 · Temps simples</button><button type="button" id="level-2" aria-pressed="false">2 · Temps composés</button><button type="button" id="level-3" aria-pressed="false">3 · Phrases complexes</button></div><div class="progress" id="progress-detecter"></div><div class="sentence word-sentence" id="sentence-detecter" aria-label="Phrase : touche toutes les parties des verbes conjugués"></div><button class="action" id="check-detecter" type="button">Vérifier</button><div class="feedback" id="feedback-detecter" role="status" aria-live="polite" hidden></div><button class="secondary" id="next-detecter" type="button" hidden aria-hidden="true" style="display:none"></button><p class="score" id="score-detecter"></p></section>
@@ -349,6 +349,10 @@ function cCheck(){
 }
 $('c-ok').addEventListener('click',cCheck);$('c-sentence').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='c-input')cCheck()});
 $('c-next').addEventListener('click',()=>{ci++;cRender()});
+document.querySelectorAll('[data-play-mode]').forEach(link=>link.addEventListener('click',event=>{
+ event.preventDefault();cgame=link.dataset.playMode;
+ location.hash='conjuguer';resetConj();$('conjuguer').scrollIntoView({block:'start'});
+}));
 $('challenge-picks').addEventListener('change',e=>{selectedFamily=e.target.value;resetConj()});
 $('tense-picks').addEventListener('change',e=>{selectedTense=e.target.value;resetConj()});
 
