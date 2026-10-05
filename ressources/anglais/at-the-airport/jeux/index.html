@@ -8,7 +8,7 @@
 </style>
 </head>
 <body>
-<header><div class="plane">✈️</div><div><h1>At the airport</h1><p>Lesson 03 · What’s your name?</p></div><nav class="nav"><a href="../../">MENU</a><a class="bd" href="https://zoumai.github.io/zou_mai/ressources/anglais/at-the-airport/bd/">BD SONORISÉE</a></nav></header>
+<header><div class="plane">✈️</div><div><h1>At the airport</h1><p>Lesson 03 · What’s your name?</p></div><nav class="nav"><a href="../../index.html">MENU</a><a class="bd" href="https://zoumai.github.io/zou_mai/ressources/anglais/at-the-airport/bd/">BD SONORISÉE</a></nav></header>
 <main><section id="home"><div class="intro"><h2>Choose your game</h2><p>Écoute, comprends et apprends à te présenter.</p></div><div class="games">
 <button class="gameBtn" onclick="start(0)"><span class="num">1</span><span class="icon">🔊</span><b>Who is it?</b><small>Écoute et retrouve le prénom.</small></button>
 <button class="gameBtn" onclick="start(1)"><span class="num">2</span><span class="icon">🛂</span><b>Customs</b><small>Choisis la bonne réponse.</small></button>
@@ -29,4 +29,4 @@ function addToken(b,w){answer.push(w);b.disabled=true;document.getElementById('a
 function passport(){const opts=shuffle([`My name is ${current}.`,`I am ${current}.`,`My surname are ${current}.`,`Your name is ${current}.`]);content.innerHTML=`<div class="passport">🎫</div><div class="prompt">Choose a correct introduction.</div><div class="namecard">${current}</div><div class="choices">${opts.map(x=>`<button class="choice" onclick="checkPassport(this,\`${x}\`)">${x}</button>`).join('')}</div><div id="feedback" class="feedback"></div><button class="next" onclick="next()">NEXT →</button>`}
 function checkPassport(b,x){const ok=x===`My name is ${current}.`||x===`I am ${current}.`;b.classList.add(ok?'good':'bad');fb(ok,ok?'Correct! Both forms are possible.':'This sentence is not correct.');if(ok)say(x)}
 function challenge(){const q=round%2===0,expected=q?"What's your name?":`My name is ${current}.`,wrong=q?["Who your name?","What your name is?","What's name your?"]:[`My names ${current}.`,`I name is ${current}.`,`Your name is ${current}.`],opts=shuffle([expected,...wrong]);content.innerHTML=`<div class="prompt">${q?'Choose the correct question.':'Answer the customs officer.'}</div>${q?'':`<div class="namecard">${current}</div><button class="audio" onclick="say(\"What's your name?\")">🔊</button>`}<div class="choices">${opts.map(x=>`<button class="choice" onclick="checkSentence(this,\`${x}\`,\`${expected}\`)">${x}</button>`).join('')}</div><div id="feedback" class="feedback"></div><button class="next" onclick="next()">NEXT →</button>`;if(!q)say("What's your name?")}
-</script></body></html>
+</script><script src="../../../../zoumai-scores.js?v=2"></script></body></html>
