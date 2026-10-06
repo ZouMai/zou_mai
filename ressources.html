@@ -427,7 +427,7 @@ if(artsGrid){
 <script>
 const folders={
 fr:[["DICTÉES","#dictees",1],["ORTHOGRAPHE","#orthographe",1],["GRAMMAIRE","#grammaire",1],["CONJUGAISON","#conjugaison",1],["LEXIQUE","#lexique",1]],
-ma:[["LEÇONS M1, M2, M3…","maths-lecons-cm2.html",1],["CALCUL MENTAL","calcul-mental-series.html",1],["GÉOMATHÉMATIQUES","#geomaths",1]],
+ma:[["TABLES DE MULTIPLICATION","tables-multiplication.html",1],["LEÇONS M1, M2, M3…","maths-lecons-cm2.html",1],["CALCUL MENTAL","calcul-mental-series.html",1],["GÉOMATHÉMATIQUES","#geomaths",1]],
 hi:[["REPÈRES CHRONOLOGIQUES","histoire-periodes.html",1],["NOMBRES ROMAINS","nombres-romains-cm2.html",1],["PRÉHISTOIRE","#hi"],["ANTIQUITÉ","#hi"],["MOYEN ÂGE","#hi"],["TEMPS MODERNES","#hi"],["ÉPOQUE CONTEMPORAINE","#hi"]],
 ge:[["JEU FRANCE · PACA · VAUCLUSE","jeu-geographie-france-paca-vaucluse.html",1],["FRANCE","#ge"],["EUROPE","#ge"],["MONDE","#ge"],["CARTES & REPÈRES","#ge"]],
 sc:[["VIVANT","#sc"],["MATIÈRE","#sc"],["ÉNERGIE","#sc"],["OBJETS TECHNIQUES","#sc"],["ESPACE","#sc"]],
@@ -451,7 +451,7 @@ if(location.hash)openSubject(location.hash.slice(1));
 <script>
 const ribbonFolders={
 fr:[["Dictées","#dictees"],["Orthographe","#orthographe"],["Grammaire","#grammaire"],["Conjugaison","#conjugaison"],["Lexique","#lexique"]],
-ma:[["Leçons","maths-lecons-cm2.html"],["Calcul mental","calcul-mental-series.html"],["Géomathématiques","#geomaths"]],
+ma:[["Tables de multiplication","tables-multiplication.html"],["Leçons","maths-lecons-cm2.html"],["Calcul mental","calcul-mental-series.html"],["Géomathématiques","#geomaths"]],
 hi:[["Repères","histoire-periodes.html"],["Nombres romains","nombres-romains-cm2.html"],["Histoire","#hi"]],
 ge:[["France · PACA · Vaucluse","jeu-geographie-france-paca-vaucluse.html"],["Géographie","#ge"]],
 hd:[["Musée secret","histoire-des-arts.html"],["Histoire des arts","#hd"]],
@@ -473,7 +473,7 @@ if(dictGrid && window.DICTEES){dictGrid.innerHTML=window.DICTEES.map((d,n)=>`<ar
 <script>
 const mathGrid=document.querySelector('#ma .grid');
 if(mathGrid){
-  mathGrid.innerHTML='<article class="item"><span class="type">LEÇONS · M1 À M35</span><h4>Leçons M1, M2, M3…</h4><p>Retrouve les jeux et activités dans l’ordre du porte-vue.</p><a href="maths-lecons-cm2.html">VOIR LES LEÇONS →</a></article><article class="item"><span class="type">CALCUL MENTAL · 35 SÉRIES</span><h4>L’arcade du calcul</h4><p>Trois jeux par série pour automatiser les stratégies de calcul mental.</p><a href="calcul-mental-series.html">JOUER →</a></article><article class="item"><span class="type">GÉOMATHÉMATIQUES</span><h4>Matador</h4><p>Jeu de calcul et de stratégie, rangé séparément du calcul mental.</p><a href="#geomaths">VOIR GÉOMATHÉMATIQUES →</a></article>';
+  mathGrid.innerHTML='<article class="item"><span class="type">TABLES · 1 À 11</span><h4>Le défi des tables</h4><p>Choisis tes tables, règle la vitesse et rejoue tes calculs à revoir.</p><a href="tables-multiplication.html">JOUER →</a></article><article class="item"><span class="type">LEÇONS · M1 À M35</span><h4>Leçons M1, M2, M3…</h4><p>Retrouve les jeux et activités dans l’ordre du porte-vue.</p><a href="maths-lecons-cm2.html">VOIR LES LEÇONS →</a></article><article class="item"><span class="type">CALCUL MENTAL · 35 SÉRIES</span><h4>L’arcade du calcul</h4><p>Trois jeux par série pour automatiser les stratégies de calcul mental.</p><a href="calcul-mental-series.html">JOUER →</a></article><article class="item"><span class="type">GÉOMATHÉMATIQUES</span><h4>Matador</h4><p>Jeu de calcul et de stratégie, rangé séparément du calcul mental.</p><a href="#geomaths">VOIR GÉOMATHÉMATIQUES →</a></article>';
   const mathCount=document.querySelector('.subject.ma .count');
   if(mathCount)mathCount.textContent='35 LEÇONS · 35 JEUX';
 }
