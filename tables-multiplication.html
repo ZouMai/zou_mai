@@ -80,7 +80,7 @@ const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const setup=$('#setup'),review=$('#review'),game=$('#game'),result=$('#result'),start=$('#start');
 const answer=$('#answer'),feedback=$('#feedback'),timer=$('#timer'),bar=timer.querySelector('span');
 const modes={learn:{name:'🌱 J’apprends',seconds:0},train:{name:'⚡ Je m’entraîne',seconds:10},perfect:{name:'🚀 Je me perfectionne',seconds:7},champion:{name:'🏆 Champion',seconds:5}};
-let player='',selected=[],playType='choose',mode='learn',questions=[],answers=[],index=0,score=0,tick=null,locked=false,correctionRequired=false,startedAt=0;
+let player='',selected=[],playType='choose',mode='learn',questions=[],answers=[],index=0,score=0,tick=null,advanceTimer=null,locked=false,correctionRequired=false,startedAt=0;
 try{player=localStorage.getItem(PLAYER_KEY)||''}catch{}
 function storageKey(){return player?KEY+':'+encodeURIComponent(player.toLocaleLowerCase('fr')):KEY}
 function loadProgress(){try{const p=JSON.parse(localStorage.getItem(storageKey())||'{}');return p&&typeof p==='object'&&!Array.isArray(p)?p:{}}catch{return{}}}
@@ -101,7 +101,7 @@ function syncTables(){$$('.table-btn').forEach(b=>b.setAttribute('aria-pressed',
 function updateStart(){start.disabled=playType!=='all'&&!selected.length;start.textContent=playType==='all'?'Commencer · tables 1 à 11':selected.length?'Commencer · '+[...selected].sort((a,b)=>a-b).map(n=>'×'+n).join(' · '):'Choisis au moins une table'}
 $$('.mode').forEach(b=>b.onclick=()=>{mode=b.dataset.mode;$$('.mode').forEach(x=>x.setAttribute('aria-pressed',String(x===b)))});
 $$('.game-tab').forEach(b=>b.onclick=()=>selectTab(b.dataset.tab));
-function selectTab(tab){clearInterval(tick);locked=true;playType=tab;$$('.game-tab').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.tab===tab)));game.hidden=result.hidden=true;setup.hidden=tab==='review';review.hidden=tab!=='review';$('#tablePanel').hidden=tab==='all';if(tab==='review')renderReview();updateStart()}
+function selectTab(tab){clearTimeout(advanceTimer);clearInterval(tick);locked=true;playType=tab;$$('.game-tab').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.tab===tab)));game.hidden=result.hidden=true;setup.hidden=tab==='review';review.hidden=tab!=='review';$('#tablePanel').hidden=tab==='all';if(tab==='review')renderReview();updateStart()}
 function renderReview(){const keys=weakKeys();$('#reviewStart').disabled=$('#resetReview').disabled=!keys.length;$('#reviewList').innerHTML=keys.length?keys.map(k=>{const q=fromKey(k);return '<span class="fact yellow">'+q.a+' × '+q.b+' = '+q.result+'</span>'}).join(''):'<div class="empty">Aucun calcul à revoir. Les difficultés disparaissent après trois réponses justes et suffisamment rapides.</div>'}
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function makeQuestions(){
@@ -112,9 +112,9 @@ function makeQuestions(){
 }
 start.onclick=begin;$('#reviewStart').onclick=begin;
 $('#resetReview').onclick=()=>{if(!confirm('Effacer les calculs à revoir de '+(player||'ce joueur')+' sur cet appareil ?'))return;progress={};saveProgress();renderReview()};
-function begin(){if(!$('#playerForm').hidden&&!savePlayer())return;questions=makeQuestions();if(!questions.length){if(playType==='review')selectTab('review');return}clearInterval(tick);index=score=0;answers=[];setup.hidden=review.hidden=result.hidden=true;game.hidden=false;showQuestion();game.scrollIntoView({block:'start'})}
+function begin(){clearTimeout(advanceTimer);if(!$('#playerForm').hidden&&!savePlayer())return;questions=makeQuestions();if(!questions.length){if(playType==='review')selectTab('review');return}clearInterval(tick);index=score=0;answers=[];setup.hidden=review.hidden=result.hidden=true;game.hidden=false;showQuestion();game.scrollIntoView({block:'start'})}
 function showQuestion(){
- clearInterval(tick);locked=false;correctionRequired=false;feedback.textContent='';feedback.className='feedback';answer.value='';answer.disabled=false;answer.placeholder='';$('#validate').disabled=false;$('#validate').textContent='Vérifier';$('#nextQuestion').hidden=true;
+ clearTimeout(advanceTimer);clearInterval(tick);locked=false;correctionRequired=false;feedback.textContent='';feedback.className='feedback';answer.value='';answer.disabled=false;answer.placeholder='';$('#validate').disabled=false;$('#validate').textContent='Vérifier';$('#nextQuestion').hidden=true;
  $('#counter').textContent='Calcul '+(index+1)+' / '+questions.length;$('#score').textContent=score+' / '+questions.length;
  $('#missionFill').style.width=index/questions.length*100+'%';$('.mission-track').setAttribute('aria-valuenow',String(index));$('#gameMode').textContent=modes[mode].name;
  const q=questions[index];$('#question').textContent=q.a+' × '+q.b+' = ?';startedAt=performance.now();
@@ -127,7 +127,7 @@ $('#answerForm').onsubmit=e=>{
  e.preventDefault();if(locked)return;
  if(!/^\d{1,3}$/.test(answer.value.trim())){feedback.textContent='Écris un nombre entier pour répondre.';answer.focus();return}
  const q=questions[index],value=Number(answer.value);
- if(correctionRequired){if(value!==q.result){answer.value='';feedback.textContent='Recopie : '+q.a+' × '+q.b+' = '+q.result;return}locked=true;answer.disabled=true;$('#validate').disabled=true;feedback.textContent='✓ Bien corrigé : '+q.a+' × '+q.b+' = '+q.result;feedback.className='feedback good';$('#nextQuestion').hidden=false;return}
+ if(correctionRequired){if(value!==q.result){answer.value='';feedback.textContent='Recopie : '+q.a+' × '+q.b+' = '+q.result;return}locked=true;answer.disabled=true;$('#validate').disabled=true;feedback.textContent='✓ Bien corrigé : '+q.a+' × '+q.b+' = '+q.result;feedback.className='feedback good';scheduleNext();return}
  finish(value===q.result,false)
 };
 function finish(ok,timeout){
@@ -141,9 +141,11 @@ function finish(ok,timeout){
  if(ok)score++;$('#score').textContent=score+' / '+questions.length;
  feedback.textContent=(ok?(slow?'✓ Juste ! Tu peux encore gagner en rapidité. ':'✓ Bravo ! '):(timeout?'⏱ Temps écoulé. ':'Observe la correction : '))+q.a+' × '+q.b+' = '+q.result;feedback.className='feedback '+(ok?'good':'bad');
  if(!ok&&mode==='learn'){locked=false;correctionRequired=true;answer.disabled=false;answer.value='';answer.placeholder=String(q.result);$('#validate').disabled=false;$('#validate').textContent='J’ai corrigé';feedback.textContent='Observe puis recopie : '+q.a+' × '+q.b+' = '+q.result;return}
- $('#nextQuestion').hidden=false
+ if(ok)scheduleNext();else $('#nextQuestion').hidden=false
 }
-$('#nextQuestion').onclick=()=>{if(!locked)return;index++;index<questions.length?showQuestion():showResult()};
+function nextQuestion(){if(!locked)return;clearTimeout(advanceTimer);index++;index<questions.length?showQuestion():showResult()}
+function scheduleNext(){$('#nextQuestion').hidden=true;advanceTimer=setTimeout(nextQuestion,600)}
+$('#nextQuestion').onclick=nextQuestion;
 $('#exitGame').onclick=()=>selectTab('choose');
 function tableReport(){const map={};answers.forEach(a=>{const t=map[a.q.a]||(map[a.q.a]={total:0,ok:0});t.total++;if(a.ok)t.ok++});return Object.entries(map).sort((a,b)=>a[0]-b[0]).map(([n,s])=>'<div class="report-card '+(s.ok/s.total>=.8?'good':s.ok/s.total>=.6?'mid':'bad')+'"><strong>Table de '+n+'</strong>'+s.ok+' / '+s.total+' réussis</div>').join('')}
 function showResult(){
