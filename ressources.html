@@ -291,6 +291,10 @@ body.resources-page{
 .mobile-game-link strong{font-size:.86rem;line-height:1.3}
 .mobile-game-link:focus-visible{outline:3px solid #fff;outline-offset:2px}
 }
+</style><style id="world-destination-menu">
+.ribbon-panel[data-subject="world"] a{border-color:#45f0b5;color:#d9fff1;box-shadow:0 0 10px #45f0b530}
+.ribbon-panel[data-subject="world"] a:hover,.ribbon-panel[data-subject="world"] a:focus-visible{border-color:#fff;box-shadow:0 0 16px #45f0b588}
+@media(max-width:600px){.ribbon-panel[data-subject="world"]{flex-wrap:wrap;overflow:visible}.ribbon-panel[data-subject="world"] a{flex:1 1 40%;min-height:48px;justify-content:center}}
 </style></head>
 <body id="top" class="resources-page"><a class="zm-corner-logo" href="index.html" aria-label="Accueil Zou Maï"><img src="images/logo-zou-mai-sensei.png" alt="Logo Sensei Zou_Maï"></a>
 <nav class="site-nav" aria-label="Navigation principale">
@@ -311,7 +315,7 @@ body.resources-page{
 <button class="ribbon-tab em" data-subject="em">⚖️ EMC</button>
 <button class="ribbon-tab mu" data-subject="mu">🎵 Musique</button>
 <button class="ribbon-tab ci" data-subject="ci">🎬 Cinéma</button>
-<a class="ribbon-tab world" href="ressources/mysteresdumonde/index.html">🧭 Mystères</a>
+<button class="ribbon-tab world" data-subject="world" type="button">🧭 Mystères du monde</button>
 </div><div class="ribbon-panel" id="ribbon-panel" hidden></div>
 </section>
 <header>
@@ -465,6 +469,7 @@ if(location.hash)openSubject(location.hash.slice(1));
 </script>
 <script>
 const ribbonFolders={
+world:[["🌋 Islande","ressources/mysteresdumonde/index.html#islande"],["🏜️ Sahara","ressources/mysteresdumonde/index.html#sahara"],["🇯🇵 Japon","ressources/mysteresdumonde/index.html#japon"],["🌿 Amazonie","ressources/mysteresdumonde/index.html#amazonie"]],
 fr:[["Dictées","#dictees"],["Orthographe","#orthographe"],["Grammaire","#grammaire"],["Conjugaison","#conjugaison"],["Lexique","#lexique"]],
 ma:[["Tables de multiplication","tables-multiplication.html"],["Leçons","maths-lecons-cm2.html"],["Calcul mental","calcul-mental-series.html"],["Matador","jeu-mathador.html"]],
 hi:[["Repères","histoire-periodes.html"],["Nombres romains","nombres-romains-cm2.html"],["Histoire","#hi"]],
@@ -477,7 +482,7 @@ const ribbonPanel=document.getElementById('ribbon-panel');
 document.querySelectorAll('.ribbon-tab[data-subject]').forEach(btn=>btn.addEventListener('click',()=>{
  document.querySelectorAll('.ribbon-tab').forEach(x=>x.classList.remove('active'));btn.classList.add('active');const subject=btn.dataset.subject,list=ribbonFolders[subject]||[];
  ribbonPanel.dataset.subject=subject;
- ribbonPanel.innerHTML=list.map(x=>'<a href="'+x[1]+'" data-target="'+(x[1].startsWith('#')?x[1].slice(1):'')+'">'+x[0]+'</a>').join('');ribbonPanel.hidden=false;openSubject(subject);history.replaceState(null,'','#'+subject);
+ ribbonPanel.innerHTML=list.map(x=>'<a href="'+x[1]+'" data-target="'+(x[1].startsWith('#')?x[1].slice(1):'')+'">'+x[0]+'</a>').join('');ribbonPanel.hidden=false;if(subject==='world'){document.querySelectorAll('.shelf').forEach(s=>s.classList.remove('active'))}else openSubject(subject);history.replaceState(null,'','#'+subject);
 }));
 ribbonPanel.addEventListener('click',e=>{const a=e.target.closest('a[data-target]');if(!a||!a.dataset.target)return;e.preventDefault();openSubject(a.dataset.target);history.replaceState(null,'','#'+a.dataset.target);});
 </script>
