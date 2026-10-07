@@ -316,6 +316,48 @@ body.resources-page{
 #ribbon-panel a,#ribbon-panel[data-subject="an"] a{display:flex;align-items:center;justify-content:center;flex:0 0 auto;min-height:44px;width:auto;padding:11px 15px;white-space:nowrap;line-height:1.35;box-shadow:none;border:1px solid #ffffff55;border-radius:10px;background:#151c28}
 #ribbon-panel a:hover,#ribbon-panel a:focus-visible{background:#26374b;transform:none;outline:2px solid #85d9ff;outline-offset:-2px}
 </style>
+<style id="neon-all-resource-levels">
+/* Sous-menus + cartes : même langage néon que la navigation */
+.resources-page .shelf{--card-neon:var(--a);border-top-color:var(--card-neon)!important}
+.resources-page .subfolder{
+  --glow:var(--a);position:relative;isolation:isolate;overflow:hidden;border:1px solid color-mix(in srgb,var(--glow) 72%,white)!important;border-radius:12px!important;
+  background:linear-gradient(145deg,#171d29,#090d14)!important;color:#fff!important;
+  box-shadow:inset 0 0 0 1px #ffffff0a,0 0 10px color-mix(in srgb,var(--glow) 22%,transparent)!important;
+  text-shadow:0 0 9px color-mix(in srgb,var(--glow) 58%,transparent);transition:transform .2s ease,box-shadow .2s ease,background .2s ease!important
+}
+.resources-page .subfolder:before,.resources-page .item:before{
+  content:"";position:absolute;top:-80%;left:-42%;width:25%;height:260%;background:linear-gradient(90deg,transparent,#ffffff60,transparent);
+  transform:rotate(20deg) translateX(-280%);transition:transform .48s ease;pointer-events:none
+}
+.resources-page .subfolder:hover,.resources-page .subfolder:focus-visible{
+  transform:translateY(-4px) scale(1.025)!important;border-color:#fff!important;
+  background:linear-gradient(145deg,color-mix(in srgb,var(--glow) 18%,#171d29),#090d14)!important;
+  box-shadow:0 0 5px #fff,0 0 15px var(--glow),0 0 34px color-mix(in srgb,var(--glow) 42%,transparent),inset 0 0 18px color-mix(in srgb,var(--glow) 10%,transparent)!important;
+  text-shadow:0 0 5px #fff,0 0 13px var(--glow);outline:none
+}
+.resources-page .subfolder:hover:before,.resources-page .subfolder:focus-visible:before,.resources-page .item:hover:before,.resources-page .item:focus-within:before{transform:rotate(20deg) translateX(700%)}
+.resources-page .item{
+  --item-neon:var(--a);position:relative;isolation:isolate;overflow:hidden;color:#f5f7fa!important;padding:22px!important;
+  border:1px solid color-mix(in srgb,var(--item-neon) 68%,white)!important;border-left:5px solid var(--item-neon)!important;border-radius:16px!important;
+  background:radial-gradient(circle at 92% 5%,color-mix(in srgb,var(--item-neon) 17%,transparent),transparent 32%),linear-gradient(145deg,#18202c,#090d14 65%)!important;
+  box-shadow:0 10px 22px #0005,0 0 10px color-mix(in srgb,var(--item-neon) 20%,transparent),inset 0 0 22px color-mix(in srgb,var(--item-neon) 6%,transparent)!important;
+  transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease,background .22s ease
+}
+.resources-page .item h4{color:#fff!important;text-shadow:0 2px 10px #000;margin-top:18px!important}
+.resources-page .item p{color:#d5dce5!important}
+.resources-page .item .type{display:inline-block;border:1px solid color-mix(in srgb,var(--item-neon) 70%,transparent);border-radius:999px;background:color-mix(in srgb,var(--item-neon) 10%,#0a0e15)!important;color:var(--item-neon)!important;box-shadow:0 0 10px color-mix(in srgb,var(--item-neon) 24%,transparent);text-shadow:0 0 8px color-mix(in srgb,var(--item-neon) 65%,transparent)}
+.resources-page .item a{position:relative;z-index:2;border:1px solid var(--item-neon)!important;border-radius:9px;background:#0b1018!important;color:var(--item-neon)!important;box-shadow:0 0 10px color-mix(in srgb,var(--item-neon) 24%,transparent)!important;text-shadow:0 0 8px color-mix(in srgb,var(--item-neon) 60%,transparent);transition:.18s!important}
+.resources-page .item:hover,.resources-page .item:focus-within{
+  transform:translateY(-5px) scale(1.018);border-color:#fff!important;
+  background:radial-gradient(circle at 92% 5%,color-mix(in srgb,var(--item-neon) 30%,transparent),transparent 36%),linear-gradient(145deg,color-mix(in srgb,var(--item-neon) 12%,#18202c),#080c12 65%)!important;
+  box-shadow:0 15px 28px #0008,0 0 5px #fff,0 0 17px var(--item-neon),0 0 38px color-mix(in srgb,var(--item-neon) 38%,transparent),inset 0 0 24px color-mix(in srgb,var(--item-neon) 10%,transparent)!important
+}
+.resources-page .item a:hover,.resources-page .item a:focus-visible{transform:translateY(-2px);background:color-mix(in srgb,var(--item-neon) 18%,#0b1018)!important;color:#fff!important;border-color:#fff!important;box-shadow:0 0 5px #fff,0 0 15px var(--item-neon)!important;outline:none}
+.resources-page .item.soon{opacity:.68}
+@media(hover:none){.resources-page .subfolder:active,.resources-page .item:active{box-shadow:0 0 6px #fff,0 0 18px var(--a)!important}}
+@media(max-width:600px){.resources-page .subfolders{display:flex!important;overflow-x:auto;gap:9px;padding-bottom:10px}.resources-page .subfolder{flex:0 0 auto;min-width:145px}.resources-page .item:hover,.resources-page .item:focus-within{transform:translateY(-3px) scale(1.01)}}
+@media(prefers-reduced-motion:reduce){.resources-page .subfolder,.resources-page .subfolder:before,.resources-page .item,.resources-page .item:before{transition:none!important}}
+</style>
 </head>
 <body id="top" class="resources-page"><a class="zm-corner-logo" href="index.html" aria-label="Accueil Zou Maï"><img src="images/logo-zou-mai-sensei.png" alt="Logo Sensei Zou_Maï"></a>
 <nav class="site-nav" aria-label="Navigation principale">
