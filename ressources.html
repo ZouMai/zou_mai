@@ -76,6 +76,13 @@ body.resources-page:before{
 @media(max-width:600px){.resource-ribbon{padding:10px 8px 11px}.resource-ribbon:before{font-size:.62rem}.ribbon-scroll{gap:8px}.ribbon-tab{min-width:116px;padding:14px 14px;border-radius:14px;font-size:.78rem}.ribbon-panel{flex-wrap:nowrap;overflow-x:auto}}
 </style>
 
+<style id="english-lesson-navigation">
+#ribbon-panel[data-subject="an"]{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));max-height:55vh;overflow-y:auto;overflow-x:hidden}
+#ribbon-panel[data-subject="an"][hidden]{display:none}
+#ribbon-panel[data-subject="an"] a{display:flex;align-items:center;min-height:44px;line-height:1.4;white-space:normal;border-color:#ff7b4570}
+#ribbon-panel[data-subject="an"] a:focus-visible{outline:3px solid #ff7b45;outline-offset:2px}
+@media(max-width:600px){#ribbon-panel[data-subject="an"]{grid-template-columns:1fr;max-height:48vh}}
+</style>
 <style id="neon-content-cards">
 /* Les cartes À la une reprennent exactement le code couleur des matières */
 .weekly-card{--wc:#56d8ff;position:relative;overflow:hidden;background:linear-gradient(145deg,#171d29,#090d14);color:#fff;border:2px solid var(--wc);border-radius:17px;box-shadow:inset 0 0 0 1px #ffffff0d,0 0 11px color-mix(in srgb,var(--wc) 28%,transparent);text-shadow:none}
@@ -308,7 +315,7 @@ body.resources-page{
 <div class="ribbon-scroll">
 <button class="ribbon-tab fr" data-subject="fr">✍️ Français</button>
 <button class="ribbon-tab ma" data-subject="ma">➗ Maths</button>
-<a class="ribbon-tab an" href="ressources/anglais/index.html?v=20261006-english4">💬 Anglais</a>
+<button class="ribbon-tab an" type="button" data-subject="an" aria-controls="ribbon-panel" aria-expanded="false">💬 Anglais</button>
 <button class="ribbon-tab hi" data-subject="hi">⌛ Histoire</button>
 <button class="ribbon-tab ge" data-subject="ge">🗺️ Géo</button>
 <button class="ribbon-tab hd" data-subject="hd">🏛️ Arts</button>
@@ -469,6 +476,7 @@ if(location.hash)openSubject(location.hash.slice(1));
 </script>
 <script>
 const ribbonFolders={
+an:[["01 · Back to school","ressources/anglais/index.html?v=20261007-menu#lesson-1"],["02 · On the plane","ressources/anglais/index.html?v=20261007-menu#lesson-2"],["03 · At the airport","ressources/anglais/index.html?v=20261007-menu#lesson-3"],["04 · The train to London","ressources/anglais/index.html?v=20261007-menu#lesson-4"],["05 · At the hotel","ressources/anglais/index.html?v=20261007-menu#lesson-5"],["06 · Halloween: Trick or treat","ressources/anglais/index.html?v=20261007-menu#lesson-6"],["07 · Nationalities","ressources/anglais/index.html?v=20261007-menu#lesson-7"],["08 · Visiting monuments","ressources/anglais/index.html?v=20261007-menu#lesson-8"],["09 · Simon says","ressources/anglais/index.html?v=20261007-menu#lesson-9"],["10 · Merry Christmas!","ressources/anglais/index.html?v=20261007-menu#lesson-10"],["11 · Happy New Year!","ressources/anglais/index.html?v=20261007-menu#lesson-11"],["12 · At the zoo — Part 1","ressources/anglais/index.html?v=20261007-menu#lesson-12"],["13 · At the zoo — Part 2","ressources/anglais/index.html?v=20261007-menu#lesson-13"],["14 · At the gift shop","ressources/anglais/index.html?v=20261007-menu#lesson-14"],["15 · At the clothing shop","ressources/anglais/index.html?v=20261007-menu#lesson-15"],["16 · At the restaurant","ressources/anglais/index.html?v=20261007-menu#lesson-16"],["17 · Saint Patrick’s Day","ressources/anglais/index.html?v=20261007-menu#lesson-17"],["18 · A board game","ressources/anglais/index.html?v=20261007-menu#lesson-18"],["19 · Visiting Aunt Suzie","ressources/anglais/index.html?v=20261007-menu#lesson-19"],["20 · Talking about sports","ressources/anglais/index.html?v=20261007-menu#lesson-20"],["21 · Britain’s got talent","ressources/anglais/index.html?v=20261007-menu#lesson-21"],["22 · Cook a recipe","ressources/anglais/index.html?v=20261007-menu#lesson-22"]],
 world:[["🌋 Islande","ressources/mysteresdumonde/index.html#islande"],["🏜️ Sahara","ressources/mysteresdumonde/index.html#sahara"],["🇯🇵 Japon","ressources/mysteresdumonde/index.html#japon"],["🌿 Amazonie","ressources/mysteresdumonde/index.html#amazonie"],["🪸 Barrière de corail","ressources/mysteresdumonde/index.html#corail"]],
 fr:[["Dictées","#dictees"],["Orthographe","#orthographe"],["Grammaire","#grammaire"],["Conjugaison","#conjugaison"],["Lexique","#lexique"]],
 ma:[["Tables de multiplication","tables-multiplication.html"],["Leçons","maths-lecons-cm2.html"],["Calcul mental","calcul-mental-series.html"],["Matador","jeu-mathador.html"]],
@@ -482,7 +490,7 @@ const ribbonPanel=document.getElementById('ribbon-panel');
 document.querySelectorAll('.ribbon-tab[data-subject]').forEach(btn=>btn.addEventListener('click',()=>{
  document.querySelectorAll('.ribbon-tab').forEach(x=>x.classList.remove('active'));btn.classList.add('active');const subject=btn.dataset.subject,list=ribbonFolders[subject]||[];
  ribbonPanel.dataset.subject=subject;
- ribbonPanel.innerHTML=list.map(x=>'<a href="'+x[1]+'" data-target="'+(x[1].startsWith('#')?x[1].slice(1):'')+'">'+x[0]+'</a>').join('');ribbonPanel.hidden=false;if(subject==='world'){document.querySelectorAll('.shelf').forEach(s=>s.classList.remove('active'))}else openSubject(subject);history.replaceState(null,'','#'+subject);
+ ribbonPanel.innerHTML=list.map(x=>'<a href="'+x[1]+'" data-target="'+(x[1].startsWith('#')?x[1].slice(1):'')+'">'+x[0]+'</a>').join('');ribbonPanel.hidden=false;document.querySelectorAll('.ribbon-tab[data-subject]').forEach(x=>x.setAttribute('aria-expanded',String(x===btn)));if(subject==='world'){document.querySelectorAll('.shelf').forEach(s=>s.classList.remove('active'))}else openSubject(subject);history.replaceState(null,'','#'+subject);
 }));
 ribbonPanel.addEventListener('click',e=>{const a=e.target.closest('a[data-target]');if(!a||!a.dataset.target)return;e.preventDefault();openSubject(a.dataset.target);history.replaceState(null,'','#'+a.dataset.target);});
 </script>
