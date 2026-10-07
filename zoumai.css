@@ -142,3 +142,29 @@ body.dictation-page .artwork .art-frame img{width:100%!important;height:100%!imp
 .hl-grapheme,.legend-grapheme{background:#aeeec4;color:#145b2d}
 @media(max-width:800px){body.dictation-page .artwork{grid-template-columns:1fr!important}body.dictation-page .art-frame{height:420px!important}}
 @media(max-width:600px){body.dictation-page .art-frame{height:330px!important}}
+
+
+/* Filigrane signature Zou Maï — pages intérieures */
+body:not(.home-page)::before{
+  content:"道";
+  position:fixed;
+  left:50%;
+  top:54%;
+  transform:translate(-50%,-50%) rotate(-6deg);
+  z-index:-1;
+  pointer-events:none;
+  user-select:none;
+  font-family:serif;
+  font-size:min(58vw,720px);
+  font-weight:900;
+  line-height:1;
+  color:rgba(223,63,53,.045);
+  text-shadow:none;
+}
+@media(max-width:720px){
+  body:not(.home-page)::before{
+    top:58%;
+    font-size:82vw;
+    color:rgba(223,63,53,.04);
+  }
+}
