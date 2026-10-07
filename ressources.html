@@ -277,7 +277,21 @@ body.resources-page{
 .ribbon-panel[data-subject="ma"] a{border-color:#36c8ff;color:#dff7ff;box-shadow:0 0 10px #36c8ff30}
 .ribbon-panel[data-subject="ma"] a:hover,.ribbon-panel[data-subject="ma"] a:focus-visible{border-color:#fff;box-shadow:0 0 16px #36c8ff88}
 </style>
-</head>
+<style id="mobile-french-submenu">
+#mobile-french-games[hidden]{display:none!important}
+#mobile-french-games{display:none}
+@media(max-width:600px){
+.ribbon-panel[data-subject="fr"]{flex-wrap:wrap;overflow:visible}
+.ribbon-panel[data-subject="fr"] a{flex:1 1 40%;justify-content:center;min-height:44px;border-color:#ff4f73}
+.ribbon-panel[data-subject="fr"] a[aria-current="true"]{background:#ff4f7328;box-shadow:0 0 14px #ff4f7366}
+#mobile-french-games{display:block;margin-top:10px;max-height:42dvh;overflow-y:auto;overscroll-behavior:contain;padding:4px}
+.mobile-game-links{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mobile-game-link{display:flex;flex-direction:column;gap:7px;min-height:90px;padding:13px;border:1px solid #ff4f73;border-radius:12px;background:#171d29;color:#fff;text-decoration:none}
+.mobile-game-link span{font-size:.65rem;color:#ff91a6;font-weight:900}
+.mobile-game-link strong{font-size:.86rem;line-height:1.3}
+.mobile-game-link:focus-visible{outline:3px solid #fff;outline-offset:2px}
+}
+</style></head>
 <body id="top" class="resources-page"><a class="zm-corner-logo" href="index.html" aria-label="Accueil Zou Maï"><img src="images/logo-zou-mai-sensei.png" alt="Logo Sensei Zou_Maï"></a>
 <nav class="site-nav" aria-label="Navigation principale">
 <a href="index.html">ACCUEIL</a>
@@ -491,6 +505,31 @@ if(mathGrid){
 })();
 </script>
 <footer class="site-footer"><span>Choisir · Explorer · S’entraîner</span><a class="site-signature" href="apropos.html"><img src="images/logo-zou-mai-sensei.png" alt="Logo Sensei Zou_Mai"></a></footer>
+<script id="mobile-french-navigation">
+(function(){
+ const panel=document.getElementById('ribbon-panel');
+ const menu=document.createElement('div');menu.id='mobile-french-games';menu.hidden=true;menu.setAttribute('aria-label','Jeux de la rubrique');panel.after(menu);
+ const categories=new Set(['dictees','orthographe','grammaire','conjugaison','lexique']);
+ function resetSelection(){document.querySelectorAll('.shelf').forEach(s=>s.classList.remove('active'));document.getElementById('resource-content').classList.remove('has-selection');const weekly=document.querySelector('.weekly');if(weekly)weekly.hidden=false}
+ function openGames(id){
+ const shelf=document.getElementById(id);if(!shelf)return;
+ menu.replaceChildren();const box=document.createElement('div');box.className='mobile-game-links';
+ shelf.querySelectorAll('.grid .item').forEach(item=>{const source=item.querySelector('a[href]');if(!source)return;const a=document.createElement('a');a.className='mobile-game-link';a.href=source.getAttribute('href');const label=document.createElement('span');label.textContent=item.querySelector('.type')?.textContent||'JEU';const title=document.createElement('strong');title.textContent=item.querySelector('h4')?.textContent||source.textContent;a.append(label,title);box.append(a)});
+ if(!box.children.length){const text=document.createElement('p');text.textContent='Les prochaines activités seront ajoutées ici.';box.append(text)}
+ menu.append(box);menu.hidden=false;panel.querySelectorAll('a').forEach(a=>a.setAttribute('aria-current',String(a.dataset.target===id)));resetSelection();history.replaceState(null,'','#'+id);
+ }
+ panel.addEventListener('click',event=>{
+ if(!matchMedia('(max-width:600px)').matches||panel.dataset.subject!=='fr')return;
+ const link=event.target.closest('a[data-target]');if(!link||!categories.has(link.dataset.target))return;
+ event.preventDefault();event.stopImmediatePropagation();openGames(link.dataset.target);
+ },true);
+ document.querySelectorAll('.ribbon-tab[data-subject]').forEach(button=>button.addEventListener('click',()=>{
+ menu.hidden=true;panel.querySelectorAll('a').forEach(a=>a.removeAttribute('aria-current'));
+ if(matchMedia('(max-width:600px)').matches&&button.dataset.subject==='fr')resetSelection();
+ }));
+ matchMedia('(max-width:600px)').addEventListener('change',()=>{menu.hidden=true});
+})();
+</script>
 <script src="site-tracking.js" defer></script>
 </body>
 </html>
