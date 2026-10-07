@@ -72,6 +72,8 @@ body.resources-page:before{
 .ribbon-tab:active{transform:translateY(-1px) scale(1.01)}
 .ribbon-panel{--sub-neon:#56d8ff;display:flex;gap:10px;flex-wrap:wrap;margin-top:4px;padding:13px;background:#0d121bcc;border:1px solid color-mix(in srgb,var(--sub-neon) 28%,#ffffff22);border-radius:14px;box-shadow:inset 0 0 22px color-mix(in srgb,var(--sub-neon) 6%,transparent);transition:.22s}
 .ribbon-panel[data-subject="fr"]{--sub-neon:#ff4f73}.ribbon-panel[data-subject="ma"]{--sub-neon:#36c8ff}.ribbon-panel[data-subject="an"]{--sub-neon:#ff7b45}.ribbon-panel[data-subject="hi"]{--sub-neon:#ffc83d}.ribbon-panel[data-subject="ge"]{--sub-neon:#62e38d}.ribbon-panel[data-subject="hd"]{--sub-neon:#c47cff}.ribbon-panel[data-subject="em"]{--sub-neon:#ff5ec4}.ribbon-panel[data-subject="mu"]{--sub-neon:#61e7df}.ribbon-panel[data-subject="ci"]{--sub-neon:#ff4f4f}.ribbon-panel[data-subject="world"]{--sub-neon:#45f0b5}
+/* Une seule source de couleur : le panneau transmet exactement sa couleur aux sous-menus. */
+.ribbon-panel a{--a:var(--sub-neon);--glow:var(--sub-neon);--item-neon:var(--sub-neon)}
 .ribbon-panel a{position:relative;isolation:isolate;overflow:hidden;background:linear-gradient(145deg,#171d29,#0a0f17);color:#fff;border:1px solid color-mix(in srgb,var(--sub-neon) 58%,#ffffff55);border-radius:11px;padding:10px 13px;text-decoration:none;font-size:.75rem;font-weight:900;box-shadow:inset 0 0 0 1px #ffffff08,0 0 9px color-mix(in srgb,var(--sub-neon) 18%,transparent);text-shadow:0 0 8px color-mix(in srgb,var(--sub-neon) 42%,transparent);transition:transform .18s ease,box-shadow .2s ease,border-color .2s ease,background .2s ease}
 .ribbon-panel a:before{content:"";position:absolute;top:-70%;left:-45%;width:28%;height:240%;background:linear-gradient(90deg,transparent,#ffffff65,transparent);transform:rotate(20deg) translateX(-260%);transition:transform .42s ease;pointer-events:none}
 .ribbon-panel a:hover,.ribbon-panel a:focus-visible{z-index:2;transform:translateY(-3px) scale(1.025);background:linear-gradient(145deg,color-mix(in srgb,var(--sub-neon) 17%,#171d29),#090d14);color:#fff;border-color:#fff;outline:none;box-shadow:0 0 5px #fff,0 0 14px var(--sub-neon),0 0 30px color-mix(in srgb,var(--sub-neon) 42%,transparent),inset 0 0 16px color-mix(in srgb,var(--sub-neon) 10%,transparent);text-shadow:0 0 5px #fff,0 0 12px var(--sub-neon)}
@@ -411,27 +413,27 @@ body.resources-page{
 </section>
 
 <section class="content" id="resource-content">
-<div class="shelf" id="fr" style="--a:#ef4b43">
+<div class="shelf" id="fr" style="--a:#ff4f73">
 <h3>Français</h3>
 <p style="margin:18px 0 4px;font-weight:800">Choisis une rubrique pour retrouver les leçons et les jeux.</p>
 </div>
-<div class="shelf" id="poesie" style="--a:#ef4b43"><h3>Français · Poésie</h3><div class="grid"><article class="item"><span class="type">POÉSIE · LECTURE</span><h4>Marine — Paul Verlaine</h4><p>Lire, observer et comprendre le poème illustré.</p><a href="marine-verlaine.html">DÉCOUVRIR →</a></article></div></div>
-<div class="shelf" id="dictees" style="--a:#ef4b43"><h3>Français · Dictées</h3><section class="method-box"><img src="https://www.editions-retz.com/sites/default/files/visuels/9782725647791.jpg" alt="Couverture Dictées et histoire des arts, Voyage dans le temps" loading="lazy"><div><h2>Dictées · La méthode utilisée</h2><p><strong>Dictées et histoire des arts – Voyage dans le temps, cycle 3</strong>, Mélanie Pouëssel, Éditions Retz.</p></div></section><div class="grid"></div></div>
-<div class="shelf" id="orthographe" style="--a:#ef4b43"><h3>Français · Orthographe</h3><div class="grid">
+<div class="shelf" id="poesie" style="--a:#ff4f73"><h3>Français · Poésie</h3><div class="grid"><article class="item"><span class="type">POÉSIE · LECTURE</span><h4>Marine — Paul Verlaine</h4><p>Lire, observer et comprendre le poème illustré.</p><a href="marine-verlaine.html">DÉCOUVRIR →</a></article></div></div>
+<div class="shelf" id="dictees" style="--a:#ff4f73"><h3>Français · Dictées</h3><section class="method-box"><img src="https://www.editions-retz.com/sites/default/files/visuels/9782725647791.jpg" alt="Couverture Dictées et histoire des arts, Voyage dans le temps" loading="lazy"><div><h2>Dictées · La méthode utilisée</h2><p><strong>Dictées et histoire des arts – Voyage dans le temps, cycle 3</strong>, Mélanie Pouëssel, Éditions Retz.</p></div></section><div class="grid"></div></div>
+<div class="shelf" id="orthographe" style="--a:#ff4f73"><h3>Français · Orthographe</h3><div class="grid">
 <article class="item"><span class="type">O1 · LEÇON + JEU</span><h4>Le pluriel des noms et adjectifs</h4><p>Accorder noms et adjectifs au pluriel.</p><a href="o1-pluriel-noms-adjectifs.html">JOUER →</a></article>
 <article class="item"><span class="type">O2 · LEÇON + JEU</span><h4>Écrire les nombres en lettres</h4><p>Écrire correctement les nombres en toutes lettres.</p><a href="o2-nombres-en-lettres.html">JOUER →</a></article>
 <article class="item"><span class="type">O3 · LEÇON + JEU</span><h4>S ou SS ?</h4><p>Choisir entre s et ss.</p><a href="o3-s-ou-ss.html">JOUER →</a></article>
 <article class="item"><span class="type">O4 · LEÇON + JEU</span><h4>Le verbe se conjugue</h4><p>Retrouver le vrai sujet et accorder le verbe dans les phrases pièges.</p><a href="o4-verbe-se-conjugue.html">JOUER →</a></article>
 <article class="item"><span class="type">O5 · LEÇON + JEU</span><h4>a, à, on ou ont ?</h4><p>Choisir le bon homophone, tester les remplacements et se corriger.</p><a href="o5-a-on-ont.html">JOUER →</a></article>
 </div></div>
-<div class="shelf" id="grammaire" style="--a:#ef4b43"><h3>Français · Grammaire</h3><div class="grid">
+<div class="shelf" id="grammaire" style="--a:#ff4f73"><h3>Français · Grammaire</h3><div class="grid">
 <article class="item"><span class="type">G2 · LEÇON + JEUX</span><h4>Les noms et les adjectifs</h4><p>Reconnaître les noms, noms propres, noms communs et adjectifs.</p><a href="g2-noms-adjectifs.html">OUVRIR →</a></article>
 </div></div>
-<div class="shelf" id="conjugaison" style="--a:#ef4b43"><h3>Français · Conjugaison</h3><div class="grid">
+<div class="shelf" id="conjugaison" style="--a:#ff4f73"><h3>Français · Conjugaison</h3><div class="grid">
 <article class="item"><span class="type">CONJUGAISON · JEUX</span><h4>🥋 Konju Dojo</h4><p>Reconnais les verbes, trouve leur groupe ou relève les défis du dojo.</p><a href="francais-1-conjugaison.html?v=20261004-2326">CHOISIR UN JEU →</a></article>
 </div></div>
-<div class="shelf" id="lexique" style="--a:#ef4b43"><h3>Français · Lexique</h3><div class="grid"><article class="item soon"><span class="type">À VENIR</span><h4>Leçons et jeux de lexique</h4><p>Les prochaines ressources seront rangées ici.</p></article></div></div>
-<div class="shelf" id="hi" style="--a:#d7a320">
+<div class="shelf" id="lexique" style="--a:#ff4f73"><h3>Français · Lexique</h3><div class="grid"><article class="item soon"><span class="type">À VENIR</span><h4>Leçons et jeux de lexique</h4><p>Les prochaines ressources seront rangées ici.</p></article></div></div>
+<div class="shelf" id="hi" style="--a:#ffc83d">
 <h3>Histoire</h3>
 <div class="grid">
 <article class="item">
@@ -448,7 +450,7 @@ body.resources-page{
 </article>
 </div>
 </div>
-<div class="shelf" id="an" style="--a:#ff593f">
+<div class="shelf" id="an" style="--a:#ff7b45">
 <h3>Anglais</h3><section class="method-box"><img src="images/couverture-cahier-anglais.png" alt="Couverture du cahier d’anglais utilisé en classe" loading="lazy"><div><h2>Anglais · La méthode utilisée</h2><p><strong>Une méthode d’anglais fondée sur des saynètes et des jeux, cycle 3</strong>, de <strong>Sylvie Hanot et Christine Hanot</strong>. Écouter, répéter, mémoriser avec les flashcards, puis comprendre et jouer les dialogues des BD.</p><small>Illustration : couverture du cahier de la méthode fourni à la classe (ce visuel n’est pas la couverture du livre). Ces ressources accompagnent une utilisation dans le cadre de notre classe uniquement ; les documents des autrices ne sont pas libres de diffusion. <a href="https://storytelling2.fr/2026/04/the-methode-3-version-2026-nouveaux-programmes-de-langues-vivantes-cycle-3/" target="_blank" rel="noopener noreferrer">Site des autrices ↗</a></small></div></section>
 <div class="grid">
 <article class="item">
@@ -459,7 +461,7 @@ body.resources-page{
 </article>
 </div>
 </div>
-<div class="shelf" id="ci" style="--a:#e5ac58">
+<div class="shelf" id="ci" style="--a:#ff4f4f">
 <h3>École et cinéma</h3>
 <div class="grid">
 <article class="item">
@@ -470,7 +472,7 @@ body.resources-page{
 </article>
 </div>
 </div>
-<div class="shelf" id="em" style="--a:#7766d7">
+<div class="shelf" id="em" style="--a:#ff5ec4">
 <h3>EMC · Vivre ensemble</h3>
 <div class="grid"><article class="item"><span class="type">AFFICHAGE · LEÇON · 3 JEUX</span><h4>Les messages clairs</h4><p>Exprimer un désaccord sans blesser, écouter l’autre et chercher une solution.</p><a href="emc-messages-clairs.html">DÉCOUVRIR &amp; JOUER →</a></article></div>
 </div>
