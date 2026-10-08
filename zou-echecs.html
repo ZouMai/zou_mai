@@ -15,7 +15,7 @@ const lessons=[
 {title:'La dame',fen:'4k3/8/8/8/8/8/8/3QK3 w - - 0 1',task:'Déplace la dame de d1 à d5.',from:'d1',to:'d5',hint:'La dame combine les déplacements de la tour et du fou.'},
 {title:'Le cavalier',fen:'4k3/8/8/8/8/8/8/1N2K3 w - - 0 1',task:'Déplace le cavalier de b1 à c3.',from:'b1',to:'c3',hint:'Le cavalier saute en L : deux cases puis une sur le côté.'},
 {title:'Le pion',fen:'4k3/8/8/8/8/8/4P3/4K3 w - - 0 1',task:'Avance le pion de e2 à e4.',from:'e2',to:'e4',hint:'Depuis sa case de départ, un pion peut avancer de deux cases si elles sont libres.'},
-{title:'La capture',fen:'4k3/8/8/8/3p4/8/8/R3K3 w - - 0 1',task:'Capture le pion noir en d4 avec la tour de a1.',from:'a1',to:'d4',hint:'Une pièce capture une pièce adverse en prenant sa place.'}
+{title:'La capture',fen:'4k3/8/8/8/3p4/8/8/3RK3 w - - 0 1',task:'Capture le pion noir en d4 avec la tour de d1.',from:'d1',to:'d4',hint:'Une pièce capture une pièce adverse en prenant sa place.'}
 ];
 let step=0,game,selected=null,flipped=false,complete=false,last=[];
 const $=id=>document.getElementById(id),names={k:'roi',q:'dame',r:'tour',b:'fou',n:'cavalier',p:'pion'};
