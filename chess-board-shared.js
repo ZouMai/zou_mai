@@ -22,7 +22,7 @@ if(!['green','blue','wood'].includes(theme))theme='green';
 if(!['merida','alpha','cburnett'].includes(pieces))pieces='merida';
 if(!document.getElementById('theme'))board.dataset.theme=theme;
 const squares=Array.from(board.querySelectorAll('.sq,.square'));if(squares.length!==64)return;
-const flipped=!!(squares[0].getAttribute('aria-label')||'').startsWith('h1');
+const flipped=(squares[0].getAttribute('aria-label')||'').startsWith('h1');
 for(let i=0;i<64;i++){const cell=squares[i],sq=(cell.getAttribute('aria-label')||'').match(/^[a-h][1-8]/)?.[0];if(!sq)continue;
 const img=cell.querySelector('img');if(img){const current=img.getAttribute('src')||'';const desired=current.replace(/\/piece\/(?:merida|alpha|cburnett)\//,'/piece/'+pieces+'/');if(current!==desired&&(!document.getElementById('pieces')))img.setAttribute('src',desired)}
 const rank=Number(sq[1]),file=sq[0],firstFile=flipped?'h':'a',bottomRank=flipped?8:1;
