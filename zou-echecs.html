@@ -34,4 +34,4 @@ $('flip').onclick=()=>{flipped=!flipped;render()};
 $('reset').onclick=load;
 $('next').onclick=()=>{if(!complete)return;if(step<lessons.length-1){step++;load()}else{$('status').textContent='Parcours terminé ! Bravo ! 🏆';$('next').disabled=true}};
 load();
-</script></body></html>
+</script><script src="chess-board-shared.js" defer></script></body></html>
