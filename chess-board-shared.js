@@ -25,7 +25,7 @@ const squares=Array.from(board.querySelectorAll('.sq,.square'));if(squares.lengt
 const flipped=!!(squares[0].getAttribute('aria-label')||'').startsWith('h1');
 for(let i=0;i<64;i++){const cell=squares[i],sq=(cell.getAttribute('aria-label')||'').match(/^[a-h][1-8]/)?.[0];if(!sq)continue;
 const img=cell.querySelector('img');if(img){const current=img.getAttribute('src')||'';const desired=current.replace(/\/piece\/(?:merida|alpha|cburnett)\//,'/piece/'+pieces+'/');if(current!==desired&&(!document.getElementById('pieces')))img.setAttribute('src',desired)}
-if(!cell.querySelector('.chess-coordinate')){const rank=Number(sq[1]),file=sq[0];const firstFile=flipped?'h':'a',bottomRank=flipped?8:1;
+if(!cell.querySelector('.chess-coordinate,.coordinate,.coord')){const rank=Number(sq[1]),file=sq[0];const firstFile=flipped?'h':'a',bottomRank=flipped?8:1;
 if(file===firstFile){const e=document.createElement('span');e.className='chess-coordinate rank';e.textContent=rank;cell.append(e)}
 if(rank===bottomRank){const e=document.createElement('span');e.className='chess-coordinate file';e.textContent=file;cell.append(e)}}
 }
