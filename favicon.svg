@@ -1,1 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect x="3" y="3" width="58" height="58" rx="8" fill="#e04435"/><rect x="7" y="7" width="50" height="50" rx="5" fill="none" stroke="#fff" stroke-width="3"/><text x="32" y="46" text-anchor="middle" font-family="serif" font-size="43" font-weight="700" fill="#fff">道</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<path d="M8 23 L24 27 L29 9 L42 22 L53 7 L58 34 L20 55 Z" fill="#ffe43d" stroke="#080808" stroke-width="3.3" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M21 48 Q35 40 53 36" fill="none" stroke="#0a0a0a" stroke-width="2.5" stroke-linecap="round"/>
+<path d="M37 40 Q36 37 37 34" fill="none" stroke="#0a0a0a" stroke-width="2.3" stroke-linecap="round"/>
+<circle cx="8" cy="23" r="4" fill="#ffe43d" stroke="#080808" stroke-width="3"/>
+<circle cx="29" cy="9" r="4" fill="#ffe43d" stroke="#080808" stroke-width="3"/>
+<circle cx="53" cy="7" r="4" fill="#ffe43d" stroke="#080808" stroke-width="3"/>
+</svg>
