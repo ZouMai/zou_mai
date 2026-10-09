@@ -4,7 +4,7 @@
 const $=id=>document.getElementById(id),files='abcdefgh';
 let stage=0,task=0,board={},turn='w',selected=null,history=[],done=false,aiTimer=null,placing=null,placed=[],attempts=0,drillPosition=null;
 const drills=[
-[{fen:'8/8/8/8/8/8/3P4/2B5',from:'c1',to:'g5',prompt:'Révision : le fou blanc part de c1. Joue Fg5.'},{fen:'8/8/8/8/8/8/3P4/R7',from:'a1',to:'a5',prompt:'Révision : la tour blanche part de a1. Joue Ta5.'}],
+[{fen:'8/8/8/8/8/8/3P4/2B5',from:'c1',to:'g5',prompt:'Révision : conduis le fou blanc de c1 jusqu’à g5. Le pion d2 bloque la diagonale directe : trouve un chemin en plusieurs coups.'},{fen:'8/8/8/8/8/8/3P4/R7',from:'a1',to:'a5',prompt:'Révision : conduis la tour blanche de a1 jusqu’à a5. Tu peux utiliser plusieurs coups.'}],
 [{fen:'8/8/8/8/3Q4/8/8/8',from:'d4',to:'d8',prompt:'La dame se déplace comme une tour ET un fou. Depuis d4, joue Dd8.'},{fen:'8/8/8/8/3Q4/8/8/8',from:'d4',to:'h8',prompt:'Elle va aussi en diagonale : depuis d4, joue Dh8.'},{fen:'8/8/8/8/3Q4/8/8/8',from:'d4',to:'a4',prompt:'Elle peut reculer ou aller de côté : joue Da4.'}],
 [{fen:'8/1p6/8/8/8/8/8/Q7',from:'a1',to:'b7',prompt:'Capture le pion noir en b7 : Dxb7.'},{fen:'8/8/8/8/8/4p3/3P4/3Q4',from:'d1',to:'e2',prompt:'Le pion blanc en d2 bloque la dame. Cherche une autre diagonale : joue De2.'},{fen:'8/8/8/8/4p3/8/8/4Q3',from:'e1',to:'e4',prompt:'Capture le pion noir en e4 : Dxe4.'}],
 [{fen:'8/8/8/8/3Q4/8/8/8',from:'d4',to:'a7',prompt:'Trouve la diagonale de d4 vers a7.'},{fen:'8/8/8/3p4/8/8/8/3Q4',from:'d1',to:'d5',prompt:'La dame capture sur une colonne : Dxd5.'},{fen:'8/8/8/8/3P4/8/8/3Q4',from:'d1',to:'a1',prompt:'Attention au pion blanc en d4 : tu ne peux pas le traverser. Joue Da1.'}]
