@@ -27,7 +27,7 @@ for(let i=0;i<64;i++){const cell=squares[i],sq=(cell.getAttribute('aria-label')|
 const img=cell.querySelector('img');if(img){const current=img.getAttribute('src')||'';const desired=current.replace(/\/piece\/(?:merida|alpha|cburnett)\//,'/piece/'+pieces+'/');if(current!==desired&&(!document.getElementById('pieces')))img.setAttribute('src',desired)}
 const rank=Number(sq[1]),file=sq[0],firstFile=flipped?'h':'a',bottomRank=flipped?8:1;
 const existingRank=cell.querySelector('.chess-coordinate.rank,.coord:not(.file),.coordinate.rank');
-const existingFile=cell.querySelector('.chess-coordinate.file,.coord.file,.coordinate.file');
+const existingFile=cell.querySelector('.chess-coordinate.file,.coord.file,.coordinate.file,.coord:not(.rank)');
 if(file===firstFile&&!existingRank){const e=document.createElement('span');e.className='chess-coordinate rank';e.textContent=rank;cell.append(e)}
 if(rank===bottomRank&&!existingFile){const e=document.createElement('span');e.className='chess-coordinate file';e.textContent=file;cell.append(e)}
 
