@@ -42,4 +42,4 @@ $('opponent').onchange=()=>startBattle();$('level').onchange=()=>{if(stage===5)s
 $('prev-puzzle').onclick=()=>{task=Math.max(0,task-1);startPuzzle()};$('next-puzzle').onclick=()=>{task=Math.min(3,task+1);startPuzzle()};document.querySelectorAll('[data-stage]').forEach(b=>b.onclick=()=>setStage(+b.dataset.stage));
 setStage(0);
 
-</script></body></html>
+</script><script src="chess-board-shared.js" defer></script></body></html>

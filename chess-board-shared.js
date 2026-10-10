@@ -14,7 +14,7 @@ const css=document.createElement('style');css.textContent=`
 #board[data-theme="blue"] .light .chess-coordinate{color:#4a718c}
 #board[data-theme="wood"] .light .chess-coordinate{color:#8a6344}
 #board[data-theme="wood"] .dark .chess-coordinate{color:#fff3dc}
-`;document.head.append(css);
+.zou-board-toast{position:absolute;z-index:8;top:12px;left:50%;transform:translateX(-50%);padding:10px;background:#122738ee;border-radius:10px;color:white;pointer-events:none}`;document.head.append(css);
 let active=false;
 function sync(){if(active)return;active=true;try{
 let theme='green',pieces='merida';try{theme=localStorage.getItem('zou-board')||'green';pieces=localStorage.getItem('zou-pieces')||'merida'}catch{}
@@ -45,7 +45,8 @@ const defs=document.createElementNS(ns,'defs');svg.append(defs);host.append(svg)
 function positionSvg(){const br=board.getBoundingClientRect(),hr=host.getBoundingClientRect();svg.style.left=(br.left-hr.left)+'px';svg.style.top=(br.top-hr.top)+'px';svg.style.width=br.width+'px';svg.style.height=br.height+'px'}
 function arrowCenter(square){const cell=[...board.querySelectorAll('.sq,.square')].find(e=>(e.getAttribute('aria-label')||'').startsWith(square));if(!cell)return null;const r=cell.getBoundingClientRect(),b=board.getBoundingClientRect();return {x:(r.left+r.width/2-b.left)/b.width*800,y:(r.top+r.height/2-b.top)/b.height*800}}
 function drawArrows(){positionSvg();svg.replaceChildren();defs.replaceChildren();svg.append(defs);arrowData.forEach((a,i)=>{const from=arrowCenter(a.from),to=arrowCenter(a.to);if(!from||!to||a.from===a.to)return;const color=a.color||'#f6c542';const marker=document.createElementNS(ns,'marker');marker.id='zou-arrow-'+i;marker.setAttribute('markerWidth','5');marker.setAttribute('markerHeight','5');marker.setAttribute('refX','4');marker.setAttribute('refY','2.5');marker.setAttribute('orient','auto');marker.setAttribute('markerUnits','strokeWidth');const head=document.createElementNS(ns,'path');head.setAttribute('d','M0,0 L5,2.5 L0,5 Z');head.setAttribute('fill',color);marker.append(head);defs.append(marker);const line=document.createElementNS(ns,'line');line.setAttribute('x1',from.x);line.setAttribute('y1',from.y);line.setAttribute('x2',to.x);line.setAttribute('y2',to.y);line.setAttribute('stroke',color);line.setAttribute('stroke-width','13');line.setAttribute('stroke-linecap','round');line.setAttribute('opacity','.87');line.setAttribute('marker-end','url(#zou-arrow-'+i+')');svg.append(line)})}
-window.ZouChessBoard={showArrow(from,to,color){arrowData=[{from,to,color}];drawArrows()},showArrows(arrows){arrowData=Array.isArray(arrows)?arrows.filter(a=>/^[a-h][1-8]$/.test(a.from)&&/^[a-h][1-8]$/.test(a.to)):[];drawArrows()},clearArrows(){arrowData=[];drawArrows()}};
+const toast=document.createElement('div');toast.className='zou-board-toast';toast.hidden=true;host.append(toast);let toastTimer;function showToast(message,ms=1800){toast.textContent=message;toast.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>{toast.hidden=true},ms)}
+window.ZouChessBoard={showToast,showArrow(from,to,color){arrowData=[{from,to,color}];drawArrows()},showArrows(arrows){arrowData=Array.isArray(arrows)?arrows.filter(a=>/^[a-h][1-8]$/.test(a.from)&&/^[a-h][1-8]$/.test(a.to)):[];drawArrows()},clearArrows(){arrowData=[];drawArrows()}};
 const resize=new ResizeObserver(()=>{if(arrowData.length)drawArrows();else positionSvg()});resize.observe(board);
 
 })();
