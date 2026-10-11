@@ -15,7 +15,7 @@ const card=make('article','card'),head=make('div','card-head');
 const visual=make('div','wolf'),pic=make('img');pic.src=l.icon;pic.alt='Illustration Zou Maï · '+l.title;pic.loading='lazy';pic.onerror=()=>{pic.src='./assets/logo-zoumai-chart.png';pic.onerror=null;};visual.append(pic);
 const title=make('h2','',l.title),subtitle=make('p','subtitle',l.subtitle),actions=make('div','actions');
 if(l.games){const a=make('a','game','🎮 10 JEUX ↗');a.href=gameUrl(l.games);a.title='Jeux de cette leçon dans Zou Maï';actions.append(a);}else{const off=make('button','off','🎮 JEUX · à venir');off.disabled=true;actions.append(off);}
-if(l.id===4){const ghost=make('a','game','👻 GHOST CASTLE');ghost.href='./ghost-castle-v2.html';ghost.title='Jeu supplémentaire : les directions dans le château';actions.append(ghost);}
+if(l.id===4){const ghost=make('a','game','👻 GHOST CASTLE');ghost.href='./zoomy-treasure-2026.html';ghost.title='Jeu supplémentaire : les directions dans le château';actions.append(ghost);}
 const comic=make('button','comic','📖 BD');comic.onclick=()=>location.hash='bd-'+l.id;actions.append(comic);
 if(l.audioData){const audio=make('button','audio','🔊 BD SONORISÉE');audio.onclick=()=>location.hash='audio-'+l.id;actions.append(audio);}else{const off=make('button','off','🔊 BD SONORISÉE · à venir');off.disabled=true;actions.append(off);}
 card.append(head,visual,title,subtitle,actions);grid.append(card);
