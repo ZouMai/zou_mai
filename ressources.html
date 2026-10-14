@@ -412,6 +412,7 @@ body.resources-page{
 <div><span class="weekly-kicker">VU CETTE SEMAINE EN CLASSE</span><h2 id="weekly-title">À LA UNE</h2><p>Les activités du moment à retrouver en un clic.</p></div>
 </div>
 <div class="weekly-grid">
+<a class="weekly-card weekly-fr" href="enqueteur-lecture.html"><span>🔎 LECTURE COMPRÉHENSION</span><strong>Les enquêtes de lecture</strong><small>30 missions pour lire entre les lignes, avec des indices et des corrections expliquées</small><b>ENQUÊTER →</b></a>
 <a class="weekly-card weekly-hi" href="histoire-1815-1848-royaute.html"><span>👑 HISTOIRE</span><strong>1815-1848 · Les trois derniers rois</strong><small>Revois la frise, mémorise la leçon et teste-toi avant la semaine prochaine</small><b>RÉVISER →</b></a>\n<a class="weekly-card weekly-hi" href="nombres-romains-cm2.html"><span>🏛️ NUMÉRATION ROMAINE</span><strong>Le code des Romains</strong><small>Découvre les nombres romains et déchiffre les inscriptions</small><b>JOUER →</b></a>
 <a class="weekly-card weekly-ma" href="maths-lecons-cm2.html"><span>📘 MATHÉMATIQUES</span><strong>M3 · Fractions</strong><small>Retrouve la leçon M3 sur les fractions</small><b>REVOIR →</b></a>
 <a class="weekly-card weekly-ma" href="jeu-fractions-m3.html"><span>🍕 FRACTIONS</span><strong>La première aventure des fractions</strong><small>Reconnais l’unité, compte les parts égales et lis les fractions</small><b>JOUER →</b></a>
@@ -435,6 +436,7 @@ body.resources-page{
 <h3>Français</h3>
 <p style="margin:18px 0 4px;font-weight:800">Choisis une rubrique pour retrouver les leçons et les jeux.</p>
 </div>
+<div class="shelf" id="lecture" style="--a:#ff4f73"><h3>Français · Lecture compréhension</h3><div class="grid"><article class="item"><span class="type">LECTURE · CM2</span><h4>Les enquêtes de lecture</h4><p>30 missions, six compétences, trois niveaux : lis, repère les indices et mène l’enquête.</p><a href="enqueteur-lecture.html">MENER L’ENQUÊTE →</a></article></div></div>
 <div class="shelf" id="poesie" style="--a:#ff4f73"><h3>Français · Poésie</h3><div class="grid"><article class="item"><span class="type">POÉSIE · LECTURE</span><h4>Marine — Paul Verlaine</h4><p>Lire, observer et comprendre le poème illustré.</p><a href="marine-verlaine.html">DÉCOUVRIR →</a></article></div></div>
 <div class="shelf" id="dictees" style="--a:#ff4f73"><h3>Français · Dictées</h3><section class="method-box"><img src="https://www.editions-retz.com/sites/default/files/visuels/9782725647791.jpg" alt="Couverture Dictées et histoire des arts, Voyage dans le temps" loading="lazy"><div><h2>Dictées · La méthode utilisée</h2><p><strong>Dictées et histoire des arts – Voyage dans le temps, cycle 3</strong>, Mélanie Pouëssel, Éditions Retz.</p></div></section><div class="grid"></div></div>
 <div class="shelf" id="orthographe" style="--a:#ff4f73"><h3>Français · Orthographe</h3><div class="grid">
@@ -529,7 +531,7 @@ if(artsGrid){
 </script>
 <script>
 const folders={
-fr:[["DICTÉES","#dictees",1],["ORTHOGRAPHE","#orthographe",1],["GRAMMAIRE","#grammaire",1],["CONJUGAISON","#conjugaison",1],["LEXIQUE","#lexique",1]],
+fr:[["LECTURE","#lecture",1],["DICTÉES","#dictees",1],["ORTHOGRAPHE","#orthographe",1],["GRAMMAIRE","#grammaire",1],["CONJUGAISON","#conjugaison",1],["LEXIQUE","#lexique",1]],
 ma:[["LEÇONS","maths-lecons-cm2.html",1],["CALCUL MENTAL","calcul-mental-series.html",1],["TABLES DE MULTIPLICATION","tables-multiplication.html",1],["OPÉRATIONS POSÉES","operations-posees.html?v=4operations-20261014-3",1],["MATADOR","jeu-mathador.html",1],["RÉSOLUTION DE PROBLÈMES","resolution-problemes.html",1]],
 hi:[["1815-1848 · LES 3 DERNIERS ROIS","histoire-1815-1848-royaute.html",1],["REPÈRES CHRONOLOGIQUES","histoire-periodes.html",1],["NOMBRES ROMAINS","nombres-romains-cm2.html",1],["PRÉHISTOIRE","#hi"],["ANTIQUITÉ","#hi"],["MOYEN ÂGE","#hi"],["TEMPS MODERNES","#hi"],["ÉPOQUE CONTEMPORAINE","#hi"]],
 ge:[["JEU FRANCE · PACA · VAUCLUSE","jeu-geographie-france-paca-vaucluse.html",1],["FRANCE","#ge"],["EUROPE","#ge"],["MONDE","#ge"],["CARTES & REPÈRES","#ge"]],
@@ -555,7 +557,7 @@ if(location.hash)openSubject(location.hash.slice(1));
 const ribbonFolders={
 an:[["01 · Back to school","ressources/anglais/index.html?v=20261007-menu#lesson-1"],["02 · On the plane","ressources/anglais/index.html?v=20261007-menu#lesson-2"],["03 · At the airport","ressources/anglais/index.html?v=20261007-menu#lesson-3"],["04 · The train to London","ressources/anglais/index.html?v=20261007-menu#lesson-4"],["05 · At the hotel","ressources/anglais/index.html?v=20261007-menu#lesson-5"],["06 · Halloween: Trick or treat","ressources/anglais/index.html?v=20261007-menu#lesson-6"],["07 · Nationalities","ressources/anglais/index.html?v=20261007-menu#lesson-7"],["08 · Visiting monuments","ressources/anglais/index.html?v=20261007-menu#lesson-8"],["09 · Simon says","ressources/anglais/index.html?v=20261007-menu#lesson-9"],["10 · Merry Christmas!","ressources/anglais/index.html?v=20261007-menu#lesson-10"],["11 · Happy New Year!","ressources/anglais/index.html?v=20261007-menu#lesson-11"],["12 · At the zoo — Part 1","ressources/anglais/index.html?v=20261007-menu#lesson-12"],["13 · At the zoo — Part 2","ressources/anglais/index.html?v=20261007-menu#lesson-13"],["14 · At the gift shop","ressources/anglais/index.html?v=20261007-menu#lesson-14"],["15 · At the clothing shop","ressources/anglais/index.html?v=20261007-menu#lesson-15"],["16 · At the restaurant","ressources/anglais/index.html?v=20261007-menu#lesson-16"],["17 · Saint Patrick’s Day","ressources/anglais/index.html?v=20261007-menu#lesson-17"],["18 · A board game","ressources/anglais/index.html?v=20261007-menu#lesson-18"],["19 · Visiting Aunt Suzie","ressources/anglais/index.html?v=20261007-menu#lesson-19"],["20 · Talking about sports","ressources/anglais/index.html?v=20261007-menu#lesson-20"],["21 · Britain’s got talent","ressources/anglais/index.html?v=20261007-menu#lesson-21"],["22 · Cook a recipe","ressources/anglais/index.html?v=20261007-menu#lesson-22"]],
 world:[["🌋 Islande","ressources/mysteresdumonde/index.html#islande"],["🏜️ Sahara","ressources/mysteresdumonde/index.html#sahara"],["🇯🇵 Japon","ressources/mysteresdumonde/index.html#japon"],["🌿 Amazonie","ressources/mysteresdumonde/index.html#amazonie"],["🪸 Barrière de corail","ressources/mysteresdumonde/index.html#corail"]],
-fr:[["Dictées","#dictees"],["Orthographe","#orthographe"],["Grammaire","#grammaire"],["Conjugaison","#conjugaison"],["Lexique","#lexique"]],
+fr:[["Lecture","#lecture"],["Dictées","#dictees"],["Orthographe","#orthographe"],["Grammaire","#grammaire"],["Conjugaison","#conjugaison"],["Lexique","#lexique"]],
 ma:[["Leçons","maths-lecons-cm2.html"],["Calcul mental","calcul-mental-series.html"],["Tables de multiplication","tables-multiplication.html"],["Opérations posées","operations-posees.html?v=4operations-20261014-3"],["Matador","jeu-mathador.html"],["Résolution de problèmes","#"]],
 hi:[["1815-1848 · Les 3 derniers rois","histoire-1815-1848-royaute.html"],["Repères","histoire-periodes.html"],["Nombres romains","nombres-romains-cm2.html"],["Histoire","#hi"]],
 ge:[["France · PACA · Vaucluse","jeu-geographie-france-paca-vaucluse.html"],["Géographie","#ge"]],
@@ -629,7 +631,7 @@ if(mathGrid){
 (function(){
  const panel=document.getElementById('ribbon-panel');
  const menu=document.createElement('div');menu.id='mobile-french-games';menu.hidden=true;menu.setAttribute('aria-label','Jeux de la rubrique');panel.after(menu);
- const categories=new Set(['dictees','orthographe','grammaire','conjugaison','lexique']);
+ const categories=new Set(['lecture','dictees','orthographe','grammaire','conjugaison','lexique']);
  function resetSelection(){document.querySelectorAll('.shelf').forEach(s=>s.classList.remove('active'));document.getElementById('resource-content').classList.remove('has-selection');const weekly=document.querySelector('.weekly');if(weekly)weekly.hidden=false}
  function openGames(id){
  const shelf=document.getElementById(id);if(!shelf)return;
