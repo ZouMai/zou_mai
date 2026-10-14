@@ -1,8 +1,8 @@
 <!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Multiplication et division · Zoumaï</title><style>
-*{box-sizing:border-box}body{font:18px system-ui,sans-serif;background:#eef4f7;color:#18344a;margin:0}main{max-width:850px;margin:auto;padding:16px}.panel{background:white;border:2px solid #d5e5ee;border-radius:22px;padding:18px;margin:14px 0}button,select{font:inherit;border:0;border-radius:12px;background:#dce9f5;color:#193b58;padding:12px;margin:3px;font-weight:700;cursor:pointer}.active,.primary{background:#155b92;color:white}h1{font-size:clamp(1.7rem,5vw,2.6rem)}.task{text-align:center;font-size:1.5rem;font-weight:850}.board{overflow-x:auto;padding:15px 0}.digits{border-collapse:collapse;margin:auto;direction:ltr}.digits td{width:46px;height:49px;border:1px solid #b3cad7;text-align:center;font-size:1.4rem;font-weight:800;cursor:pointer;min-width:40px}.digits td.sign{border:0;width:30px}.digits tr.rule td:not(.sign){border-top:4px solid #e34c4c}.digits td.selected{outline:3px solid orange;outline-offset:-3px}.digits td.lock{background:#edf3f6;color:#42586b;cursor:default}.digits tr.carry td{background:#fff5e7;color:#b34d25;font-size:1rem}.potence{display:grid;grid-template-columns:minmax(180px,1fr) minmax(130px,1fr);max-width:540px;margin:auto}.potLeft{border-right:4px solid #193b58;padding:8px}.potRight{padding:8px;border-bottom:0}.potDivisor{border-bottom:4px solid #193b58;text-align:center;padding:10px;font-weight:900}.potQuotient{text-align:center;padding:10px}.potInput{width:100%;min-width:0;border:2px solid #b3cad7;border-radius:8px;font:800 1.3rem system-ui;padding:10px;text-align:center}.steps{display:grid;gap:8px;margin-top:14px}.step{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.step input{width:120px}.step label{font-size:.9rem}.feedback{border-radius:12px;background:#eaf3fa;padding:14px;margin-top:14px;font-weight:700}.error{background:#fff0df;color:#80421d}.success{background:#d9f5e6;color:#155b3d}.keypad{text-align:center;margin:12px auto;max-width:460px}.keypad button{min-width:52px}.hint{color:#5d6b75;font-size:.9rem}@media(max-width:500px){.digits td{width:36px;min-width:32px;height:43px;font-size:1.1rem}.panel{padding:12px}}</style></head><body><main><a href="operations-posees.html">← Opérations posées</a><h1>Opérations posées</h1><div class="panel"><button id="mul" class="active">× Multiplication</button><button id="div">÷ Division en potence</button><select id="level"><option value="1">Palier 1</option><option value="2">Palier 2</option><option value="3">Palier 3</option><option value="4">Palier 4</option><option value="5">Palier 5</option></select><button id="new">Nouvelle opération ↻</button><p id="task" class="task"></p><p id="instruction" class="hint"></p></div><div class="panel"><div id="board" class="board"></div><div id="keys" class="keypad"></div><button id="erase">Effacer la case</button><button id="verify" class="primary">Vérifier mon opération</button><div id="feedback" class="feedback">Effectue l'opération.</div></div></main><script>
+*{box-sizing:border-box}body{font:18px system-ui,sans-serif;background:#eef4f7;color:#18344a;margin:0}main{max-width:850px;margin:auto;padding:16px}.panel{background:white;border:2px solid #d5e5ee;border-radius:22px;padding:18px;margin:14px 0}button,select{font:inherit;border:0;border-radius:12px;background:#dce9f5;color:#193b58;padding:12px;margin:3px;font-weight:700;cursor:pointer}.active,.primary{background:#155b92;color:white}h1{font-size:clamp(1.7rem,5vw,2.6rem)}.task{text-align:center;font-size:1.5rem;font-weight:850}.board{overflow-x:auto;padding:15px 0}.digits{border-collapse:collapse;margin:auto;direction:ltr}.digits td{width:46px;height:49px;border:1px solid #b3cad7;text-align:center;font-size:1.4rem;font-weight:800;cursor:pointer;min-width:40px}.digits td.sign{border:0;width:30px}.digits tr.rule td:not(.sign){border-top:4px solid #e34c4c}.digits td.selected{outline:3px solid orange;outline-offset:-3px}.digits td.lock{background:#edf3f6;color:#42586b;cursor:default}.digits tr.carry td{background:#fff5e7;color:#b34d25;font-size:1rem}.divisionPaper{display:flex;justify-content:center;align-items:stretch;gap:0;max-width:100%;overflow-x:auto;margin:auto;padding:8px 0 20px}.divisionLeft{padding:0 12px 0 4px;border-right:4px solid #193b58}.divisionRight{min-width:125px;padding:0 8px}.divisionRight .divisor{border-bottom:4px solid #193b58;min-height:49px;text-align:center;font-size:1.6rem;font-weight:900;padding:5px}.divisionRight .quotientLine{display:flex;align-items:center;justify-content:center;gap:2px;padding:8px 0}.divisionCells{border-collapse:collapse}.divisionCells td{width:37px;height:43px;min-width:32px;text-align:center;border:1px solid #bdd3df;font-size:1.35rem;font-weight:800;cursor:pointer}.divisionCells td.known{background:#edf5f8}.divisionCells td.pick{outline:3px solid #efa92a;outline-offset:-3px}.divisionCells td.comma{border:0;width:13px;min-width:13px}.divisionCells td.subline{border-bottom:3px solid #df5555}.divisionCells td.blank{border:0;cursor:default}.divisionCells td.zeroSlot{border:1px dashed #8fb6d0;background:#f6fbff}.divisionCells td.stepSign{border:0;width:22px;min-width:22px;color:#b34d25}.divisionCells td.digitBox{background:white}.divisionCells td.stepInput{background:#fff}.divisionCells td.known.zeroAdded{color:#16805c}.divisionCells td.wrong{background:#ffe1d6}.divisionCells td.good{background:#e0f5e8}.divisionRight .quotientLine input{width:32px;height:43px;border:1px solid #bdd3df;border-radius:3px;text-align:center;font-size:1.35rem;font-weight:850;padding:0}.divisionRight .quotientLine .comma{font-size:1.5rem}.divisionHelp{font-size:.85rem;color:#516a7a;text-align:center}.potence{display:grid;grid-template-columns:minmax(180px,1fr) minmax(130px,1fr);max-width:540px;margin:auto}.potLeft{border-right:4px solid #193b58;padding:8px}.potRight{padding:8px;border-bottom:0}.potDivisor{border-bottom:4px solid #193b58;text-align:center;padding:10px;font-weight:900}.potQuotient{text-align:center;padding:10px}.potInput{width:100%;min-width:0;border:2px solid #b3cad7;border-radius:8px;font:800 1.3rem system-ui;padding:10px;text-align:center}.steps{display:grid;gap:8px;margin-top:14px}.step{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.step input{width:120px}.step label{font-size:.9rem}.feedback{border-radius:12px;background:#eaf3fa;padding:14px;margin-top:14px;font-weight:700}.error{background:#fff0df;color:#80421d}.success{background:#d9f5e6;color:#155b3d}.keypad{text-align:center;margin:12px auto;max-width:460px}.keypad button{min-width:52px}.hint{color:#5d6b75;font-size:.9rem}@media(max-width:500px){.digits td{width:36px;min-width:32px;height:43px;font-size:1.1rem}.panel{padding:12px}}</style></head><body><main><a href="operations-posees.html">← Opérations posées</a><h1>Opérations posées</h1><div class="panel"><button id="mul" class="active">× Multiplication</button><button id="div">÷ Division en potence</button><select id="level"><option value="1">Palier 1</option><option value="2">Palier 2</option><option value="3">Palier 3</option><option value="4">Palier 4</option><option value="5">Palier 5</option></select><button id="new">Nouvelle opération ↻</button><p id="task" class="task"></p><p id="instruction" class="hint"></p></div><div class="panel"><div id="board" class="board"></div><div id="keys" class="keypad"></div><button id="erase">Effacer la case</button><button id="verify" class="primary">Vérifier mon opération</button><div id="feedback" class="feedback">Effectue l'opération.</div></div></main><script>
 (()=>{'use strict';
 const $=id=>document.getElementById(id),rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
-let mode='mul',a=0,b=0,rows=[],selected=null,steps=[],expectedSteps=[];
+let mode='mul',a=0,b=0,rows=[],selected=null,steps=[],expectedSteps=[],divisionInputs=[],divisionDigits=[],divisionDecimal=0;
 function say(t,c=''){ $('feedback').textContent=t;$('feedback').className='feedback '+c}
 function cell(value='',locked=false){let td=document.createElement('td');td.textContent=value;td.dataset.value=value; if(locked)td.className='lock';else td.onclick=()=>{if(selected)selected.classList.remove('selected');selected=td;td.classList.add('selected')};return td}
 function newRow(table,label,kind,width,initial=''){let tr=table.insertRow();tr.className=kind;let sign=cell(label,true);sign.className='sign';tr.append(sign);let items=[];for(let i=0;i<width;i++){let v=initial[i]||'';let td=cell(v,!!initial);tr.append(td);items.push(td)}return items}
@@ -15,14 +15,83 @@ let bd=String(b).split('').reverse();bd.forEach((digit,i)=>{let cells=newRow(tab
 if(bd.length>1)rows.push({type:'result',cells:newRow(table,'=', 'rule',width),value:a*b});else rows[rows.length-1].type='result';
 for(let i=0;i<width;i++){let h=document.createElement('span');h.textContent=''}
 $('keys').innerHTML='';'0123456789'.split('').forEach(n=>{let btn=document.createElement('button');btn.textContent=n;btn.onclick=()=>{if(!selected)return;selected.textContent=n;selected.dataset.value=n;let editable=rows.flatMap(x=>x.cells).filter(x=>!x.classList.contains('lock'));let ix=editable.indexOf(selected);if(ix>=0&&ix<editable.length-1)setSelected(editable[ix+1])};$('keys').append(btn)});setSelected(rows[0].cells[width-String(a).length]);}
-function makeDiv(l){let ranges=[[2,9,2,9],[2,9,11,99],[11,25,11,99],[11,99,101,999],[11,99,1001,9999]];let r=ranges[l-1];b=rnd(r[0],r[1]);let q=rnd(r[2],r[3]);let remainder=l===1?0:rnd(0,b-1);a=b*q+remainder;$('task').textContent=a+' ÷ '+b+' = ?';$('instruction').textContent='Division en potence : écris le quotient, puis les soustractions intermédiaires et les nombres abaissés. Le reste doit être inférieur au diviseur.';let p=document.createElement('div');p.className='potence';p.innerHTML='<div class="potLeft"><strong>'+a+'</strong><div class="steps" id="steps"></div></div><div class="potRight"><div class="potDivisor">'+b+'</div><div class="potQuotient"><input class="potInput" id="quotient" inputmode="numeric" aria-label="Quotient" placeholder="Quotient"></div></div>';$('board').append(p);let prefix=0,started=false;for(const digit of String(a)){prefix=prefix*10+Number(digit);if(!started&&prefix<b)continue;started=true;let d=Math.floor(prefix/b),prod=d*b,rem=prefix-prod;expectedSteps.push({current:prefix,product:prod,remainder:rem});prefix=rem}
-let holder=$('steps');expectedSteps.forEach((s,i)=>{let div=document.createElement('div');div.className='step';div.innerHTML='<label>Étape '+(i+1)+' :<input class="potInput" inputmode="numeric" aria-label="Nombre à diviser étape '+(i+1)+'" placeholder="Nombre"></label><label>− produit<input class="potInput" inputmode="numeric" aria-label="Produit soustrait étape '+(i+1)+'" placeholder="Produit"></label><label>Reste<input class="potInput" inputmode="numeric" aria-label="Reste étape '+(i+1)+'" placeholder="Reste"></label>';holder.append(div);steps.push([...div.querySelectorAll('input')])});$('keys').innerHTML='<p class="hint">Saisis les chiffres directement dans les cases de la potence.</p>'}
+function makeDiv(l){
+ const ranges=[[2,9,12,99],[2,9,101,999],[11,29,101,999],[2,9,101,999],[2,9,101,999]];
+ const rr=ranges[l-1];b=rnd(rr[0],rr[1]);let q=rnd(rr[2],rr[3]);
+ divisionDecimal=l===4?2:l===5?3:0;
+ let rem=l===1?0:rnd(1,b-1);
+ if(l>=4){let choices=l===4?[2,4,5,8]:[3,6,7,9];b=choices[rnd(0,choices.length-1)];q=rnd(12,299);rem=rnd(1,b-1)}
+ a=b*q+rem;
+ $('task').textContent=a+' ÷ '+b+' = ?';
+ $('instruction').textContent=l>=4?'Pose la division en potence. Pour poursuivre après les unités, ajoute toi-même la virgule puis les zéros nécessaires dans les cases pointillées.':'Pose la division en potence : diviser, multiplier, soustraire, abaisser.';
+ const raw=String(a).split('').map(Number),all=raw.concat(Array(divisionDecimal).fill(0));
+ divisionDigits=all;divisionInputs=[];
+ let prefix=0,started=false,first=-1,records=[];
+ for(let i=0;i<all.length;i++){
+   prefix=prefix*10+all[i];
+   if(!started&&prefix<b)continue;
+   if(!started){started=true;first=i}
+   let digit=Math.floor(prefix/b),product=digit*b,remainder=prefix-product;
+   records.push({index:i,current:prefix,product,remainder,digit,decimal:i>=raw.length});
+   prefix=remainder;
+ }
+ expectedSteps=records;
+ const holder=document.createElement('div');holder.className='divisionPaper';
+ const left=document.createElement('div');left.className='divisionLeft';
+ const right=document.createElement('div');right.className='divisionRight';
+ const table=document.createElement('table');table.className='divisionCells';
+ const makeCell=(tr,cls='',value='')=>{let td=tr.insertCell();td.className=cls;td.textContent=value;return td};
+ let top=table.insertRow();makeCell(top,'stepSign');
+ all.forEach((d,i)=>{let td=makeCell(top,i>=raw.length?'zeroSlot':'known',i>=raw.length?'':d);if(i>=raw.length){td.dataset.expected='0';td.onclick=()=>setDivCell(td);divisionInputs.push(td)}});
+ const rowRefs=[];
+ records.forEach((rec,j)=>{
+   let prodRow=table.insertRow(),remainRow=table.insertRow();
+   makeCell(prodRow,'stepSign','−');makeCell(remainRow,'stepSign');
+   let prodCells=[],remainCells=[];
+   for(let i=0;i<all.length;i++){
+     let p=makeCell(prodRow,i>rec.index?'blank':'stepInput'),v=makeCell(remainRow,i>rec.index?'blank':'stepInput');
+     if(i<=rec.index){p.onclick=()=>setDivCell(p);v.onclick=()=>setDivCell(v)}
+     prodCells.push(p);remainCells.push(v);
+   }
+   prodCells[rec.index].classList.add('subline');
+   rowRefs.push({rec,prodCells,remainCells});
+ });
+ left.append(table);
+ const divisor=document.createElement('div');divisor.className='divisor';divisor.textContent=b;right.append(divisor);
+ const qline=document.createElement('div');qline.className='quotientLine';
+ const qdigits=records.map(x=>x.digit);
+ const firstDecimal=records.findIndex(x=>x.decimal);
+ qdigits.forEach((d,i)=>{
+   if(i===firstDecimal){let comma=document.createElement('span');comma.className='comma';comma.textContent=',';qline.append(comma)}
+   let input=document.createElement('input');input.inputMode='numeric';input.maxLength=1;input.setAttribute('aria-label','Chiffre '+(i+1)+' du quotient');qline.append(input);divisionInputs.push(input);
+ });
+ right.append(qline);let note=document.createElement('div');note.className='divisionHelp';note.textContent=l>=4?'Quotient au '+(l===4?'centième':'millième')+' (sans arrondir)':'Quotient entier et reste';right.append(note);
+ holder.append(left,right);$('board').append(holder);
+ steps=rowRefs;
+ $('keys').innerHTML='';'0123456789'.split('').forEach(n=>{let btn=document.createElement('button');btn.textContent=n;btn.onclick=()=>{if(!selected)return;if(selected.tagName==='INPUT'){selected.value=n;return}selected.textContent=n;selected.dataset.value=n};$('keys').append(btn)});
+ function setDivCell(td){if(selected)selected.classList.remove('pick');selected=td;td.classList.add('pick')}
+ qline.querySelectorAll('input').forEach(input=>input.onfocus=()=>{if(selected)selected.classList.remove('pick');selected=input});
+}
+
 function read(cells){return cells.map(x=>x.dataset.value||'').join('')}
 function aligned(cells,n){let str=String(n),actual=cells.map(x=>x.dataset.value||'');if(str.length>actual.length)return false;let offset=actual.length-str.length;return actual.every((v,i)=>i<offset?(v===''||v==='0'):v===str[i-offset])}
-function verify(){if(mode==='div'){let v=$('quotient').value.trim();if(v==='')return say('Écris d’abord le quotient.','error');if(!/^\d+$/.test(v)||Number(v)!==Math.floor(a/b))return say('Le quotient est incorrect. Vérifie les chiffres du quotient, y compris les zéros.','error');for(let i=0;i<steps.length;i++){let actual=steps[i].map(x=>x.value.trim()),s=expectedSteps[i],want=[s.current,s.product,s.remainder];if(actual.some((v,j)=>!/^\d+$/.test(v)||Number(v)!==want[j]))return say('Le quotient est juste, mais l’étape '+(i+1)+' contient une erreur. Vérifie le nombre abaissé, le produit et le reste.','error')}return say('Bravo ! Quotient, soustractions et restes intermédiaires sont corrects. Reste final : '+a%b+'.','success')}
+function verify(){if(mode==='div'){
+ let quotient=[...$('board').querySelectorAll('.quotientLine input')].map(x=>x.value.trim());
+ let expected=expectedSteps.map(x=>String(x.digit));
+ if(quotient.some((x,i)=>x!==expected[i]))return say('Vérifie le quotient : chaque chiffre, y compris les zéros, doit être placé sous la barre de la potence.','error');
+ let extras=[...$('board').querySelectorAll('.zeroSlot')];
+ if(extras.some(x=>x.dataset.value!=='0'))return say('Pour continuer après les unités, ajoute toi-même les zéros dans les cases pointillées à droite du dividende.','error');
+ for(let j=0;j<steps.length;j++){
+   let {rec,prodCells,remainCells}=steps[j];
+   const get=(arr)=>arr.slice(0,rec.index+1).map(x=>x.dataset.value||'').join('').replace(/^0+/,'')||'0';
+   if(Number(get(prodCells))!==rec.product||Number(get(remainCells))!==rec.remainder)
+     return say('Regarde la soustraction '+(j+1)+' sous le dividende : écris le produit soustrait et le reste, en alignant les chiffres.','error');
+ }
+ return say('Bravo ! Division en potence réussie. '+(divisionDecimal?'Quotient prolongé après la virgule.':'Reste final : '+a%b+'.'),'success')
+}
 let top=rows[0],bottom=rows[1];if(!aligned(top.cells,a)||!aligned(bottom.cells,b))return say('Les nombres sont mal posés : aligne les unités sous les unités. Les zéros à gauche sont facultatifs.','error');
 for(const row of rows.filter(r=>r.type==='partial'||r.type==='result')){if(!aligned(row.cells,row.value))return say('La pose des deux facteurs est correcte, mais un produit partiel ou le résultat est incorrect. Vérifie les multiplications et les décalages.','error')}
 say('Bravo ! Les facteurs, les produits partiels et le résultat sont corrects.','success')}
-$('mul').onclick=()=>{mode='mul';$('mul').className='active';$('div').className='';make()};$('div').onclick=()=>{mode='div';$('div').className='active';$('mul').className='';make()};$('new').onclick=make;$('level').onchange=make;$('verify').onclick=verify;$('erase').onclick=()=>{if(selected){selected.textContent='';selected.dataset.value=''}};make();
+$('mul').onclick=()=>{mode='mul';$('mul').className='active';$('div').className='';make()};$('div').onclick=()=>{mode='div';$('div').className='active';$('mul').className='';make()};const requested=new URLSearchParams(location.search).get('op');if(requested==='division'){mode='div';$('div').className='active';$('mul').className=''}$('new').onclick=make;$('level').onchange=make;$('verify').onclick=verify;$('erase').onclick=()=>{if(selected){selected.textContent='';selected.dataset.value=''}};make();
 })();
 </script></body></html>
