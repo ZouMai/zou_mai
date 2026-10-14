@@ -9,6 +9,23 @@ function newRow(table,label,kind,width,initial=''){let tr=table.insertRow();tr.c
 function digits(n,width){return String(n).padStart(width,' ').split('').map(v=>v===' '?'':v)}
 function setSelected(td){if(selected)selected.classList.remove('selected');selected=td;if(td)td.classList.add('selected')}
 function make(){let l=+$('level').value;selected=null;rows=[];steps=[];expectedSteps=[];$('board').innerHTML='';$('keys').innerHTML='';$('task').textContent='';if(mode==='mul')makeMul(l);else makeDiv(l);say('Pose les nombres puis effectue directement l’opération.')}
+function placeNameFromRight(pos){return ['unités','dizaines','centaines','milliers','dizaines de milliers','centaines de milliers'][pos]||('colonne '+(pos+1))}
+function mulCarryExpected(multiplicand,digit,width){
+ let ds=String(multiplicand).split('').reverse().map(Number),carry=0,out=[];
+ for(let i=0;i<ds.length;i++){let total=ds[i]*digit+carry;carry=Math.floor(total/10);out.push(carry)}
+ return out
+}
+function carryRemediation(row,multiplicand,digit){
+ let expected=mulCarryExpected(multiplicand,digit,row.cells.length),right=row.cells.length-1;
+ for(let p=0;p<expected.length-1;p++){
+   let idx=right-p-1,cell=row.cells[idx],got=cell?.dataset.value;
+   if(got!==undefined&&got!==''&&Number(got)!==expected[p]){
+     let d=String(multiplicand).split('').reverse()[p],prev=p===0?0:expected[p-1];
+     return 'Erreur de retenue dans la colonne des '+placeNameFromRight(p)+'. Reprends seulement cette étape : '+d+' × '+digit+(prev?' + la retenue précédente':'')+'. Quel chiffre écris-tu dans la colonne ? Combien de dizaines dois-tu retenir ?'
+   }
+ }
+ return null
+}
 function makeMul(l){let ranges=[[12,99,2,9],[101,999,11,99],[1001,9999,12,99],[1001,9999,101,999],[10001,99999,101,999]];let r=ranges[l-1];a=rnd(r[0],r[1]);b=rnd(r[2],r[3]);$('task').textContent=a+' × '+b+' = ?';$('instruction').textContent='Pose les chiffres, écris les retenues et les produits partiels. Les décalages correspondent aux dizaines, centaines…';let width=String(a*b).length+1;let table=document.createElement('table');table.className='digits';$('board').append(table);
 let bd=String(b).split('').reverse();
 bd.forEach((digit,i)=>{
@@ -163,11 +180,16 @@ for(let i=0;i<partials.length;i++){
    let base=a*Number(String(b).split('').reverse()[i]);
    let compact=entered.replace(/^0+/,'');
    if(compact===String(base))return say('Erreur de décalage : ton produit par '+(i===0?'les unités':i===1?'les dizaines':'les centaines')+' est juste, mais il doit être décalé de '+i+' colonne'+(i>1?'s':'')+' vers la gauche.','error');
-   return say('Erreur de calcul dans le produit partiel n°'+(i+1)+' : reprends '+a+' × '+String(b).split('').reverse()[i]+'. Vérifie aussi les retenues de cette ligne.','error')
+   let digit=Number(String(b).split('').reverse()[i]),carryRow=rows.find(r=>r.type==='carry'&&r.carryFor===i),carryMsg=carryRow?carryRemediation(carryRow,a,digit):null;
+   if(carryMsg)return say(carryMsg,'error');
+   return say('Erreur de calcul dans le produit partiel n°'+(i+1)+'. Reprends une colonne à la fois : multiplie, ajoute la retenue éventuelle, écris le chiffre des unités puis place la nouvelle retenue. Commence par la colonne des unités.','error')
  }
 }
 let result=rows.find(r=>r.type==='result');
-if(!aligned(result.cells,result.value))return say('Erreur dans l’addition finale : tes produits partiels sont corrects. Additionne-les colonne par colonne et utilise la ligne de retenues r＋ au-dessus du résultat.','error');
+if(!aligned(result.cells,result.value)){
+ let ac=rows.find(r=>r.type==='addCarry');
+ return say('Erreur dans l’addition finale. Repars de la colonne des unités : additionne uniquement les chiffres de cette colonne, écris les unités du total, puis place les dizaines éventuelles dans le cercle de retenue r＋ de la colonne suivante. Barre la retenue après l’avoir utilisée.','error');
+}
 say('Bravo ! Les facteurs, les produits partiels et l’addition finale sont corrects.','success')}
 $('mul').onclick=()=>{mode='mul';$('mul').className='active';$('div').className='';make()};$('div').onclick=()=>{mode='div';$('div').className='active';$('mul').className='';make()};const requested=new URLSearchParams(location.search).get('op');if(requested==='division'){mode='div';$('div').className='active';$('mul').className=''}$('new').onclick=make;$('level').onchange=make;$('verify').onclick=verify;$('erase').onclick=()=>{if(selected){selected.textContent='';selected.dataset.value=''}};make();
 })();
