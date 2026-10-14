@@ -126,7 +126,7 @@ function verify(){if(mode==='div'){
      }
    }
  }
- return say('Bravo ! Division en potence réussie. '+(divisionDecimal?'Quotient prolongé après la virgule.':'Reste final : '+a%b+'.'),'success')
+ return say(divisionDecimal?'Bravo ! Division en potence réussie. Quotient prolongé après la virgule.':'Bravo ! Division en potence réussie. Écriture euclidienne : '+a+' = '+b+' × '+Math.floor(a/b)+' + '+(a%b)+'.','success')
 }
 let top=rows[0],bottom=rows[1];if(!aligned(top.cells,a)||!aligned(bottom.cells,b))return say('Les nombres sont mal posés : aligne les unités sous les unités. Les zéros à gauche sont facultatifs.','error');
 for(const row of rows.filter(r=>r.type==='partial'||r.type==='result')){if(!aligned(row.cells,row.value))return say('La pose des deux facteurs est correcte, mais un produit partiel ou le résultat est incorrect. Vérifie les multiplications et les décalages.','error')}
