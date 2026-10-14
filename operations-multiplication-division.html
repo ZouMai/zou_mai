@@ -18,7 +18,12 @@ bd.forEach((digit,i)=>{
 });
 rows.push({type:'top',cells:newRow(table,'', '',width),value:a});rows.push({type:'bottom',cells:newRow(table,'×','',width),value:b});
 bd.forEach((digit,i)=>{let cells=newRow(table,i===0?'':'＋',i===0?'rule':'',width);rows.push({type:'partial',cells,value:a*Number(digit)*10**i,shift:i})});
-if(bd.length>1)rows.push({type:'result',cells:newRow(table,'=', 'rule',width),value:a*b});else rows[rows.length-1].type='result';
+if(bd.length>1){
+ let addCarry=newRow(table,'r＋','carry additionCarry',width);
+ addCarry.forEach(c=>{c.classList.add('carryCell');c.innerHTML='<span class="carryCircle"></span>';c.addEventListener('click',e=>{if(c.dataset.value){e.stopPropagation();c.classList.toggle('usedCarry')}})});
+ rows.push({type:'addCarry',cells:addCarry});
+ rows.push({type:'result',cells:newRow(table,'=', 'rule',width),value:a*b})
+}else rows[rows.length-1].type='result';
 for(let i=0;i<width;i++){let h=document.createElement('span');h.textContent=''}
 $('keys').innerHTML='';'0123456789'.split('').forEach(n=>{let btn=document.createElement('button');btn.textContent=n;btn.onclick=()=>{if(!selected)return;if(selected.closest('tr')?.classList.contains('carry'))selected.querySelector('.carryCircle').textContent=n;else selected.textContent=n;selected.dataset.value=n;let editable=rows.flatMap(x=>x.cells).filter(x=>!x.classList.contains('lock'));let ix=editable.indexOf(selected);if(ix>=0&&ix<editable.length-1)setSelected(editable[ix+1])};$('keys').append(btn)});setSelected(rows.find(r=>r.type==='top').cells[width-String(a).length]);}
 function makeDiv(l){
@@ -148,9 +153,22 @@ function verify(){if(mode==='div'){
  }
  return say(divisionDecimal?'Bravo ! Division en potence réussie. Quotient prolongé après la virgule.':'Bravo ! Division en potence réussie. Écriture euclidienne : '+a+' = '+b+' × '+Math.floor(a/b)+' + '+(a%b)+'.','success')
 }
-let top=rows.find(r=>r.type==='top'),bottom=rows.find(r=>r.type==='bottom');if(!aligned(top.cells,a)||!aligned(bottom.cells,b))return say('Les nombres sont mal posés : aligne les unités sous les unités. Les zéros à gauche sont facultatifs.','error');
-for(const row of rows.filter(r=>r.type==='partial'||r.type==='result')){if(!aligned(row.cells,row.value))return say('La pose des deux facteurs est correcte, mais un produit partiel ou le résultat est incorrect. Vérifie les multiplications et les décalages.','error')}
-say('Bravo ! Les facteurs, les produits partiels et le résultat sont corrects.','success')}
+let top=rows.find(r=>r.type==='top'),bottom=rows.find(r=>r.type==='bottom');
+if(!aligned(top.cells,a))return say('Erreur de pose : le premier facteur n’est pas correctement aligné. Place son chiffre des unités dans la colonne des unités.','error');
+if(!aligned(bottom.cells,b))return say('Erreur de pose : le deuxième facteur n’est pas correctement aligné. Les unités doivent être sous les unités.','error');
+let partials=rows.filter(r=>r.type==='partial');
+for(let i=0;i<partials.length;i++){
+ let row=partials[i],entered=row.cells.map(c=>c.dataset.value||'').join('');
+ if(!aligned(row.cells,row.value)){
+   let base=a*Number(String(b).split('').reverse()[i]);
+   let compact=entered.replace(/^0+/,'');
+   if(compact===String(base))return say('Erreur de décalage : ton produit par '+(i===0?'les unités':i===1?'les dizaines':'les centaines')+' est juste, mais il doit être décalé de '+i+' colonne'+(i>1?'s':'')+' vers la gauche.','error');
+   return say('Erreur de calcul dans le produit partiel n°'+(i+1)+' : reprends '+a+' × '+String(b).split('').reverse()[i]+'. Vérifie aussi les retenues de cette ligne.','error')
+ }
+}
+let result=rows.find(r=>r.type==='result');
+if(!aligned(result.cells,result.value))return say('Erreur dans l’addition finale : tes produits partiels sont corrects. Additionne-les colonne par colonne et utilise la ligne de retenues r＋ au-dessus du résultat.','error');
+say('Bravo ! Les facteurs, les produits partiels et l’addition finale sont corrects.','success')}
 $('mul').onclick=()=>{mode='mul';$('mul').className='active';$('div').className='';make()};$('div').onclick=()=>{mode='div';$('div').className='active';$('mul').className='';make()};const requested=new URLSearchParams(location.search).get('op');if(requested==='division'){mode='div';$('div').className='active';$('mul').className=''}$('new').onclick=make;$('level').onchange=make;$('verify').onclick=verify;$('erase').onclick=()=>{if(selected){selected.textContent='';selected.dataset.value=''}};make();
 })();
 </script></body></html>
