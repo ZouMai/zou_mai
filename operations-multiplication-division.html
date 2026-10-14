@@ -30,14 +30,14 @@ function makeMul(l){let ranges=[[12,99,2,9],[101,999,11,99],[1001,9999,12,99],[1
 let bd=String(b).split('').reverse();
 bd.forEach((digit,i)=>{
  let carry=newRow(table,'r'+(i+1),'carry',width);
- carry.forEach(c=>{c.classList.add('carryCell');c.innerHTML='<span class="carryCircle"></span>';c.dataset.carryRow=String(i);c.addEventListener('click',e=>{if(c.dataset.value){e.stopPropagation();c.classList.toggle('usedCarry')}})});
+ carry.forEach(c=>{c.classList.add('carryCell');c.innerHTML='<span class="carryCircle"></span>';c.dataset.carryRow=String(i);c.addEventListener('click',e=>{e.stopPropagation();if(c.dataset.value){c.classList.toggle('usedCarry')}setSelected(c)})});
  rows.push({type:'carry',carryFor:i,cells:carry})
 });
 rows.push({type:'top',cells:newRow(table,'', '',width),value:a});rows.push({type:'bottom',cells:newRow(table,'×','',width),value:b});
 bd.forEach((digit,i)=>{let cells=newRow(table,i===0?'':'＋',i===0?'rule':'',width);rows.push({type:'partial',cells,value:a*Number(digit)*10**i,shift:i})});
 if(bd.length>1){
  let addCarry=newRow(table,'r＋','carry additionCarry',width);
- addCarry.forEach(c=>{c.classList.add('carryCell');c.innerHTML='<span class="carryCircle"></span>';c.addEventListener('click',e=>{if(c.dataset.value){e.stopPropagation();c.classList.toggle('usedCarry')}})});
+ addCarry.forEach(c=>{c.classList.add('carryCell');c.innerHTML='<span class="carryCircle"></span>';c.addEventListener('click',e=>{e.stopPropagation();if(c.dataset.value){c.classList.toggle('usedCarry')}setSelected(c)})});
  rows.push({type:'addCarry',cells:addCarry});
  rows.push({type:'result',cells:newRow(table,'=', 'rule',width),value:a*b})
 }else rows[rows.length-1].type='result';
