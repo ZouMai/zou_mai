@@ -11,7 +11,7 @@ function row(name,sign,carry,result){let tr=G.insertRow();if(carry)tr.className=
 function select(td){if(td.classList.contains('fixed'))return;if(sel)sel.classList.remove('selected');sel=td;td.classList.add('selected')}
 function put(v){if(!sel)return;sel.textContent=v;let all=[...G.querySelectorAll('td[data-k]')],i=all.indexOf(sel);if(i>=0&&i<all.length-1)select(all[i+1])}
 function msg(t,c=''){fb.textContent=t;fb.className='info '+c}
-function expected(n){return String(n).padStart(cols,'').split('')}
+function expected(n){return Array(cols-String(n).length).fill(' ').concat(String(n).split(''))}
 function read(r){return [...G.querySelectorAll('td[data-k^="'+r+'-"]')].map(x=>x.textContent||' ')}
 function same(x,y){return x.join('')===y.join('')}
 function verify(){let poseA=same(read('a'),expected(a)),poseB=same(read('b'),expected(b)),ans=op==='+'?a+b:a-b,resultOK=same(read('res'),expected(ans));if(!poseA||!poseB){return msg('Ton opération est mal posée. Vérifie l’alignement des unités, dizaines et centaines. Tu peux la corriger puis recalculer.','error')}if(!resultOK)return msg('Ton opération est bien posée, mais il y a une erreur de calcul. Reprends colonne par colonne et vérifie tes retenues.','error');msg('Bravo ! Ton opération est bien posée et correctement effectuée.','success')}
