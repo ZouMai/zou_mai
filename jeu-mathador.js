@@ -346,10 +346,22 @@
     let token = matches.sort((a,b) => score(b) - score(a))[0];
     best = score(token);
     bestExpression = token.expr;
-    player.points[currentLevel] = Math.max(player.points[currentLevel] || 0,best);
+    if (API && remoteDraw && remoteChallengeId) {
+      try {
+        const saved = await request({action:'finish',playerId:player.id,challengeId:remoteChallengeId,moves,hintUsed});
+        player.points = saved.points;
+        player.completed = saved.completed;
+        remoteChallengeId = null;
+      } catch (error) {
+        say('Score non enregistré dans le classement : ' + error.message, 'error');
+        return;
+      }
+    } else {
+      player.points[currentLevel] = Math.max(player.points[currentLevel] || 0,best);
+    }
     player.completed = Math.max(player.completed,currentLevel + 1);
     persist();
-    showRankings();
+    if (API) await refreshRankings(); else showRankings();
     const usedCount=token.used.length;
     const opPoints=token.ops.map(op=>op+' '+weights[op]+' pt'+(weights[op]>1?'s':'')).join(' · ');
     const isMathador=usedCount===5 && token.ops.length===4 && operations.every(op=>token.ops.includes(op));
