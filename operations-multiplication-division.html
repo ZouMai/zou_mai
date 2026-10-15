@@ -1,5 +1,5 @@
 <!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Multiplication et division en potence · Zoumaï</title><style>
-*{box-sizing:border-box}body{font:18px system-ui,sans-serif;background:#eef4f7;color:#18344a;margin:0}main{max-width:850px;margin:auto;padding:16px}.panel{background:white;border:2px solid #d5e5ee;border-radius:22px;padding:18px;margin:14px 0}button,select{font:inherit;border:0;border-radius:12px;background:#dce9f5;color:#193b58;padding:12px;margin:3px;font-weight:700;cursor:pointer}.active,.primary{background:#155b92;color:white}h1{font-size:clamp(1.7rem,5vw,2.6rem)}.task{text-align:center;font-size:1.5rem;font-weight:850}.board{overflow-x:auto;padding:15px 0}.digits{border-collapse:collapse;margin:auto;direction:ltr}.digits td{width:46px;height:49px;border:1px solid #b3cad7;text-align:center;font-size:1.4rem;font-weight:800;cursor:pointer;min-width:40px}.digits td.sign{border:0;width:30px}.digits tr.rule td:not(.sign){border-top:4px solid #e34c4c}.digits td.selected{outline:3px solid orange;outline-offset:-3px}.digits td.lock{background:#edf3f6;color:#42586b;cursor:default}.digits tr.carry td:not(.sign){background:transparent!important;border:0!important;border-radius:0!important;width:46px!important;min-width:40px!important;height:44px!important;padding:0!important;text-align:center;vertical-align:middle}.digits tr.carry .carryCircle{display:none!important;margin:0 auto!important;width:28px!important;height:28px!important;line-height:24px!important;aspect-ratio:1/1!important;border:2px solid #d62828!important;border-radius:9999px!important;background:#fff!important;color:#d62828!important;font-size:1rem;font-weight:900;box-sizing:border-box!important;text-align:center!important;overflow:hidden!important}.digits tr.carry td.carryVisible .carryCircle{display:block!important}.digits tr.carry td.carryCell:not(.carryVisible)::after{content:'+';display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border:1px dashed #d62828;border-radius:50%;color:#d62828;font-size:.8rem;opacity:.45}.digits tr.carry td.carryCell:not(.carryVisible):hover::after{opacity:1}.digits tr.carry td.usedCarry .carryCircle{text-decoration:line-through;text-decoration-thickness:3px;opacity:.55}.digits tr.carry td.sign{background:transparent;color:#b34d25;font-size:.85rem;border:0}.digits tr.carry{height:42px}.digits tr.carry td.usedCarry{text-decoration:line-through;text-decoration-thickness:3px;opacity:.55}.digits tr.carry td.sign{white-space:nowrap}.divisionPaper{display:flex;justify-content:center;align-items:stretch;gap:0;max-width:100%;overflow-x:auto;margin:auto;padding:8px 0 20px}.divisionLeft{padding:0 12px 0 4px;border-right:4px solid #193b58}.divisionRight{min-width:125px;padding:0 8px}.divisionRight .divisor{border-bottom:4px solid #193b58;min-height:49px;text-align:center;font-size:1.6rem;font-weight:900;padding:5px}.divisionRight .quotientLine{display:flex;align-items:center;justify-content:center;gap:2px;padding:8px 0}.divisionCells{border-collapse:collapse}.divisionCells td{width:37px;height:43px;min-width:32px;text-align:center;border:1px solid #bdd3df;font-size:1.35rem;font-weight:800;cursor:pointer}.divisionCells td.known{background:#edf5f8}.divisionCells td.pick{outline:3px solid #efa92a;outline-offset:-3px}.divisionCells td.comma{border:0;width:13px;min-width:13px}.divisionCells td.subline{border-bottom:3px solid #df5555}.divisionCells td.subspan{border-bottom:3px solid #df5555}.dropDigit{display:inline-block;font-weight:950}.dropDigit.animate{animation:dropDown .65s ease-out}@keyframes dropDown{0%{transform:translateY(-34px);opacity:.15}65%{transform:translateY(5px);opacity:1}100%{transform:translateY(0);opacity:1}}.divisionCells td.blank{border:0;cursor:default}.divisionCells td.zeroSlot{border:1px dashed #8fb6d0;background:#f6fbff}.divisionCells td.stepSign{border:0;width:22px;min-width:22px;color:#b34d25}.divisionCells td.digitBox{background:white}.divisionCells td.stepInput{background:#fff}.divisionCells td.known.zeroAdded{color:#16805c}.divisionCells td.wrong{background:#ffe1d6}.divisionCells td.good{background:#e0f5e8}.divisionRight .quotientLine input{width:32px;height:43px;border:1px solid #bdd3df;border-radius:3px;text-align:center;font-size:1.35rem;font-weight:850;padding:0}.divisionRight .quotientLine .comma{font-size:1.5rem}.divisionHelp{font-size:.85rem;color:#516a7a;text-align:center}.tableHelp{margin-top:10px;padding:10px;border:2px dashed #9bbdce;border-radius:12px;background:#f5fbff;text-align:center}.tableHelp strong{display:block;margin-bottom:5px}.potence{display:grid;grid-template-columns:minmax(180px,1fr) minmax(130px,1fr);max-width:540px;margin:auto}.potLeft{border-right:4px solid #193b58;padding:8px}.potRight{padding:8px;border-bottom:0}.potDivisor{border-bottom:4px solid #193b58;text-align:center;padding:10px;font-weight:900}.potQuotient{text-align:center;padding:10px}.potInput{width:100%;min-width:0;border:2px solid #b3cad7;border-radius:8px;font:800 1.3rem system-ui;padding:10px;text-align:center}.steps{display:grid;gap:8px;margin-top:14px}.step{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.step input{width:120px}.step label{font-size:.9rem}.feedback{border-radius:12px;background:#eaf3fa;padding:14px;margin-top:14px;font-weight:700}.error{background:#fff0df;color:#80421d}.success{background:#d9f5e6;color:#155b3d}.keypad{text-align:center;margin:12px auto;max-width:460px}.keypad button{min-width:52px}.hint{color:#5d6b75;font-size:.9rem}@media(max-width:500px){.digits td{width:36px;min-width:32px;height:43px;font-size:1.1rem}.panel{padding:12px}}</style></head><body><main><a href="operations-posees.html">← Opérations posées</a><h1>Opérations posées</h1><div class="panel"><button id="mul" class="active">× Multiplication</button><button id="div">÷ Division en potence</button><select id="level"><option value="1">Palier 1</option><option value="2">Palier 2</option><option value="3">Palier 3</option><option value="4">Palier 4</option><option value="5">Palier 5</option></select><button id="new">Nouvelle opération ↻</button><p id="task" class="task"></p><p id="instruction" class="hint"></p></div><div class="panel"><div id="board" class="board"></div><div id="keys" class="keypad"></div><button id="erase">Effacer la case</button><button id="verify" class="primary">Vérifier mon opération</button><div id="feedback" class="feedback">Effectue l'opération.</div></div></main><script>
+*{box-sizing:border-box}body{font:18px system-ui,sans-serif;background:#eef4f7;color:#18344a;margin:0}main{max-width:850px;margin:auto;padding:16px}.panel{background:white;border:2px solid #d5e5ee;border-radius:22px;padding:18px;margin:14px 0}button,select{font:inherit;border:0;border-radius:12px;background:#dce9f5;color:#193b58;padding:12px;margin:3px;font-weight:700;cursor:pointer}.active,.primary{background:#155b92;color:white}h1{font-size:clamp(1.7rem,5vw,2.6rem)}.task{text-align:center;font-size:1.5rem;font-weight:850}.board{overflow-x:auto;padding:15px 0}.digits{border-collapse:collapse;margin:auto;direction:ltr}.digits td{width:46px;height:49px;border:1px solid #b3cad7;text-align:center;font-size:1.4rem;font-weight:800;cursor:pointer;min-width:40px}.digits td.sign{border:0;width:30px}.digits tr.rule td:not(.sign){border-top:4px solid #e34c4c}.digits td.selected{outline:3px solid orange;outline-offset:-3px}.digits td.lock{background:#edf3f6;color:#42586b;cursor:default}.digits tr.carry td:not(.sign){background:transparent!important;border:0!important;border-radius:0!important;width:46px!important;min-width:40px!important;height:44px!important;padding:0!important;text-align:center;vertical-align:middle}.digits tr.carry .carryCircle{display:none!important;margin:0 auto!important;width:28px!important;height:28px!important;line-height:24px!important;aspect-ratio:1/1!important;border:2px solid #d62828!important;border-radius:9999px!important;background:#fff!important;color:#d62828!important;font-size:1rem;font-weight:900;box-sizing:border-box!important;text-align:center!important;overflow:hidden!important}.digits tr.carry td.carryVisible .carryCircle{display:block!important}.digits tr.carry td.carryCell:not(.carryVisible)::after{content:'+';display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border:1px dashed #d62828;border-radius:50%;color:#d62828;font-size:.8rem;opacity:.45}.digits tr.carry td.carryCell:not(.carryVisible):hover::after{opacity:1}.digits tr.carry td.usedCarry .carryCircle{text-decoration:line-through;text-decoration-thickness:3px;opacity:.55}.digits tr.carry td.sign{background:transparent;color:#b34d25;font-size:.85rem;border:0}.digits tr.carry{height:42px}.digits tr.carry td.usedCarry{text-decoration:line-through;text-decoration-thickness:3px;opacity:.55}.digits tr.carry td.sign{white-space:nowrap}.divisionPaper{display:flex;justify-content:center;align-items:stretch;gap:0;max-width:100%;overflow-x:auto;margin:auto;padding:8px 0 20px}.divisionLeft{padding:0 12px 0 4px;border-right:4px solid #193b58}.divisionRight{min-width:125px;padding:0 8px}.divisionRight .divisor{border-bottom:4px solid #193b58;min-height:49px;text-align:center;font-size:1.6rem;font-weight:900;padding:5px}.divisionRight .quotientLine{display:flex;align-items:center;justify-content:center;gap:2px;padding:8px 0}.divisionCells{border-collapse:collapse}.divisionCells td{width:37px;height:43px;min-width:32px;text-align:center;border:1px solid #bdd3df;font-size:1.35rem;font-weight:800;cursor:pointer}.divisionCells td.known{background:#edf5f8}.divisionCells td.pick{outline:3px solid #efa92a;outline-offset:-3px}.divisionCells td.comma{border:0;width:13px;min-width:13px}.divisionCells td.subline{border-bottom:3px solid #df5555}.divisionCells td.subspan{border-bottom:3px solid #df5555}.dropDigit{display:inline-block;font-weight:950}.dropDigit.animate{animation:dropDown .65s ease-out}@keyframes dropDown{0%{transform:translateY(-34px);opacity:.15}65%{transform:translateY(5px);opacity:1}100%{transform:translateY(0);opacity:1}}.divisionCells td.blank{border:0;cursor:default}.divisionCells td.zeroSlot{border:1px dashed #8fb6d0;background:#f6fbff}.divisionCells td.stepSign{border:0;width:22px;min-width:22px;color:#b34d25}.divisionCells td.digitBox{background:white}.divisionCells td.stepInput{background:#fff}.divisionCells td.known.zeroAdded{color:#16805c}.divisionCells td.wrong{background:#ffe1d6}.divisionCells td.good{background:#e0f5e8}.divisionRight .quotientLine input{width:32px;height:43px;border:1px solid #bdd3df;border-radius:3px;text-align:center;font-size:1.35rem;font-weight:850;padding:0}.divisionRight .quotientLine .comma{font-size:1.5rem}.divisionHelp{font-size:.85rem;color:#516a7a;text-align:center}.tableHelp{margin-top:10px;padding:10px;border:2px dashed #9bbdce;border-radius:12px;background:#f5fbff;text-align:center}.tableHelp strong{display:block;margin-bottom:5px}.potence{display:grid;grid-template-columns:minmax(180px,1fr) minmax(130px,1fr);max-width:540px;margin:auto}.potLeft{border-right:4px solid #193b58;padding:8px}.potRight{padding:8px;border-bottom:0}.potDivisor{border-bottom:4px solid #193b58;text-align:center;padding:10px;font-weight:900}.potQuotient{text-align:center;padding:10px}.potInput{width:100%;min-width:0;border:2px solid #b3cad7;border-radius:8px;font:800 1.3rem system-ui;padding:10px;text-align:center}.steps{display:grid;gap:8px;margin-top:14px}.step{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.step input{width:120px}.step label{font-size:.9rem}.feedback{border-radius:12px;background:#eaf3fa;padding:14px;margin-top:14px;font-weight:700}.error{background:#fff0df;color:#80421d}.success{background:#d9f5e6;color:#155b3d}.keypad{text-align:center;margin:12px auto;max-width:460px}.keypad button{min-width:52px}.hint{color:#5d6b75;font-size:.9rem}@media(max-width:500px){.digits td{width:36px;min-width:32px;height:43px;font-size:1.1rem}.panel{padding:12px}}[hidden]{display:none!important}.divisionPaper{justify-content:flex-start;width:max-content;min-width:100%;max-width:none;overflow:visible}.divisionCells td{white-space:nowrap}.divisionCells:not(.constantMethod) td:not(.stepSign){min-width:46px;width:46px}.divisionCells.constantMethod td:not(.stepSign){min-width:86px;width:86px;text-align:right;padding-right:8px}.divisionCells .redOne,.divisionCells .redPlus{color:#c7352a;font:inherit;display:inline-block}.divisionCells .redPlus{margin-right:.12em}.divisionCells .exchangeBase,.divisionCells .exchangeDigits{position:relative;display:inline-block}.divisionCells .exchangeBase>.redOne{position:absolute;right:100%;top:0}.divisionCells .crossedDigit{position:relative;display:inline-block;font:inherit}.divisionCells .crossedDigit::after{content:'';position:absolute;left:-12%;top:48%;width:124%;height:2px;background:#c7352a;transform:rotate(-55deg)}.divisionCells .replacementDigit{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);font-size:1.1rem;line-height:1.15;color:#c7352a;font-weight:900}.divisionCells tr.exchangeRow td{height:74px;padding-top:23px}.divisionCells td.subAnnotated{background:#fffaf0}.divisionTransform{border:2px dashed #d7a04a;border-radius:14px;padding:16px;margin:12px 0;background:#fffaf0}.transformFields{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-top:12px}.transformFields input{display:inline-block;width:70px;font:inherit;padding:8px;margin-left:6px;border:2px solid #a8cee0;border-radius:8px}.divisionRight{flex-shrink:0}button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #e29c24;outline-offset:2px}</style></head><body><main><a href="operations-posees.html">← Opérations posées</a><h1>Opérations posées</h1><div class="panel"><button id="mul" class="active">× Multiplication</button><button id="div">÷ Division en potence</button><select id="level"><option value="1">Palier 1</option><option value="2">Palier 2</option><option value="3">Palier 3</option><option value="4">Palier 4</option><option value="5">Palier 5</option></select><button id="new">Nouvelle opération ↻</button><p id="task" class="task"></p><p id="instruction" class="hint"></p></div><div class="panel"><div id="board" class="board"></div><div id="keys" class="keypad"></div><div id="divisionSubTools" hidden><label for="divisionMethod">Méthode de soustraction </label><select id="divisionMethod"><option value="exchange">Casser la dizaine</option><option value="constant">Retenues</option></select><button id="divTransform">Transformer cette colonne</button><div id="divTransformBox" class="divisionTransform" hidden></div></div><button id="erase">Effacer la case</button><button id="verify" class="primary">Vérifier mon opération</button><div id="feedback" class="feedback">Effectue l'opération.</div></div></main><script>
 (()=>{'use strict';
 const $=id=>document.getElementById(id),rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
 let mode='mul',a=0,b=0,rows=[],selected=null,steps=[],expectedSteps=[],divisionInputs=[],divisionDigits=[],divisionDecimal=0;
@@ -8,7 +8,7 @@ function cell(value='',locked=false){let td=document.createElement('td');td.text
 function newRow(table,label,kind,width,initial=''){let tr=table.insertRow();tr.className=kind;let sign=cell(label,true);sign.className='sign';tr.append(sign);let items=[];for(let i=0;i<width;i++){let v=initial[i]||'';let td=cell(v,!!initial);tr.append(td);items.push(td)}return items}
 function digits(n,width){return String(n).padStart(width,' ').split('').map(v=>v===' '?'':v)}
 function setSelected(td){if(selected)selected.classList.remove('selected');selected=td;if(td)td.classList.add('selected')}
-function make(){let l=+$('level').value;selected=null;rows=[];steps=[];expectedSteps=[];$('board').innerHTML='';$('keys').innerHTML='';$('task').textContent='';if(mode==='mul')makeMul(l);else makeDiv(l);say('Pose les nombres puis effectue directement l’opération.')}
+function make(){$('divisionSubTools').hidden=mode!=='div';$('divTransformBox').hidden=true;let l=+$('level').value;selected=null;rows=[];steps=[];expectedSteps=[];$('board').innerHTML='';$('keys').innerHTML='';$('task').textContent='';if(mode==='mul')makeMul(l);else makeDiv(l);say('Pose les nombres puis effectue directement l’opération.')}
 function placeNameFromRight(pos){return ['unités','dizaines','centaines','milliers','dizaines de milliers','centaines de milliers'][pos]||('colonne '+(pos+1))}
 function mulCarryExpected(multiplicand,digit,width){
  let ds=String(multiplicand).split('').reverse().map(Number),carry=0,out=[];
@@ -44,132 +44,58 @@ if(bd.length>1){
 for(let i=0;i<width;i++){let h=document.createElement('span');h.textContent=''}
 $('keys').innerHTML='';'0123456789'.split('').forEach(n=>{let btn=document.createElement('button');btn.textContent=n;btn.onclick=()=>{if(!selected)return;if(selected.closest('tr')?.classList.contains('carry')){selected.classList.add('carryVisible');selected.querySelector('.carryCircle').textContent=n;}else selected.textContent=n;selected.dataset.value=n;let editable=rows.flatMap(x=>x.cells).filter(x=>!x.classList.contains('lock'));let ix=editable.indexOf(selected);if(ix>=0&&ix<editable.length-1)setSelected(editable[ix+1])};$('keys').append(btn)});setSelected(rows.find(r=>r.type==='top').cells[width-String(a).length]);}
 function makeDiv(l){
- const ranges=[[2,9,12,99],[2,9,101,999],[11,29,101,999],[2,9,101,999],[2,9,101,999]];
- const rr=ranges[l-1];b=rnd(rr[0],rr[1]);let q=rnd(rr[2],rr[3]);
- divisionDecimal=l===4?2:l===5?3:0;
- let rem=l===1?0:rnd(1,b-1);
- if(l>=4){let choices=l===4?[2,4,5,8]:[3,6,7,9];b=choices[rnd(0,choices.length-1)];q=rnd(12,299);rem=rnd(1,b-1)}
- a=b*q+rem;
- $('task').textContent=a+' ÷ '+b+' = ?';
- $('instruction').textContent=l>=4?'Pose la division en potence. Pour poursuivre après les unités, ajoute toi-même la virgule puis les zéros nécessaires dans les cases pointillées.':'Pose la division en potence : diviser, multiplier, soustraire, abaisser.';
- const raw=String(a).split('').map(Number),all=raw.concat(Array(divisionDecimal).fill(0));
- divisionDigits=all;divisionInputs=[];
- let prefix=0,started=false,first=-1,records=[];
- for(let i=0;i<all.length;i++){
-   prefix=prefix*10+all[i];
-   if(!started&&prefix<b)continue;
-   if(!started){started=true;first=i}
-   let digit=Math.floor(prefix/b),product=digit*b,remainder=prefix-product;
-   records.push({index:i,current:prefix,product,remainder,digit,decimal:i>=raw.length});
-   prefix=remainder;
- }
- expectedSteps=records;
- const holder=document.createElement('div');holder.className='divisionPaper';
- const left=document.createElement('div');left.className='divisionLeft';
- const right=document.createElement('div');right.className='divisionRight';
- const table=document.createElement('table');table.className='divisionCells';
- const makeCell=(tr,cls='',value='')=>{let td=tr.insertCell();td.className=cls;td.textContent=value;return td};
- let top=table.insertRow();makeCell(top,'stepSign');
- all.forEach((d,i)=>{let td=makeCell(top,i>=raw.length?'zeroSlot':'known',i>=raw.length?'':d);if(i>=raw.length){td.dataset.expected='0';td.onclick=()=>setDivCell(td);divisionInputs.push(td)}});
- const rowRefs=[];
- records.forEach((rec,j)=>{
-   let prodRow=table.insertRow(),remainRow=table.insertRow();
-   makeCell(prodRow,'stepSign','−');makeCell(remainRow,'stepSign');
-   let prodCells=[],remainCells=[];
-   for(let i=0;i<all.length;i++){
-     let p=makeCell(prodRow,i>rec.index?'blank':'stepInput'),v=makeCell(remainRow,i>rec.index?'blank':'stepInput');
-     if(i<=rec.index){p.onclick=()=>setDivCell(p);v.onclick=()=>setDivCell(v)}
-     prodCells.push(p);remainCells.push(v);
-   }
-   let productWidth=String(rec.product).length;for(let k=Math.max(0,rec.index-productWidth+1);k<=rec.index;k++)prodCells[k].classList.add('subspan');
-   rowRefs.push({rec,prodCells,remainCells,validated:false});
+ const ranges=[[2,9,12,99],[2,9,101,999],[11,29,101,999],[2,9,101,999],[2,9,101,999]],rr=ranges[l-1];
+ b=rnd(rr[0],rr[1]);let q=rnd(rr[2],rr[3]);divisionDecimal=l===4?2:l===5?3:0;let rem=l===1?0:rnd(1,b-1);
+ if(l>=4){const choices=l===4?[2,4,5,8]:[3,6,7,9];b=choices[rnd(0,choices.length-1)];q=rnd(12,299);rem=rnd(1,b-1)}a=b*q+rem;
+ $('task').textContent=a+' ÷ '+b+' = ?';$('instruction').textContent='Divise, multiplie, soustrais puis abaisse. Pour une soustraction difficile, touche le chiffre du haut puis « Transformer cette colonne ». '+(divisionDecimal?'Ajoute les zéros nécessaires dans les cases pointillées. Le quotient est demandé sans arrondir.':'');
+ const raw=String(a).split('').map(Number),all=raw.concat(Array(divisionDecimal).fill(0));divisionDigits=all;divisionInputs=[];
+ let prefix=0,started=false;expectedSteps=[];
+ all.forEach((digit,i)=>{prefix=prefix*10+digit;if(!started&&prefix<b)return;started=true;const digitQ=Math.floor(prefix/b),product=digitQ*b,remainder=prefix-product;expectedSteps.push({index:i,current:prefix,product,remainder,digit:digitQ,decimal:i>=raw.length});prefix=remainder;});
+ const holder=document.createElement('div');holder.className='divisionPaper';const left=document.createElement('div');left.className='divisionLeft';const right=document.createElement('div');right.className='divisionRight';const table=document.createElement('table');table.className='divisionCells';
+ const makeCell=(tr,cls='',value='')=>{const td=tr.insertCell();td.className=cls;td.textContent=value;td.dataset.value=String(value);return td};
+ const top=table.insertRow();makeCell(top,'stepSign');const dividendCells=all.map((digit,i)=>{const td=makeCell(top,i>=raw.length?'zeroSlot':'known',i>=raw.length?'':digit);td.dataset.editable=i>=raw.length?'true':'false';td.onclick=()=>setDivCell(td);if(i>=raw.length)divisionInputs.push(td);return td;});
+ steps=[];
+ expectedSteps.forEach((rec,j)=>{const productRow=table.insertRow(),remainRow=table.insertRow();makeCell(productRow,'stepSign','−');makeCell(remainRow,'stepSign');const prodCells=[],remainCells=[];
+  all.forEach((_,i)=>{const p=makeCell(productRow,i>rec.index?'blank':'stepInput'),v=makeCell(remainRow,i>rec.index?'blank':'stepInput');if(i<=rec.index){p.dataset.editable='true';v.dataset.editable='true';p.onclick=()=>setDivCell(p);v.onclick=()=>setDivCell(v);}prodCells.push(p);remainCells.push(v);});
+  const begin=rec.index-String(rec.current).length+1;for(let k=begin;k<=rec.index;k++)prodCells[k].classList.add('subspan');
+  const st={rec,prodCells,remainCells,topCells:j?steps[j-1].remainCells:dividendCells,validated:false,begin};steps.push(st);resetMarks(st);
  });
- left.append(table);
- const divisor=document.createElement('div');divisor.className='divisor';divisor.textContent=b;right.append(divisor);
- const qline=document.createElement('div');qline.className='quotientLine';
- const qdigits=records.map(x=>x.digit);
- const firstDecimal=records.findIndex(x=>x.decimal);
- qdigits.forEach((d,i)=>{
-   if(i===firstDecimal){let comma=document.createElement('span');comma.className='comma';comma.textContent=',';qline.append(comma)}
-   let input=document.createElement('input');input.inputMode='numeric';input.maxLength=1;input.setAttribute('aria-label','Chiffre '+(i+1)+' du quotient');qline.append(input);divisionInputs.push(input);
- });
- right.append(qline);
- {
-   let helpBtn=document.createElement('button');helpBtn.type='button';helpBtn.className='primary';helpBtn.style.cssText='display:block;width:100%;margin:10px 0 6px';helpBtn.textContent='💡 AIDE — TABLE DE '+b;
-   let help=document.createElement('div');help.className='tableHelp';help.hidden=true;
-   help.innerHTML='<strong>Table de '+b+'</strong>'+Array.from({length:10},(_,i)=>b+' × '+i+' = '+(b*i)).join(' · ');
-   helpBtn.onclick=()=>{help.hidden=!help.hidden;helpBtn.textContent=help.hidden?'💡 AIDE — TABLE DE '+b:'▲ MASQUER LA TABLE DE '+b};
-   right.append(helpBtn,help);
- }
- let note=document.createElement('div');note.className='divisionHelp';note.textContent=l>=4?'Quotient au '+(l===4?'centième':'millième')+' (sans arrondir)':'Quotient entier et reste';right.append(note);
- holder.append(left,right);$('board').append(holder);
- steps=rowRefs;
- function cellNumber(arr,end){
-   let used=arr.slice(0,end+1).filter(x=>!x.classList.contains('blank'));
-   if(used.some(x=>(x.dataset.value??'')===''))return null;
-   let v=used.map(x=>x.dataset.value).join('').replace(/^0+/,'');
-   return v===''?0:Number(v)
- }
- function maybeDrop(){
-   for(let j=0;j<steps.length-1;j++){
-     let st=steps[j],rec=st.rec;
-     if(st.validated)continue;
-     let product=cellNumber(st.prodCells,rec.index),remainder=cellNumber(st.remainCells,rec.index);
-     if(product===rec.product&&remainder===rec.remainder){
-       st.validated=true;
-       let next=expectedSteps[j+1],cell=st.remainCells[next.index],digit=divisionDigits[next.index];
-       if(cell){
-         cell.classList.remove('blank');
-         cell.innerHTML='<span class="dropDigit animate">'+digit+'</span>';
-         cell.dataset.value=String(next.current);
-         setTimeout(()=>{let x=cell.querySelector('.dropDigit');if(x)x.classList.remove('animate')},700);
-         say('Oui ! Le '+digit+' s’abaisse. Continue la division.','success');
-       }
-     }
-   }
- }
- function editableToRight(td){
-   if(td.tagName==='INPUT'){let inputs=[...qline.querySelectorAll('input')],i=inputs.indexOf(td);return inputs[i+1]||null}
-   let tr=td.parentElement,cells=[...tr.cells],i=cells.indexOf(td);
-   for(let k=i+1;k<cells.length;k++)if(cells[k].onclick&&!cells[k].classList.contains('blank'))return cells[k];
-   return null
- }
- function chooseNext(from){let next=editableToRight(from);if(next){if(next.tagName==='INPUT'){next.focus();selected=next}else setDivCell(next)}}
- $('keys').innerHTML='';'0123456789'.split('').forEach(n=>{let btn=document.createElement('button');btn.textContent=n;btn.onclick=()=>{if(!selected)return;let from=selected;if(from.tagName==='INPUT')from.value=n;else{from.textContent=n;from.dataset.value=n}maybeDrop();chooseNext(from)};$('keys').append(btn)});
- function setDivCell(td){if(selected&&selected.classList)selected.classList.remove('pick');selected=td;td.classList.add('pick')}
- qline.querySelectorAll('input').forEach(input=>input.onfocus=()=>{if(selected&&selected.classList)selected.classList.remove('pick');selected=input});
+ left.append(table);const divisor=document.createElement('div');divisor.className='divisor';divisor.textContent=b;right.append(divisor);const qline=document.createElement('div');qline.className='quotientLine';
+ expectedSteps.forEach((rec,i)=>{if(rec.decimal&&(i===0||!expectedSteps[i-1].decimal)){const comma=document.createElement('span');comma.className='comma';comma.textContent=',';qline.append(comma);}const input=document.createElement('input');input.inputMode='numeric';input.maxLength=1;input.setAttribute('aria-label','Chiffre '+(i+1)+' du quotient');input.oninput=()=>{input.value=input.value.replace(/\D/g,'').slice(-1)};input.onfocus=()=>{if(selected)selected.classList.remove('pick');selected=input};qline.append(input);divisionInputs.push(input);});right.append(qline);
+ const helpBtn=document.createElement('button');helpBtn.type='button';helpBtn.className='primary';helpBtn.textContent='Aide · Table de '+b;const help=document.createElement('div');help.className='tableHelp';help.hidden=true;help.innerHTML='<strong>Table de '+b+'</strong>'+Array.from({length:10},(_,i)=>b+' × '+i+' = '+b*i).join(' · ');helpBtn.onclick=()=>{help.hidden=!help.hidden};right.append(helpBtn,help);const note=document.createElement('p');note.className='divisionHelp';note.textContent=divisionDecimal?'Quotient au '+(l===4?'centième':'millième')+' (sans arrondir)':'Quotient entier et reste';right.append(note);holder.append(left,right);$('board').append(holder);applyDivisionMethod();
+ '0123456789'.split('').forEach(n=>{const btn=document.createElement('button');btn.textContent=n;btn.onclick=()=>{if(!selected)return;const from=selected;if(from.tagName==='INPUT'){from.value=n;const inputs=[...qline.querySelectorAll('input')],next=inputs[inputs.indexOf(from)+1];if(next)next.focus();return;}if(from.dataset.editable!=='true')return say('Ce chiffre est donné. Pour faire un échange, utilise « Transformer cette colonne ».');invalidateForEdit(from);from.textContent=n;from.dataset.value=n;maybeDrop();const siblings=[...from.parentElement.cells],i=siblings.indexOf(from);const next=siblings.slice(i+1).find(td=>td.dataset.editable==='true');if(next)setDivCell(next);};$('keys').append(btn);});
+}
+function setDivCell(td){if(selected)selected.classList.remove('pick');selected=td;td.classList.add('pick');$('divTransformBox').hidden=true;}
+function rowAligned(arr,n,end){return aligned(arr.slice(0,end+1),n)}
+function resetMarks(st){st.top=Array(st.rec.index+1).fill(0);String(st.rec.current).split('').forEach((d,i)=>st.top[st.begin+i]=Number(d));st.base=st.top.slice();st.lower=Array(st.top.length).fill(0);st.boost=Array(st.top.length).fill(false);st.exchangeHistory={};}
+function clearMarks(st){[...st.topCells,...st.prodCells].forEach(td=>{if(td.classList.contains('subAnnotated')){td.textContent=td.dataset.value||'';td.classList.remove('subAnnotated');}td.parentElement.classList.remove('exchangeRow');});resetMarks(st);}
+function applyDivisionMethod(){steps.forEach(clearMarks);const table=$('board').querySelector('.divisionCells');if(table)table.classList.toggle('constantMethod',$('divisionMethod').value==='constant');$('divTransformBox').hidden=true;}
+function invalidateForEdit(td){steps.forEach(st=>{if(st.topCells.includes(td)||st.prodCells.includes(td)){clearMarks(st);st.validated=false;}if(st.remainCells.includes(td))st.validated=false;});$('divTransformBox').hidden=true;}
+function maybeDrop(){for(let j=0;j<steps.length-1;j++){const st=steps[j],rec=st.rec,next=steps[j+1].rec;if(!rowAligned(st.topCells,rec.current,rec.index)||!rowAligned(st.prodCells,rec.product,rec.index)||!rowAligned(st.remainCells,rec.remainder,rec.index))continue;if(st.validated)continue;if(next.decimal){const zero=$('board').querySelectorAll('.zeroSlot')[next.index-String(a).length];if(zero?.dataset.value!=='0')continue;}st.validated=true;const td=st.remainCells[next.index],digit=divisionDigits[next.index];td.classList.remove('blank');td.classList.add('known');td.dataset.editable='false';td.dataset.value=String(digit);td.innerHTML='<span class="dropDigit animate">'+digit+'</span>';td.onclick=()=>setDivCell(td);say('Soustraction '+(j+1)+' juste : le '+digit+' s’abaisse.','success');}}
+function annotate(td,html){td.classList.add('subAnnotated');td.innerHTML=html;}
+function drawExchange(st){Object.entries(st.exchangeHistory).forEach(([key,h])=>{const td=st.topCells[Number(key)];td.parentElement.classList.add('exchangeRow');if(h.receive&&h.before===st.base[key])annotate(td,'<span class="exchangeBase"><span class="redOne">1</span>'+st.base[key]+'</span>');else{const old=h.before===0&&h.after===9?'<span class="redOne">1</span>0':String(st.base[key]);const value=h.receive?'<span class="redOne">1</span>'+h.before:String(h.after);annotate(td,'<span class="exchangeDigits"><span class="crossedDigit">'+old+'</span><span class="replacementDigit">'+value+'</span></span>');}});}
+function drawConstant(st){for(let i=st.begin;i<=st.rec.index;i++){if(st.boost[i])annotate(st.topCells[i],'<span class="redOne">1</span><span>'+st.base[i]+'</span>');if(st.lower[i])annotate(st.prodCells[i],'<span class="redPlus">1 +</span><span>'+(st.prodCells[i].dataset.value||'0')+'</span>');}}
+function openDivisionTransform(){
+ if(mode!=='div')return;const j=steps.findIndex(st=>st.topCells.includes(selected)&&st.topCells.indexOf(selected)<=st.rec.index);if(j<0)return say('Touche le chiffre du haut de la soustraction à transformer.','error');const st=steps[j],i=st.topCells.indexOf(selected),rec=st.rec;
+ if(i<st.begin)return say('Choisis un chiffre du nombre à soustraire, dans cette étape.','error');if(!rowAligned(st.topCells,rec.current,rec.index))return say('Termine la soustraction précédente puis abaisse le chiffre suivant.','error');if(!rowAligned(st.prodCells,rec.product,rec.index))return say('Écris d’abord le produit à soustraire, bien aligné sous ce nombre.','error');
+ const bottom=String(rec.product).padStart(rec.index+1,'0').split('').map(Number),isExchange=$('divisionMethod').value==='exchange';let donor=i-1;const before=st.top.slice();
+ if(isExchange){if(before[i]>=bottom[i])return say('La soustraction est possible dans cette colonne : aucun échange nécessaire.');while(donor>=st.begin&&before[donor]===0)donor--;if(donor<st.begin)return say('Commence par la colonne où le chiffre du haut est trop petit.','error');}
+ else if(st.boost[i]||before[i]>=bottom[i]+st.lower[i])return say('La soustraction est déjà possible dans cette colonne.');
+ const box=$('divTransformBox');box.hidden=false;box.replaceChildren();const title=document.createElement('strong');title.textContent='Soustraction '+(j+1)+' · '+(isExchange?'Casser la dizaine':'Retenues');box.append(title);const fields=document.createElement('div');fields.className='transformFields';box.append(fields);
+ function field(label,id){const wrap=document.createElement('label');wrap.textContent=label;const input=document.createElement('input');input.id=id;input.inputMode='numeric';input.autocomplete='off';wrap.append(input);fields.append(wrap);return input;}
+ const first=field(isExchange?before[donor]+' devient ':before[i]+' devient ','divValue1');const second=field(isExchange?before[i]+' devient ':'J’ajoute dans la colonne de gauche, en bas : + ','divValue2');const validate=document.createElement('button');validate.className='primary';validate.textContent='Valider la transformation';fields.append(validate);
+ validate.onclick=()=>{const v1=first.value.trim(),v2=second.value.trim();if(!/^\d+$/.test(v1)||!/^\d+$/.test(v2)||Number(v1)!==(isExchange?before[donor]-1:before[i]+10)||Number(v2)!==(isExchange?before[i]+10:1))return say(isExchange?'Une dizaine est donnée : enlève 1 au donneur et ajoute 10 à la colonne qui reçoit.':'Ajoute 10 au chiffre du haut et 1 dans la colonne de gauche du nombre du bas.','error');if(isExchange){st.top[donor]--;for(let k=donor+1;k<i;k++)st.top[k]=9;st.top[i]+=10;for(let k=donor;k<=i;k++)st.exchangeHistory[k]={before:before[k],after:st.top[k],receive:k===i};drawExchange(st);}else{st.top[i]+=10;st.boost[i]=true;if(i>0)st.lower[i-1]++;drawConstant(st);}box.hidden=true;say('Transformation correcte. Effectue maintenant la soustraction.','success');};first.focus();
 }
 
 function read(cells){return cells.map(x=>x.dataset.value||'').join('')}
 function aligned(cells,n){let str=String(n),actual=cells.map(x=>x.dataset.value||'');if(str.length>actual.length)return false;let offset=actual.length-str.length;return actual.every((v,i)=>i<offset?(v===''||v==='0'):v===str[i-offset])}
 function verify(){if(mode==='div'){
- let quotient=[...$('board').querySelectorAll('.quotientLine input')].map(x=>x.value.trim());
- let expected=expectedSteps.map(x=>String(x.digit));
- if(quotient.some((x,i)=>x!==expected[i]))return say('Vérifie le quotient : chaque chiffre, y compris les zéros, doit être placé sous la barre de la potence.','error');
- let extras=[...$('board').querySelectorAll('.zeroSlot')];
- if(extras.some(x=>x.dataset.value!=='0'))return say('Pour continuer après les unités, ajoute toi-même les zéros dans les cases pointillées à droite du dividende.','error');
- for(let j=0;j<steps.length;j++){
-   let {rec,prodCells,remainCells}=steps[j];
-   const get=(arr)=>arr.slice(0,rec.index+1).map(x=>x.dataset.value||'').join('').replace(/^0+/,'')||'0';
-   if(Number(get(prodCells))!==rec.product||Number(get(remainCells))!==rec.remainder)
-     return say('Regarde la soustraction '+(j+1)+' sous le dividende : écris le produit soustrait et le reste, en alignant les chiffres.','error');
-   if(!steps[j].validated){
-     steps[j].validated=true;
-     let next=expectedSteps[j+1];
-     if(next){
-       let cell=remainCells[next.index];
-       if(cell){
-         let digit=divisionDigits[next.index];
-         cell.innerHTML='<span class="dropDigit animate">'+digit+'</span>';
-         cell.dataset.value=String(next.current);
-         setTimeout(()=>{let x=cell.querySelector('.dropDigit');if(x)x.classList.remove('animate')},700);
-         return say('Oui ! Maintenant, abaisse le chiffre suivant : '+digit+'.','success');
-       }
-     }
-   }
- }
- return say(divisionDecimal?'Bravo ! Division en potence réussie. Quotient prolongé après la virgule.':'Bravo ! Division en potence réussie. Écriture euclidienne : '+a+' = '+b+' × '+Math.floor(a/b)+' + '+(a%b)+'.','success')
-}
+ maybeDrop();const quotient=[...$('board').querySelectorAll('.quotientLine input')].map(x=>x.value.trim());
+ if(quotient.some((x,i)=>x!==String(expectedSteps[i].digit)))return say('Vérifie les chiffres du quotient sous la barre de la potence, y compris les zéros.','error');
+ if([...$('board').querySelectorAll('.zeroSlot')].some(td=>td.dataset.value!=='0'))return say('Ajoute les zéros dans les cases pointillées pour poursuivre après la virgule.','error');
+ for(let j=0;j<steps.length;j++){const st=steps[j],r=st.rec;if(!rowAligned(st.topCells,r.current,r.index)||!rowAligned(st.prodCells,r.product,r.index)||!rowAligned(st.remainCells,r.remainder,r.index))return say('Vérifie la soustraction '+(j+1)+' : produit, reste et alignement des chiffres. Tu peux utiliser « Casser la dizaine » ou « Retenues ».','error');}
+ return say(divisionDecimal?'Bravo ! Division en potence réussie. Le quotient est prolongé après la virgule, sans arrondir.':'Bravo ! '+a+' = '+b+' × '+Math.floor(a/b)+' + '+a%b+'.','success');}
+
 let top=rows.find(r=>r.type==='top'),bottom=rows.find(r=>r.type==='bottom');
 if(!aligned(top.cells,a))return say('Erreur de pose : le premier facteur n’est pas correctement aligné. Place son chiffre des unités dans la colonne des unités.','error');
 if(!aligned(bottom.cells,b))return say('Erreur de pose : le deuxième facteur n’est pas correctement aligné. Les unités doivent être sous les unités.','error');
@@ -191,6 +117,6 @@ if(!aligned(result.cells,result.value)){
  return say('Erreur dans l’addition finale. Repars de la colonne des unités : additionne uniquement les chiffres de cette colonne, écris les unités du total, puis place les dizaines éventuelles dans le cercle de retenue r＋ de la colonne suivante. Barre la retenue après l’avoir utilisée.','error');
 }
 say('Bravo ! Les facteurs, les produits partiels et l’addition finale sont corrects.','success')}
-$('mul').onclick=()=>{mode='mul';$('mul').className='active';$('div').className='';make()};$('div').onclick=()=>{mode='div';$('div').className='active';$('mul').className='';make()};const requested=new URLSearchParams(location.search).get('op');if(requested==='division'){mode='div';$('div').className='active';$('mul').className=''}$('new').onclick=make;$('level').onchange=make;$('verify').onclick=verify;$('erase').onclick=()=>{if(selected){selected.textContent='';selected.dataset.value=''}};make();
+$('mul').onclick=()=>{mode='mul';$('mul').className='active';$('div').className='';make()};$('div').onclick=()=>{mode='div';$('div').className='active';$('mul').className='';make()};const requested=new URLSearchParams(location.search).get('op');if(requested==='division'){mode='div';$('div').className='active';$('mul').className=''}$('divisionMethod').onchange=()=>{applyDivisionMethod();say('Méthode changée : les nombres saisis sont conservés. Reprends les annotations avec cette méthode.');};$('divTransform').onclick=openDivisionTransform;$('new').onclick=make;$('level').onchange=make;$('verify').onclick=verify;$('erase').onclick=()=>{if(!selected)return;if(mode==='div'){if(selected.tagName==='INPUT'){selected.value='';return;}if(selected.dataset.editable!=='true')return;invalidateForEdit(selected);}selected.textContent='';selected.dataset.value='';};make();
 })();
 </script></body></html>
