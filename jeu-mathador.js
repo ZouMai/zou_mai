@@ -106,7 +106,7 @@
     const ranking = Object.values(profiles).filter(p => p && typeof p.name === 'string' &&
       Number.isInteger(p.completed) && Array.isArray(p.points))
       .map(p => ({name:p.name,completed:p.completed,points:p.points.reduce((sum,n) => sum + (Number(n)||0),0)}))
-      .sort((a,b) => b.completed-a.completed || b.points-a.points || a.name.localeCompare(b.name,'fr')).slice(0,10);
+      .sort((a,b) => b.points-a.points || b.completed-a.completed || a.name.localeCompare(b.name,'fr')).slice(0,10);
     if (!ranking.length) { const item = document.createElement('li'); item.textContent = 'Aucun parcours commencé.'; list.appendChild(item); }
     ranking.forEach(p => {
       const item = document.createElement('li');
@@ -260,6 +260,7 @@
         const challenge = await request({action:'challenge',playerId:player.id,nickname:player.name,level:currentLevel});
         draw = {cards:challenge.cards,target:challenge.target,witness:challenge.witness,level:challenge.level};
         remoteDraw = true; remoteChallengeId = challenge.id;
+        player.id = challenge.playerId || player.id;
         player.completed = challenge.completed; player.points = challenge.points; player.synced = true;
       } catch (error) { networkError = true; }
     }
@@ -357,7 +358,7 @@
         return;
       }
     } else {
-      player.points[currentLevel] = Math.max(player.points[currentLevel] || 0,best);
+      player.points[currentLevel] = (Number(player.points[currentLevel]) || 0) + best;
     }
     player.completed = Math.max(player.completed,currentLevel + 1);
     persist();
