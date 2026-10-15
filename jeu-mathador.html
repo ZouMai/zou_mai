@@ -152,7 +152,7 @@ body{background:radial-gradient(circle at 50% -8%,#5a66ff33 0,transparent 34%),r
  #game #target.target-display{width:min(210px,62vw)!important;height:min(210px,62vw)!important;
  font-size:clamp(6rem,27vw,8rem)!important;border-width:7px!important;outline-width:6px!important}
 }
-</style></head>
+</style><style id="mathador-ranking-layout-fix">#rankings li{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;align-items:center!important;column-gap:12px!important;padding:12px 14px 12px 56px!important;min-height:48px!important;overflow-wrap:anywhere!important}#rankings li::before{left:12px!important;top:50%!important;transform:translateY(-50%)!important}#rankings li strong{float:none!important;white-space:nowrap!important;text-align:right!important}@media(max-width:420px){#rankings li{padding-left:49px!important;font-size:.8rem!important}}</style></head>
 <body>
 <main class="wrap">
 <header class="top"><a href="calcul-mental-series.html">← Arcade du calcul</a><a href="maths-lecons-cm2.html">Leçons de maths</a></header>
@@ -178,6 +178,6 @@ body{background:radial-gradient(circle at 50% -8%,#5a66ff33 0,transparent 34%),r
 <section class="panel"><h2 id="ranking-title">🏆 PODIUM · TOP 10 DE LA CLASSE</h2><p class="notice" id="ranking-note">Chargement du classement… Seuls les prénoms ou pseudos sont affichés.</p><ol class="rankings" id="rankings"></ol></section>
 </main>
 <script src="mathador-config.js?v=6"></script>
-<script src="jeu-mathador.js?v=6" defer></script>
+<script src="jeu-mathador.js?v=7" defer></script>
 <script src="site-tracking.js" defer></script>
 </body></html>
