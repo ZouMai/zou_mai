@@ -65,7 +65,49 @@ function openTransform(kind,i,step){borrowState={kind,i,step};transformBox.class
 function doBorrow(){if(op!=='-')return;if(method.value==='constant')return doConstant();if(!poseCorrect())return msg('Commence par poser correctement les deux nombres. Ensuite sélectionne la colonne où tu ne peux pas soustraire.','error');if(!sel||!sel.dataset.k||!sel.dataset.k.startsWith('t0-'))return msg('Touche d’abord le chiffre du nombre du haut que tu veux transformer.','error');let target=+sel.dataset.k.split('-')[1],ops=neededExchange(),step=ops.find(x=>x.target===target);if(!step)return msg('Dans cette colonne, aucun échange n’est nécessaire. Choisis la colonne où le chiffre du haut est trop petit.','error');openTransform('exchange',target,step)}
 function doConstant(){if(!poseCorrect())return msg('Commence par poser correctement les deux nombres. Puis touche la colonne où la soustraction est impossible.','error');if(!sel||!sel.dataset.k||!sel.dataset.k.startsWith('t0-'))return msg('Touche le chiffre du nombre du haut dans la colonne à transformer.','error');let i=+sel.dataset.k.split('-')[1],top=expected(a).map(x=>x===' '?0:+x),bottom=expected(b).map(x=>x===' '?0:+x);if(top[i]>=bottom[i])return msg('Ici, la soustraction est déjà possible. Choisis la colonne où le chiffre du haut est trop petit.','error');if(i<=0)return;openTransform('constant',i,null)}
 function marksOK(){return neededExchange().length===0||borrowDone}
-function verify(){let poseOK=poseCorrect(),ans=op==='+'?terms.reduce((s,n)=>s+n,0):terms[0]-terms[1],resultOK=alignedNumber(read('res'),expected(ans))&&commaCorrect('res',Math.round(ans*10**decimalPlaces())/10**decimalPlaces());if(!poseOK){return msg(decimals?'Ton opération est mal posée. Vérifie surtout que les virgules sont bien alignées.':'Ton opération est mal posée. Vérifie l’alignement des unités, dizaines et centaines.','error')}if(!resultOK)return msg('Ton opération est bien posée. Vérifie le résultat, sa virgule et tes retenues.','error');if(op==='-'&&!marksOK())return msg(method.value==='exchange'?'Résultat juste, mais il manque un échange : barre le chiffre concerné et transforme-le comme sur ton cahier.':'Résultat juste, mais il manque la transformation par écarts constants : +10 en haut et +1 dans la colonne suivante du nombre du bas.','error');msg('Bravo ! Ton opération est bien posée, tes retenues sont correctes et le résultat aussi.','success')}
+function diagnosticColonnes(){
+ const dp=decimalPlaces(),factor=10**dp;
+ const values=terms.map(n=>Math.round(n*factor));
+ const width=cols;
+ const entered=read('res');
+ const expectedValue=op==='+'?values.reduce((s,n)=>s+n,0):values[0]-values[1];
+ const expectedDigits=String(Math.abs(expectedValue)).padStart(width,'0').slice(-width);
+ const observed=entered.map(v=>/^\\d$/.test(v)?Number(v):null);
+ if(op==='+'){
+  let carry=0;
+  for(let i=width-1;i>=0;i--){
+   const digits=values.map(n=>Number(String(n).padStart(width,'0').slice(-width)[i]));
+   const sum=digits.reduce((s,n)=>s+n,carry);
+   const digit=sum%10;
+   if(observed[i]!==null&&observed[i]!==digit){
+    const withoutCarry=(sum-carry)%10;
+    if(carry&&observed[i]===withoutCarry)return 'Dans la colonne '+(width-i)+ ' en partant de la droite, tu as oublié la retenue de la colonne précédente.';
+    return 'Regarde la colonne '+(width-i)+' en partant de la droite : vérifie l’addition des chiffres et la retenue.';
+   }
+   carry=Math.floor(sum/10);
+  }
+ }else{
+  let borrow=0;
+  const x=String(values[0]).padStart(width,'0'),y=String(values[1]).padStart(width,'0');
+  for(let i=width-1;i>=0;i--){
+   const top=+x[i]-borrow,bot=+y[i];
+   const next=top<bot?1:0;
+   const digit=(top+10*next-bot+10)%10;
+   if(observed[i]!==null&&observed[i]!==digit){
+    if(next)return method.value==='exchange'?'Dans cette colonne, il faut échanger une dizaine contre dix unités. Vérifie aussi la colonne donneuse.':'Dans cette colonne, ajoute 10 en haut et 1+ dans la colonne suivante en bas, puis recalcule.';
+    if(borrow)return 'Tu as peut-être oublié de tenir compte de la transformation faite dans la colonne précédente.';
+    return 'Vérifie la soustraction dans la colonne '+(width-i)+' en partant de la droite.';
+   }
+   borrow=next;
+  }
+ }
+ const raw=entered.filter(v=>/^\\d$/.test(v)).join('');
+ const correct=String(Math.abs(expectedValue));
+ if(decimals&&raw.replace(/^0+/,'')===correct)return 'Les chiffres du résultat sont corrects. Vérifie uniquement le placement de la virgule.';
+ if(entered.some(v=>v===' '||v===''))return 'Il manque un ou plusieurs chiffres dans ton résultat. Termine le calcul avant de vérifier.';
+ return 'Vérifie les calculs colonne par colonne et les retenues.';
+}
+function verify(){let poseOK=poseCorrect(),ans=op==='+'?terms.reduce((s,n)=>s+n,0):terms[0]-terms[1],resultOK=alignedNumber(read('res'),expected(ans))&&commaCorrect('res',Math.round(ans*10**decimalPlaces())/10**decimalPlaces());if(!poseOK){return msg(decimals?'Ton opération est mal posée. Vérifie surtout que les virgules sont bien alignées.':'Ton opération est mal posée. Vérifie l’alignement des unités, dizaines et centaines.','error')}if(!resultOK)return msg('Ton opération est bien posée. '+diagnosticColonnes(),'error');if(op==='-'&&!marksOK())return msg(method.value==='exchange'?'Résultat juste, mais il manque un échange : barre le chiffre concerné et transforme-le comme sur ton cahier.':'Résultat juste, mais il manque la transformation par écarts constants : +10 en haut et +1 dans la colonne suivante du nombre du bas.','error');msg(decimals?'Bravo ! Ton opération est bien posée, les calculs sont corrects et la virgule est bien placée.':'Bravo ! Ton opération est bien posée et le résultat est correct.','success')}
 K.innerHTML='';'0123456789'.split('').forEach(n=>{let x=document.createElement('button');x.textContent=n;x.onclick=()=>put(n);K.append(x)});
 const commaKey=document.createElement('button');commaKey.textContent=',';commaKey.className='commaKey';commaKey.setAttribute('aria-label','Placer ou retirer une virgule avant cette case');commaKey.onclick=()=>{if(!sel)return;if(sel.dataset.k.startsWith('carry-'))return msg('La virgule se place dans les nombres, pas dans les retenues.');const row=sel.parentElement;const remove=sel.dataset.comma==='true';row.querySelectorAll('[data-comma]').forEach(td=>delete td.dataset.comma);if(!remove)sel.dataset.comma='true';msg(remove?'Virgule retirée.':'Virgule placée avant cette case. Saisis maintenant le premier chiffre après la virgule.');};K.append(commaKey);
 function chooseOperation(choice){if(choice==='x'||choice==='÷'){location.href='operations-multiplication-division.html?v=20261015-decimaux&op='+(choice==='x'?'multiplication':'division');return}op=choice;document.getElementById('add').className=op==='+'?'active':'';document.getElementById('sub').className=op==='-'?'active':'';opMenu.classList.add('hidden');workshop.classList.remove('hidden');openPrep()}document.querySelectorAll('.opChoice').forEach(b=>b.onclick=()=>chooseOperation(b.dataset.op));document.getElementById('changeOp').onclick=()=>{workshop.classList.add('hidden');opMenu.classList.remove('hidden');phase.textContent='Choisis une opération'};borrowBtn.onclick=doBorrow;document.getElementById('erase').onclick=()=>{if(sel){sel.textContent='';delete sel.dataset.value;delete sel.dataset.comma}};check.onclick=verify;document.getElementById('new').onclick=()=>openPrep();level.onchange=make;method.onchange=make;document.getElementById('add').onclick=e=>{op='+';document.getElementById('add').className='active';document.getElementById('sub').className='';openPrep()};document.getElementById('sub').onclick=e=>{op='-';document.getElementById('sub').className='active';document.getElementById('add').className='';openPrep()};function openPrep(){const p=document.getElementById('prepOverlay'),l=document.getElementById('prepLevel');l.innerHTML=level.innerHTML;l.value=level.value;document.getElementById('prepMethodWrap').hidden=op!=='-';document.querySelector('input[name="prepMethod"][value="'+method.value+'"]').checked=true;p.hidden=false}document.getElementById('prepStart').onclick=()=>{level.value=document.getElementById('prepLevel').value;method.value=document.querySelector('input[name="prepMethod"]:checked').value;document.getElementById('prepOverlay').hidden=true;make()};phase.textContent='Choisis une opération'})();
