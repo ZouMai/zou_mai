@@ -72,7 +72,7 @@ function diagnosticColonnes(){
  const entered=read('res');
  const expectedValue=op==='+'?values.reduce((s,n)=>s+n,0):values[0]-values[1];
  const expectedDigits=String(Math.abs(expectedValue)).padStart(width,'0').slice(-width);
- const observed=entered.map(v=>/^\\d$/.test(v)?Number(v):null);
+ const observed=entered.map(v=>/^\d$/.test(v)?Number(v):null);
  if(op==='+'){
   let carry=0;
   for(let i=width-1;i>=0;i--){
@@ -101,7 +101,7 @@ function diagnosticColonnes(){
    borrow=next;
   }
  }
- const raw=entered.filter(v=>/^\\d$/.test(v)).join('');
+ const raw=entered.filter(v=>/^\d$/.test(v)).join('');
  const correct=String(Math.abs(expectedValue));
  if(decimals&&raw.replace(/^0+/,'')===correct)return 'Les chiffres du résultat sont corrects. Vérifie uniquement le placement de la virgule.';
  if(entered.some(v=>v===' '||v===''))return 'Il manque un ou plusieurs chiffres dans ton résultat. Termine le calcul avant de vérifier.';
