@@ -1,4 +1,47 @@
-const CATEGORIES = [["Alice", "Lewis Carroll · Un problème peut en cacher un autre", "I", "#e5b8c4"], ["Pinocchio", "Carlo Collodi · Comprendre un geste d’amour", "II", "#ebc994"], ["Mowgli", "Rudyard Kipling · Voir au-delà des apparences", "III", "#a9d3bd"], ["Peter Pan", "J. M. Barrie · L’orgueil entre les lignes", "IV", "#b9d6e0"], ["Gavroche", "Victor Hugo · Un refuge inattendu", "V", "#d5c5ec"], ["Blanquette", "Alphonse Daudet · Le prix de la liberté", "VI", "#d7dca9"]];
+const CATEGORIES = [
+  [
+    "Alice",
+    "Lewis Carroll · Un problème peut en cacher un autre",
+    "I",
+    "#e5b8c4"
+  ],
+  [
+    "Pinocchio",
+    "Carlo Collodi · Comprendre un geste d’amour",
+    "II",
+    "#ebc994"
+  ],
+  [
+    "Harry Potter",
+    "J. K. Rowling · Lire entre les lignes",
+    "III",
+    "#a9d3bd"
+  ],
+  [
+    "Peter Pan",
+    "J. M. Barrie · L’orgueil entre les lignes",
+    "IV",
+    "#b9d6e0"
+  ],
+  [
+    "Gavroche",
+    "Victor Hugo · Un refuge inattendu",
+    "V",
+    "#d5c5ec"
+  ],
+  [
+    "Blanquette",
+    "Alphonse Daudet · Le prix de la liberté",
+    "VI",
+    "#d7dca9"
+  ],
+  [
+    "Charlie",
+    "Roald Dahl · Le ticket d'or",
+    "VII",
+    "#f0c57b"
+  ]
+];
 const MISSIONS = [
   {
     "id": "expert-jeunesse-v2-0-0",
@@ -287,144 +330,144 @@ const MISSIONS = [
     "step": 3
   },
   {
-    "id": "expert-jeunesse-v2-2-0",
+    "id": "expert-jeunesse-v3-2-0",
     "cat": 2,
-    "title": "Le Livre de la jungle",
+    "title": "Harry Potter à l'école des sorciers",
     "sentences": [
-      "Mère Louve lui dit, une fois ou deux, que Shere Khan n’était pas un être auquel on dût se fier, et qu’un jour il lui faudrait tuer Shere Khan ; et sans doute un jeune loup se fût rappelé cet avis à chaque heure de sa vie, mais Mowgli l’oublia parce qu’il n’était qu’un petit garçon — et pourtant il se serait donné à lui-même le nom de loup s’il avait su parler aucune langue humaine.",
-      "Shere Khan se trouvait toujours sur son chemin dans la jungle. À mesure que le chef Akela prenait de l’âge et s’affaiblissait, le tigre boiteux s’était lié de grande amitié avec les loups plus jeunes de la tribu, qui le suivaient pour avoir ses restes, chose que jamais Akela n’aurait permise s’il avait osé aller jusqu’au bout de son autorité légitime.",
-      "En outre, Shere Khan les flattait : il s’étonnait que de si beaux jeunes chasseurs fussent satisfaits de se laisser conduire par un loup moribond et par un petit d’homme. — On me raconte, disait Shere Khan, que vous autres, au Conseil, vous n’osez pas le regarder entre les yeux ! Et les jeunes loups grondaient et hérissaient leur dos.",
-      "Bagheera, qui avait les yeux et les oreilles partout, appris quelque chose de cela, et, une fois ou deux, expliqua nettement à Mowgli que Shere Khan le tuerait un beau jour. Et Mowgli riait, et répondait : — J’ai pour moi le clan, j’ai toi… et Baloo, bien qu’il soit si paresseux, donnerait bien un coup de patte ou deux en mon honneur. Pourquoi m’effraierais-je ?"
+      "Harry serrait dans sa poche la lettre reçue le matin même. Il avait relu trois fois le nom de l'école, sans réussir à croire qu'elle l'attendait vraiment.",
+      "Dans la gare, les voyageurs passaient sans remarquer son chariot. Harry observait les panneaux, puis la grande horloge. Il avait encore du temps, mais son cœur battait plus vite.",
+      "Une famille portant des malles et une cage à hibou avançait devant lui. Harry hésita à les suivre. Il ne connaissait personne ici et craignait de se tromper.",
+      "La mère de famille lui adressa un sourire rassurant. Harry fit un pas vers elle : pour la première fois de la journée, il pensa qu'il n'était peut-être pas seul."
     ],
-    "question": "Quels indices montrent que Mowgli sous-estime le danger ?",
+    "question": "Pourquoi Harry hésite-t-il à suivre la famille ?",
     "answers": [
-      "Il oublie un premier avertissement puis rit quand Bagheera le prévient.",
-      "Il réclame une protection permanente et se cache au moindre bruit.",
-      "Il refuse d’écouter le tigre parce qu’il connaît parfaitement son projet.",
-      "Il décide de quitter la jungle après avoir consulté tous ses amis."
+      "Il ne connaît pas les lieux et redoute de se tromper.",
+      "Il a perdu sa lettre.",
+      "Il ne veut plus aller à l'école.",
+      "Il attend son oncle."
     ],
     "correct": 0,
-    "explanation": "L’oubli puis le rire montrent qu’il ne mesure pas la menace, même lorsque les avertissements se répètent.",
+    "explanation": "Les hésitations et la crainte de se tromper montrent son incertitude.",
     "hints": [
-      "Repère les réactions du garçon aux deux avertissements.",
-      "Compare ce qu’il fait après les paroles de Mère Louve et de Bagheera."
+      "Relis les passages qui montrent ce que ressent le personnage.",
+      "Cherche ce que ses gestes révèlent sans que le narrateur le dise directement."
     ],
     "evidence": [
-      0,
-      3
+      1,
+      2
     ],
     "proofSets": [
       [
-        0,
-        3
+        1,
+        2
       ]
     ],
-    "proofInstruction": "Sélectionne l’avertissement oublié et celui auquel Mowgli répond en riant.",
+    "proofInstruction": "Sélectionne les deux passages qui justifient ta réponse.",
     "level": 1,
     "book": {
-      "author": "Rudyard Kipling",
-      "work": "Le Livre de la jungle",
-      "origin": "Royaume-Uni · Littérature jeunesse",
-      "kind": "Extrait · Traduction de Fabulet et d’Humières",
-      "source": "https://fr.wikisource.org/wiki/Le_Livre_de_la_jungle_(trad._Fabulet_et_Humi%C3%A8res)/Les_Fr%C3%A8res_de_Mowgli",
-      "edition": "Les Frères de Mowgli. Traduction de Louis Fabulet et Robert d’Humières, Mercure de France, 1910. Extrait continu ; paragraphes regroupés. Orthographe de l’édition conservée.",
-      "context": "Mowgli a grandi parmi les loups. Akela est le chef du clan ; Bagheera, la panthère, et Baloo, l’ours, protègent le garçon. Shere Khan est un tigre.",
-      "glossary": "Moribond : près de mourir. L’autorité légitime : le pouvoir reconnu d’un chef. Flatter : faire des compliments pour obtenir quelque chose.",
+      "author": "J. K. Rowling",
+      "work": "Harry Potter à l'école des sorciers",
+      "origin": "Littérature jeunesse · Fiction",
+      "kind": "Texte original pédagogique",
+      "source": "https://zoumai.github.io/zou_mai/lecture-experts.html",
+      "edition": "Création pédagogique originale inspirée de l'univers du roman, sans reprise du texte protégé.",
+      "context": "Harry découvre qu'il appartient au monde des sorciers. Ce récit est une création pédagogique originale, non un extrait du roman.",
+      "glossary": "Une confiserie : un magasin de sucreries. Une malle : un grand coffre de voyage.",
       "text": [
-        "Mère Louve lui dit, une fois ou deux, que Shere Khan n’était pas un être auquel on dût se fier, et qu’un jour il lui faudrait tuer Shere Khan ; et sans doute un jeune loup se fût rappelé cet avis à chaque heure de sa vie, mais Mowgli l’oublia parce qu’il n’était qu’un petit garçon — et pourtant il se serait donné à lui-même le nom de loup s’il avait su parler aucune langue humaine.",
-        "Shere Khan se trouvait toujours sur son chemin dans la jungle. À mesure que le chef Akela prenait de l’âge et s’affaiblissait, le tigre boiteux s’était lié de grande amitié avec les loups plus jeunes de la tribu, qui le suivaient pour avoir ses restes, chose que jamais Akela n’aurait permise s’il avait osé aller jusqu’au bout de son autorité légitime.",
-        "En outre, Shere Khan les flattait : il s’étonnait que de si beaux jeunes chasseurs fussent satisfaits de se laisser conduire par un loup moribond et par un petit d’homme. — On me raconte, disait Shere Khan, que vous autres, au Conseil, vous n’osez pas le regarder entre les yeux ! Et les jeunes loups grondaient et hérissaient leur dos.",
-        "Bagheera, qui avait les yeux et les oreilles partout, appris quelque chose de cela, et, une fois ou deux, expliqua nettement à Mowgli que Shere Khan le tuerait un beau jour. Et Mowgli riait, et répondait : — J’ai pour moi le clan, j’ai toi… et Baloo, bien qu’il soit si paresseux, donnerait bien un coup de patte ou deux en mon honneur. Pourquoi m’effraierais-je ?"
+        "Harry serrait dans sa poche la lettre reçue le matin même. Il avait relu trois fois le nom de l'école, sans réussir à croire qu'elle l'attendait vraiment.",
+        "Dans la gare, les voyageurs passaient sans remarquer son chariot. Harry observait les panneaux, puis la grande horloge. Il avait encore du temps, mais son cœur battait plus vite.",
+        "Une famille portant des malles et une cage à hibou avançait devant lui. Harry hésita à les suivre. Il ne connaissait personne ici et craignait de se tromper.",
+        "La mère de famille lui adressa un sourire rassurant. Harry fit un pas vers elle : pour la première fois de la journée, il pensa qu'il n'était peut-être pas seul."
       ]
     },
     "step": 1
   },
   {
-    "id": "expert-jeunesse-v2-2-1",
+    "id": "expert-jeunesse-v3-2-1",
     "cat": 2,
-    "title": "Le Livre de la jungle",
+    "title": "Harry Potter à l'école des sorciers",
     "sentences": [
-      "Mère Louve lui dit, une fois ou deux, que Shere Khan n’était pas un être auquel on dût se fier, et qu’un jour il lui faudrait tuer Shere Khan ; et sans doute un jeune loup se fût rappelé cet avis à chaque heure de sa vie, mais Mowgli l’oublia parce qu’il n’était qu’un petit garçon — et pourtant il se serait donné à lui-même le nom de loup s’il avait su parler aucune langue humaine.",
-      "Shere Khan se trouvait toujours sur son chemin dans la jungle. À mesure que le chef Akela prenait de l’âge et s’affaiblissait, le tigre boiteux s’était lié de grande amitié avec les loups plus jeunes de la tribu, qui le suivaient pour avoir ses restes, chose que jamais Akela n’aurait permise s’il avait osé aller jusqu’au bout de son autorité légitime.",
-      "En outre, Shere Khan les flattait : il s’étonnait que de si beaux jeunes chasseurs fussent satisfaits de se laisser conduire par un loup moribond et par un petit d’homme. — On me raconte, disait Shere Khan, que vous autres, au Conseil, vous n’osez pas le regarder entre les yeux ! Et les jeunes loups grondaient et hérissaient leur dos.",
-      "Bagheera, qui avait les yeux et les oreilles partout, appris quelque chose de cela, et, une fois ou deux, expliqua nettement à Mowgli que Shere Khan le tuerait un beau jour. Et Mowgli riait, et répondait : — J’ai pour moi le clan, j’ai toi… et Baloo, bien qu’il soit si paresseux, donnerait bien un coup de patte ou deux en mon honneur. Pourquoi m’effraierais-je ?"
+      "Harry serrait dans sa poche la lettre reçue le matin même. Il avait relu trois fois le nom de l'école, sans réussir à croire qu'elle l'attendait vraiment.",
+      "Dans la gare, les voyageurs passaient sans remarquer son chariot. Harry observait les panneaux, puis la grande horloge. Il avait encore du temps, mais son cœur battait plus vite.",
+      "Une famille portant des malles et une cage à hibou avançait devant lui. Harry hésita à les suivre. Il ne connaissait personne ici et craignait de se tromper.",
+      "La mère de famille lui adressa un sourire rassurant. Harry fit un pas vers elle : pour la première fois de la journée, il pensa qu'il n'était peut-être pas seul."
     ],
-    "question": "À quoi servent les compliments de Shere Khan aux jeunes loups ?",
+    "question": "Quel détail lui donne l'espoir d'être au bon endroit ?",
     "answers": [
-      "À flatter leur fierté pour les détourner d’Akela et de Mowgli.",
-      "À leur apprendre à mieux défendre Mowgli contre tous ses ennemis.",
-      "À féliciter Akela pour la bonne organisation du clan.",
-      "À leur demander de renoncer à la chasse et de devenir végétariens."
+      "La famille transporte une cage à hibou et des malles.",
+      "L'horloge est en retard.",
+      "La gare est vide.",
+      "Son chariot est léger."
     ],
     "correct": 0,
-    "explanation": "Il valorise les jeunes tout en rabaissant leur chef et Mowgli. Les compliments cherchent à modifier leurs alliances.",
+    "explanation": "Les objets inhabituels rappellent le monde des sorciers.",
     "hints": [
-      "Regarde qui est valorisé et qui est dévalorisé dans la même phrase.",
-      "Quel effet peut produire l’opposition entre « beaux jeunes chasseurs » et « loup moribond » ?"
+      "Relis les passages qui montrent ce que ressent le personnage.",
+      "Cherche ce que ses gestes révèlent sans que le narrateur le dise directement."
     ],
     "evidence": null,
     "proofSets": null,
     "proofInstruction": "",
     "level": 2,
     "book": {
-      "author": "Rudyard Kipling",
-      "work": "Le Livre de la jungle",
-      "origin": "Royaume-Uni · Littérature jeunesse",
-      "kind": "Extrait · Traduction de Fabulet et d’Humières",
-      "source": "https://fr.wikisource.org/wiki/Le_Livre_de_la_jungle_(trad._Fabulet_et_Humi%C3%A8res)/Les_Fr%C3%A8res_de_Mowgli",
-      "edition": "Les Frères de Mowgli. Traduction de Louis Fabulet et Robert d’Humières, Mercure de France, 1910. Extrait continu ; paragraphes regroupés. Orthographe de l’édition conservée.",
-      "context": "Mowgli a grandi parmi les loups. Akela est le chef du clan ; Bagheera, la panthère, et Baloo, l’ours, protègent le garçon. Shere Khan est un tigre.",
-      "glossary": "Moribond : près de mourir. L’autorité légitime : le pouvoir reconnu d’un chef. Flatter : faire des compliments pour obtenir quelque chose.",
+      "author": "J. K. Rowling",
+      "work": "Harry Potter à l'école des sorciers",
+      "origin": "Littérature jeunesse · Fiction",
+      "kind": "Texte original pédagogique",
+      "source": "https://zoumai.github.io/zou_mai/lecture-experts.html",
+      "edition": "Création pédagogique originale inspirée de l'univers du roman, sans reprise du texte protégé.",
+      "context": "Harry découvre qu'il appartient au monde des sorciers. Ce récit est une création pédagogique originale, non un extrait du roman.",
+      "glossary": "Une confiserie : un magasin de sucreries. Une malle : un grand coffre de voyage.",
       "text": [
-        "Mère Louve lui dit, une fois ou deux, que Shere Khan n’était pas un être auquel on dût se fier, et qu’un jour il lui faudrait tuer Shere Khan ; et sans doute un jeune loup se fût rappelé cet avis à chaque heure de sa vie, mais Mowgli l’oublia parce qu’il n’était qu’un petit garçon — et pourtant il se serait donné à lui-même le nom de loup s’il avait su parler aucune langue humaine.",
-        "Shere Khan se trouvait toujours sur son chemin dans la jungle. À mesure que le chef Akela prenait de l’âge et s’affaiblissait, le tigre boiteux s’était lié de grande amitié avec les loups plus jeunes de la tribu, qui le suivaient pour avoir ses restes, chose que jamais Akela n’aurait permise s’il avait osé aller jusqu’au bout de son autorité légitime.",
-        "En outre, Shere Khan les flattait : il s’étonnait que de si beaux jeunes chasseurs fussent satisfaits de se laisser conduire par un loup moribond et par un petit d’homme. — On me raconte, disait Shere Khan, que vous autres, au Conseil, vous n’osez pas le regarder entre les yeux ! Et les jeunes loups grondaient et hérissaient leur dos.",
-        "Bagheera, qui avait les yeux et les oreilles partout, appris quelque chose de cela, et, une fois ou deux, expliqua nettement à Mowgli que Shere Khan le tuerait un beau jour. Et Mowgli riait, et répondait : — J’ai pour moi le clan, j’ai toi… et Baloo, bien qu’il soit si paresseux, donnerait bien un coup de patte ou deux en mon honneur. Pourquoi m’effraierais-je ?"
+        "Harry serrait dans sa poche la lettre reçue le matin même. Il avait relu trois fois le nom de l'école, sans réussir à croire qu'elle l'attendait vraiment.",
+        "Dans la gare, les voyageurs passaient sans remarquer son chariot. Harry observait les panneaux, puis la grande horloge. Il avait encore du temps, mais son cœur battait plus vite.",
+        "Une famille portant des malles et une cage à hibou avançait devant lui. Harry hésita à les suivre. Il ne connaissait personne ici et craignait de se tromper.",
+        "La mère de famille lui adressa un sourire rassurant. Harry fit un pas vers elle : pour la première fois de la journée, il pensa qu'il n'était peut-être pas seul."
       ]
     },
     "step": 2
   },
   {
-    "id": "expert-jeunesse-v2-2-2",
+    "id": "expert-jeunesse-v3-2-2",
     "cat": 2,
-    "title": "Le Livre de la jungle",
+    "title": "Harry Potter à l'école des sorciers",
     "sentences": [
-      "Mère Louve lui dit, une fois ou deux, que Shere Khan n’était pas un être auquel on dût se fier, et qu’un jour il lui faudrait tuer Shere Khan ; et sans doute un jeune loup se fût rappelé cet avis à chaque heure de sa vie, mais Mowgli l’oublia parce qu’il n’était qu’un petit garçon — et pourtant il se serait donné à lui-même le nom de loup s’il avait su parler aucune langue humaine.",
-      "Shere Khan se trouvait toujours sur son chemin dans la jungle. À mesure que le chef Akela prenait de l’âge et s’affaiblissait, le tigre boiteux s’était lié de grande amitié avec les loups plus jeunes de la tribu, qui le suivaient pour avoir ses restes, chose que jamais Akela n’aurait permise s’il avait osé aller jusqu’au bout de son autorité légitime.",
-      "En outre, Shere Khan les flattait : il s’étonnait que de si beaux jeunes chasseurs fussent satisfaits de se laisser conduire par un loup moribond et par un petit d’homme. — On me raconte, disait Shere Khan, que vous autres, au Conseil, vous n’osez pas le regarder entre les yeux ! Et les jeunes loups grondaient et hérissaient leur dos.",
-      "Bagheera, qui avait les yeux et les oreilles partout, appris quelque chose de cela, et, une fois ou deux, expliqua nettement à Mowgli que Shere Khan le tuerait un beau jour. Et Mowgli riait, et répondait : — J’ai pour moi le clan, j’ai toi… et Baloo, bien qu’il soit si paresseux, donnerait bien un coup de patte ou deux en mon honneur. Pourquoi m’effraierais-je ?"
+      "Harry serrait dans sa poche la lettre reçue le matin même. Il avait relu trois fois le nom de l'école, sans réussir à croire qu'elle l'attendait vraiment.",
+      "Dans la gare, les voyageurs passaient sans remarquer son chariot. Harry observait les panneaux, puis la grande horloge. Il avait encore du temps, mais son cœur battait plus vite.",
+      "Une famille portant des malles et une cage à hibou avançait devant lui. Harry hésita à les suivre. Il ne connaissait personne ici et craignait de se tromper.",
+      "La mère de famille lui adressa un sourire rassurant. Harry fit un pas vers elle : pour la première fois de la journée, il pensa qu'il n'était peut-être pas seul."
     ],
-    "question": "Pourquoi le lecteur peut-il être plus inquiet que Mowgli ?",
+    "question": "Que comprend-on à la fin sur les émotions de Harry ?",
     "answers": [
-      "Il voit le tigre gagner les jeunes loups, alors que Mowgli compte encore sur tout le clan.",
-      "Il sait que Bagheera et Baloo ont déjà décidé de livrer Mowgli au tigre.",
-      "Il a appris dans ce passage que tous les loups ont quitté la jungle.",
-      "Il ignore qui est Shere Khan, contrairement à Mowgli."
+      "Il passe de l'inquiétude à un début de confiance.",
+      "Il devient furieux.",
+      "Il décide de rentrer.",
+      "Il n'a jamais eu peur."
     ],
     "correct": 0,
-    "explanation": "Le lecteur rapproche le changement d’attitude des jeunes loups de la confiance de Mowgli. Le texte ne dit pas que ses deux amis le trahissent.",
+    "explanation": "Le sourire et son dernier espoir marquent une évolution.",
     "hints": [
-      "Compare les alliances décrites et celles sur lesquelles compte Mowgli.",
-      "« J’ai pour moi le clan » est-il aussi rassurant après ce que tu viens de lire ?"
+      "Relis les passages qui montrent ce que ressent le personnage.",
+      "Cherche ce que ses gestes révèlent sans que le narrateur le dise directement."
     ],
     "evidence": null,
     "proofSets": null,
     "proofInstruction": "",
     "level": 3,
     "book": {
-      "author": "Rudyard Kipling",
-      "work": "Le Livre de la jungle",
-      "origin": "Royaume-Uni · Littérature jeunesse",
-      "kind": "Extrait · Traduction de Fabulet et d’Humières",
-      "source": "https://fr.wikisource.org/wiki/Le_Livre_de_la_jungle_(trad._Fabulet_et_Humi%C3%A8res)/Les_Fr%C3%A8res_de_Mowgli",
-      "edition": "Les Frères de Mowgli. Traduction de Louis Fabulet et Robert d’Humières, Mercure de France, 1910. Extrait continu ; paragraphes regroupés. Orthographe de l’édition conservée.",
-      "context": "Mowgli a grandi parmi les loups. Akela est le chef du clan ; Bagheera, la panthère, et Baloo, l’ours, protègent le garçon. Shere Khan est un tigre.",
-      "glossary": "Moribond : près de mourir. L’autorité légitime : le pouvoir reconnu d’un chef. Flatter : faire des compliments pour obtenir quelque chose.",
+      "author": "J. K. Rowling",
+      "work": "Harry Potter à l'école des sorciers",
+      "origin": "Littérature jeunesse · Fiction",
+      "kind": "Texte original pédagogique",
+      "source": "https://zoumai.github.io/zou_mai/lecture-experts.html",
+      "edition": "Création pédagogique originale inspirée de l'univers du roman, sans reprise du texte protégé.",
+      "context": "Harry découvre qu'il appartient au monde des sorciers. Ce récit est une création pédagogique originale, non un extrait du roman.",
+      "glossary": "Une confiserie : un magasin de sucreries. Une malle : un grand coffre de voyage.",
       "text": [
-        "Mère Louve lui dit, une fois ou deux, que Shere Khan n’était pas un être auquel on dût se fier, et qu’un jour il lui faudrait tuer Shere Khan ; et sans doute un jeune loup se fût rappelé cet avis à chaque heure de sa vie, mais Mowgli l’oublia parce qu’il n’était qu’un petit garçon — et pourtant il se serait donné à lui-même le nom de loup s’il avait su parler aucune langue humaine.",
-        "Shere Khan se trouvait toujours sur son chemin dans la jungle. À mesure que le chef Akela prenait de l’âge et s’affaiblissait, le tigre boiteux s’était lié de grande amitié avec les loups plus jeunes de la tribu, qui le suivaient pour avoir ses restes, chose que jamais Akela n’aurait permise s’il avait osé aller jusqu’au bout de son autorité légitime.",
-        "En outre, Shere Khan les flattait : il s’étonnait que de si beaux jeunes chasseurs fussent satisfaits de se laisser conduire par un loup moribond et par un petit d’homme. — On me raconte, disait Shere Khan, que vous autres, au Conseil, vous n’osez pas le regarder entre les yeux ! Et les jeunes loups grondaient et hérissaient leur dos.",
-        "Bagheera, qui avait les yeux et les oreilles partout, appris quelque chose de cela, et, une fois ou deux, expliqua nettement à Mowgli que Shere Khan le tuerait un beau jour. Et Mowgli riait, et répondait : — J’ai pour moi le clan, j’ai toi… et Baloo, bien qu’il soit si paresseux, donnerait bien un coup de patte ou deux en mon honneur. Pourquoi m’effraierais-je ?"
+        "Harry serrait dans sa poche la lettre reçue le matin même. Il avait relu trois fois le nom de l'école, sans réussir à croire qu'elle l'attendait vraiment.",
+        "Dans la gare, les voyageurs passaient sans remarquer son chariot. Harry observait les panneaux, puis la grande horloge. Il avait encore du temps, mais son cœur battait plus vite.",
+        "Une famille portant des malles et une cage à hibou avançait devant lui. Harry hésita à les suivre. Il ne connaissait personne ici et craignait de se tromper.",
+        "La mère de famille lui adressa un sourire rassurant. Harry fit un pas vers elle : pour la première fois de la journée, il pensa qu'il n'était peut-être pas seul."
       ]
     },
     "step": 3
@@ -855,6 +898,149 @@ const MISSIONS = [
       ],
       "kind": "Adaptation pédagogique abrégée",
       "context": "Ce dossier conserve une adaptation pour découvrir le classique. Le texte original est accessible dans les sources."
+    },
+    "step": 3
+  },
+  {
+    "id": "expert-jeunesse-v3-6-0",
+    "cat": 6,
+    "title": "Charlie et la chocolaterie",
+    "sentences": [
+      "Charlie s'arrêta devant la vitrine de la confiserie. Sur une affiche dorée, il lut que quelques tablettes cachaient un billet permettant de visiter une fabrique extraordinaire.",
+      "Il compta les pièces dans sa main. Elles suffisaient pour une seule tablette. Il pensa à sa famille, qui aurait sûrement trouvé plus raisonnable de garder cet argent.",
+      "Le marchand lui tendit le chocolat. Charlie déchira doucement le papier, puis aperçut une couleur brillante sous l'emballage. Il resta immobile, sans oser regarder davantage.",
+      "Quand il reconnut le billet doré, il ne cria pas. Il imagina d'abord le visage de ses grands-parents, puis courut leur annoncer la nouvelle."
+    ],
+    "question": "Pourquoi Charlie hésite-t-il avant d'acheter ?",
+    "answers": [
+      "Il sait que cet argent pourrait être utile à sa famille.",
+      "Il déteste le chocolat.",
+      "Le marchand refuse de vendre.",
+      "Il a déjà gagné un billet."
+    ],
+    "correct": 0,
+    "explanation": "Le texte oppose son envie à son souci de la famille.",
+    "hints": [
+      "Relis les passages qui montrent ce que ressent le personnage.",
+      "Cherche ce que ses gestes révèlent sans que le narrateur le dise directement."
+    ],
+    "evidence": [
+      1,
+      2
+    ],
+    "proofSets": [
+      [
+        1,
+        2
+      ]
+    ],
+    "proofInstruction": "Sélectionne les deux passages qui justifient ta réponse.",
+    "level": 1,
+    "book": {
+      "author": "Roald Dahl",
+      "work": "Charlie et la chocolaterie",
+      "origin": "Littérature jeunesse · Fiction",
+      "kind": "Texte original pédagogique",
+      "source": "https://zoumai.github.io/zou_mai/lecture-experts.html",
+      "edition": "Création pédagogique originale inspirée de l'univers du roman, sans reprise du texte protégé.",
+      "context": "Charlie rêve de visiter une fabrique de chocolat. Ce récit est une création pédagogique originale, non un extrait du roman.",
+      "glossary": "Une confiserie : un magasin de sucreries. Une malle : un grand coffre de voyage.",
+      "text": [
+        "Charlie s'arrêta devant la vitrine de la confiserie. Sur une affiche dorée, il lut que quelques tablettes cachaient un billet permettant de visiter une fabrique extraordinaire.",
+        "Il compta les pièces dans sa main. Elles suffisaient pour une seule tablette. Il pensa à sa famille, qui aurait sûrement trouvé plus raisonnable de garder cet argent.",
+        "Le marchand lui tendit le chocolat. Charlie déchira doucement le papier, puis aperçut une couleur brillante sous l'emballage. Il resta immobile, sans oser regarder davantage.",
+        "Quand il reconnut le billet doré, il ne cria pas. Il imagina d'abord le visage de ses grands-parents, puis courut leur annoncer la nouvelle."
+      ]
+    },
+    "step": 1
+  },
+  {
+    "id": "expert-jeunesse-v3-6-1",
+    "cat": 6,
+    "title": "Charlie et la chocolaterie",
+    "sentences": [
+      "Charlie s'arrêta devant la vitrine de la confiserie. Sur une affiche dorée, il lut que quelques tablettes cachaient un billet permettant de visiter une fabrique extraordinaire.",
+      "Il compta les pièces dans sa main. Elles suffisaient pour une seule tablette. Il pensa à sa famille, qui aurait sûrement trouvé plus raisonnable de garder cet argent.",
+      "Le marchand lui tendit le chocolat. Charlie déchira doucement le papier, puis aperçut une couleur brillante sous l'emballage. Il resta immobile, sans oser regarder davantage.",
+      "Quand il reconnut le billet doré, il ne cria pas. Il imagina d'abord le visage de ses grands-parents, puis courut leur annoncer la nouvelle."
+    ],
+    "question": "Pourquoi Charlie reste-t-il immobile en voyant la couleur brillante ?",
+    "answers": [
+      "Il est surpris et n'ose pas encore croire à sa chance.",
+      "Il est déçu du goût.",
+      "Il cherche sa monnaie.",
+      "Il veut cacher la tablette au marchand."
+    ],
+    "correct": 0,
+    "explanation": "Sa réaction révèle une émotion intense plutôt qu'une absence de joie.",
+    "hints": [
+      "Relis les passages qui montrent ce que ressent le personnage.",
+      "Cherche ce que ses gestes révèlent sans que le narrateur le dise directement."
+    ],
+    "evidence": null,
+    "proofSets": null,
+    "proofInstruction": "",
+    "level": 2,
+    "book": {
+      "author": "Roald Dahl",
+      "work": "Charlie et la chocolaterie",
+      "origin": "Littérature jeunesse · Fiction",
+      "kind": "Texte original pédagogique",
+      "source": "https://zoumai.github.io/zou_mai/lecture-experts.html",
+      "edition": "Création pédagogique originale inspirée de l'univers du roman, sans reprise du texte protégé.",
+      "context": "Charlie rêve de visiter une fabrique de chocolat. Ce récit est une création pédagogique originale, non un extrait du roman.",
+      "glossary": "Une confiserie : un magasin de sucreries. Une malle : un grand coffre de voyage.",
+      "text": [
+        "Charlie s'arrêta devant la vitrine de la confiserie. Sur une affiche dorée, il lut que quelques tablettes cachaient un billet permettant de visiter une fabrique extraordinaire.",
+        "Il compta les pièces dans sa main. Elles suffisaient pour une seule tablette. Il pensa à sa famille, qui aurait sûrement trouvé plus raisonnable de garder cet argent.",
+        "Le marchand lui tendit le chocolat. Charlie déchira doucement le papier, puis aperçut une couleur brillante sous l'emballage. Il resta immobile, sans oser regarder davantage.",
+        "Quand il reconnut le billet doré, il ne cria pas. Il imagina d'abord le visage de ses grands-parents, puis courut leur annoncer la nouvelle."
+      ]
+    },
+    "step": 2
+  },
+  {
+    "id": "expert-jeunesse-v3-6-2",
+    "cat": 6,
+    "title": "Charlie et la chocolaterie",
+    "sentences": [
+      "Charlie s'arrêta devant la vitrine de la confiserie. Sur une affiche dorée, il lut que quelques tablettes cachaient un billet permettant de visiter une fabrique extraordinaire.",
+      "Il compta les pièces dans sa main. Elles suffisaient pour une seule tablette. Il pensa à sa famille, qui aurait sûrement trouvé plus raisonnable de garder cet argent.",
+      "Le marchand lui tendit le chocolat. Charlie déchira doucement le papier, puis aperçut une couleur brillante sous l'emballage. Il resta immobile, sans oser regarder davantage.",
+      "Quand il reconnut le billet doré, il ne cria pas. Il imagina d'abord le visage de ses grands-parents, puis courut leur annoncer la nouvelle."
+    ],
+    "question": "Quel trait de caractère apparaît dans sa première pensée après la découverte ?",
+    "answers": [
+      "Il pense à partager sa joie avec ses proches.",
+      "Il veut garder le secret pour toujours.",
+      "Il méprise sa famille.",
+      "Il souhaite revendre le billet."
+    ],
+    "correct": 0,
+    "explanation": "Il imagine immédiatement la réaction de ses grands-parents.",
+    "hints": [
+      "Relis les passages qui montrent ce que ressent le personnage.",
+      "Cherche ce que ses gestes révèlent sans que le narrateur le dise directement."
+    ],
+    "evidence": null,
+    "proofSets": null,
+    "proofInstruction": "",
+    "level": 3,
+    "book": {
+      "author": "Roald Dahl",
+      "work": "Charlie et la chocolaterie",
+      "origin": "Littérature jeunesse · Fiction",
+      "kind": "Texte original pédagogique",
+      "source": "https://zoumai.github.io/zou_mai/lecture-experts.html",
+      "edition": "Création pédagogique originale inspirée de l'univers du roman, sans reprise du texte protégé.",
+      "context": "Charlie rêve de visiter une fabrique de chocolat. Ce récit est une création pédagogique originale, non un extrait du roman.",
+      "glossary": "Une confiserie : un magasin de sucreries. Une malle : un grand coffre de voyage.",
+      "text": [
+        "Charlie s'arrêta devant la vitrine de la confiserie. Sur une affiche dorée, il lut que quelques tablettes cachaient un billet permettant de visiter une fabrique extraordinaire.",
+        "Il compta les pièces dans sa main. Elles suffisaient pour une seule tablette. Il pensa à sa famille, qui aurait sûrement trouvé plus raisonnable de garder cet argent.",
+        "Le marchand lui tendit le chocolat. Charlie déchira doucement le papier, puis aperçut une couleur brillante sous l'emballage. Il resta immobile, sans oser regarder davantage.",
+        "Quand il reconnut le billet doré, il ne cria pas. Il imagina d'abord le visage de ses grands-parents, puis courut leur annoncer la nouvelle."
+      ]
     },
     "step": 3
   }
