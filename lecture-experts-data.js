@@ -85,7 +85,7 @@ const MISSIONS = [
       "kind": "Extrait · Traduction d’Henri Bué",
       "source": "https://fr.wikisource.org/wiki/Alice_au_pays_des_merveilles/1",
       "edition": "Chapitre I, traduction d’Henri Bué, Macmillan, 1869. Extrait continu ; paragraphes regroupés pour les activités. Orthographe de l’édition conservée.",
-      "context": "Alice a suivi le Lapin Blanc. Une boisson étrange l’a fait rapetisser : elle peut maintenant passer par la petite porte qui mène au jardin.",
+      "context": "Alice, une jeune fille curieuse, a suivi un Lapin Blanc jusqu’à un monde étrange où les objets et les tailles changent. Après avoir bu une potion, elle est devenue minuscule. Elle aperçoit un merveilleux jardin derrière une petite porte, mais elle a laissé la clé sur une table désormais trop haute. L’extrait raconte comment elle cherche une solution.",
       "glossary": "Une clef : une clé (ancienne orthographe). Le croquet : un jeu avec des boules et un maillet. Les raisins de Corinthe : de petits raisins secs.",
       "text": [
         "Un moment après, voyant qu’il ne se passait plus rien, elle se décida à aller de suite au jardin ; mais hélas, pauvre Alice ! en arrivant à la porte, elle s’aperçut qu’elle avait oublié la petite clef d’or. Elle revint sur ses pas pour la prendre sur la table. Bah ! impossible d’atteindre à la clef qu’elle voyait bien clairement à travers le verre. Elle fit alors tout son possible pour grimper le long d’un des pieds de la table, mais il était trop glissant ; et enfin, épuisée de fatigue, la pauvre enfant s’assit et pleura.",
@@ -130,7 +130,7 @@ const MISSIONS = [
       "kind": "Extrait · Traduction d’Henri Bué",
       "source": "https://fr.wikisource.org/wiki/Alice_au_pays_des_merveilles/1",
       "edition": "Chapitre I, traduction d’Henri Bué, Macmillan, 1869. Extrait continu ; paragraphes regroupés pour les activités. Orthographe de l’édition conservée.",
-      "context": "Alice a suivi le Lapin Blanc. Une boisson étrange l’a fait rapetisser : elle peut maintenant passer par la petite porte qui mène au jardin.",
+      "context": "Alice, une jeune fille curieuse, a suivi un Lapin Blanc jusqu’à un monde étrange où les objets et les tailles changent. Après avoir bu une potion, elle est devenue minuscule. Elle aperçoit un merveilleux jardin derrière une petite porte, mais elle a laissé la clé sur une table désormais trop haute. L’extrait raconte comment elle cherche une solution.",
       "glossary": "Une clef : une clé (ancienne orthographe). Le croquet : un jeu avec des boules et un maillet. Les raisins de Corinthe : de petits raisins secs.",
       "text": [
         "Un moment après, voyant qu’il ne se passait plus rien, elle se décida à aller de suite au jardin ; mais hélas, pauvre Alice ! en arrivant à la porte, elle s’aperçut qu’elle avait oublié la petite clef d’or. Elle revint sur ses pas pour la prendre sur la table. Bah ! impossible d’atteindre à la clef qu’elle voyait bien clairement à travers le verre. Elle fit alors tout son possible pour grimper le long d’un des pieds de la table, mais il était trop glissant ; et enfin, épuisée de fatigue, la pauvre enfant s’assit et pleura.",
@@ -175,7 +175,7 @@ const MISSIONS = [
       "kind": "Extrait · Traduction d’Henri Bué",
       "source": "https://fr.wikisource.org/wiki/Alice_au_pays_des_merveilles/1",
       "edition": "Chapitre I, traduction d’Henri Bué, Macmillan, 1869. Extrait continu ; paragraphes regroupés pour les activités. Orthographe de l’édition conservée.",
-      "context": "Alice a suivi le Lapin Blanc. Une boisson étrange l’a fait rapetisser : elle peut maintenant passer par la petite porte qui mène au jardin.",
+      "context": "Alice, une jeune fille curieuse, a suivi un Lapin Blanc jusqu’à un monde étrange où les objets et les tailles changent. Après avoir bu une potion, elle est devenue minuscule. Elle aperçoit un merveilleux jardin derrière une petite porte, mais elle a laissé la clé sur une table désormais trop haute. L’extrait raconte comment elle cherche une solution.",
       "glossary": "Une clef : une clé (ancienne orthographe). Le croquet : un jeu avec des boules et un maillet. Les raisins de Corinthe : de petits raisins secs.",
       "text": [
         "Un moment après, voyant qu’il ne se passait plus rien, elle se décida à aller de suite au jardin ; mais hélas, pauvre Alice ! en arrivant à la porte, elle s’aperçut qu’elle avait oublié la petite clef d’or. Elle revint sur ses pas pour la prendre sur la table. Bah ! impossible d’atteindre à la clef qu’elle voyait bien clairement à travers le verre. Elle fit alors tout son possible pour grimper le long d’un des pieds de la table, mais il était trop glissant ; et enfin, épuisée de fatigue, la pauvre enfant s’assit et pleura.",
@@ -228,7 +228,7 @@ const MISSIONS = [
       "kind": "Extrait · Traduction française réalisée pour Zoumaï",
       "source": "https://it.wikisource.org/wiki/Le_avventure_di_Pinocchio/Capitolo_8",
       "edition": "Chapitre VIII de Le avventure di Pinocchio (1883). Traduction française réalisée pour Zoumaï à partir du texte italien ; aucune traduction française publiée n’est reproduite.",
-      "context": "Pinocchio, le pantin de bois fabriqué par Geppetto, promet d’aller à l’école. Mais il lui manque encore un livre pour apprendre à lire.",
+      "context": "Geppetto, un pauvre menuisier, a fabriqué Pinocchio, un pantin de bois qui parle et rêve de devenir un vrai petit garçon. Pour apprendre et grandir, Pinocchio doit aller à l’école. Mais sa famille n’a presque pas d’argent. Dans cet extrait, Geppetto doit trouver comment lui procurer le livre indispensable.",
       "glossary": "Un abécédaire : un livre pour apprendre les lettres et la lecture. Le velours de coton : un tissu épais. Rapiécé : réparé avec des morceaux de tissu.",
       "text": [
         "— À propos, ajouta le pantin, pour aller à l’école, il me manque encore quelque chose ; il me manque même le plus important. — Quoi donc ? — Il me manque l’abécédaire. — Tu as raison ; mais comment faire pour l’avoir ? — C’est très facile : on va chez un libraire et on l’achète. — Et l’argent ? — Je n’en ai pas.",
@@ -273,7 +273,7 @@ const MISSIONS = [
       "kind": "Extrait · Traduction française réalisée pour Zoumaï",
       "source": "https://it.wikisource.org/wiki/Le_avventure_di_Pinocchio/Capitolo_8",
       "edition": "Chapitre VIII de Le avventure di Pinocchio (1883). Traduction française réalisée pour Zoumaï à partir du texte italien ; aucune traduction française publiée n’est reproduite.",
-      "context": "Pinocchio, le pantin de bois fabriqué par Geppetto, promet d’aller à l’école. Mais il lui manque encore un livre pour apprendre à lire.",
+      "context": "Geppetto, un pauvre menuisier, a fabriqué Pinocchio, un pantin de bois qui parle et rêve de devenir un vrai petit garçon. Pour apprendre et grandir, Pinocchio doit aller à l’école. Mais sa famille n’a presque pas d’argent. Dans cet extrait, Geppetto doit trouver comment lui procurer le livre indispensable.",
       "glossary": "Un abécédaire : un livre pour apprendre les lettres et la lecture. Le velours de coton : un tissu épais. Rapiécé : réparé avec des morceaux de tissu.",
       "text": [
         "— À propos, ajouta le pantin, pour aller à l’école, il me manque encore quelque chose ; il me manque même le plus important. — Quoi donc ? — Il me manque l’abécédaire. — Tu as raison ; mais comment faire pour l’avoir ? — C’est très facile : on va chez un libraire et on l’achète. — Et l’argent ? — Je n’en ai pas.",
@@ -318,7 +318,7 @@ const MISSIONS = [
       "kind": "Extrait · Traduction française réalisée pour Zoumaï",
       "source": "https://it.wikisource.org/wiki/Le_avventure_di_Pinocchio/Capitolo_8",
       "edition": "Chapitre VIII de Le avventure di Pinocchio (1883). Traduction française réalisée pour Zoumaï à partir du texte italien ; aucune traduction française publiée n’est reproduite.",
-      "context": "Pinocchio, le pantin de bois fabriqué par Geppetto, promet d’aller à l’école. Mais il lui manque encore un livre pour apprendre à lire.",
+      "context": "Geppetto, un pauvre menuisier, a fabriqué Pinocchio, un pantin de bois qui parle et rêve de devenir un vrai petit garçon. Pour apprendre et grandir, Pinocchio doit aller à l’école. Mais sa famille n’a presque pas d’argent. Dans cet extrait, Geppetto doit trouver comment lui procurer le livre indispensable.",
       "glossary": "Un abécédaire : un livre pour apprendre les lettres et la lecture. Le velours de coton : un tissu épais. Rapiécé : réparé avec des morceaux de tissu.",
       "text": [
         "— À propos, ajouta le pantin, pour aller à l’école, il me manque encore quelque chose ; il me manque même le plus important. — Quoi donc ? — Il me manque l’abécédaire. — Tu as raison ; mais comment faire pour l’avoir ? — C’est très facile : on va chez un libraire et on l’achète. — Et l’argent ? — Je n’en ai pas.",
@@ -371,7 +371,7 @@ const MISSIONS = [
       "kind": "Texte original pédagogique",
       "source": "https://zoumai.github.io/zou_mai/lecture-experts.html",
       "edition": "Création pédagogique originale inspirée de l'univers du roman, sans reprise du texte protégé.",
-      "context": "Harry découvre qu'il appartient au monde des sorciers. Ce récit est une création pédagogique originale, non un extrait du roman.",
+      "context": "Harry a grandi chez son oncle et sa tante sans savoir qu’il est un sorcier. Une lettre lui apprend qu’il est attendu à Poudlard, une école de magie. Il doit maintenant rejoindre le train qui l’y conduira. Dans cette scène imaginée pour l’exercice, Harry découvre une gare inconnue et cherche comment trouver son chemin.",
       "glossary": "Une confiserie : un magasin de sucreries. Une malle : un grand coffre de voyage.",
       "text": [
         "Harry serrait dans sa poche la lettre reçue le matin même. Il avait relu trois fois le nom de l'école, sans réussir à croire qu'elle l'attendait vraiment.",
@@ -416,7 +416,7 @@ const MISSIONS = [
       "kind": "Texte original pédagogique",
       "source": "https://zoumai.github.io/zou_mai/lecture-experts.html",
       "edition": "Création pédagogique originale inspirée de l'univers du roman, sans reprise du texte protégé.",
-      "context": "Harry découvre qu'il appartient au monde des sorciers. Ce récit est une création pédagogique originale, non un extrait du roman.",
+      "context": "Harry a grandi chez son oncle et sa tante sans savoir qu’il est un sorcier. Une lettre lui apprend qu’il est attendu à Poudlard, une école de magie. Il doit maintenant rejoindre le train qui l’y conduira. Dans cette scène imaginée pour l’exercice, Harry découvre une gare inconnue et cherche comment trouver son chemin.",
       "glossary": "Une confiserie : un magasin de sucreries. Une malle : un grand coffre de voyage.",
       "text": [
         "Harry serrait dans sa poche la lettre reçue le matin même. Il avait relu trois fois le nom de l'école, sans réussir à croire qu'elle l'attendait vraiment.",
@@ -461,7 +461,7 @@ const MISSIONS = [
       "kind": "Texte original pédagogique",
       "source": "https://zoumai.github.io/zou_mai/lecture-experts.html",
       "edition": "Création pédagogique originale inspirée de l'univers du roman, sans reprise du texte protégé.",
-      "context": "Harry découvre qu'il appartient au monde des sorciers. Ce récit est une création pédagogique originale, non un extrait du roman.",
+      "context": "Harry a grandi chez son oncle et sa tante sans savoir qu’il est un sorcier. Une lettre lui apprend qu’il est attendu à Poudlard, une école de magie. Il doit maintenant rejoindre le train qui l’y conduira. Dans cette scène imaginée pour l’exercice, Harry découvre une gare inconnue et cherche comment trouver son chemin.",
       "glossary": "Une confiserie : un magasin de sucreries. Une malle : un grand coffre de voyage.",
       "text": [
         "Harry serrait dans sa poche la lettre reçue le matin même. Il avait relu trois fois le nom de l'école, sans réussir à croire qu'elle l'attendait vraiment.",
@@ -514,7 +514,7 @@ const MISSIONS = [
       "kind": "Extrait · Traduction française réalisée pour Zoumaï",
       "source": "https://www.gutenberg.org/files/16/16-h/16-h.htm",
       "edition": "Peter and Wendy (1911), chapitre III. Traduction française réalisée pour Zoumaï à partir de l’anglais. Une coupure est signalée par […].",
-      "context": "Peter Pan ne parvient pas à rattacher son ombre à son corps. Ses pleurs ont réveillé Wendy, qui décide de l’aider.",
+      "context": "Peter Pan est un garçon qui refuse de grandir et qui vit au Pays imaginaire. Une nuit, il entre dans la chambre de Wendy pour retrouver son ombre, qu’il a perdue lors d’une précédente visite. Wendy se réveille et décide de l’aider. L’extrait montre leur rencontre et la façon dont chacun réagit.",
       "glossary": "Condescendant : qui parle comme s’il était supérieur. Le sarcasme : une moquerie mordante, qui peut dire le contraire de ce qu’on pense.",
       "text": [
         "Heureusement, elle sut aussitôt quoi faire. « Il faut la recoudre », dit-elle, d’un ton légèrement condescendant. « Qu’est-ce que c’est, recoudre ? » demanda-t-il. « Tu es terriblement ignorant. — Non, ce n’est pas vrai. » Mais elle se réjouissait de son ignorance. « Je vais te la recoudre, mon petit », dit-elle, bien qu’il fût aussi grand qu’elle ; elle sortit sa trousse à couture et cousit l’ombre au pied de Peter.",
@@ -559,7 +559,7 @@ const MISSIONS = [
       "kind": "Extrait · Traduction française réalisée pour Zoumaï",
       "source": "https://www.gutenberg.org/files/16/16-h/16-h.htm",
       "edition": "Peter and Wendy (1911), chapitre III. Traduction française réalisée pour Zoumaï à partir de l’anglais. Une coupure est signalée par […].",
-      "context": "Peter Pan ne parvient pas à rattacher son ombre à son corps. Ses pleurs ont réveillé Wendy, qui décide de l’aider.",
+      "context": "Peter Pan est un garçon qui refuse de grandir et qui vit au Pays imaginaire. Une nuit, il entre dans la chambre de Wendy pour retrouver son ombre, qu’il a perdue lors d’une précédente visite. Wendy se réveille et décide de l’aider. L’extrait montre leur rencontre et la façon dont chacun réagit.",
       "glossary": "Condescendant : qui parle comme s’il était supérieur. Le sarcasme : une moquerie mordante, qui peut dire le contraire de ce qu’on pense.",
       "text": [
         "Heureusement, elle sut aussitôt quoi faire. « Il faut la recoudre », dit-elle, d’un ton légèrement condescendant. « Qu’est-ce que c’est, recoudre ? » demanda-t-il. « Tu es terriblement ignorant. — Non, ce n’est pas vrai. » Mais elle se réjouissait de son ignorance. « Je vais te la recoudre, mon petit », dit-elle, bien qu’il fût aussi grand qu’elle ; elle sortit sa trousse à couture et cousit l’ombre au pied de Peter.",
@@ -604,7 +604,7 @@ const MISSIONS = [
       "kind": "Extrait · Traduction française réalisée pour Zoumaï",
       "source": "https://www.gutenberg.org/files/16/16-h/16-h.htm",
       "edition": "Peter and Wendy (1911), chapitre III. Traduction française réalisée pour Zoumaï à partir de l’anglais. Une coupure est signalée par […].",
-      "context": "Peter Pan ne parvient pas à rattacher son ombre à son corps. Ses pleurs ont réveillé Wendy, qui décide de l’aider.",
+      "context": "Peter Pan est un garçon qui refuse de grandir et qui vit au Pays imaginaire. Une nuit, il entre dans la chambre de Wendy pour retrouver son ombre, qu’il a perdue lors d’une précédente visite. Wendy se réveille et décide de l’aider. L’extrait montre leur rencontre et la façon dont chacun réagit.",
       "glossary": "Condescendant : qui parle comme s’il était supérieur. Le sarcasme : une moquerie mordante, qui peut dire le contraire de ce qu’on pense.",
       "text": [
         "Heureusement, elle sut aussitôt quoi faire. « Il faut la recoudre », dit-elle, d’un ton légèrement condescendant. « Qu’est-ce que c’est, recoudre ? » demanda-t-il. « Tu es terriblement ignorant. — Non, ce n’est pas vrai. » Mais elle se réjouissait de son ignorance. « Je vais te la recoudre, mon petit », dit-elle, bien qu’il fût aussi grand qu’elle ; elle sortit sa trousse à couture et cousit l’ombre au pied de Peter.",
@@ -664,7 +664,7 @@ const MISSIONS = [
         "Au moment de dormir, Gavroche prend la main du plus jeune. L’enfant serre cette main et se rassure. Dehors, les patrouilles passent sans découvrir les trois enfants ; la grande silhouette immobile les protège de la pluie et des regards."
       ],
       "kind": "Adaptation pédagogique abrégée",
-      "context": "Ce dossier conserve une adaptation pour découvrir le classique. Le texte original est accessible dans les sources."
+      "context": "Gavroche est un garçon des rues dans le Paris du XIXe siècle. Malgré sa pauvreté, il reste débrouillard et généreux. Dans ce passage adapté des Misérables de Victor Hugo, il rencontre deux petits enfants abandonnés, sans abri pour la nuit. Il décide de leur venir en aide, même s’il possède lui-même très peu de choses."
     },
     "step": 1
   },
@@ -709,7 +709,7 @@ const MISSIONS = [
         "Au moment de dormir, Gavroche prend la main du plus jeune. L’enfant serre cette main et se rassure. Dehors, les patrouilles passent sans découvrir les trois enfants ; la grande silhouette immobile les protège de la pluie et des regards."
       ],
       "kind": "Adaptation pédagogique abrégée",
-      "context": "Ce dossier conserve une adaptation pour découvrir le classique. Le texte original est accessible dans les sources."
+      "context": "Gavroche est un garçon des rues dans le Paris du XIXe siècle. Malgré sa pauvreté, il reste débrouillard et généreux. Dans ce passage adapté des Misérables de Victor Hugo, il rencontre deux petits enfants abandonnés, sans abri pour la nuit. Il décide de leur venir en aide, même s’il possède lui-même très peu de choses."
     },
     "step": 2
   },
@@ -754,7 +754,7 @@ const MISSIONS = [
         "Au moment de dormir, Gavroche prend la main du plus jeune. L’enfant serre cette main et se rassure. Dehors, les patrouilles passent sans découvrir les trois enfants ; la grande silhouette immobile les protège de la pluie et des regards."
       ],
       "kind": "Adaptation pédagogique abrégée",
-      "context": "Ce dossier conserve une adaptation pour découvrir le classique. Le texte original est accessible dans les sources."
+      "context": "Gavroche est un garçon des rues dans le Paris du XIXe siècle. Malgré sa pauvreté, il reste débrouillard et généreux. Dans ce passage adapté des Misérables de Victor Hugo, il rencontre deux petits enfants abandonnés, sans abri pour la nuit. Il décide de leur venir en aide, même s’il possède lui-même très peu de choses."
     },
     "step": 3
   },
@@ -807,7 +807,7 @@ const MISSIONS = [
         "Lorsque le loup apparaît, elle ne croit pas pouvoir le vaincre. Elle décide pourtant de lui résister jusqu’à l’aube, comme une autre chèvre dont elle connaît l’histoire. Le combat dure toute la nuit. Au matin, épuisée, Blanquette est vaincue et mangée."
       ],
       "kind": "Adaptation pédagogique abrégée",
-      "context": "Ce dossier conserve une adaptation pour découvrir le classique. Le texte original est accessible dans les sources."
+      "context": "Blanquette est une chèvre que monsieur Seguin aime et protège, mais qui supporte mal d’être attachée dans un enclos. Attirée par les grands espaces, elle s’est échappée vers la montagne malgré les avertissements concernant le loup. L’extrait raconte sa journée de liberté et le choix difficile qui l’attend à la tombée de la nuit."
     },
     "step": 1
   },
@@ -852,7 +852,7 @@ const MISSIONS = [
         "Lorsque le loup apparaît, elle ne croit pas pouvoir le vaincre. Elle décide pourtant de lui résister jusqu’à l’aube, comme une autre chèvre dont elle connaît l’histoire. Le combat dure toute la nuit. Au matin, épuisée, Blanquette est vaincue et mangée."
       ],
       "kind": "Adaptation pédagogique abrégée",
-      "context": "Ce dossier conserve une adaptation pour découvrir le classique. Le texte original est accessible dans les sources."
+      "context": "Blanquette est une chèvre que monsieur Seguin aime et protège, mais qui supporte mal d’être attachée dans un enclos. Attirée par les grands espaces, elle s’est échappée vers la montagne malgré les avertissements concernant le loup. L’extrait raconte sa journée de liberté et le choix difficile qui l’attend à la tombée de la nuit."
     },
     "step": 2
   },
@@ -897,7 +897,7 @@ const MISSIONS = [
         "Lorsque le loup apparaît, elle ne croit pas pouvoir le vaincre. Elle décide pourtant de lui résister jusqu’à l’aube, comme une autre chèvre dont elle connaît l’histoire. Le combat dure toute la nuit. Au matin, épuisée, Blanquette est vaincue et mangée."
       ],
       "kind": "Adaptation pédagogique abrégée",
-      "context": "Ce dossier conserve une adaptation pour découvrir le classique. Le texte original est accessible dans les sources."
+      "context": "Blanquette est une chèvre que monsieur Seguin aime et protège, mais qui supporte mal d’être attachée dans un enclos. Attirée par les grands espaces, elle s’est échappée vers la montagne malgré les avertissements concernant le loup. L’extrait raconte sa journée de liberté et le choix difficile qui l’attend à la tombée de la nuit."
     },
     "step": 3
   },
@@ -943,7 +943,7 @@ const MISSIONS = [
       "kind": "Texte original pédagogique",
       "source": "https://zoumai.github.io/zou_mai/lecture-experts.html",
       "edition": "Création pédagogique originale inspirée de l'univers du roman, sans reprise du texte protégé.",
-      "context": "Charlie rêve de visiter une fabrique de chocolat. Ce récit est une création pédagogique originale, non un extrait du roman.",
+      "context": "Charlie vit modestement avec ses parents et ses grands-parents. Il rêve de découvrir la mystérieuse chocolaterie de Willy Wonka. Quelques tablettes cachent des tickets d’or qui permettent de la visiter. Dans cette scène imaginée pour l’exercice, Charlie n’a assez d’argent que pour une seule tablette et doit décider s’il tente sa chance.",
       "glossary": "Une confiserie : un magasin de sucreries. Une malle : un grand coffre de voyage.",
       "text": [
         "Charlie s'arrêta devant la vitrine de la confiserie. Sur une affiche dorée, il lut que quelques tablettes cachaient un billet permettant de visiter une fabrique extraordinaire.",
@@ -988,7 +988,7 @@ const MISSIONS = [
       "kind": "Texte original pédagogique",
       "source": "https://zoumai.github.io/zou_mai/lecture-experts.html",
       "edition": "Création pédagogique originale inspirée de l'univers du roman, sans reprise du texte protégé.",
-      "context": "Charlie rêve de visiter une fabrique de chocolat. Ce récit est une création pédagogique originale, non un extrait du roman.",
+      "context": "Charlie vit modestement avec ses parents et ses grands-parents. Il rêve de découvrir la mystérieuse chocolaterie de Willy Wonka. Quelques tablettes cachent des tickets d’or qui permettent de la visiter. Dans cette scène imaginée pour l’exercice, Charlie n’a assez d’argent que pour une seule tablette et doit décider s’il tente sa chance.",
       "glossary": "Une confiserie : un magasin de sucreries. Une malle : un grand coffre de voyage.",
       "text": [
         "Charlie s'arrêta devant la vitrine de la confiserie. Sur une affiche dorée, il lut que quelques tablettes cachaient un billet permettant de visiter une fabrique extraordinaire.",
@@ -1033,7 +1033,7 @@ const MISSIONS = [
       "kind": "Texte original pédagogique",
       "source": "https://zoumai.github.io/zou_mai/lecture-experts.html",
       "edition": "Création pédagogique originale inspirée de l'univers du roman, sans reprise du texte protégé.",
-      "context": "Charlie rêve de visiter une fabrique de chocolat. Ce récit est une création pédagogique originale, non un extrait du roman.",
+      "context": "Charlie vit modestement avec ses parents et ses grands-parents. Il rêve de découvrir la mystérieuse chocolaterie de Willy Wonka. Quelques tablettes cachent des tickets d’or qui permettent de la visiter. Dans cette scène imaginée pour l’exercice, Charlie n’a assez d’argent que pour une seule tablette et doit décider s’il tente sa chance.",
       "glossary": "Une confiserie : un magasin de sucreries. Une malle : un grand coffre de voyage.",
       "text": [
         "Charlie s'arrêta devant la vitrine de la confiserie. Sur une affiche dorée, il lut que quelques tablettes cachaient un billet permettant de visiter une fabrique extraordinaire.",
