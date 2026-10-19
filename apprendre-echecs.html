@@ -16,7 +16,7 @@ const L=[
 {group:'Le roi',title:'Le roi capture',fen:'7k/8/8/8/8/8/4p3/4K3 w - - 0 1',task:'Capture le pion noir avec le roi.',from:'e1',to:'e2',hint:'Le roi peut capturer une pièce qui n’est pas défendue.'}
 ];
 // Correct the bishop capture mission to use a genuinely reachable pawn.
-L[3].fen='7k/8/8/8/8/8/6p1/2B1K3 w - - 0 1';L[3].to='g5';L[3].task='Place le fou sur g5 pour attaquer le pion noir.';L[3].hint='Le fou vise les pièces sur sa diagonale.';
+L[3].fen='7k/8/8/6p1/8/8/8/2B1K3 w - - 0 1';L[3].to='g5';L[3].task='Capture le pion noir avec le fou.';L[3].hint='Le fou capture sur sa diagonale.';
 let idx=0,game,selected=null,flip=false,done=false,errors=0;let saved={};try{saved=JSON.parse(localStorage.getItem('zoumai-apprendre-echecs-v1')||'{}')}catch{}
 const $=x=>document.getElementById(x),names={k:'roi',q:'dame',r:'tour',b:'fou',n:'cavalier',p:'pion'};
 function load(){game=new Chess(L[idx].fen);selected=null;done=false;errors=0;$('next').disabled=true;$('status').textContent='À toi de jouer !';render()}
