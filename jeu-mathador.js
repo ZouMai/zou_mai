@@ -235,6 +235,7 @@
   }
   async function start(requestedLevel) {
     if (loading || active) return;
+    document.getElementById('mathador-saved-dialog')?.remove();
     const name = cleanName($('player-name').value);
     if (!name || !/^[\p{L}][\p{L}\p{M}\p{N} _'-]*$/u.test(name)) {
       $('level-info').textContent = 'Écris un prénom ou un pseudo de 1 à 18 caractères, sans nom de famille.';
@@ -338,7 +339,9 @@
     return Math.max(0, raw - (hintUsed ? 2 : 0));
   }
   async function validate() {
-    if (!active) return;
+    if (!active || loading) return;
+    loading = true;
+    $('validate').disabled = true;
     let matches = tokens.filter(x => x.value === draw.target && x.ops.length > 0);
     if (!matches.length) {
       say('Atteins d’abord la cible. Tu peux utiliser de 2 à 5 nombres, comme tu veux.', 'error');
@@ -354,6 +357,8 @@
         player.completed = saved.completed;
         remoteChallengeId = null;
       } catch (error) {
+        loading = false;
+        $('validate').disabled = false;
         say('Score non enregistré dans le classement : ' + error.message, 'error');
         return;
       }
@@ -366,13 +371,49 @@
     const usedCount=token.used.length;
     const opPoints=token.ops.map(op=>op+' '+weights[op]+' pt'+(weights[op]>1?'s':'')).join(' · ');
     const isMathador=usedCount===5 && token.ops.length===4 && operations.every(op=>token.ops.includes(op));
-    finish((isMathador ? 'BRAVO ! COUP MATHADOR · 18 POINTS !' :
-      'BRAVO ! Cible atteinte · '+best+' points · '+usedCount+' nombres utilisés'+(opPoints?' · '+opPoints:''))+
-      (player.completed < levels.length ? ' Défi suivant dans 3 secondes…' : ' Parcours terminé !'));
+    finish(isMathador ? 'BRAVO ! COUP MATHADOR · 18 POINTS !' :
+      'BRAVO ! Cible atteinte · '+best+' points · '+usedCount+' nombres utilisés'+(opPoints?' · '+opPoints:''));
+    loading = false;
     const hasNext=player.completed < levels.length;
-    $('next').hidden=!hasNext;$('next').textContent='Défi suivant →';showLevel();
+    $('next').hidden = true;
+    showLevel();
     clearTimeout(autoNextTimer);
-    if(hasNext)autoNextTimer=setTimeout(()=>start(Math.min(player.completed,levels.length-1)),3000);
+    showSavedDialog(best, player.points.reduce((sum, value) => sum + (Number(value) || 0), 0), hasNext);
+  }
+  function showSavedDialog(earned, total, hasNext) {
+    document.getElementById('mathador-saved-dialog')?.remove();
+    const overlay = document.createElement('div');
+    overlay.id = 'mathador-saved-dialog';
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-modal', 'true');
+    overlay.setAttribute('aria-labelledby', 'mathador-saved-title');
+    overlay.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#10182ccc;display:grid;place-items:center;padding:18px';
+    const panel = document.createElement('div');
+    panel.style.cssText = 'width:min(420px,100%);background:#fff;color:#17223a;border:4px solid #17223a;border-radius:22px;padding:28px 22px;text-align:center;box-shadow:8px 8px 0 #ffcf49;font-family:inherit';
+    const title = document.createElement('h2');
+    title.id = 'mathador-saved-title';
+    title.textContent = '🎯 Bravo, cible validée !';
+    const gained = document.createElement('p');
+    gained.textContent = '+' + earned + ' points';
+    gained.style.cssText = 'font-size:2rem;font-weight:1000;color:#218455;margin:14px 0';
+    const confirmation = document.createElement('p');
+    confirmation.textContent = 'Tes points sont enregistrés !';
+    const cumulative = document.createElement('p');
+    cumulative.textContent = 'Score total : ' + total + ' points';
+    cumulative.style.fontWeight = '900';
+    const next = document.createElement('button');
+    next.type = 'button';
+    next.className = 'primary';
+    next.textContent = hasNext ? 'Continuer →' : 'Rejouer →';
+    next.style.cssText = 'margin-top:14px;padding:14px 24px;max-width:100%';
+    next.addEventListener('click', () => {
+      overlay.remove();
+      start(Math.min(player.completed, levels.length - 1));
+    });
+    panel.append(title, gained, confirmation, cumulative, next);
+    overlay.appendChild(panel);
+    document.body.appendChild(overlay);
+    next.focus();
   }
   function finish(message) {
     if (!active) return;
