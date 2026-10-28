@@ -1307,7 +1307,7 @@
   },
   {
     "id": "dragonfly",
-    "text": "Est-ce une libellule ou une demoiselle ?",
+    "text": "Ton animal appartient-il au groupe des libellules et des demoiselles ?",
     "term": "odonate",
     "pattern": "libellule|demoiselle|odonate",
     "implies": {
@@ -1329,7 +1329,7 @@
     "taxonomic": true,
     "rank": "order",
     "taxon": "Odonata",
-    "explanation": "Ce critère utilise la classification scientifique (Odonata). Un groupe rassemble des animaux apparentés, pas seulement des animaux qui se ressemblent."
+    "explanation": "Ce groupe comprend plusieurs espèces. Un oui confirme le groupe ; ma proposition finale donnera le nom de l’animal."
   },
   {
     "id": "butterfly",

@@ -6,10 +6,10 @@
 
 | Scénario | Première proposition correcte | Trouvé en ≤ 3 propositions | Questions moyennes | Médiane | P90 |
 |---|---:|---:|---:|---:|---:|
-| clean | 162/182 (89.0 %) | 181/182 (99.5 %) | 22.2 | 20 | 30 |
-| one_error | 91/182 (50.0 %) | 131/182 (72.0 %) | 25.8 | 27 | 30 |
-| unknown_20pct | 139/182 (76.4 %) | 167/182 (91.8 %) | 24.7 | 26 | 30 |
-| uncertain_33pct | 157/182 (86.3 %) | 180/182 (98.9 %) | 26.0 | 30 | 30 |
+| clean | 162/182 (89.0 %) | 181/182 (99.5 %) | 20.2 | 17 | 30 |
+| one_error | 86/182 (47.3 %) | 132/182 (72.5 %) | 22.6 | 21 | 30 |
+| unknown_20pct | 135/182 (74.2 %) | 171/182 (94.0 %) | 22.8 | 23 | 30 |
+| uncertain_33pct | 157/182 (86.3 %) | 180/182 (98.9 %) | 24.3 | 27 | 30 |
 
 Le scénario une erreur inverse la première réponse connue après deux questions. Les autres scénarios rendent une réponse sur cinq inconnue ou une sur trois probable. Une proposition de faible confiance est autorisée uniquement à l’épuisement des questions ou après 30 questions.
 
@@ -30,12 +30,12 @@ Le scénario une erreur inverse la première réponse connue après deux questio
 |---|---:|---:|---:|
 | Vache | oui | 16 | oui |
 | Cheval | oui | 17 | oui |
-| Chat domestique | oui | 19 | non |
-| Chien domestique | oui | 23 | oui |
-| Grand dauphin | oui | 18 | oui |
-| Requin blanc | oui | 23 | oui |
-| Pipistrelle commune | oui | 18 | oui |
-| Ornithorynque | oui | 20 | oui |
-| Anax de juin | oui | 17 | oui |
+| Chat domestique | oui | 16 | non |
+| Chien domestique | oui | 20 | oui |
+| Grand dauphin | oui | 15 | oui |
+| Requin blanc | oui | 18 | oui |
+| Pipistrelle commune | oui | 16 | oui |
+| Ornithorynque | oui | 19 | non |
+| Anax de juin | oui | 18 | oui |
 
 Les traces, propositions, probabilités et profils indiscernables sont conservés dans `simulation-report.json`.

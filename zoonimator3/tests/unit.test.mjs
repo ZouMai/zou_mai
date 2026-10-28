@@ -22,3 +22,16 @@ test('langage: les questions négatives demandent clarification',()=>{for(const 
 test('langage: questions composées et hors domaine non inventées',()=>{assert.equal(parseQuestion('Est-ce un mammifère ou un oiseau ?',QUESTIONS).type,'ambiguous');for(const s of ['Combien pèse cet animal ?','Pourquoi vole-t-il ?','Raconte une histoire'])assert.equal(parseQuestion(s,QUESTIONS).type,'unsupported');});
 test('langage: les cinq réponses orales et les alias',()=>{assert.equal(parseAnswer('Oui !'),'yes');assert.equal(parseAnswer('Non'),'no');assert.equal(parseAnswer('Je ne sais pas.'),'unknown');assert.equal(parseAnswer('Probablement'),'probably');assert.equal(parseAnswer('Probablement pas'),'unlikely');assert.equal(parseAnswer('Je suis sûr'),null);assert.ok(guessMatches('une vache',{name:'Vache',aliases:['bovin domestique']}));assert.ok(guessMatches('bovin domestique',{name:'Vache',aliases:['bovin domestique']}));});
 test('deux formulations au profil strictement identique ne sont pas reposées après une réponse connue',()=>{const qs=[{id:'grass',family:'food'},{id:'plants',family:'food-alias'}];const e=new Engine([{id:'a',traits:{grass:true,plants:true}},{id:'b',traits:{grass:false,plants:false}}],qs);e.answer('grass','yes');assert.equal(e.next(),null);});
+test('mammifère exclut les autres groupes et leurs sous-groupes, sans exclure les mammifères nageurs ou ovipares',()=>{
+ const qs=[...QUESTIONS,{id:'dragonfly',taxonomic:true,rank:'order',implies:{insect:true,mammal:false}}];
+ const e=new Engine(animals,qs);e.answer('mammal','yes');
+ for(const id of ['bird','fish','reptile','amphibian','insect','arachnid','mollusc','crustacean','dragonfly','feathers','sixLegs','eightLegs','exoskeleton'])assert.equal(e.inferred.get(id),false,id);
+ for(const id of ['aquatic','swims','eggs','wings','flies','beak','scales'])assert.equal(e.inferred.has(id),false,id);
+ e.undo();assert.equal(e.inferred.has('fish'),false);
+});
+test('les propriétés seulement utiles hors du groupe confirmé ne sont plus proposées',()=>{
+ const qs=[...QUESTIONS,{id:'fishOnly',family:'extra'}];
+ const e=new Engine([{id:'cow',traits:{mammal:true,fishOnly:false,aquatic:false}},{id:'dolphin',traits:{mammal:true,fishOnly:false,aquatic:true}},{id:'fish',traits:{mammal:false,fishOnly:true,aquatic:true}}],qs);
+ e.answer('mammal','yes');assert.equal(e.next().id,'aquatic');e.answer('aquatic','unknown');assert.equal(e.next(),null);
+ assert.ok(e.rank().some(x=>x.animal.id==='fish'),'Les scores restent souples en cas d’erreur');
+});

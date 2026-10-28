@@ -13,3 +13,11 @@ Contrôle manuel dans Chrome, sur la page locale servie par l’environnement de
 - Installation du service worker et fonctionnement complètement déconnecté à vérifier sur l’hébergement HTTPS : non déclarés validés par cette prévisualisation HTTP.
 
 Ces contrôles ne remplacent pas une séance de test avec les élèves ni une revue zoologique des fiches.
+
+## Correctif du 28 octobre 2026 — exclusions et confirmation
+
+29 tests automatisés passent (`node --test zoonimator3/tests/*.test.mjs`). Le banc DOM minimal charge les vrais gestionnaires de app.mjs et vérifie la confirmation par bouton, Entrée et transcription vocale simulée, puis l’absence de nouvelle question après victoire. Ce test ne remplace pas une vérification du microphone réel ni un test visuel de navigateur.
+
+Après confirmation de mammifère, les autres groupes et leurs sous-groupes sont exclus des questions. Les propriétés partagées restent possibles (nage, vol, ponte, bec, écailles). Les probabilités des candidats restent souples pour conserver la possibilité de récupérer une erreur. Les questions de groupe sont explicitement présentées comme telles, notamment les libellules et demoiselles.
+
+728 simulations relancées : sans erreur, 162/182 premières propositions correctes, 181/182 en trois propositions, moyenne 20,2 questions. Avec une erreur : 132/182 retrouvés en trois propositions. Ces mesures utilisent les fiches du jeu comme oracle et ne valident pas la qualité zoologique.

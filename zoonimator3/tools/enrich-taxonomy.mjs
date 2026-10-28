@@ -37,7 +37,7 @@ const groups=[
  ['family','Phasianidae','pheasant','Est-il de la famille des faisans, perdrix, paons et poules ?','phasianidés','phasianide'],
  ['family','Paridae','tit','Est-ce une mésange ?','paridés','mesange'],
  ['family','Salmonidae','salmon','Est-il de la famille des saumons et des truites ?','salmonidés','salmonide'],
- ['order','Odonata','dragonfly','Est-ce une libellule ou une demoiselle ?','odonate','libellule|demoiselle|odonate'],
+ ['order','Odonata','dragonfly','Ton animal appartient-il au groupe des libellules et des demoiselles ?','odonate','libellule|demoiselle|odonate'],
  ['order','Lepidoptera','butterfly','Est-ce un papillon, de jour ou de nuit ?','lépidoptère','papillon|lepidoptere'],
  ['order','Coleoptera','beetle','Est-ce un coléoptère, comme la coccinelle ou le scarabée ?','coléoptère','coleoptere'],
  ['order','Diptera','fly','Est-ce un diptère, comme la mouche ou le moustique ?','diptère','diptere'],

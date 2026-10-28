@@ -103,3 +103,11 @@ export const IMPLIES={
  eggs:{yes:{liveBirth:false}},liveBirth:{yes:{eggs:false}},
  ruminant:{yes:{mammal:true,vertebrate:true,herbivore:true}}
 };
+
+// These labels use the conventional groups defined in the classroom glossary.
+export const GROUPS=['mammal','bird','reptile','amphibian','fish','insect','arachnid','mollusc','crustacean'];
+for(const group of GROUPS){
+ IMPLIES[group].yes={...IMPLIES[group].yes,...Object.fromEntries(GROUPS.filter(g=>g!==group).map(g=>[g,false]))};
+}
+Object.assign(IMPLIES.mammal.yes,{feathers:false,sixLegs:false,eightLegs:false,exoskeleton:false,metamorphosis:false});
+IMPLIES.vertebrate.yes={insect:false,arachnid:false,mollusc:false,crustacean:false,sixLegs:false,eightLegs:false,exoskeleton:false};

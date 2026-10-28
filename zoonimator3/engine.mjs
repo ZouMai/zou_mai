@@ -1,4 +1,4 @@
-import {IMPLIES} from './questions.mjs';
+import {IMPLIES,GROUPS} from './questions.mjs';
 const entropy=p=>p<=0||p>=1?0:-p*Math.log2(p)-(1-p)*Math.log2(1-p);
 export const ANSWERS={yes:1,no:0,probably:.75,unlikely:.25,unknown:.5};
 export class Engine {
@@ -52,14 +52,25 @@ export class Engine {
   let best=null;
   const signatures=this.history.filter(h=>h.answer!=='unknown').map(h=>this.animals.map(a=>a.traits[h.id]===true?'1':a.traits[h.id]===false?'0':'?').join(''));
 
+  // Scope question selection to the established lineage, while keeping soft
+  // probabilities for recovery if a pupil made a mistake. Unknown != false.
+  const lineage=[...this.inferred].filter(([id])=>GROUPS.includes(id));
+  const compatible=this.animals.map((a,i)=>({a,w:this.weights[i]})).filter(({a,w})=>w>0&&!lineage.some(([id,value])=>typeof a.traits[id]==='boolean'&&a.traits[id]!==value));
   for(const q of this.questions){
+   if(lineage.length&&compatible.length){
+    const values=compatible.map(({a})=>a.traits[q.id]);
+    // Do not ask a property merely because other lineages have it or because
+    // some records are incomplete. At least one compatible animal must have it.
+    if(!values.includes(true))continue;
+   }
    if(this.asked.has(q.id)||this.inferred.has(q.id)||this.usedFamilies.has(q.family))continue;
    const signature=this.animals.map(a=>a.traits[q.id]===true?'1':a.traits[q.id]===false?'0':'?').join('');
    if(signatures.includes(signature))continue;
    if(!signature.includes('?')&&signatures.some(s=>!s.includes('?')&&s===signature.replace(/[01]/g,c=>c==='1'?'0':'1')))continue;
    let prediction=0,expected=0,known=0,yes=0,no=0;
-   for(let i=0;i<this.animals.length;i++){
-    const v=this.animals[i].traits[q.id],w=this.weights[i];
+   const candidates=this.animals.map((a,i)=>({a,w:this.weights[i]}));
+   for(const {a,w} of candidates){
+    const v=a.traits[q.id];
     const p=v===true?.88:v===false?.12:.5;
     prediction+=w*p;expected+=w*entropy(p);
     if(v===true){yes+=w;known+=w;}else if(v===false){no+=w;known+=w;}
