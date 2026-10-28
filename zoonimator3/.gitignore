@@ -1,0 +1,5 @@
+__pycache__/
+data/animals-preview.json
+data/catalogue-candidates.json
+data/data-audit.json
+tests/*experiment*

@@ -1,0 +1,19 @@
+{
+  "count": 241,
+  "playable": 182,
+  "photos": 72,
+  "target": 1000,
+  "complete": false,
+  "duplicateIds": 0,
+  "duplicateScientificNames": 0,
+  "missingFrenchNames": 0,
+  "photoTaxonMismatchesRemoved": [],
+  "collectedAt": "2026-10-28",
+  "limitations": [
+    "1000 documented playable animals not reached",
+    "Biological content requires further independent review",
+    "Some accounts are old and may use broader species concepts",
+    "Photo metadata identity verified; not all photographs visually reviewed"
+  ],
+  "sourcePolicy": "Missing values remain null. Trait provenance stored individually. Photos require explicit Creative Commons license, attribution and matching identification."
+}
