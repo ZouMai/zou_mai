@@ -1,4 +1,4 @@
-// Positions et consignes de lichess-org/lila, AGPL-3.0-or-later.
+// Positions, repères et consignes de lichess-org/lila, AGPL-3.0-or-later.
 export default [
   {
     "key": "rook",
@@ -9,13 +9,29 @@ export default [
         "fen": "8/8/8/8/8/8/4R3/8 w - -",
         "goal": "Cliquer sur la tour et la déplacer jusqu’à l’étoile!",
         "stars": "e7",
-        "par": 1
+        "par": 1,
+        "guides": [
+          [
+            "e2e7",
+            "green"
+          ]
+        ]
       },
       {
         "fen": "8/2R5/8/8/8/8/8/8 w - -",
         "goal": "Collectez toutes les étoiles !",
         "stars": "c5 g5",
-        "par": 2
+        "par": 2,
+        "guides": [
+          [
+            "c7c5",
+            "green"
+          ],
+          [
+            "c5g5",
+            "green"
+          ]
+        ]
       },
       {
         "fen": "8/8/8/8/3R4/8/8/8 w - -",
@@ -52,7 +68,17 @@ export default [
         "fen": "8/8/8/8/8/5B2/8/8 w - -",
         "goal": "Collectez toutes les étoiles !",
         "stars": "d5 g8",
-        "par": 2
+        "par": 2,
+        "guides": [
+          [
+            "f3d5",
+            "green"
+          ],
+          [
+            "d5g8",
+            "green"
+          ]
+        ]
       },
       {
         "fen": "8/8/8/8/8/1B6/8/8 w - -",
@@ -95,7 +121,17 @@ export default [
         "fen": "8/8/8/8/8/8/4Q3/8 w - -",
         "goal": "Collectez toutes les étoiles !",
         "stars": "e5 b8",
-        "par": 2
+        "par": 2,
+        "guides": [
+          [
+            "e2e5",
+            "green"
+          ],
+          [
+            "e5b8",
+            "green"
+          ]
+        ]
       },
       {
         "fen": "8/8/8/8/3Q4/8/8/8 w - -",
@@ -132,7 +168,21 @@ export default [
         "fen": "8/8/8/8/8/3K4/8/8 w - -",
         "goal": "Le Roi se déplace lentement.",
         "stars": "e6",
-        "par": 3
+        "par": 3,
+        "guides": [
+          [
+            "d3d4",
+            "green"
+          ],
+          [
+            "d4d5",
+            "green"
+          ],
+          [
+            "d5e6",
+            "green"
+          ]
+        ]
       },
       {
         "fen": "8/8/8/8/8/8/8/4K3 w - -",
@@ -157,7 +207,17 @@ export default [
         "fen": "8/8/8/8/4N3/8/8/8 w - -",
         "goal": "Les Cavaliers possèdent une façon élégante de sauter partout !",
         "stars": "c5 d7",
-        "par": 2
+        "par": 2,
+        "guides": [
+          [
+            "e4c5",
+            "green"
+          ],
+          [
+            "c5d7",
+            "green"
+          ]
+        ]
       },
       {
         "fen": "8/8/8/8/8/8/8/1N6 w - -",
@@ -200,7 +260,25 @@ export default [
         "fen": "8/8/8/P7/8/8/8/8 w - -",
         "goal": "Les pions avancent d’une case vers l’avant uniquement. Mais, lorsqu’ils atteignent le bord opposé de l’échiquier, ils deviennent une pièce plus puissante : c’est une promotion !",
         "stars": "f3",
-        "par": 4
+        "par": 4,
+        "guides": [
+          [
+            "a5a6",
+            "green"
+          ],
+          [
+            "a6a7",
+            "green"
+          ],
+          [
+            "a7a8",
+            "green"
+          ],
+          [
+            "a8f3",
+            "green"
+          ]
+        ]
       },
       {
         "fen": "8/8/8/5P2/8/8/8/8 w - -",
@@ -212,7 +290,25 @@ export default [
         "fen": "8/8/8/8/8/4P3/8/8 w - -",
         "goal": "Les pions se déplacent vers l’avant, mais capturent en diagonale !",
         "stars": "c6 d5 d7",
-        "par": 4
+        "par": 4,
+        "guides": [
+          [
+            "e3e4",
+            "green"
+          ],
+          [
+            "e4d5",
+            "green"
+          ],
+          [
+            "d5c6",
+            "green"
+          ],
+          [
+            "c6d7",
+            "green"
+          ]
+        ]
       },
       {
         "fen": "8/8/8/8/8/1P6/8/8 w - -",
@@ -236,7 +332,14 @@ export default [
         "fen": "8/8/8/8/8/8/4P3/8 w - -",
         "goal": "Un pion sur sa case de départ peut se déplacer initialement de 2 cases d’un coup !",
         "stars": "d6",
-        "par": 3
+        "par": 3,
+        "guides": [
+          [
+            "e2e4",
+            "green"
+          ]
+        ],
+        "highlightRank": 2
       },
       {
         "fen": "8/8/8/8/8/8/2PPPP2/8 w - -",
@@ -254,12 +357,36 @@ export default [
       {
         "fen": "8/2p2p2/8/8/8/2R5/8/8 w - -",
         "goal": "Prenez les pièces noires !",
-        "par": 2
+        "par": 2,
+        "guides": [
+          [
+            "c3c7",
+            "green"
+          ],
+          [
+            "c7f7",
+            "green"
+          ]
+        ]
       },
       {
         "fen": "8/2r2p2/8/8/5Q2/8/8/8 w - -",
         "goal": "Prenez les pièces noires ! Et ne perdez pas les vôtres.",
-        "par": 2
+        "par": 2,
+        "guides": [
+          [
+            "f4c7",
+            "green"
+          ],
+          [
+            "f4f7",
+            "red"
+          ],
+          [
+            "c7f7",
+            "yellow"
+          ]
+        ]
       },
       {
         "fen": "8/5r2/8/1r3p2/8/3B4/8/8 w - -",
@@ -286,7 +413,17 @@ export default [
       {
         "fen": "8/8/8/4bb2/8/8/P2P4/R2K4 w - -",
         "goal": "Vous êtes attaqué ! Fuyez la menace !",
-        "par": 1
+        "par": 1,
+        "guides": [
+          [
+            "e5a1",
+            "red"
+          ],
+          [
+            "a1c1",
+            "green"
+          ]
+        ]
       },
       {
         "fen": "8/8/2q2N2/8/8/8/8/8 w - -",
@@ -299,6 +436,12 @@ export default [
         "par": 1,
         "seq": [
           "g2a2"
+        ],
+        "guides": [
+          [
+            "a2a7",
+            "green"
+          ]
         ]
       },
       {
@@ -309,7 +452,17 @@ export default [
       {
         "fen": "1r6/8/5b2/8/8/5N2/P2P4/R1B5 w - -",
         "goal": "Il n’y a pas d’échappatoire, mais vous pouvez vous défendre !",
-        "par": 1
+        "par": 1,
+        "guides": [
+          [
+            "f6a1",
+            "red"
+          ],
+          [
+            "d2d4",
+            "green"
+          ]
+        ]
       },
       {
         "fen": "8/1b6/8/8/8/3P2P1/5NRP/r7 w - -",
@@ -336,7 +489,25 @@ export default [
       {
         "fen": "8/8/8/8/P2r4/6B1/8/8 w - -",
         "goal": "Prenez les pièces noires ! Et ne perdez pas les vôtres.",
-        "par": 3
+        "par": 3,
+        "guides": [
+          [
+            "a4a5",
+            "green"
+          ],
+          [
+            "g3f2",
+            "green"
+          ],
+          [
+            "f2d4",
+            "green"
+          ],
+          [
+            "d4a4",
+            "yellow"
+          ]
+        ]
       },
       {
         "fen": "2r5/8/3b4/2P5/8/1P6/2B5/8 w - -",
@@ -368,7 +539,13 @@ export default [
       {
         "fen": "4k3/8/2b5/8/8/8/8/R7 w - -",
         "goal": "Menacez le Roi adverse en un coup !",
-        "par": 1
+        "par": 1,
+        "guides": [
+          [
+            "a1e1",
+            "green"
+          ]
+        ]
       },
       {
         "fen": "8/8/4k3/3n4/8/1Q6/8/8 w - -",
@@ -410,7 +587,17 @@ export default [
       {
         "fen": "8/8/8/4q3/8/8/8/4K3 w - -",
         "goal": "Faites fuir votre Roi !",
-        "par": 1
+        "par": 1,
+        "guides": [
+          [
+            "e5e1",
+            "red"
+          ],
+          [
+            "e1f1",
+            "green"
+          ]
+        ]
       },
       {
         "fen": "8/2n5/5b2/8/2K5/8/2q5/8 w - -",
@@ -452,7 +639,13 @@ export default [
       {
         "fen": "3qk3/3ppp2/8/8/2B5/5Q2/8/8 w - -",
         "goal": "Attaquez le Roi de votre adversaire de manière qu’il ne puisse pas être défendu !",
-        "par": 1
+        "par": 1,
+        "guides": [
+          [
+            "f3f7",
+            "green"
+          ]
+        ]
       },
       {
         "fen": "6rk/6pp/7P/6N1/8/8/8/8 w - -",
@@ -480,6 +673,16 @@ export default [
         "par": 1,
         "seq": [
           "g4f3"
+        ],
+        "guides": [
+          [
+            "b1b7",
+            "yellow"
+          ],
+          [
+            "f3b7",
+            "yellow"
+          ]
         ]
       },
       {
@@ -504,7 +707,17 @@ export default [
         "goal": "Placez tout d’abord les Tours ! Elles se placent dans les coins.",
         "stars": "a1 h1",
         "par": 2,
-        "place": "r"
+        "place": "r",
+        "guides": [
+          [
+            "c1a1",
+            "green"
+          ],
+          [
+            "d1h1",
+            "green"
+          ]
+        ]
       },
       {
         "fen": "rn4nr/pppppppp/8/8/8/8/2NN4/R6R w - -",
@@ -537,7 +750,8 @@ export default [
       {
         "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - -",
         "goal": "Les pions forment la ligne de front. Jouez un coup pour continuer.",
-        "par": 1
+        "par": 1,
+        "highlightRank": 2
       }
     ]
   },
@@ -550,55 +764,129 @@ export default [
         "fen": "rnbqkbnr/pppppppp/8/8/2B5/4PN2/PPPP1PPP/RNBQK2R w KQkq -",
         "goal": "Bougez votre Roi de deux cases pour faire le petit roque !",
         "par": 1,
-        "castle": "O-O"
+        "castle": "O-O",
+        "guides": [
+          [
+            "e1g1",
+            "green"
+          ]
+        ]
       },
       {
         "fen": "rnbqkbnr/pppppppp/8/8/4P3/1PN5/PBPPQPPP/R3KBNR w KQkq -",
         "goal": "Bougez votre Roi de deux cases pour faire le grand roque !",
         "par": 1,
-        "castle": "O-O-O"
+        "castle": "O-O-O",
+        "guides": [
+          [
+            "e1c1",
+            "green"
+          ]
+        ]
       },
       {
         "fen": "rnbqkbnr/pppppppp/8/8/8/4P3/PPPPBPPP/RNBQK1NR w KQkq -",
         "goal": "Le Cavalier empêche le roque ! Bougez-le puis faites le petit roque.",
         "par": 2,
-        "castle": "O-O"
+        "castle": "O-O",
+        "guides": [
+          [
+            "e1g1",
+            "green"
+          ],
+          [
+            "g1f3",
+            "green"
+          ]
+        ]
       },
       {
         "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -",
         "goal": "Faites le petit roque ! Vous devez d’abord sortir les pièces.",
         "par": 4,
-        "castle": "O-O"
+        "castle": "O-O",
+        "guides": [
+          [
+            "e1g1",
+            "green"
+          ]
+        ]
       },
       {
         "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -",
         "goal": "Faites le grand roque ! Vous devez d’abord sortir les pièces.",
         "par": 6,
-        "castle": "O-O-O"
+        "castle": "O-O-O",
+        "guides": [
+          [
+            "e1c1",
+            "green"
+          ]
+        ]
       },
       {
         "fen": "rnbqkbnr/pppppppp/8/8/3P4/1PN1PN2/PBPQBPPP/R3K1R1 w Qkq -",
         "goal": "Vous ne pouvez pas roquer si le roi a déjà bougé ou si la tour a déjà bougé.",
         "par": 1,
-        "castle": "O-O-O"
+        "castle": "O-O-O",
+        "guides": [
+          [
+            "e1g1",
+            "red"
+          ],
+          [
+            "e1c1",
+            "green"
+          ]
+        ]
       },
       {
         "fen": "rn1qkbnr/ppp1pppp/3p4/8/2b5/4PN2/PPPP1PPP/RNBQK2R w KQkq -",
         "goal": "Vous ne pouvez pas roquer si le Roi est en échec. Parez l’échec puis roquez !",
         "par": 2,
-        "castle": "O-O"
+        "castle": "O-O",
+        "guides": [
+          [
+            "c4f1",
+            "red"
+          ],
+          [
+            "e1",
+            "green"
+          ],
+          [
+            "f1",
+            "green"
+          ],
+          [
+            "g1",
+            "green"
+          ]
+        ]
       },
       {
         "fen": "rnb2rk1/pppppppp/8/8/8/4Nb1n/PPPP1P1P/RNB1KB1R w KQkq -",
         "goal": "Trouvez un moyen d’effectuer le petit roque !",
         "par": 2,
-        "castle": "O-O"
+        "castle": "O-O",
+        "guides": [
+          [
+            "e1g1",
+            "green"
+          ]
+        ]
       },
       {
         "fen": "1r1k2nr/p2ppppp/7b/7b/4P3/2nP4/P1P2P2/RN2K3 w Q -",
         "goal": "Trouvez un moyen d’effectuer le grand roque !",
         "par": 4,
-        "castle": "O-O-O"
+        "castle": "O-O-O",
+        "guides": [
+          [
+            "e1c1",
+            "green"
+          ]
+        ]
       }
     ]
   },
@@ -614,6 +902,12 @@ export default [
         "seq": [
           "d7d5",
           "c5d6"
+        ],
+        "guides": [
+          [
+            "c5d6",
+            "green"
+          ]
         ]
       },
       {
@@ -623,6 +917,16 @@ export default [
         "seq": [
           "g7g5",
           "h5g6"
+        ],
+        "guides": [
+          [
+            "h5g6",
+            "green"
+          ],
+          [
+            "c5d6",
+            "red"
+          ]
         ]
       },
       {
@@ -632,6 +936,16 @@ export default [
         "seq": [
           "b7b5",
           "c5b6"
+        ],
+        "guides": [
+          [
+            "c5b6",
+            "green"
+          ],
+          [
+            "a6b7",
+            "red"
+          ]
         ]
       },
       {
@@ -662,6 +976,12 @@ export default [
         "par": 1,
         "seq": [
           "g5e3"
+        ],
+        "guides": [
+          [
+            "g5e3",
+            "green"
+          ]
         ]
       },
       {
@@ -670,6 +990,40 @@ export default [
         "par": 1,
         "seq": [
           "d3f4"
+        ],
+        "guides": [
+          [
+            "e6g7",
+            "blue"
+          ],
+          [
+            "e6g5",
+            "blue"
+          ],
+          [
+            "f4g6",
+            "blue"
+          ],
+          [
+            "f4h5",
+            "blue"
+          ],
+          [
+            "g7",
+            "blue"
+          ],
+          [
+            "g5",
+            "blue"
+          ],
+          [
+            "g6",
+            "blue"
+          ],
+          [
+            "h5",
+            "blue"
+          ]
         ]
       },
       {
@@ -678,6 +1032,24 @@ export default [
         "par": 1,
         "seq": [
           "f4g6"
+        ],
+        "guides": [
+          [
+            "c4f7",
+            "blue"
+          ],
+          [
+            "d1d8",
+            "blue"
+          ],
+          [
+            "g6e7",
+            "blue"
+          ],
+          [
+            "g6f8",
+            "blue"
+          ]
         ]
       },
       {
@@ -686,6 +1058,24 @@ export default [
         "par": 1,
         "seq": [
           "b1b8"
+        ],
+        "guides": [
+          [
+            "b8g8",
+            "blue"
+          ],
+          [
+            "b8h8",
+            "blue"
+          ],
+          [
+            "d3h7",
+            "red"
+          ],
+          [
+            "g6e7",
+            "red"
+          ]
         ]
       },
       {
@@ -694,6 +1084,28 @@ export default [
         "par": 1,
         "seq": [
           "d4b2"
+        ],
+        "guides": [
+          [
+            "h8a8",
+            "blue"
+          ],
+          [
+            "a5b6",
+            "blue"
+          ],
+          [
+            "d6c7",
+            "blue"
+          ],
+          [
+            "e4b7",
+            "red"
+          ],
+          [
+            "c6c5",
+            "red"
+          ]
         ]
       }
     ]
@@ -709,6 +1121,12 @@ export default [
         "par": 1,
         "seq": [
           "d5c6"
+        ],
+        "guides": [
+          [
+            "d5c6",
+            "green"
+          ]
         ]
       },
       {
@@ -753,7 +1171,17 @@ export default [
       {
         "fen": "2k5/2pb4/8/2R5/8/8/8/8 w - -",
         "goal": "Menacez le Roi adverse en deux coups !",
-        "par": 2
+        "par": 2,
+        "guides": [
+          [
+            "c5a5",
+            "green"
+          ],
+          [
+            "a5a8",
+            "green"
+          ]
+        ]
       },
       {
         "fen": "8/8/5k2/8/8/1N6/5b2/8 w - -",
