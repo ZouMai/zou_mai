@@ -118,7 +118,7 @@ function choose(sq){
 function play(from,to,promotion){
   const previous=mission.count;
   $('status').textContent=mission.play(from,to,promotion);selected=null;
-  if(mission.count>previous)last=[from,to];
+  if(mission.count>previous){last=[from,to];window.ZouChessSound?.move(mission.playedMove)}
   if(mission.done){
     const k=stage.key+'/'+index;
     scores.set(k,Math.max(scores.get(k)||0,Math.max(1,3-Math.max(0,mission.count-mission.level.par))));

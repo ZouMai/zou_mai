@@ -38,6 +38,7 @@ export class Mission {
       return reject('Observe les pièces et essaie un autre coup.');
     if(['combat','protection','capture'].includes(k) && this.unsafe())
       return reject('Les Noirs peuvent prendre une pièce sans que tu puisses la reprendre. Essaie encore.');
+    this.playedMove=move;
     this.count++;
     this.targets.delete(to);
     switch(k) {
