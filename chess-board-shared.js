@@ -6,7 +6,7 @@ const css=document.createElement('style');css.textContent=`
 #board .light{background:#eeeed2}#board .dark{background:#769656}
 #board[data-theme="blue"] .light{background:#dee7ed!important}#board[data-theme="blue"] .dark{background:#6b90a7!important}
 #board[data-theme="wood"] .light{background:#f0d9b5!important}#board[data-theme="wood"] .dark{background:#b58863!important}
-#board .sq img,#board .square img{width:96%!important;height:96%!important;object-fit:contain;pointer-events:none;z-index:1;filter:drop-shadow(0 2px 1px #17212b35)}
+#board .sq img,#board .square img{width:90%!important;height:90%!important;object-fit:contain;pointer-events:none;z-index:1;filter:drop-shadow(0 2px 1px #17212b35)}
 #board .sq:focus-visible,#board .square:focus-visible{outline:3px solid #ffce63;outline-offset:-3px;z-index:3}
 #board .chess-coordinate{position:absolute;z-index:2;pointer-events:none;font-size:clamp(12px,1.8vw,17px);font-weight:900;line-height:1}
 #board .chess-coordinate.rank{top:3px;left:4px}#board .chess-coordinate.file{bottom:3px;right:4px}
@@ -17,9 +17,9 @@ const css=document.createElement('style');css.textContent=`
 `;document.head.append(css);
 let active=false;
 function sync(){if(active)return;active=true;try{
-let theme='green',pieces='cosy';try{theme=localStorage.getItem('zou-board')||'green';pieces=localStorage.getItem('zou-pieces')||'cosy'}catch{}
+let theme='green',pieces='merida';try{theme=localStorage.getItem('zou-board')||'green';pieces=localStorage.getItem('zou-pieces')||'merida'}catch{}
 if(!['green','blue','wood'].includes(theme))theme='green';
-if(!['cosy','merida','alpha','cburnett'].includes(pieces))pieces='cosy';
+if(!['cosy','merida','alpha','cburnett'].includes(pieces))pieces='merida';
 if(!document.getElementById('theme'))board.dataset.theme=theme;
 const squares=Array.from(board.querySelectorAll('.sq,.square'));if(squares.length!==64)return;
 const flipped=(squares[0].getAttribute('aria-label')||'').startsWith('h1');
