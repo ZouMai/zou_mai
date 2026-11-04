@@ -10,25 +10,25 @@
   }
   function buffer(){
     if(noise||!ctx)return noise;
-    const length=Math.ceil(ctx.sampleRate*.20);
+    const length=Math.ceil(ctx.sampleRate*.12);
     noise=ctx.createBuffer(1,length,ctx.sampleRate);
     const data=noise.getChannelData(0);
     // Deterministic, softly decaying contact noise rather than electronic notes.
     let seed=23456789;
-    for(let i=0;i<length;i++){seed=(Math.imul(seed,1664525)+1013904223)|0;data[i]=((seed>>>0)/2147483648-1)*Math.exp(-i/(ctx.sampleRate*.025));}
+    for(let i=0;i<length;i++){seed=(Math.imul(seed,1664525)+1013904223)|0;data[i]=((seed>>>0)/2147483648-1)*Math.exp(-i/(ctx.sampleRate*.009));}
     return noise;
   }
   function tap(delay=0,weight=1,pitch=1){
     if(!ctx)return;
     const at=ctx.currentTime+.006+delay;
     const src=ctx.createBufferSource();src.buffer=buffer();src.playbackRate.value=pitch;
-    const filter=ctx.createBiquadFilter();filter.type='lowpass';filter.frequency.value=1450/Math.sqrt(weight);filter.Q.value=.65;
-    const body=ctx.createBiquadFilter();body.type='peaking';body.frequency.value=510/pitch;body.Q.value=1.1;body.gain.value=5;
+    const filter=ctx.createBiquadFilter();filter.type='lowpass';filter.frequency.value=850/Math.sqrt(weight);filter.Q.value=.5;
+    const body=ctx.createBiquadFilter();body.type='peaking';body.frequency.value=260/pitch;body.Q.value=.7;body.gain.value=-2;
     const gain=ctx.createGain();gain.gain.setValueAtTime(.0001,at);
-    gain.gain.linearRampToValueAtTime(.24*weight,at+.002);
-    gain.gain.exponentialRampToValueAtTime(.0001,at+.075*weight);
+    gain.gain.linearRampToValueAtTime(.13*weight,at+.0015);
+    gain.gain.exponentialRampToValueAtTime(.0001,at+.038*weight);
     src.connect(filter);filter.connect(body);body.connect(gain);gain.connect(ctx.destination);
-    src.start(at);src.stop(at+.15);
+    src.start(at);src.stop(at+.10);
     src.onended=()=>{src.disconnect();filter.disconnect();body.disconnect();gain.disconnect();};
   }
   function play(kind='move'){
@@ -42,7 +42,7 @@
       case 'promotion':tap(0,1.02,1);tap(.10,.74,1.24);break;
       case 'illegal':case 'error':tap(0,.55,.7);break;
       case 'success':tap(0,.8,1.1);tap(.105,.55,1.3);break;
-      default:tap(0,.87,1.08);
+      default:tap(0,.72,1);
     }
   }
   function move(m){
