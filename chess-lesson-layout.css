@@ -1,0 +1,24 @@
+/* Les couleurs des cases restent définies dans chaque séance. */
+html:root,body{background:#141519;color:#f1f1f3}
+body .panel,body .side,body .card{background:#202228;color:#f1f1f3;border-color:#40434c}
+body .steps button,body .lesson-nav button{border-radius:2rem}
+body .lesson-task,body .instruction{background:#202228;color:#f1f1f3;text-align:center}
+@media(max-width:790px){
+  body main,body .wrap{padding:8px}
+  main>h1,.wrap h1{font-size:1.22rem;line-height:1.2;margin:.4rem 0}
+  main:has(> .board,> .board-wrap){display:flex;flex-direction:column}
+  main:has(> .board,> .board-wrap)>header{order:-5}
+  main:has(> .board,> .board-wrap)>h1{order:-4}
+  main:has(> .board,> .board-wrap)>:is(.board,.board-wrap){order:-3;align-self:center;width:100%;max-width:620px}
+  main:has(> .board,> .board-wrap)>:is(.instruction,.lesson-task){order:-2;font-size:1.22rem;font-weight:700;margin:.55rem 0}
+  main:has(> .board,> .board-wrap)>:is(.steps,.lesson-nav){order:-1}
+  body .board{border-radius:0;max-width:100%}
+  body .layout{grid-template-columns:minmax(0,1fr)}
+  .wrap .board-wrap{display:contents}
+  .wrap .board-wrap>.board{grid-row:1}
+  .wrap .layout>.panel{grid-row:2;text-align:center}
+  .wrap .layout .actions{justify-content:center}
+  .wrap .layout .mobile-prompt{display:none}
+  .wrap.mate-mode .panel h2,body.mate-mode .panel h2,body.mate-mode .panel #mode-tag{display:block}
+  body .panel .task,body .panel h2{font-size:1.25rem}
+}
