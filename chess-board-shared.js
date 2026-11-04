@@ -17,14 +17,22 @@ const css=document.createElement('style');css.textContent=`
 `;document.head.append(css);
 let active=false;
 function sync(){if(active)return;active=true;try{
-let theme='green',pieces='merida';try{theme=localStorage.getItem('zou-board')||'green';pieces=localStorage.getItem('zou-pieces')||'merida'}catch{}
+let theme='green',pieces='cosy';try{theme=localStorage.getItem('zou-board')||'green';pieces=localStorage.getItem('zou-pieces')||'cosy'}catch{}
 if(!['green','blue','wood'].includes(theme))theme='green';
-if(!['merida','alpha','cburnett'].includes(pieces))pieces='merida';
+if(!['cosy','merida','alpha','cburnett'].includes(pieces))pieces='cosy';
 if(!document.getElementById('theme'))board.dataset.theme=theme;
 const squares=Array.from(board.querySelectorAll('.sq,.square'));if(squares.length!==64)return;
 const flipped=(squares[0].getAttribute('aria-label')||'').startsWith('h1');
 for(let i=0;i<64;i++){const cell=squares[i],sq=(cell.getAttribute('aria-label')||'').match(/^[a-h][1-8]/)?.[0];if(!sq)continue;
-const img=cell.querySelector('img');if(img){const current=img.getAttribute('src')||'';const desired=current.replace(/\/piece\/(?:merida|alpha|cburnett)\//,'/piece/'+pieces+'/');if(current!==desired&&(!document.getElementById('pieces')))img.setAttribute('src',desired)}
+const img=cell.querySelector('img');
+if(img&&!document.getElementById('pieces')){
+  const current=img.getAttribute('src')||'';
+  const piece=current.match(/(?:images\/echecs-cosy|\/piece\/(?:merida|alpha|cburnett))\/([wb][KQRBNP]\.svg)$/);
+  if(piece){
+    const folder=pieces==='cosy'?'images/echecs-cosy/':'https://lichess1.org/assets/piece/'+pieces+'/';
+    if(current!==folder+piece[1])img.setAttribute('src',folder+piece[1]);
+  }
+}
 const rank=Number(sq[1]),file=sq[0],firstFile=flipped?'h':'a',bottomRank=flipped?8:1;
 const existingRank=cell.querySelector('.chess-coordinate.rank,.coord:not(.file),.coordinate.rank');
 const existingFile=cell.querySelector('.chess-coordinate.file,.coord.file,.coordinate.file');

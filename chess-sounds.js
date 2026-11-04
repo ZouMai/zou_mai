@@ -3,7 +3,7 @@
   let enabled = true, context;
   try { enabled = localStorage.getItem(key) !== 'off'; } catch {}
   const patterns = {
-    move: [[320,.052,0]],
+    move: [[420,.078,0]],
     capture: [[265,.055,0],[150,.08,.045]],
     check: [[620,.095,0],[835,.14,.09]],
     mate: [[587,.13,0],[740,.13,.12],[880,.28,.24]],
@@ -29,7 +29,7 @@
       tone.frequency.setValueAtTime(frequency,start);
       if(kind==='move'||kind==='capture'||kind==='castle')tone.frequency.exponentialRampToValueAtTime(frequency*.52,start+duration);
       gain.gain.setValueAtTime(.0001,start);
-      gain.gain.exponentialRampToValueAtTime(.12,start+.006);
+      gain.gain.exponentialRampToValueAtTime(.16,start+.005);
       gain.gain.exponentialRampToValueAtTime(.0001,start+duration);
       tone.connect(gain);gain.connect(context.destination);
       tone.onended=()=>{tone.disconnect();gain.disconnect()};
@@ -48,6 +48,7 @@
   window.ZouChessSound={play,move};
   if(!Engine)return;
   document.addEventListener('pointerdown',unlock,{capture:true,once:true});
+  document.addEventListener('pointerup',unlock,{capture:true,once:true});
   document.addEventListener('keydown',unlock,{capture:true,once:true});
   const button=document.createElement('button');
   button.type='button';

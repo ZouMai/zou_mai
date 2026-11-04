@@ -1,0 +1,8 @@
+body :is(#board,.board){border-radius:8px;box-shadow:0 0 0 2px #79573e,0 0 0 4px #bb9470,0 9px 22px #17100d42;margin-inline:auto}
+body .board .cosy-piece{width:92%;height:92%;object-fit:contain;pointer-events:none}
+@media(min-width:850px){
+body .layout:has(.board),body.mate-mode .layout:has(.board){width:min(100%,max(510px,76svh),740px);grid-template-columns:minmax(0,1fr);margin-inline:auto}
+body .layout:has(.board)>*{min-width:0}
+body main:has(>.board-frame){display:block;width:min(96%,max(510px,76svh),740px)}
+body main>.board-frame+.info{margin-top:1rem}
+}
