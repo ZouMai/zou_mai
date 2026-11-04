@@ -8,7 +8,6 @@ const board=$('board');
 const scores=new Map();
 try{for(const item of JSON.parse(localStorage.getItem('zou-bases-stars')||'[]'))scores.set(...item)}catch{}
 if(new URLSearchParams(location.search).get('depuis')==='classe')$('back').href='class-echecs.html';
-stages.forEach((s,i)=>$('stage').add(new Option('Étape '+(i+1)+' · '+s.title,s.key)));
 function go(key,i){const hash='#'+key+'/'+(i+1);if(location.hash===hash)load();else location.hash=hash}
 function load(){
   const [key,n]=location.hash.slice(1).split('/');
@@ -16,7 +15,7 @@ function load(){
   index=Math.max(0,Math.min(stage.levels.length-1,(Number(n)||1)-1));
   if(!Number.isInteger(index))index=0;
   endDrag();last=[];mission=new Mission(stage,stage.levels[index]);selected=null;
-  $('stage').value=stage.key;$('sub').textContent=stage.sub;$('goal').textContent=mission.level.goal;
+  $('stage-name').textContent=stage.title;$('sub').textContent=stage.sub;$('goal').textContent=mission.level.goal;
   $('counter').textContent='Problème '+(index+1)+' sur '+stage.levels.length;
   $('status').textContent='';$('next').hidden=true;render();
 }
@@ -35,7 +34,7 @@ function render(){
     if(p?.type==='k' && mission.game.isAttacked(sq,p.color==='w'?'b':'w'))b.classList.add('check');
     b.setAttribute('aria-label',[sq,star?'étoile':'',p&&!star?pieceName[p.type]+' '+(p.color==='w'?'blanc':'noir'):''].filter(Boolean).join(' '));
     if(p && !(star&&p.color==='b'&&mission.key!=='setup'))b.innerHTML='<svg aria-hidden="true"><use href="bases-pieces.svg#'+p.color+p.type.toUpperCase()+'"/></svg>';
-    else if(star)b.innerHTML='<span class="star">★</span>';
+    else if(star)b.innerHTML='<svg class="goal-star" viewBox="0 0 100 100" aria-hidden="true"><use href="#goal-star"/></svg>';
     if(r===1)b.insertAdjacentHTML('beforeend','<small class="file">'+sq[0]+'</small>');
     if(f===7)b.insertAdjacentHTML('beforeend','<small class="rank">'+r+'</small>');
     b.onclick=()=>choose(sq);$('board').append(b);
@@ -134,9 +133,57 @@ for(const t of ['q','r','b','n']){
   const b=document.createElement('button');b.textContent=pieceName[t];
   b.onclick=()=>{$('promotion').close();play(...pending,t)};$('choices').append(b);
 }
-$('stage').onchange=e=>go(e.target.value,0);
+const chapters=[
+  ['Les pièces',['rook','bishop','queen','king','knight','pawn']],
+  ['Les fondamentaux',['capture','protection','combat','check1','outOfCheck','checkmate1']],
+  ['Les règles spéciales',['setup','castling','enpassant','stalemate']],
+  ['Pour aller plus loin',['value','check2']]
+];
+function openMenu(){
+  const list=$('chapters');
+  list.replaceChildren();
+  let total=0,maximum=0;
+  for(const [name,keys] of chapters){
+    const heading=document.createElement('h3');
+    heading.textContent=name;list.append(heading);
+    for(const key of keys){
+      const item=stages.find(s=>s.key===key);
+      const details=document.createElement('details');
+      const summary=document.createElement('summary');
+      const title=document.createElement('strong');
+      const tally=document.createElement('small');
+      const grid=document.createElement('div');
+      summary.className='stage-row';grid.className='exercise-grid';
+      title.textContent=item.title;
+      let earned=0;
+      item.levels.forEach((level,i)=>{
+        const count=scores.get(key+'/'+i)||0;
+        earned+=count;
+        const b=document.createElement('button');
+        b.textContent=i+1;
+        const rating=document.createElement('span');
+        rating.textContent='★'.repeat(count)+'☆'.repeat(3-count);
+        b.append(rating);
+        b.setAttribute('aria-label',item.title+' · exercice '+(i+1)+' · '+count+' étoiles sur 3');
+        if(stage===item&&index===i)b.setAttribute('aria-current','step');
+        b.onclick=()=>{$('catalog').close();go(key,i)};
+        grid.append(b);
+      });
+      tally.textContent='★ '+earned+' / '+(item.levels.length*3);
+      summary.append(title,tally);details.append(summary,grid);list.append(details);
+      details.open=item===stage;
+      maximum+=item.levels.length*3;total+=earned;
+    }
+  }
+  $('catalog-score').textContent='★ '+total+' / '+maximum+' étoiles récoltées';
+  $('catalog').showModal();
+}
+$('menu-open').onclick=openMenu;
+$('menu-close').onclick=()=>$('catalog').close();
 $('reset').onclick=load;
 $('next').onclick=()=>index+1<stage.levels.length?go(stage.key,index+1):go(stages[stages.indexOf(stage)+1].key,0);
 $('sound').hidden=!('speechSynthesis' in window);
 $('sound').onclick=()=>{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(mission.level.goal);u.lang='fr-FR';speechSynthesis.speak(u)};
 window.addEventListener('hashchange',load);load();
+
+if(!location.hash)openMenu();

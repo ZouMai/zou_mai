@@ -16,6 +16,33 @@
 #board .held svg{opacity:.22}
 @media(min-width:850px){main{width:min(1150px,96vw);display:grid;grid-template-columns:minmax(0,min(66vw,78svh)) minmax(240px,1fr);gap:0 1.5rem;justify-content:center}header{grid-column:1/-1}header select{flex:none}.info{text-align:left;align-self:center;background:#202227;border-radius:10px;padding:1.5rem}#steps,.tools{justify-content:flex-start}}
 @media(max-width:849px){main{width:min(100%,650px)}header{min-height:54px}.info{padding-top:.4rem}.goal{margin:.55rem 0 1.1rem}}
-</style><main><header><a id="back" href="zoo-echecs.html" aria-label="Retour aux échecs">←</a><select id="stage" aria-label="Choisir une étape"></select><button id="sound" aria-label="Écouter la consigne">🔊</button></header><div class="board-frame"><div id="board" aria-label="Échiquier" role="group"></div><svg id="guides" viewBox="0 0 800 800" aria-hidden="true"></svg></div><section class="info"><p class="counter" id="counter"></p><p class="sub" id="sub"></p><h1 class="goal" id="goal"></h1><nav id="steps" aria-label="Problèmes de cette étape"></nav><p id="status" role="status"></p><div class="tools"><button id="reset">↺ Recommencer</button><button id="next" hidden>Suivant →</button></div></section></main>
+
+#board .goal-star{width:84%;height:84%;filter:drop-shadow(0 0 4px #fff69a) drop-shadow(0 2px 2px #89580780)}
+#board .sq:has(.goal-star).target:after{background:transparent;width:90%;height:90%;border:2px dashed #705020}
+#steps button{min-width:44px;width:auto;height:46px;border-radius:12px;padding:0 .45em}
+#steps button.won{display:grid;align-content:center;justify-items:center}
+#steps .rating{position:static;color:#ffdc69;font-size:14px;line-height:1;letter-spacing:0;text-shadow:0 0 4px #daa34188}
+#menu-open{background:#374337;color:#f0f4df;font-weight:700;border-radius:8px}
+#stage-name{margin-right:auto;font-size:.92rem}
+#catalog{width:min(760px,95vw);max-height:89svh;padding:clamp(15px,3vw,30px);background:#202522;border:1px solid #526451;box-shadow:0 20px 80px #0009}
+.catalog-head,.stage-row{display:flex;align-items:center;gap:.75rem;justify-content:space-between}
+.catalog-head small,#chapters h3{color:#bed1a9;font-size:.78rem;letter-spacing:.08em}
+.catalog-head h2{margin:0;font-size:clamp(1.5rem,5vw,2.1rem)}
+#catalog>p{margin:.6em 0;color:#d5dbd1}
+#catalog #catalog-score{color:#ffdc70;font-weight:750}
+#chapters h3{margin:1.3rem 0 .5rem;text-transform:uppercase}
+#chapters details{background:#2b332d;border:1px solid #465349;border-radius:10px;margin:.4rem 0}
+#chapters details[open]{border-color:#9dae89}
+.stage-row{list-style:none;cursor:pointer;padding:.75rem;font-weight:680}
+.stage-row::-webkit-details-marker{display:none}
+.stage-row:before{content:'▸';color:#b7c9a8}details[open]>.stage-row:before{content:'▾'}
+.stage-row strong{flex:1}.stage-row small{color:#ffd567}
+.exercise-grid{display:flex;flex-wrap:wrap;gap:.45rem;padding:0 .75rem .75rem}
+.exercise-grid button{display:grid;place-items:center;min-width:52px;min-height:50px;border-radius:8px;background:#1c231f;color:#f7f7f2;font-weight:700}
+.exercise-grid span{font-size:.83rem;color:#ffcf52;line-height:1}
+@media(max-width:460px){header{gap:.4rem}#stage-name{font-size:.8rem}#menu-open{font-size:.86rem}}
+</style><main><header><a id="back" href="zoo-echecs.html" aria-label="Retour aux échecs">←</a><button id="menu-open" aria-haspopup="dialog">☰ Menu des exercices</button><strong id="stage-name"></strong><button id="sound" aria-label="Écouter la consigne">🔊</button></header><div class="board-frame"><div id="board" aria-label="Échiquier" role="group"></div><svg id="guides" viewBox="0 0 800 800" aria-hidden="true"></svg></div><section class="info"><p class="counter" id="counter"></p><p class="sub" id="sub"></p><h1 class="goal" id="goal"></h1><nav id="steps" aria-label="Problèmes de cette étape"></nav><p id="status" role="status"></p><div class="tools"><button id="reset">↺ Recommencer</button><button id="next" hidden>Suivant →</button></div></section></main>
+<dialog id="catalog" aria-labelledby="catalog-title"><div class="catalog-head"><div><small>ZOO ÉCHECS · ENTRAÎNEMENT</small><h2 id="catalog-title">Les bases des échecs</h2></div><button id="menu-close" aria-label="Fermer le menu">✕</button></div><p>Choisis une étape, puis touche un numéro pour jouer.</p><p id="catalog-score"></p><div id="chapters"></div></dialog>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="star-gold" x2=".65" y2="1" gradientUnits="objectBoundingBox"><stop stop-color="#fffde1"/><stop offset=".42" stop-color="#ffe464"/><stop offset=".72" stop-color="#ffbb24"/><stop offset="1" stop-color="#e48407"/></linearGradient><symbol id="goal-star" viewBox="0 0 100 100"><path d="m50 7 13 27 30 4-22 22 5 31-26-15-27 15 5-31L7 38l30-4z" fill="url(#star-gold)" stroke="#8c540c" stroke-width="4" stroke-linejoin="round"/><path d="m49 17-9 21-20 3" fill="none" stroke="#fffad6" stroke-width="5" stroke-linecap="round"/></symbol></defs></svg>
 <dialog id="promotion"><p>En quelle pièce veux-tu promouvoir ton pion ?</p><div id="choices"></div></dialog>
 <footer>Positions et consignes de <a href="https://lichess.org/learn">Lichess</a> · <a href="https://github.com/ZouMai/zou_mai">Code source</a> (AGPL-3.0+) · Pièces de Cburnett (CC BY-SA 3.0)</footer><script type="module" src="bases-ui.mjs"></script></html>
