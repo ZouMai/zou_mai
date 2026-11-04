@@ -8,28 +8,34 @@
     if(!enabled||!Engine)return;
     try {ctx ||= new Engine();if(ctx.state==='suspended')ctx.resume().catch(()=>{});}catch{}
   }
+  // A short, dry mechanical click. No pitched oscillator or low-frequency "boop".
   function buffer(){
     if(noise||!ctx)return noise;
-    const length=Math.ceil(ctx.sampleRate*.12);
-    noise=ctx.createBuffer(1,length,ctx.sampleRate);
+    const rate=ctx.sampleRate, length=Math.ceil(rate*.045);
+    noise=ctx.createBuffer(1,length,rate);
     const data=noise.getChannelData(0);
-    // Deterministic, softly decaying contact noise rather than electronic notes.
-    let seed=23456789;
-    for(let i=0;i<length;i++){seed=(Math.imul(seed,1664525)+1013904223)|0;data[i]=((seed>>>0)/2147483648-1)*Math.exp(-i/(ctx.sampleRate*.009));}
+    let seed=1729, previous=0;
+    for(let i=0;i<length;i++){
+      seed=(Math.imul(seed,1664525)+1013904223)|0;
+      const white=(seed/2147483648);
+      // Remove low frequencies and use two tiny contact transients.
+      const high=white-previous*.94;previous=white;
+      const t=i/rate;
+      const envelope=Math.exp(-t*390)+.22*Math.exp(-Math.max(0,t-.009)*620)*(t>=.009?1:0);
+      data[i]=Math.max(-1,Math.min(1,high*envelope*.55));
+    }
     return noise;
   }
   function tap(delay=0,weight=1,pitch=1){
     if(!ctx)return;
     const at=ctx.currentTime+.006+delay;
     const src=ctx.createBufferSource();src.buffer=buffer();src.playbackRate.value=pitch;
-    const filter=ctx.createBiquadFilter();filter.type='lowpass';filter.frequency.value=850/Math.sqrt(weight);filter.Q.value=.5;
-    const body=ctx.createBiquadFilter();body.type='peaking';body.frequency.value=260/pitch;body.Q.value=.7;body.gain.value=-2;
-    const gain=ctx.createGain();gain.gain.setValueAtTime(.0001,at);
-    gain.gain.linearRampToValueAtTime(.13*weight,at+.0015);
-    gain.gain.exponentialRampToValueAtTime(.0001,at+.038*weight);
-    src.connect(filter);filter.connect(body);body.connect(gain);gain.connect(ctx.destination);
-    src.start(at);src.stop(at+.10);
-    src.onended=()=>{src.disconnect();filter.disconnect();body.disconnect();gain.disconnect();};
+    const high=ctx.createBiquadFilter();high.type='highpass';high.frequency.value=1100;high.Q.value=.6;
+    const low=ctx.createBiquadFilter();low.type='lowpass';low.frequency.value=6500;low.Q.value=.6;
+    const gain=ctx.createGain();gain.gain.value=Math.min(.8,.32*weight);
+    src.connect(high);high.connect(low);low.connect(gain);gain.connect(ctx.destination);
+    src.start(at);src.stop(at+.05);
+    src.onended=()=>{src.disconnect();high.disconnect();low.disconnect();gain.disconnect();};
   }
   function play(kind='move'){
     if(!enabled||!Engine)return;
