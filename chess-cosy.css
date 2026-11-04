@@ -1,8 +1,40 @@
-body :is(#board,.board){border-radius:8px;box-shadow:0 0 0 2px #79573e,0 0 0 4px #bb9470,0 9px 22px #17100d42;margin-inline:auto}
-body .board .cosy-piece{width:92%;height:92%;object-fit:contain;pointer-events:none}
+/* Unified Zou Échecs board presentation for lessons, dojo and free play. */
+body :is(#board,.board){
+  border:5px solid #76583e!important;
+  border-radius:12px!important;
+  overflow:hidden;
+  box-shadow:0 0 0 2px #d6b58a,0 0 0 5px #473b31,0 14px 32px #080e1680!important;
+  margin-inline:auto;
+  touch-action:manipulation;
+}
+body :is(#board,.board) :is(.sq,.square){
+  border:0;
+  position:relative;
+  transition:filter .12s ease;
+}
+body :is(#board,.board) :is(.sq,.square).light{background:#f1e3cc}
+body :is(#board,.board) :is(.sq,.square).dark{background:#a88768}
+body :is(#board,.board) :is(.sq,.square):focus-visible{
+  outline:3px solid #ffd16a!important;outline-offset:-3px;z-index:3;
+}
+body :is(#board,.board) :is(.sq,.square) img,
+body .board .cosy-piece{
+  width:89%!important;height:89%!important;object-fit:contain;
+  pointer-events:none;filter:drop-shadow(0 2px 1px #1b1b1b40);
+}
+body :is(#board,.board) :is(.sq,.square).selected{box-shadow:inset 0 0 0 4px #ffd568!important}
+body :is(#board,.board) :is(.sq,.square).last{box-shadow:inset 0 0 0 999px #f7db6950}
+body :is(#board,.board) :is(.sq,.square).check{background:#cc5960!important}
+body :is(#board,.board)[data-theme="green"] .light{background:#eeeed2}
+body :is(#board,.board)[data-theme="green"] .dark{background:#769656}
+body :is(#board,.board)[data-theme="blue"] .light{background:#dee7ed}
+body :is(#board,.board)[data-theme="blue"] .dark{background:#6b90a7}
+body :is(#board,.board)[data-theme="wood"] .light{background:#f1e3cc}
+body :is(#board,.board)[data-theme="wood"] .dark{background:#a88768}
 @media(min-width:850px){
 body .layout:has(.board),body.mate-mode .layout:has(.board){width:min(100%,max(510px,76svh),740px);grid-template-columns:minmax(0,1fr);margin-inline:auto}
 body .layout:has(.board)>*{min-width:0}
 body main:has(>.board-frame){display:block;width:min(96%,max(510px,76svh),740px)}
 body main>.board-frame+.info{margin-top:1rem}
 }
+@media(prefers-reduced-motion:reduce){body :is(#board,.board) :is(.sq,.square){transition:none}}
