@@ -1,3 +1,18 @@
+/* Statistiques anonymes de fréquentation, indépendantes de la connexion élève. */
+(() => {
+  try {
+    const key = 'zoumai-anonymous-visit-id';
+    let visitId = sessionStorage.getItem(key);
+    if (!visitId) { visitId = crypto.randomUUID(); sessionStorage.setItem(key, visitId); }
+    const path = location.pathname.replace(/^\/zou_mai(?=\/)/i, '').replace(/\/$/, '/index.html') || '/index.html';
+    if (!/^\/[a-zA-Z0-9_./%-]{1,179}$/.test(path) || path.includes('..')) return;
+    fetch('https://loibjnlffyjrwttvntup.supabase.co/functions/v1/zoumai-visites', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({path, visitId}), keepalive: true
+    }).catch(() => {});
+  } catch (_) {}
+})();
+
 /* Enregistre les visites des élèves connectés ; aucun appel sans session élève. */
 (() => {
   const token = sessionStorage.getItem('zoumai-site-session');
