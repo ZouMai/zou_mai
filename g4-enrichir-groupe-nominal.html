@@ -26,12 +26,12 @@ const exercises=[
 {s:"Le courageux capitaine du navire observe les étoiles brillantes.",ask:"Quel GN contient à la fois un adjectif et un complément du nom ?",opts:["les étoiles brillantes","du navire","Le courageux capitaine du navire"],a:2,why:"« Le courageux capitaine du navire » contient le nom noyau « capitaine », l'adjectif « courageux » et le CDN « du navire »."}
 ]},
 
-{title:"Choisis la phrase enrichie par un adjectif",items:[
-{s:"Les oiseaux traversent le ciel.",opts:["Les oiseaux migrateurs traversent le ciel.","Les oiseaux du jardin traversent le ciel.","Les oiseaux traversent le ciel au matin."],a:0,why:"« migrateurs » est un adjectif accordé avec « oiseaux »."},
-{s:"Une fille observe le paysage.",opts:["Une fille de la classe observe le paysage.","Une fille curieuse observe le paysage.","Une fille observe le paysage de montagne."],a:1,why:"« curieuse » est un adjectif qui enrichit « fille »."},
-{s:"Les chevaliers franchissent le pont.",opts:["Les chevaliers franchissent le pont du château.","Les chevaliers franchissent le pont en silence.","Les chevaliers courageux franchissent le pont."],a:2,why:"« courageux » qualifie « chevaliers »."},
-{s:"Une histoire commence.",opts:["Une histoire mystérieuse commence.","Une histoire de pirates commence.","Une histoire commence dans la forêt."],a:0,why:"« mystérieuse » s'accorde avec « histoire »."},
-{s:"Des fleurs poussent près de l'école.",opts:["Des fleurs du jardin poussent près de l'école.","Des fleurs colorées poussent près de l'école.","Des fleurs poussent près de l'école chaque jour."],a:1,why:"« colorées » est un adjectif féminin pluriel."}
+{title:"Enrichis une phrase minimale avec un adjectif",items:[
+{s:"Les oiseaux volent.",opts:["Les oiseaux migrateurs volent.","Les oiseaux du jardin volent.","Les oiseaux volent au-dessus du jardin."],a:0,why:"« migrateurs » enrichit le GN sujet « Les oiseaux »."},
+{s:"Une fille observe.",opts:["Une fille de la classe observe.","Une fille curieuse observe.","Une fille observe attentivement."],a:1,why:"« curieuse » enrichit le GN « Une fille »."},
+{s:"Les chevaliers avancent.",opts:["Les chevaliers du royaume avancent.","Les chevaliers avancent lentement.","Les chevaliers courageux avancent."],a:2,why:"« courageux » qualifie le nom « chevaliers »."},
+{s:"Une histoire commence.",opts:["Une histoire mystérieuse commence.","Une histoire de pirates commence.","Une histoire commence bientôt."],a:0,why:"« mystérieuse » qualifie le nom « histoire »."},
+{s:"Des fleurs poussent.",opts:["Des fleurs du jardin poussent.","Des fleurs colorées poussent.","Des fleurs poussent rapidement."],a:1,why:"« colorées » enrichit le GN « Des fleurs » et s'accorde au féminin pluriel."}
 ]},
 {title:"Choisis la phrase enrichie par un complément du nom",items:[
 {s:"Le professeur ouvre une boîte.",opts:["Le professeur ouvre une grande boîte.","Le professeur ouvre une boîte en métal.","Le professeur ouvre une boîte rapidement."],a:1,why:"« en métal » complète le nom « boîte »."},
@@ -56,7 +56,7 @@ const exercises=[
 ]}];
 let mode=0,index=0,score=0,answered=false;const $=id=>document.getElementById(id);
 function start(m){mode=m;index=0;score=0;render()}
-function render(){answered=false;const ex=exercises[mode],q=ex.items[index];document.querySelectorAll("#tabs button").forEach(b=>b.classList.toggle("active",Number(b.dataset.mode)===mode));$("progress").textContent="Phrase "+(index+1)+" / "+ex.items.length+(mode!==4?" · "+score+" bonne(s) réponse(s)":"");$("instruction").textContent=q.ask||ex.title;$("sentence").innerHTML=mode===0?q.s:q.s.replace(/</g,"&lt;");$("options").replaceChildren();$("feedback").textContent="";$("next").disabled=true;$("write").classList.toggle("hidden",mode!==4);
+function render(){answered=false;const ex=exercises[mode],q=ex.items[index];document.querySelectorAll("#tabs button").forEach(b=>b.classList.toggle("active",Number(b.dataset.mode)===mode));$("progress").textContent="Phrase "+(index+1)+" / "+ex.items.length+(mode!==4?" · "+score+" bonne(s) réponse(s)":"");$("instruction").textContent=q.ask||ex.title;$("sentence").innerHTML=mode===0?q.s:(mode===1?"<span class=\"small\">Phrase minimale :</span><br>":"")+q.s.replace(/</g,"&lt;");$("options").replaceChildren();$("feedback").textContent="";$("next").disabled=true;$("write").classList.toggle("hidden",mode!==4);
 if(mode===4){$("editor").value="";$("exampleBox").hidden=true;$("exampleBox").textContent="Exemple possible : "+q.hint;$("next").disabled=false;return}
 q.opts.forEach((v,i)=>{const b=document.createElement("button");b.type="button";b.textContent=v;b.onclick=()=>choose(i);$("options").appendChild(b)})}
 function choose(i){if(answered)return;const q=exercises[mode].items[index];const buttons=[...$("options").children];if(i===q.a){answered=true;score++;buttons[i].classList.add("right");buttons.forEach(b=>b.disabled=true);$("feedback").textContent="✓ Correct ! "+q.why;$("next").disabled=false;$("progress").textContent="Phrase "+(index+1)+" / "+exercises[mode].items.length+" · "+score+" bonne(s) réponse(s)"}else{buttons[i].classList.add("wrong");buttons[i].disabled=true;$("feedback").textContent="Essaie encore. Observe quel nom est précisé par le groupe ajouté."}}
