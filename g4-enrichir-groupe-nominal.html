@@ -2,6 +2,43 @@
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>G4 · Enrichir le groupe nominal | Zou Maï</title><link rel="stylesheet" href="zoumai.css">
 <style>
 :root{font-family:Arial,Helvetica,sans-serif;color:#17243a;background:#f2f6ff}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 95% 4%,#ffeabf 0,transparent 28%),#f2f6ff}main{max-width:1010px;margin:25px auto;padding:18px}a{color:#125e9d}h1{font-size:clamp(2rem,5.5vw,3.5rem);color:#153d73;margin-bottom:8px;letter-spacing:-.04em}.lead{font-size:1.1rem;line-height:1.5}.card{background:#fff;border:1px solid #cbdaf0;border-radius:19px;padding:22px;margin:20px 0;box-shadow:0 6px 22px #183f7012}.card h2{margin-top:0;color:#15477d}.example{padding:14px;background:#f1f5ff;border-radius:12px;line-height:1.8}.adj{color:#116e43;font-weight:800}.cdn{color:#155fb4;font-weight:800}.noyau{font-weight:850;text-decoration:underline;text-decoration-thickness:2px}.small{color:#3e526f;font-size:.95rem}.tabs{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px}.tabs button{background:#eaf2ff;border-color:#9dbde5;font-weight:800}.tabs button.active{color:#fff;background:#155a9d;border-color:#155a9d}button{font:inherit;cursor:pointer;padding:11px 15px;background:#fff;border:2px solid #aebfd6;border-radius:11px;color:#183552}button:hover{border-color:#175c9b}button:focus-visible,textarea:focus-visible{outline:3px solid #f4af21;outline-offset:2px}.options{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin:17px 0}.options button{text-align:left;line-height:1.5}.options button.right{background:#e0f9e9;border-color:#1b874d}.options button.wrong{background:#ffe9e9;border-color:#c74646}.sentence{font-size:1.25rem;line-height:1.65;font-weight:650;padding:16px;border-left:5px solid #f0bd46;background:#fffaf0;border-radius:7px}#feedback{min-height:55px;font-size:1.02rem;font-weight:700;color:#17446e;line-height:1.5}#next{background:#153d73;color:#fff;border-color:#153d73;font-weight:800}#next:disabled{opacity:.45;cursor:not-allowed}#progress{font-weight:800;color:#385475}#editor{width:100%;min-height:110px;padding:13px;font:1.05rem/1.5 Arial,sans-serif;border:2px solid #9cb7d5;border-radius:12px;resize:vertical}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.tip{padding:12px 15px;background:#f7f8ed;border-left:4px solid #d4ab2c;margin-top:12px}.hidden{display:none}.end{font-size:1.2rem;padding:15px;background:#eef9ed;border-radius:12px}.pill{display:inline-block;padding:3px 9px;border-radius:10px;background:#edf3ff;font-weight:850}footer{padding:20px 0;color:#52627b}@media(max-width:610px){main{padding:10px;margin:8px auto}.card{padding:16px}.sentence{font-size:1.12rem}.options{grid-template-columns:1fr}button{min-height:45px}}
+</style><style id="g4-premium">
+:root{--navy:#172a47;--blue:#2563a8;--green:#16734c;--gold:#dcae45;--bg:#f3f5f7}
+body{background:radial-gradient(circle at 90% 0,#e4edff,transparent 40%),#f4f6fa;color:var(--navy)}
+main{max-width:1040px}h1{font-weight:900;line-height:1.08}.lead{max-width:780px}
+.card{border:1px solid #dfe5ed;box-shadow:0 12px 32px #112c4c0d;border-radius:22px}
+.tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;margin:20px 0}
+.tabs button{padding:14px 8px;min-height:74px;border:1px solid #bacbe0;background:#fff;font-size:.89rem;box-shadow:0 4px 0 #e0e7f2}
+.tabs button.active{background:#193e6a;border-color:#193e6a;color:white;box-shadow:0 4px 0 #93b4d7}
+.tabs button span{display:block;font-size:1.2rem;margin-bottom:5px}
+.exercise-header{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.track{height:9px;background:#e5ebf3;border-radius:30px;overflow:hidden;margin:12px 0 22px}.track div{height:100%;width:0;background:#188d6b;transition:width .25s}
+.kicker{text-transform:uppercase;font-size:.72rem;letter-spacing:.12em;font-weight:900;color:#4c6383}
+.sentence{background:#f7f9fe;border:1px solid #d6e1f0;border-left:5px solid #e6b54b;font-size:1.36rem}
+.sentence strong{color:#0a5f9c}.task-hint{font-size:.94rem;color:#49617e;line-height:1.5}
+.tokenline{display:flex;flex-wrap:wrap;gap:7px;margin-top:17px;align-items:center}
+.wordbutton{background:white;border:2px solid #bed0e4;border-radius:10px;font-size:1.1rem;padding:11px 10px}
+.wordbutton.selected{background:#e0f5e9;border-color:#15834e;color:#135d37}
+.wordbutton.no{background:#fff0ee;border-color:#d65d56}
+.chips{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:12px;margin:16px 0}
+.chips button{font-weight:750;text-align:center;padding:15px;min-height:66px;line-height:1.4}
+.chips button:hover{background:#f0f6ff;transform:translateY(-1px)}
+.chips button.right{background:#ddf6e9;border-color:#208252}
+.chips button.wrong{background:#ffeae8;border-color:#ba4b4b}
+.build-preview{margin:16px 0;padding:18px;background:#f8fafc;border:1px solid #cbd5e1;border-radius:14px;font-size:1.2rem;line-height:1.65}
+.build-preview .chosen{font-weight:800;color:#107b53}
+.pick-label{font-weight:850;margin:17px 0 8px;color:#23456e}
+#feedback{border-radius:13px;padding:0;min-height:32px}
+#feedback.good{background:#e6f7ec;padding:13px 16px;color:#165b39}
+#feedback.bad{background:#fff0e9;padding:13px 16px;color:#7f3d26}
+#feedback.info{background:#edf5ff;padding:13px 16px}
+#next{min-height:51px;background:#173f70}#restart{background:#f5f7fc}
+#write textarea{width:100%;min-height:125px}
+#write .tip{background:#f5f9ed}
+.small-label{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;font-weight:850;color:#4b6482}
+.finish{padding:25px;background:#f0fbf6;border:1px solid #afd8c2;border-radius:18px}
+@media(max-width:700px){.tabs{grid-template-columns:repeat(2,minmax(0,1fr))}.tabs button:last-child{grid-column:span 2}.tabs button{min-height:62px}.sentence{font-size:1.15rem}.chips{grid-template-columns:1fr}.card{padding:16px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style></head>
 <body><main><a href="ressources.html#grammaire">← Français · Grammaire</a><h1>G4 · Enrichir le groupe nominal</h1><p class="lead">Transforme des phrases simples en phrases plus précises grâce aux expansions du nom.</p>
 <section class="card"><h2>📖 Je retiens</h2>
@@ -16,56 +53,83 @@
 <div class="example">Le <span class="adj">jeune</span> <span class="noyau">garçon</span> <span class="cdn">du village</span> observe un oiseau dans le jardin.</div>
 <p class="small"><strong>Observe le GN sujet entier :</strong> « Le jeune garçon du village ». Son déterminant est « Le », son nom noyau est « garçon », son adjectif est « jeune » et son complément du nom est « du village ».</p>
 <p class="small">Repère : <span class="adj">vert = adjectif</span> ; <span class="cdn">bleu = complément du nom</span> ; <span class="noyau">nom noyau souligné</span>.</p></section>
-<nav class="tabs" aria-label="Choix des exercices" id="tabs"><button type="button" data-mode="0">1 · Je repère les GN</button><button type="button" data-mode="1">2 · J'ajoute un adjectif</button><button type="button" data-mode="2">3 · J'ajoute un CDN</button><button type="button" data-mode="3">4 · Je transforme</button><button type="button" data-mode="4">5 · J'écris</button></nav>
-<section class="card"><p id="progress" aria-live="polite"></p><h2 id="instruction"></h2><p class="sentence" id="sentence"></p><div id="options" class="options"></div><div id="write" class="hidden"><label for="editor"><strong>Réécris toute la phrase :</strong></label><textarea id="editor" spellcheck="true" placeholder="Écris ici ta phrase enrichie…"></textarea><div class="actions"><button id="exampleBtn" type="button">Voir un exemple possible</button><button id="resetText" type="button">Effacer ma réponse</button></div><p class="tip" id="exampleBox" hidden></p></div><p id="feedback" aria-live="polite"></p><div class="actions"><button id="next" type="button" disabled>Phrase suivante →</button><button id="restart" type="button">Recommencer ce défi ↻</button></div></section>
-<footer>Zou Maï · Grammaire CM2 · G4</footer></main>
+<nav class="tabs" id="tabs" aria-label="Parcours des exercices">
+<button data-mode="0" type="button"><span>🔎</span>1 · Repérer</button>
+<button data-mode="1" type="button"><span>🟢</span>2 · Adjectifs</button>
+<button data-mode="2" type="button"><span>🔵</span>3 · Compléments</button>
+<button data-mode="3" type="button"><span>🔄</span>4 · Transformer</button>
+<button data-mode="4" type="button"><span>✍️</span>5 · Atelier d'écriture</button>
+</nav>
+<section class="card" aria-label="Exercice interactif">
+<div class="exercise-header"><div><div class="kicker" id="level"></div><h2 id="instruction"></h2></div><div class="pill" id="progress"></div></div>
+<div class="track" role="progressbar" id="track" aria-label="Avancement" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="trackfill"></div></div>
+<p class="task-hint" id="hint"></p><div class="sentence" id="sentence"></div>
+<div id="activity"></div>
+<p id="feedback" aria-live="polite"></p>
+<div class="actions"><button type="button" id="next" disabled>Phrase suivante →</button><button type="button" id="restart">Recommencer ↻</button></div>
+</section>
+<footer>Zou Maï · Français · G4 · Enrichir le groupe nominal</footer></main>
 <script>
-const exercises=[
-{title:"Repère le groupe nominal complet",items:[
-{s:"Le vieux château domine le village.",ask:"Quel est le GN enrichi par un adjectif ?",opts:["vieux château","Le vieux château","domine le village"],a:1,why:"« Le vieux château » est le GN entier : déterminant « Le », adjectif « vieux », nom noyau « château »."},
-{s:"Les élèves visitent le musée de la ville.",ask:"Quel GN contient un complément du nom ?",opts:["le musée de la ville","de la ville","Les élèves visitent"],a:0,why:"« le musée de la ville » est un GN complet : déterminant « le », nom noyau « musée », complément du nom « de la ville »."},
-{s:"Une immense forêt entoure le petit village.",ask:"Quel est le GN sujet complet ?",opts:["Une immense forêt","immense forêt","entoure le petit village"],a:0,why:"« Une immense forêt » est le GN sujet : déterminant, adjectif et nom noyau."},
-{s:"Les enfants découvrent un coffre en bois.",ask:"Quel GN comprend un complément du nom ?",opts:["un coffre","en bois","un coffre en bois"],a:2,why:"« un coffre en bois » est un GN entier. « coffre » est son nom noyau et « en bois » son complément du nom."},
-{s:"Le jeune lecteur choisit un livre de contes.",ask:"Quel est le GN enrichi par un adjectif ?",opts:["Le jeune lecteur","jeune lecteur","un livre de contes"],a:0,why:"« Le jeune lecteur » est le GN complet, avec l'adjectif « jeune »."},
-{s:"La petite sœur de Léa prépare un gâteau au chocolat.",ask:"Quel est le GN sujet entier, avec ses deux expansions ?",opts:["La petite sœur de Léa","La petite sœur","de Léa prépare"],a:0,why:"« La petite sœur de Léa » comprend le déterminant « La », l'adjectif « petite », le nom noyau « sœur » et le CDN « de Léa »."},
-{s:"Des oiseaux migrateurs survolent les toits du village.",ask:"Quel GN contient un complément du nom ?",opts:["Des oiseaux migrateurs","les toits du village","du village"],a:1,why:"« les toits du village » est un GN complet, construit autour du nom « toits »."},
-{s:"Le courageux capitaine du navire observe les étoiles brillantes.",ask:"Quel GN contient à la fois un adjectif et un complément du nom ?",opts:["les étoiles brillantes","du navire","Le courageux capitaine du navire"],a:2,why:"« Le courageux capitaine du navire » contient le nom noyau « capitaine », l'adjectif « courageux » et le CDN « du navire »."}
+"use strict";
+const $=id=>document.getElementById(id);
+const levels=[
+{title:"Trouve le groupe nominal entier",tip:"Clique sur le groupe nominal complet. Le déterminant et toutes ses expansions doivent être inclus.",type:"spot",items:[
+{parts:["Le vieux château","domine","le village."],target:0,why:"« Le vieux château » contient le déterminant Le, l'adjectif vieux et le nom noyau château."},
+{parts:["Les élèves","visitent","le musée de la ville."],target:2,why:"« le musée de la ville » contient le nom noyau musée et le CDN de la ville."},
+{parts:["Une immense forêt","entoure","le village."],target:0,why:"Le GN « Une immense forêt » contient le déterminant Une, l'adjectif immense et le nom noyau forêt."},
+{parts:["Les enfants","découvrent","un coffre en bois."],target:2,why:"« un coffre en bois » est le GN complet. « en bois » complète le nom coffre."},
+{parts:["La petite sœur de Léa","prépare","un gâteau."],target:0,why:"Le GN sujet comprend aussi bien l'adjectif petite que le CDN de Léa."},
+{parts:["Le courageux capitaine du navire","observe","les étoiles."],target:0,why:"Le GN réunit déterminant, adjectif, nom noyau et complément du nom."},
+{parts:["Des oiseaux migrateurs","survolent","les toits du village."],target:2,why:"« les toits du village » est le GN complet ; « du village » est son CDN."},
+{parts:["La grande porte en chêne","grince","dans le couloir."],target:0,why:"Le GN « La grande porte en chêne » contient l'adjectif grande et le CDN en chêne."}
 ]},
-
-{title:"Enrichis une phrase minimale avec un adjectif",items:[
-{s:"Les oiseaux volent.",opts:["Les oiseaux migrateurs volent.","Les oiseaux du jardin volent.","Les oiseaux volent au-dessus du jardin."],a:0,why:"« migrateurs » enrichit le GN sujet « Les oiseaux »."},
-{s:"Une fille observe.",opts:["Une fille de la classe observe.","Une fille curieuse observe.","Une fille observe attentivement."],a:1,why:"« curieuse » enrichit le GN « Une fille »."},
-{s:"Les chevaliers avancent.",opts:["Les chevaliers du royaume avancent.","Les chevaliers avancent lentement.","Les chevaliers courageux avancent."],a:2,why:"« courageux » qualifie le nom « chevaliers »."},
-{s:"Une histoire commence.",opts:["Une histoire mystérieuse commence.","Une histoire de pirates commence.","Une histoire commence bientôt."],a:0,why:"« mystérieuse » qualifie le nom « histoire »."},
-{s:"Des fleurs poussent.",opts:["Des fleurs du jardin poussent.","Des fleurs colorées poussent.","Des fleurs poussent rapidement."],a:1,why:"« colorées » enrichit le GN « Des fleurs » et s'accorde au féminin pluriel."}
+{title:"Enrichis la phrase minimale",tip:"La phrase de départ ne comporte aucune expansion du nom. Choisis l'adjectif qui convient, en respectant les accords.",type:"insert",kind:"adj",items:[
+{before:"Les oiseaux",after:"volent.",choices:["migrateurs","migrateur","du jardin"],correct:0,result:"Les oiseaux migrateurs volent.",why:"migrateurs est un adjectif masculin pluriel, accordé avec oiseaux."},
+{before:"Une fille",after:"dessine.",choices:["curieux","curieuse","de la classe"],correct:1,result:"Une fille curieuse dessine.",why:"curieuse est un adjectif féminin singulier, accordé avec fille."},
+{before:"Les chevaliers",after:"avancent.",choices:["courageux","courageuse","du royaume"],correct:0,result:"Les chevaliers courageux avancent.",why:"courageux est un adjectif masculin pluriel."},
+{before:"Une histoire",after:"commence.",choices:["mystérieux","de pirates","mystérieuse"],correct:2,result:"Une histoire mystérieuse commence.",why:"mystérieuse est un adjectif féminin singulier."},
+{before:"Des fleurs",after:"poussent.",choices:["coloré","colorées","du jardin"],correct:1,result:"Des fleurs colorées poussent.",why:"colorées prend -es avec le nom féminin pluriel fleurs."},
+{before:"Un renard",after:"court.",choices:["rusé","rusée","des bois"],correct:0,result:"Un renard rusé court.",why:"rusé s'accorde au masculin singulier avec renard."}
 ]},
-{title:"Choisis la phrase enrichie par un complément du nom",items:[
-{s:"Le professeur ouvre une boîte.",opts:["Le professeur ouvre une grande boîte.","Le professeur ouvre une boîte en métal.","Le professeur ouvre une boîte rapidement."],a:1,why:"« en métal » complète le nom « boîte »."},
-{s:"Un enfant admire le dessin.",opts:["Un enfant admire le magnifique dessin.","Un enfant admire le dessin attentivement.","Un enfant admire le dessin de sa sœur."],a:2,why:"« de sa sœur » complète le nom « dessin »."},
-{s:"Nous découvrons un château.",opts:["Nous découvrons un château du Moyen Âge.","Nous découvrons un ancien château.","Nous découvrons un château aujourd'hui."],a:0,why:"« du Moyen Âge » est un complément du nom « château »."},
-{s:"La classe prépare une exposition.",opts:["La classe prépare une belle exposition.","La classe prépare une exposition de photographies.","La classe prépare une exposition avec soin."],a:1,why:"« de photographies » complète « exposition »."},
-{s:"Les randonneurs suivent un sentier.",opts:["Les randonneurs suivent un étroit sentier.","Les randonneurs suivent un sentier prudemment.","Les randonneurs suivent un sentier de montagne."],a:2,why:"« de montagne » est un complément du nom « sentier »."}
+{title:"Ajoute un complément du nom",tip:"Choisis le groupe qui précise le nom. Attention : ni un adjectif ni un complément du verbe ne conviennent.",type:"insert",kind:"cdn",items:[
+{before:"Le garçon ouvre une boîte",after:".",choices:["rapidement","métallique","en métal"],correct:2,result:"Le garçon ouvre une boîte en métal.",why:"en métal complète le nom boîte ; rapidement complète le verbe."},
+{before:"La classe observe un tableau",after:".",choices:["de maître","magnifique","attentivement"],correct:0,result:"La classe observe un tableau de maître.",why:"de maître précise le nom tableau."},
+{before:"Les élèves découvrent un château",after:".",choices:["ancien","du Moyen Âge","aujourd'hui"],correct:1,result:"Les élèves découvrent un château du Moyen Âge.",why:"du Moyen Âge est un complément du nom château."},
+{before:"La maîtresse prépare une exposition",after:".",choices:["de photographies","jolie","avec soin"],correct:0,result:"La maîtresse prépare une exposition de photographies.",why:"de photographies complète le nom exposition."},
+{before:"Les randonneurs suivent un sentier",after:".",choices:["étroit","prudemment","de montagne"],correct:2,result:"Les randonneurs suivent un sentier de montagne.",why:"de montagne complète le nom sentier."},
+{before:"Mon frère porte un sac",after:".",choices:["en cuir","lourd","avec difficulté"],correct:0,result:"Mon frère porte un sac en cuir.",why:"en cuir complète le nom sac."}
 ]},
-{title:"Remplace l'expansion sans changer le sens",items:[
-{s:"Nous admirons un paysage montagneux.",opts:["Nous admirons un paysage de montagne.","Nous admirons un paysage magnifique.","Nous admirons un paysage au loin."],a:0,why:"« montagneux » devient « de montagne »."},
-{s:"La classe prépare une représentation musicale.",opts:["La classe prépare une représentation joyeuse.","La classe prépare une représentation de musique.","La classe prépare une représentation demain."],a:1,why:"« musicale » devient « de musique »."},
-{s:"Les enfants pratiquent une activité de sport.",opts:["Les enfants pratiquent une activité sportive.","Les enfants pratiquent une activité difficile.","Les enfants pratiquent une activité le mercredi."],a:0,why:"« de sport » devient « sportive »."},
-{s:"Le scientifique étudie une éruption de volcan.",opts:["Le scientifique étudie une éruption soudaine.","Le scientifique étudie une éruption volcanique.","Le scientifique étudie une éruption en silence."],a:1,why:"« de volcan » devient « volcanique »."},
-{s:"Le chien suit une piste sans odeur.",opts:["Le chien suit une piste longue.","Le chien suit une piste discrètement.","Le chien suit une piste inodore."],a:2,why:"« sans odeur » devient « inodore »."}
+{title:"Change l'expansion, garde le sens",tip:"Transforme l'adjectif en complément du nom ou le complément du nom en adjectif, sans modifier le sens de la phrase.",type:"transform",items:[
+{s:"Nous admirons un paysage montagneux.",choices:["Nous admirons un paysage de montagne.","Nous admirons un paysage magnifique.","Nous admirons un paysage au loin."],correct:0,why:"montagneux est remplacé par de montagne."},
+{s:"La classe prépare un spectacle musical.",choices:["La classe prépare un spectacle amusant.","La classe prépare un spectacle de musique.","La classe prépare un spectacle demain."],correct:1,why:"musical est remplacé par de musique."},
+{s:"Les enfants pratiquent une activité de sport.",choices:["Les enfants pratiquent une activité difficile.","Les enfants pratiquent une activité sportive.","Les enfants pratiquent une activité après la classe."],correct:1,why:"de sport est remplacé par sportive."},
+{s:"Le volcan provoque une éruption de lave.",choices:["Le volcan provoque une éruption bruyante.","Le volcan provoque une éruption soudaine.","Le volcan provoque une éruption lavique."],correct:2,why:"de lave est remplacé par lavique."},
+{s:"Les élèves dessinent une scène de nuit.",choices:["Les élèves dessinent une scène nocturne.","Les élèves dessinent une scène sombre.","Les élèves dessinent une scène en silence."],correct:0,why:"de nuit est remplacé par nocturne."},
+{s:"Le journaliste présente une information scientifique.",choices:["Le journaliste présente une information importante.","Le journaliste présente une information de science.","Le journaliste présente une information rapidement."],correct:1,why:"scientifique est remplacé par de science."}
 ]},
-{title:"Enrichis toi-même les phrases",items:[
-{s:"Le garçon découvre une grotte.",ask:"Ajoute un adjectif au GN « une grotte ».",hint:"Le garçon découvre une grotte mystérieuse."},
-{s:"Les élèves observent un tableau.",ask:"Ajoute un complément du nom au GN « un tableau ».",hint:"Les élèves observent un tableau de maître."},
-{s:"Une voiture traverse le village.",ask:"Ajoute un adjectif au GN sujet ET un complément du nom au GN « le village ».",hint:"Une vieille voiture traverse le village de montagne."},
-{s:"Le pirate ouvre un coffre.",ask:"Enrichis au moins un GN avec un adjectif ET un complément du nom.",hint:"Le terrible pirate ouvre un vieux coffre en bois."},
-{s:"Des enfants lisent des histoires.",ask:"Enrichis les deux GN avec au moins deux expansions différentes.",hint:"Des enfants curieux lisent des histoires d'aventures."}
+{title:"Construis et écris une phrase enrichie",tip:"Dans la première partie, choisis deux expansions pour construire une phrase correcte. Ensuite, réécris une phrase librement.",type:"write",items:[
+{type:"build",begin:"Le",noun:"garçon",end:"observe un oiseau.",adjs:["jeune","jeunes","du quartier"],cdns:["du village","curieux","lentement"],a:0,c:0,why:"Le jeune garçon du village observe un oiseau."},
+{type:"build",begin:"Les",noun:"élèves",end:"préparent un exposé.",adjs:["sérieuse","sérieux","de CM2"],cdns:["de la classe","pressés","rapidement"],a:1,c:0,why:"Les élèves sérieux de la classe préparent un exposé."},
+{type:"build",begin:"Une",noun:"maison",end:"domine la vallée.",adjs:["ancienne","ancien","des collines"],cdns:["en pierre","haute","au loin"],a:0,c:0,why:"Une ancienne maison en pierre domine la vallée."},
+{type:"free",s:"Le pirate découvre un trésor.",ask:"Enrichis le GN « un trésor » avec un adjectif ET un complément du nom.",sample:"Le pirate découvre un magnifique trésor de pièces d'or."},
+{type:"free",s:"Des enfants lisent des histoires.",ask:"Enrichis les deux groupes nominaux avec au moins un adjectif et un complément du nom au total.",sample:"Des enfants curieux lisent des histoires de pirates."},
+{type:"free",s:"La fille regarde le château.",ask:"Enrichis chaque groupe nominal, sans changer le sens général de la phrase.",sample:"La jeune fille du village regarde le grand château de pierre."}
 ]}];
-let mode=0,index=0,score=0,answered=false;const $=id=>document.getElementById(id);
-function start(m){mode=m;index=0;score=0;render()}
-function render(){answered=false;const ex=exercises[mode],q=ex.items[index];document.querySelectorAll("#tabs button").forEach(b=>b.classList.toggle("active",Number(b.dataset.mode)===mode));$("progress").textContent="Phrase "+(index+1)+" / "+ex.items.length+(mode!==4?" · "+score+" bonne(s) réponse(s)":"");$("instruction").textContent=q.ask||ex.title;$("sentence").innerHTML=mode===0?q.s:(mode===1?"<span class=\"small\">Phrase minimale :</span><br>":"")+q.s.replace(/</g,"&lt;");$("options").replaceChildren();$("feedback").textContent="";$("next").disabled=true;$("write").classList.toggle("hidden",mode!==4);
-if(mode===4){$("editor").value="";$("exampleBox").hidden=true;$("exampleBox").textContent="Exemple possible : "+q.hint;$("next").disabled=false;return}
-q.opts.forEach((v,i)=>{const b=document.createElement("button");b.type="button";b.textContent=v;b.onclick=()=>choose(i);$("options").appendChild(b)})}
-function choose(i){if(answered)return;const q=exercises[mode].items[index];const buttons=[...$("options").children];if(i===q.a){answered=true;score++;buttons[i].classList.add("right");buttons.forEach(b=>b.disabled=true);$("feedback").textContent="✓ Correct ! "+q.why;$("next").disabled=false;$("progress").textContent="Phrase "+(index+1)+" / "+exercises[mode].items.length+" · "+score+" bonne(s) réponse(s)"}else{buttons[i].classList.add("wrong");buttons[i].disabled=true;$("feedback").textContent="Essaie encore. Observe quel nom est précisé par le groupe ajouté."}}
-$("next").onclick=()=>{const ex=exercises[mode];if(mode===4 && !$("editor").value.trim() && $("exampleBox").hidden){$("feedback").textContent="Écris d'abord une proposition ou consulte l'exemple.";return}index++;if(index>=ex.items.length){$("progress").textContent="Défi terminé";$("instruction").textContent="Bravo, défi terminé !";$("sentence").textContent=mode===4?"Relis tes phrases et vérifie les accords.":"Résultat : "+score+" / "+ex.items.length+" bonnes réponses.";$("options").replaceChildren();$("write").classList.add("hidden");$("feedback").textContent="Tu peux choisir un autre défi ou recommencer celui-ci.";$("next").disabled=true;return}render()};
-$("restart").onclick=()=>start(mode);$("exampleBtn").onclick=()=>{$("exampleBox").hidden=false;$("feedback").textContent="Compare ta phrase à cet exemple : plusieurs réponses sont possibles."};$("resetText").onclick=()=>{$("editor").value="";$("editor").focus()};document.querySelectorAll("#tabs button").forEach(b=>b.onclick=()=>start(Number(b.dataset.mode)));render();
+let mode=0,index=0,score=0,errors=0,locked=false,selectedAdj=null,selectedCdn=null;
+function element(tag,cls,txt){const e=document.createElement(tag);if(cls)e.className=cls;if(txt!==undefined)e.textContent=txt;return e}
+function button(label,fn,cls){const b=element("button",cls,label);b.type="button";b.addEventListener("click",fn);return b}
+function feedback(msg,type){const f=$("feedback");f.textContent=msg;f.className=type||""}
+function advanceReady(){locked=true;$("next").disabled=false}
+function changeMode(m){mode=m;index=0;score=0;errors=0;render()}
+function answer(ok,why,el){if(locked)return;if(ok){score++;if(el)el.classList.add("right");feedback("✓ "+why,"good");advanceReady()}else{errors++;if(el){el.classList.add("wrong");el.disabled=true}feedback("Ce n'est pas encore cela. Relis la consigne et regarde quel nom est complété.","bad")}}
+function render(){locked=false;selectedAdj=null;selectedCdn=null;const lv=levels[mode],q=lv.items[index];document.querySelectorAll("#tabs button").forEach(b=>b.classList.toggle("active",Number(b.dataset.mode)===mode));$("level").textContent="Défi "+(mode+1)+" sur 5";$("instruction").textContent=lv.title;$("hint").textContent=lv.tip;$("progress").textContent=(index+1)+" / "+lv.items.length;$("trackfill").style.width=(index/lv.items.length*100)+"%";$("track").setAttribute("aria-valuenow",Math.round(index/lv.items.length*100));$("next").disabled=true;$("next").textContent=index===lv.items.length-1?"Terminer le défi ✓":"Phrase suivante →";feedback("","");
+$("activity").replaceChildren();$("sentence").textContent="";
+if(lv.type==="spot"){const line=element("div","tokenline");q.parts.forEach((part,i)=>{line.append(button(part,()=>{if(i===q.target){answer(true,q.why,line.children[i])}else answer(false,q.why,line.children[i])},"wordbutton"))});$("sentence").replaceWith($("sentence"));$("sentence").append(line);$("hint").textContent="Clique sur le GN entier qui correspond à la consigne : "+(q.target===0?"le GN sujet enrichi.":"le GN complément enrichi.");return}
+if(lv.type==="insert"){$("sentence").textContent=q.before+" "+q.after;const label=element("p","pick-label",lv.kind==="adj"?"Quel adjectif peux-tu insérer ?":"Quel complément du nom peux-tu ajouter ?");const wrap=element("div","chips");q.choices.forEach((v,i)=>wrap.append(button(v,()=>{if(i===q.correct){$("sentence").textContent=q.result;answer(true,q.why,wrap.children[i])}else answer(false,q.why,wrap.children[i])})));$("activity").append(label,wrap);return}
+if(lv.type==="transform"){$("sentence").textContent=q.s;const wrap=element("div","chips");q.choices.forEach((v,i)=>wrap.append(button(v,()=>answer(i===q.correct,q.why,wrap.children[i]))));$("activity").append(element("p","pick-label","Choisis la phrase transformée correctement :"),wrap);return}
+if(q.type==="build"){const preview=element("p","build-preview");$("sentence").textContent="Phrase à construire : "+q.begin+" "+q.noun+" "+q.end;const g1=element("div","chips"),g2=element("div","chips");q.adjs.forEach((v,i)=>g1.append(button(v,()=>{selectedAdj=i;Array.from(g1.children).forEach((b,j)=>b.classList.toggle("selected",j===i));preview.textContent=q.begin+" "+v+" "+q.noun+(selectedCdn===null?"":" "+q.cdns[selectedCdn])+" "+q.end;feedback("","")})));q.cdns.forEach((v,i)=>g2.append(button(v,()=>{selectedCdn=i;Array.from(g2.children).forEach((b,j)=>b.classList.toggle("selected",j===i));preview.textContent=q.begin+(selectedAdj===null?"":" "+q.adjs[selectedAdj])+" "+q.noun+" "+v+" "+q.end;feedback("","")})));const check=button("Vérifier ma phrase",()=>{if(selectedAdj===null||selectedCdn===null){feedback("Choisis les deux expansions avant de vérifier.","info");return}if(selectedAdj===q.a&&selectedCdn===q.c){answer(true,"La phrase est correcte : "+q.why,check)}else{errors++;feedback("Une expansion ne convient pas. Vérifie l'accord de l'adjectif et la fonction du complément.","bad")}});$("activity").append(element("p","pick-label","1. Sélectionne un adjectif"),g1,element("p","pick-label","2. Sélectionne un complément du nom"),g2,preview,check);return}
+$("sentence").textContent=q.s;const label=element("label","pick-label",q.ask);label.setAttribute("for","editor");const editor=element("textarea");editor.id="editor";editor.spellcheck=true;editor.placeholder="Réécris ici la phrase entière…";const sample=element("p","tip");sample.hidden=true;sample.textContent="Exemple possible : "+q.sample;const show=button("Voir un exemple",()=>{sample.hidden=false;feedback("Plusieurs phrases correctes sont possibles. Compare tes expansions à l'exemple.","info");if(editor.value.trim())advanceReady()});const validate=button("J'ai terminé ma phrase",()=>{if(editor.value.trim().split(/\s+/).length<5){feedback("Écris une phrase complète avant de continuer.","bad");return}feedback("Relis ta phrase : as-tu conservé les noms noyaux, ajouté les expansions demandées et vérifié les accords ? Tu peux voir un exemple.","info");advanceReady()});$("activity").append(label,editor,element("div","actions"),sample);$("activity").querySelector(".actions").append(validate,show);editor.focus({preventScroll:true});
+}
+function finish(){const lv=levels[mode];$("trackfill").style.width="100%";$("track").setAttribute("aria-valuenow","100");$("progress").textContent="Défi terminé";$("instruction").textContent="Parcours terminé !";$("hint").textContent="Tu peux recommencer ou passer à un autre exercice.";$("sentence").textContent="";$("activity").replaceChildren();const summary=element("div","finish");summary.append(element("h3","",mode===4?"Ton atelier d'écriture est terminé !":"Résultat : "+score+" / "+lv.items.length));summary.append(element("p","",mode===4?"Relis tes phrases et vérifie les accords. Les productions libres ont plusieurs réponses possibles.":"Chaque correction t'explique la règle appliquée."));$("activity").append(summary);feedback("","");$("next").disabled=true}
+$("next").addEventListener("click",()=>{if(!locked)return;index++;if(index>=levels[mode].items.length)finish();else render()});$("restart").addEventListener("click",()=>changeMode(mode));document.querySelectorAll("#tabs button").forEach(b=>b.addEventListener("click",()=>changeMode(Number(b.dataset.mode))));render();
 </script><script src="site-tracking.js" defer></script></body></html>
