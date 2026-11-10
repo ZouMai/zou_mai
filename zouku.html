@@ -102,6 +102,43 @@ function conflict(idx){if(marks[idx]!==2)return false;let n=sizes[level],row=Mat
 function render(){let n=sizes[level],board=$('#board');board.style.gridTemplateColumns=`repeat(${n},minmax(0,1fr))`;board.style.gridTemplateRows=`repeat(${n},minmax(0,1fr))`;board.innerHTML='';let count=0;for(let i=0;i<n*n;i++){let row=Math.floor(i/n),col=i%n,mark=marks[i];if(mark===2)count++;let b=document.createElement('button');b.className='cell'+(mark===2?' cat':'')+(mark===1?' cross':'')+(conflict(i)?' wrong':'');b.style.background=colors[grid[i]%colors.length];if(col<n-1&&grid[i]!==grid[i+1])b.classList.add('boundR');if(row<n-1&&grid[i]!==grid[i+n])b.classList.add('boundB');b.innerHTML=mark===2?WOLF_IMG:mark===1?'<svg class="xmark" viewBox="0 0 100 100" aria-hidden="true"><path class="xshadow" d="M17 17L83 83M83 17L17 83"/><path class="xmain" d="M17 17L83 83M83 17L17 83"/><path class="xshine" d="M22 18L81 77M78 18L20 76"/></svg>':'';b.setAttribute('aria-label',`Ligne ${row+1}, colonne ${col+1}, ${mark===2?'loup':mark===1?'croix':'vide'}`);b.onclick=()=>tap(i);b.oncontextmenu=e=>{e.preventDefault();setMark(i,marks[i]===1?0:1)};board.appendChild(b)}$('#cats').textContent=`${count}/${n}`;$('#undo').disabled=!history.length;$('#clock').textContent=format(elapsed)}
 function setMark(i,v){if(won||marks[i]===v)return;history.push([...marks]);marks[i]=v;if(v===2&&$('#auto').checked){let n=sizes[level],row=Math.floor(i/n),col=i%n;for(let j=0;j<marks.length;j++){if(j===i||marks[j]!==0)continue;let rr=Math.floor(j/n),cc=j%n;if(rr===row||cc===col||grid[i]===grid[j]||(Math.abs(rr-row)<=1&&Math.abs(cc-col)<=1))marks[j]=1}}render();checkWin()}
 function tap(i){setMark(i,(marks[i]+1)%3)}
+// Balayage tactile ou souris : tracer des croix sur les cases traversées.
+// Une seule étape d'annulation pour tout le geste, sans effacer les loups.
+let swipe=null,suppressSwipeClick=false;
+const boardSwipe=$('#board');
+boardSwipe.style.touchAction='none';
+boardSwipe.addEventListener('pointerdown',e=>{
+ if(won||e.button!==0)return;
+ const cell=e.target.closest('.cell');
+ if(!cell||!boardSwipe.contains(cell))return;
+ swipe={pointerId:e.pointerId,start:[...boardSwipe.children].indexOf(cell),last:-1,active:false,original:[...marks]};
+});
+window.addEventListener('pointermove',e=>{
+ if(!swipe||e.pointerId!==swipe.pointerId||won)return;
+ const cell=document.elementFromPoint(e.clientX,e.clientY)?.closest('.cell');
+ if(!cell||!boardSwipe.contains(cell))return;
+ const index=[...boardSwipe.children].indexOf(cell);
+ if(index<0||index===swipe.last)return;
+ if(!swipe.active){
+  if(index===swipe.start)return;
+  swipe.active=true;
+  history.push(swipe.original);
+  if(marks[swipe.start]===0)marks[swipe.start]=1;
+ }
+ swipe.last=index;
+ if(marks[index]===0)marks[index]=1;
+ render();
+ e.preventDefault();
+},{passive:false});
+function finishSwipe(e){
+ if(!swipe||e.pointerId!==swipe.pointerId)return;
+ if(swipe.active){suppressSwipeClick=true;render();setTimeout(()=>{suppressSwipeClick=false},120);}
+ swipe=null;
+}
+window.addEventListener('pointerup',finishSwipe);
+window.addEventListener('pointercancel',finishSwipe);
+boardSwipe.addEventListener('click',e=>{if(suppressSwipeClick){e.preventDefault();e.stopPropagation();suppressSwipeClick=false;}},true);
+
 function checkWin(){let n=sizes[level],positions=[];for(let i=0;i<marks.length;i++)if(marks[i]===2)positions.push(i);if(positions.length!==n||positions.some(conflict))return;won=true;clearInterval(timer);localStorage.setItem('chatoku-best',Math.max(Number(localStorage.getItem('chatoku-best')||0),level+1));$('#wintext').textContent=`${n} loups parfaitement placés en ${format(elapsed)}. Le prochain défi t’attend.`;$('#victory-gif').src=VICTORY_GIF;$('#modal').classList.add('show');$('#notice').textContent='Grille résolue !';drawLevels()}
 $('#undo').onclick=()=>{if(!history.length||won)return;marks=history.pop();render()};$('#reset').onclick=()=>load(level);$('#next').onclick=()=>load(Math.min(level+1,sizes.length-1));$('#continue').onclick=$('#next').onclick;
 $('#hint').onclick=()=>{if(won)return;let n=sizes[level],idx=-1;for(let row=0;row<n;row++){let i=row*n+solution[row];if(marks[i]!==2){idx=i;break}}if(idx<0)return;setMark(idx,2);let cell=$('#board').children[idx];if(cell)cell.classList.add('hint');$('#notice').textContent=`Indice : un loup a été placé en ligne ${Math.floor(idx/n)+1}, colonne ${idx%n+1}. À toi de poursuivre !`};
