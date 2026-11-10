@@ -624,10 +624,12 @@
     document.querySelector("#check").disabled = true;
     if (acceptedAnswers.some((expected) => same(inp.value, expected))) {
       points++;
+      window.ZoumaiRewards?.correct();
       f.className = "feedback ok";
       f.textContent = "✓ Bravo !";
     } else {
       hard(reviewAnswer || answer);
+      window.ZoumaiRewards?.incorrect();
       f.className = "feedback bad";
       f.innerHTML = "<strong>✗ À OBSERVER</strong><br>La bonne réponse est : <strong>" +
         answer + "</strong><br><span>" + explainError(inp.value, answer) + "</span>";
@@ -743,12 +745,14 @@
           buttons.forEach((button) => (button.disabled = true));
           if (same(b.textContent, x.answer)) {
             points++;
+            window.ZoumaiRewards?.correct();
             f.className = "feedback ok";
             f.textContent = "✓ Bravo !";
             updateStatus();
             timer = setTimeout(next, 1200);
           } else {
             hard(x.review || x.answer);
+            window.ZoumaiRewards?.incorrect();
             f.className = "feedback bad";
             f.innerHTML = "<strong>✗ À OBSERVER</strong><br>La bonne réponse est : <strong>" +
               x.answer + "</strong><br><span>" + explainError(b.textContent, x.answer) + "</span>";
