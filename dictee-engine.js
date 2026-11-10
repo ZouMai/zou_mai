@@ -1,4 +1,10 @@
 (() => {
+  if (!window.ZoumaiRewards && !document.querySelector('script[data-zouku-rewards]')) {
+    const rewardsScript = document.createElement('script');
+    rewardsScript.src = 'js/zoumai-rewards.js';
+    rewardsScript.dataset.zoukuRewards = '1';
+    document.head.appendChild(rewardsScript);
+  }
   const id = Number(document.body.dataset.dictee),
     d = window.DICTEES.find((x) => x.id === id),
     art = window.DICTEE_ART?.[id],
@@ -639,6 +645,7 @@
     timer = setTimeout(next, f.classList.contains("bad") ? 6000 : 1200);
   }
   function start() {
+    window.ZoumaiRewards?.reset();
     clearTimeout(timer);
     index = points = 0;
     const count = itemCounts[lvl];
@@ -763,6 +770,7 @@
     );
   }
   function finish() {
+    window.ZoumaiRewards?.complete(points === queue.length && queue.length > 0);
     updateStatus();
     document.querySelector("#progressFill").style.width = "100%";
     game.innerHTML = `<h2>MISSION TERMINÉE</h2><p class="result">${points} / ${queue.length}</p><p>${points === queue.length ? "Mission parfaite !" : "Les erreurs sont conservées dans « Mes mots à revoir »."}</p><button class="action" id="again">REJOUER</button>`;
