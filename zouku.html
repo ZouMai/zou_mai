@@ -230,7 +230,8 @@ function load(l){
  // Grandes grilles vérifiées hors ligne : aucun calcul exponentiel sur mobile.
  let puzzle=PREMADE_PUZZLES[n];
  if(!puzzle){let seed=20261110+level*7919;for(let k=0;k<2&&!puzzle;k++){const candidate=createPuzzle(n,seed+k*1777);if(verifyPuzzle(candidate,n))puzzle=candidate;}}
- if(!puzzle){$('#notice').textContent='Impossible de charger cette grille.';return;}
+ if(!puzzle){puzzle=fallback(n);}
+ if(!puzzle){$('#notice').textContent='Génération indisponible. Réessaie dans un instant.';return;}
  grid=puzzle.regions;solution=puzzle.sol;marks=Array(n*n).fill(0);history=[];won=false;
  lastTapIndex=-1;lastTapAt=0;start=Date.now();elapsed=0;
  $('#modal').classList.remove('show');
