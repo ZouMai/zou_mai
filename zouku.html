@@ -120,6 +120,9 @@ const CROSS_ASSET="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMUAAADECAYAAAA
 const WOLF_IMG='<img class="wolf-face" alt="Loup Zoumaï" src="'+WOLF_ASSET+'">';
 'use strict';
 const colors=['#48caff','#ff6db5','#ffe45c','#52edbd','#b58aff','#ffab60','#60e5e8','#d98bff','#b7ef62','#ff86a5','#84a9ff','#f8c65a'];
+
+// Animations progressives Zouku : secours sur le GIF original si un fichier n'est pas encore disponible.
+const ZOUKU_VICTORY_GIFS=["assets/zouku-victoires/01_Premier_succes.gif","assets/zouku-victoires/02_Petit_bond.gif","assets/zouku-victoires/03_Super_heros.gif","assets/zouku-victoires/04_Tresor_mysterieux.gif","assets/zouku-victoires/05_Portail_magique.gif","assets/zouku-victoires/06_Mission_spatiale.gif","assets/zouku-victoires/07_Conquete_Lune.gif","assets/zouku-victoires/08_Choc_Saturne.gif"];
 const sizes=[4,5,6,7,8,9,10,11],names=['Découverte','Apprenti','Curieux','Malin','Expert','Maître','Virtuose','Légende'];
 const $=s=>document.querySelector(s);let level=0,grid=[],solution=[],marks=[],history=[],start=Date.now(),elapsed=0,timer=null,won=false;
 function shuffle(a,r=Math.random){for(let i=a.length-1;i>0;i--){let j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
@@ -244,7 +247,7 @@ window.addEventListener('pointerup',finishSwipe);
 window.addEventListener('pointercancel',finishSwipe);
 boardSwipe.addEventListener('click',e=>{if(suppressSwipeClick){e.preventDefault();e.stopPropagation();suppressSwipeClick=false;}},true);
 
-function checkWin(){let n=sizes[level],positions=[];for(let i=0;i<marks.length;i++)if(marks[i]===2)positions.push(i);if(positions.length!==n||positions.some(conflict))return;won=true;clearInterval(timer);localStorage.setItem('chatoku-best',Math.max(Number(localStorage.getItem('chatoku-best')||0),level+1));$('#wintext').textContent=`${n} loups parfaitement placés en ${format(elapsed)}. Le prochain défi t’attend.`;$('#victory-gif').src=VICTORY_GIF;$('#modal').classList.add('show');$('#notice').textContent='Grille résolue !';drawLevels()}
+function checkWin(){let n=sizes[level],positions=[];for(let i=0;i<marks.length;i++)if(marks[i]===2)positions.push(i);if(positions.length!==n||positions.some(conflict))return;won=true;clearInterval(timer);localStorage.setItem('chatoku-best',Math.max(Number(localStorage.getItem('chatoku-best')||0),level+1));$('#wintext').textContent=`${n} loups parfaitement placés en ${format(elapsed)}. Le prochain défi t’attend.`;const victoryImg=$('#victory-gif');victoryImg.onerror=()=>{victoryImg.onerror=null;victoryImg.src=VICTORY_GIF};victoryImg.src=ZOUKU_VICTORY_GIFS[level]||VICTORY_GIF;$('#modal').classList.add('show');$('#notice').textContent='Grille résolue !';drawLevels()}
 $('#undo').onclick=()=>{if(!history.length||won)return;marks=history.pop();render()};$('#reset').onclick=()=>load(level);$('#next').onclick=()=>load(Math.min(level+1,sizes.length-1));$('#continue').onclick=$('#next').onclick;
 $('#hint').onclick=()=>{if(won)return;let n=sizes[level],idx=-1;for(let row=0;row<n;row++){let i=row*n+solution[row];if(marks[i]!==2){idx=i;break}}if(idx<0)return;setMark(idx,2);let cell=$('#board').children[idx];if(cell)cell.classList.add('hint');$('#notice').textContent=`Indice loup : ligne ${Math.floor(idx/n)+1}, colonne ${idx%n+1}.`};
 $('#hint-cross').onclick=()=>{if(won)return;let n=sizes[level],idx=-1;for(let row=0;row<n&&idx<0;row++){for(let col=0;col<n;col++){let i=row*n+col;if(col!==solution[row]&&marks[i]===0){idx=i;break}}}if(idx<0){$('#notice').textContent='Toutes les cases incorrectes sont déjà marquées.';return}setMark(idx,1);let cell=$('#board').children[idx];if(cell)cell.classList.add('hint');$('#notice').textContent=`Indice croix : cette case est impossible (ligne ${Math.floor(idx/n)+1}, colonne ${idx%n+1}).`};
