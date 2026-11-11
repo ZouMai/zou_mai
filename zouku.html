@@ -220,9 +220,25 @@ function fallback(n){
  }
  return null;
 }
-const puzzleCache=new Map();
-function load(l){level=Math.max(0,Math.min(sizes.length-1,l));document.body.classList.remove('menu-open');$('#zouku-menu-btn').setAttribute('aria-expanded','false');$('#zouku-menu-btn').textContent='☰ Niveaux et règles';$('#notice').textContent='Chargement de la grille…';const n=sizes[level];let seed=20261110+level*7919;let puzzle=puzzleCache.get(level)||null;for(let k=0;k<2&&!puzzle;k++){const candidate=createPuzzle(n,seed+k*1777);if(verifyPuzzle(candidate,n))puzzle=candidate;}if(!puzzle)puzzle=fallback(n);if(verifyPuzzle(puzzle,n))puzzleCache.set(level,puzzle);if(!verifyPuzzle(puzzle,n)){$('#notice').textContent='Impossible de générer une grille unique. Réessaie.';return;}
-grid=puzzle.regions;solution=puzzle.sol;marks=Array(n*n).fill(0);history=[];won=false;lastTapIndex=-1;lastTapAt=0;start=Date.now();elapsed=0;$('#modal').classList.remove('show');$('#levelName').textContent=`Niveau ${level+1} · ${n} × ${n}`;$('#difficulty').textContent=names[level];drawLevels();render();clearInterval(timer);timer=setInterval(()=>{if(!won){elapsed=Math.floor((Date.now()-start)/1000);$('#clock').textContent=format(elapsed)}},1000);$('#notice').textContent='Un appui : croix · Double-clic rapide : loup · Appui sur une case marquée : effacer. Aucun loup n’est donné.'}
+const PREMADE_PUZZLES={"7":{"regions":[0,0,0,0,0,0,1,2,2,0,5,0,3,1,2,2,0,5,3,3,1,4,4,0,5,5,3,1,4,0,0,5,5,3,1,4,4,4,4,5,5,6,4,4,4,5,5,6,6],"sol":[2,0,4,6,3,1,5]},"8":{"regions":[1,1,1,1,2,2,3,3,1,4,4,1,2,2,2,3,1,4,4,4,4,2,3,3,1,1,1,5,5,5,3,7,1,1,1,1,1,5,7,7,0,0,5,5,5,5,5,7,0,0,0,7,7,7,5,7,0,6,0,0,7,7,7,7],"sol":[6,4,2,5,3,0,7,1]},"9":{"regions":[0,0,0,0,0,2,2,2,2,3,3,3,2,2,2,2,4,1,3,2,2,2,2,4,2,4,4,3,2,5,5,5,4,4,4,6,3,2,5,5,4,4,4,6,6,5,2,5,5,6,6,6,6,6,5,5,5,8,8,6,6,6,6,5,5,7,7,8,8,8,6,6,5,5,8,8,8,6,6,6,6],"sol":[1,8,6,0,5,3,7,2,4]},"10":{"regions":[0,0,2,1,1,1,5,5,5,5,2,2,2,1,3,3,3,5,5,5,2,2,2,1,1,3,5,5,5,5,2,2,4,4,4,3,3,5,5,5,4,2,4,4,3,3,3,6,5,5,4,4,4,4,6,6,6,6,5,5,4,4,8,6,6,6,6,5,5,5,8,4,8,6,6,6,6,6,5,7,8,4,8,8,8,6,9,6,7,7,8,8,8,8,8,8,7,7,7,7],"sol":[0,2,4,8,5,7,1,9,6,3]},"11":{"regions":[0,2,2,2,2,3,3,3,3,3,3,2,2,2,2,3,3,3,5,3,3,5,2,2,1,1,1,1,3,5,5,5,5,2,4,4,4,3,3,3,3,5,5,5,2,4,4,8,8,3,6,3,6,6,5,2,4,4,8,8,8,6,6,6,6,5,2,4,4,8,6,6,6,5,5,5,5,2,4,8,8,6,6,6,6,5,7,5,2,4,4,8,6,8,9,6,6,5,5,8,8,4,8,6,8,8,6,8,8,5,8,8,8,8,8,8,8,8,8,10,10],"sol":[0,2,4,8,5,7,1,9,6,3,10]}};
+function load(l){
+ level=Math.max(0,Math.min(sizes.length-1,l));
+ document.body.classList.remove('menu-open');
+ $('#zouku-menu-btn').setAttribute('aria-expanded','false');
+ $('#zouku-menu-btn').textContent='☰ Niveaux et règles';
+ const n=sizes[level];
+ // Grandes grilles vérifiées hors ligne : aucun calcul exponentiel sur mobile.
+ let puzzle=PREMADE_PUZZLES[n];
+ if(!puzzle){let seed=20261110+level*7919;for(let k=0;k<2&&!puzzle;k++){const candidate=createPuzzle(n,seed+k*1777);if(verifyPuzzle(candidate,n))puzzle=candidate;}}
+ if(!puzzle){$('#notice').textContent='Impossible de charger cette grille.';return;}
+ grid=puzzle.regions;solution=puzzle.sol;marks=Array(n*n).fill(0);history=[];won=false;
+ lastTapIndex=-1;lastTapAt=0;start=Date.now();elapsed=0;
+ $('#modal').classList.remove('show');
+ $('#levelName').textContent=`Niveau ${level+1} · ${n} × ${n}`;
+ $('#difficulty').textContent=names[level];drawLevels();render();clearInterval(timer);
+ timer=setInterval(()=>{if(!won){elapsed=Math.floor((Date.now()-start)/1000);$('#clock').textContent=format(elapsed)}},1000);
+ $('#notice').textContent='Un appui : croix · Double-clic rapide : loup · Appui sur une case marquée : effacer. Aucun loup n’est donné.';
+}
 function format(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}
 function drawLevels(){$('#levels').innerHTML=sizes.map((n,i)=>`<button type="button" class="level ${i===level?'active':''}" data-l="${i}"><strong>${names[i]}</strong><small>${n} × ${n} · ${n} loups</small></button>`).join('');document.querySelectorAll('[data-l]').forEach(b=>b.onclick=()=>load(Number(b.dataset.l)))}
 function conflict(idx){if(marks[idx]!==2)return false;let n=sizes[level],row=Math.floor(idx/n),col=idx%n,region=grid[idx];for(let i=0;i<marks.length;i++){if(i===idx||marks[i]!==2)continue;let rr=Math.floor(i/n),cc=i%n;if(rr===row||cc===col||grid[i]===region||(Math.abs(rr-row)<=1&&Math.abs(cc-col)<=1))return true}return false}
@@ -315,7 +331,7 @@ async function showZoukuVictoryGif(l){
   if(won&&level===l){img.removeAttribute('src');img.alt='Bravo ! Défi réussi.';}
  }
 }
-function checkWin(){let n=sizes[level],positions=[];for(let i=0;i<marks.length;i++)if(marks[i]===2)positions.push(i);if(positions.length!==n||positions.some(conflict)||!verifyPuzzle({regions:grid,sol:positions.map(i=>i%n)},n))return;won=true;clearInterval(timer);$('#wintext').textContent=`${n} loups parfaitement placés en ${format(elapsed)}. Le prochain défi t’attend.`;$('#modal').classList.add('show');$('#continue').textContent=level===sizes.length-1?'Tous les défis terminés ✓':'Défi suivant →';showZoukuVictoryGif(level);$('#notice').textContent='Grille résolue !';drawLevels()}
+function checkWin(){let n=sizes[level],positions=[];for(let i=0;i<marks.length;i++)if(marks[i]===2)positions.push(i);if(positions.length!==n||positions.some(conflict)||positions.some(i=>i%n!==solution[Math.floor(i/n)]))return;won=true;clearInterval(timer);$('#wintext').textContent=`${n} loups parfaitement placés en ${format(elapsed)}. Le prochain défi t’attend.`;$('#modal').classList.add('show');$('#continue').textContent=level===sizes.length-1?'Tous les défis terminés ✓':'Défi suivant →';showZoukuVictoryGif(level);$('#notice').textContent='Grille résolue !';drawLevels()}
 $('#undo').onclick=()=>{if(!history.length||won)return;marks=history.pop();render()};$('#reset').onclick=()=>load(level);$('#next').onclick=()=>load(Math.min(level+1,sizes.length-1));$('#continue').onclick=()=>{if(level<sizes.length-1)load(level+1);else showZoukuMenu()};function showZoukuMenu(){$('#modal').classList.remove('show');document.body.classList.add('menu-open');$('#zouku-menu-btn').setAttribute('aria-expanded','true');$('#zouku-menu-btn').textContent='✕ Fermer le menu';document.querySelector('.side').scrollIntoView({behavior:'smooth',block:'start'});}$('#victory-menu').onclick=showZoukuMenu;
 $('#hint').onclick=()=>{if(won)return;let n=sizes[level],idx=-1;for(let row=0;row<n;row++){let i=row*n+solution[row];if(marks[i]!==2){idx=i;break}}if(idx<0)return;setMark(idx,2);let cell=$('#board').children[idx];if(cell)cell.classList.add('hint');$('#notice').textContent=`Indice loup : ligne ${Math.floor(idx/n)+1}, colonne ${idx%n+1}.`};
 $('#hint-cross').onclick=()=>{if(won)return;let n=sizes[level],idx=-1;for(let row=0;row<n&&idx<0;row++){for(let col=0;col<n;col++){let i=row*n+col;if(col!==solution[row]&&marks[i]===0){idx=i;break}}}if(idx<0){$('#notice').textContent='Toutes les cases incorrectes sont déjà marquées.';return}setMark(idx,1);let cell=$('#board').children[idx];if(cell)cell.classList.add('hint');$('#notice').textContent=`Indice croix : cette case est impossible (ligne ${Math.floor(idx/n)+1}, colonne ${idx%n+1}).`};
