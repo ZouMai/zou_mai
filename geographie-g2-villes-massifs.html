@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>G2 · Grandes villes et massifs de France | Zou Maï</title>
+<meta name="description" content="G2 CM2 : associe les huit grandes villes aux points et les six massifs aux zones sur une carte interactive de France.">
+<link rel="stylesheet" href="zoumai-brand.css">
+<style>
+:root{--bg:#0a101a;--panel:#142033;--line:#35485d;--mint:#67ecc1;--gold:#ffe078;--text:#f5f9ff;--soft:#c2d1e1}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 10% 0%,#254b5a,#0a101a 55%);color:var(--text);font:16px/1.45 system-ui,Arial,sans-serif}
+header,main,footer{width:min(1160px,96%);margin:auto}header{padding:20px 10px 8px;display:flex;align-items:center;gap:15px;flex-wrap:wrap}
+header a,.link{color:var(--mint);font-weight:800;text-decoration:none}h1{font-size:clamp(1.75rem,4vw,3rem);margin:.2rem 0}h2{margin:0 0 10px}p{margin:8px 0 16px;color:var(--soft)}
+main{padding:12px 8px 55px}.intro,.panel{background:#101c2be8;border:1px solid var(--line);border-radius:22px;padding:20px;box-shadow:0 12px 30px #0005}.intro{margin-bottom:18px}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}button{font:inherit;cursor:pointer;touch-action:manipulation}
+.tab,.mode,.secondary{border:2px solid #486176;color:#e9f4ff;background:#192b40;border-radius:13px;padding:11px 16px;font-weight:800}
+.tab.active,.mode.active{background:var(--mint);color:#092032;border-color:var(--mint)}button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.game{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(240px,.75fr);gap:20px;align-items:start}
+.mapbox{position:relative;background:linear-gradient(140deg,#c9e5f2,#e9f6fa);border:4px solid #608ea6;border-radius:18px;overflow:hidden}
+.mapbox svg{width:100%;height:auto;display:block;touch-action:manipulation}.mapbox .sea{fill:#cce9f5}.mapbox .land{fill:#f7f3df;stroke:#51797e;stroke-width:2.3;stroke-linejoin:round}.mapbox .neighbor{fill:none;stroke:#a8cad4;stroke-width:1;stroke-dasharray:5 6}
+.land-title{font:800 16px system-ui;letter-spacing:4px;fill:#78959b;pointer-events:none}
+.point{cursor:pointer}.point circle.hit{fill:transparent;stroke:transparent;stroke-width:20}.point circle.core{fill:#186e9a;stroke:white;stroke-width:3;filter:drop-shadow(0 2px 3px #1238)}
+.point text{font:900 15px system-ui;text-anchor:middle;dominant-baseline:middle;fill:white;pointer-events:none}.point.correct circle.core{fill:#12895a}
+.point.wrong circle.core,.region.wrong{fill:#ed6d5b!important}.point.reveal circle.core,.region.reveal{stroke:#ffb800;stroke-width:5}
+.region{fill:#d6a864;fill-opacity:.48;stroke:#9a6631;stroke-width:2.5;stroke-linejoin:round;cursor:pointer;transition:fill .15s}
+.region:hover,.region:focus{fill:#ffd061;fill-opacity:.85;outline:none}.region.correct{fill:#21b985;fill-opacity:.85;stroke:#006741}.region.wrong{fill-opacity:.82}.region.reveal{fill:#ffe477;fill-opacity:.85}
+.legend{font:700 11px system-ui;fill:#526e7a}.label-on-map{font:800 12px system-ui;fill:#163f4e;stroke:#fff;stroke-width:3;paint-order:stroke;pointer-events:none}
+.sidebar{background:#1a2b3e;border:1px solid #3e5b71;border-radius:18px;padding:16px}.sidebar h2{font-size:1.15rem}
+.names{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.name{padding:11px 6px;border:2px solid #5c8096;border-radius:11px;background:#233a50;color:#fff;font-weight:800;min-height:48px}
+.name.active{border-color:var(--gold);background:#795d19;color:#fff6c7;box-shadow:0 0 0 2px #ffe07855}
+.name.done{border-color:#2ac597;background:#174c44;color:#bbffe9;cursor:default}.name:disabled{opacity:1}
+.progress{display:flex;justify-content:space-between;gap:8px;align-items:center;font-weight:800;margin:14px 0;color:var(--mint)}
+#feedback{min-height:58px;background:#0d1a29;border-left:4px solid var(--mint);padding:12px;border-radius:8px;color:white;font-weight:750}
+#feedback.error{border-color:#ff977c}#feedback.success{border-color:#53e7ab}
+.finish{margin-top:12px;padding:15px;background:#133e36;border:2px solid var(--mint);border-radius:14px;text-align:center}
+.finish strong{display:block;font-size:1.7rem;color:var(--gold)}
+.small{font-size:.82rem;color:var(--soft)}.hint{margin-top:13px}.hidden{display:none!important}
+footer{padding:20px 10px;color:#b5c6d5}
+@media(max-width:750px){.game{grid-template-columns:1fr}.sidebar{order:-1}.names{grid-template-columns:repeat(4,minmax(0,1fr))}.name{font-size:.78rem}.intro,.panel{padding:13px}.controls{gap:6px}.tab,.mode{padding:10px;font-size:.87rem}}
+@media(max-width:440px){.names{grid-template-columns:repeat(2,minmax(0,1fr))}.name{font-size:.95rem}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head>
+<body><header><a href="ressources.html#ge">← Géographie</a><span style="color:#86a1b2">ZOU MAÏ / CM2 / G2</span></header>
+<main><section class="intro"><h1>🧭 G2 · Les villes et les massifs français</h1><p>Choisis un nom, puis touche le point ou la zone correspondante sur la carte de France. Les repères restent visibles : à toi de les reconnaître !</p>
+<div class="controls" role="group" aria-label="Choisir le thème"><button class="tab active" data-theme="cities">🏙️ Les 8 villes</button><button class="tab" data-theme="mountains">⛰️ Les 6 massifs</button></div>
+<div class="controls" role="group" aria-label="Choisir le mode"><button class="mode active" data-mode="learn">J’apprends</button><button class="mode" data-mode="practice">Je m’entraîne</button><button class="mode" data-mode="challenge">Défi</button></div>
+</section>
+<section class="panel game"><div class="mapbox">
+<svg id="map" viewBox="0 0 620 660" role="img" aria-label="Carte schématique de la France métropolitaine avec les repères des villes ou des massifs">
+<rect width="620" height="660" class="sea"/>
+<text x="40" y="170" class="land-title" transform="rotate(-90 40 170)">OCÉAN ATLANTIQUE</text>
+<text x="400" y="633" class="land-title">MÉDITERRANÉE</text>
+<g id="geography" transform="translate(44 17)">
+<!-- Tracé simplifié de la France métropolitaine, coordonnées adaptées pour l'exercice CM2. -->
+<path class="land" d="M138 75 L177 69 206 53 228 36 249 30 265 44 296 54 340 52 385 76 408 63 439 80 455 99 468 125 495 142 511 166 500 186 481 202 474 227 489 249 473 270 488 300 473 324 485 347 461 374 468 404 450 429 469 453 448 472 424 483 401 515 364 516 330 509 302 522 265 514 244 520 215 502 183 505 163 497 144 486 136 463 119 433 107 405 82 374 85 349 56 341 36 321 38 305 18 298 31 277 18 263 37 247 24 229 45 222 54 204 79 198 65 184 79 171 56 149 73 135 90 111 116 102 Z"/>
+<text x="185" y="290" class="land-title" style="font-size:22px;letter-spacing:7px">FRANCE</text>
+<g id="regionLayer"></g><g id="pointLayer"></g><g id="mapLabels"></g>
+</g></svg></div>
+<div class="sidebar"><h2 id="taskTitle">Associe les villes aux points</h2><p id="instruction">Sélectionne une ville ci-dessous, puis son point numéroté sur la carte.</p>
+<div class="progress"><span id="progress">0 / 8</span><span id="score">0 point</span></div><div class="names" id="names"></div>
+<p id="feedback" role="status" aria-live="polite">Choisis un nom pour commencer.</p>
+<div id="finish" class="finish hidden" aria-live="polite"></div>
+<div class="controls hint"><button id="hint" class="secondary">💡 Indice</button><button id="reset" class="secondary">↻ Recommencer</button></div>
+<p class="small" id="modeInfo">Mode J’apprends : une bonne réponse affiche son nom directement sur la carte.</p>
+</div></section></main>
+<footer>G2 · Géographie · Zou Maï | Repères de la France métropolitaine</footer>
+<script>
+'use strict';
+const cities=[
+ {id:'paris',name:'Paris',x:270,y:134,help:'Au nord de la France, dans le Bassin parisien.'},
+ {id:'lille',name:'Lille',x:276,y:58,help:'Tout au nord, près de la Belgique.'},
+ {id:'strasbourg',name:'Strasbourg',x:451,y:171,help:'À l’est, près de la frontière allemande.'},
+ {id:'lyon',name:'Lyon',x:353,y:357,help:'Dans le centre-est, près du Rhône.'},
+ {id:'marseille',name:'Marseille',x:376,y:500,help:'Au sud-est, sur la Méditerranée.'},
+ {id:'toulouse',name:'Toulouse',x:225,y:455,help:'Dans le sud-ouest, au nord des Pyrénées.'},
+ {id:'bordeaux',name:'Bordeaux',x:131,y:365,help:'Dans l’ouest, près de l’océan Atlantique.'},
+ {id:'nantes',name:'Nantes',x:103,y:233,help:'À l’ouest, près de l’embouchure de la Loire.'}
+];
+const mountains=[
+ {id:'vosges',name:'Les Vosges',help:'Dans le nord-est, à l’ouest du Rhin.',poly:'404,159 427,151 443,176 435,207 416,217 401,192'},
+ {id:'jura',name:'Le Jura',help:'Dans l’est, près de la Suisse, au nord des Alpes.',poly:'433,268 459,269 473,297 466,329 447,345 433,318'},
+ {id:'alpes',name:'Les Alpes',help:'Dans le sud-est, à la frontière italienne.',poly:'452,345 475,366 465,395 473,422 455,446 444,469 410,472 398,443 414,417 415,386 434,371'},
+ {id:'central',name:'Le Massif central',help:'Au centre-sud de la France.',poly:'264,319 303,316 332,341 365,352 373,389 347,417 313,420 281,399 251,375'},
+ {id:'cevennes',name:'Les Cévennes',help:'Au sud-est du Massif central, vers la Lozère et le Gard.',poly:'340,407 359,403 375,417 374,443 360,455 343,447 334,427'},
+ {id:'pyrenees',name:'Les Pyrénées',help:'Le long de la frontière avec l’Espagne.',poly:'177,476 213,481 247,488 279,499 311,506 317,522 281,523 246,515 208,512 182,500'}
+];
+const NS='http://www.w3.org/2000/svg';
+const el=id=>document.getElementById(id);
+let theme='cities',mode='learn',selected=null,done=new Set(),attempts={},mistakes=0,hints=0,shownHint=false;
+const items=()=>theme==='cities'?cities:mountains;
+function svg(tag,attrs,parent){const node=document.createElementNS(NS,tag);Object.entries(attrs||{}).forEach(([k,v])=>node.setAttribute(k,String(v)));parent.append(node);return node}
+function shuffle(array){const a=[...array];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+let order=[];
+function reset(){
+ selected=null;done=new Set();attempts={};mistakes=0;hints=0;shownHint=false;order=mode==='challenge'?shuffle(items()):items();
+ document.querySelectorAll('.tab').forEach(b=>{b.classList.toggle('active',b.dataset.theme===theme);b.setAttribute('aria-pressed',b.dataset.theme===theme)});
+ document.querySelectorAll('.mode').forEach(b=>{b.classList.toggle('active',b.dataset.mode===mode);b.setAttribute('aria-pressed',b.dataset.mode===mode)});
+ el('taskTitle').textContent=theme==='cities'?'Associe les villes aux points':'Associe les massifs aux zones';
+ el('instruction').textContent=theme==='cities'?'Choisis une ville, puis le bon point numéroté.':'Choisis un massif, puis sa zone colorée sur la carte.';
+ el('modeInfo').textContent={learn:'J’apprends : les repères trouvés restent nommés sur la carte.',practice:'Je m’entraîne : réessaie après une erreur. Un indice est disponible.',challenge:'Défi : une seule tentative par réponse, aucun indice. Trouve tous les repères !'}[mode];
+ el('hint').hidden=mode==='challenge';el('finish').classList.add('hidden');el('finish').textContent='';
+ renderMap();renderNames();updateCounters();feedback('Choisis un nom pour commencer.');
+}
+function renderMap(){
+ el('pointLayer').replaceChildren();el('regionLayer').replaceChildren();el('mapLabels').replaceChildren();
+ if(theme==='cities'){
+  const labelOrder=cities.map((c,i)=>({...c,number:i+1}));
+  labelOrder.forEach(item=>{
+   const g=svg('g',{class:'point',tabindex:0,role:'button','aria-label':'Point '+item.number,'data-id':item.id},el('pointLayer'));
+   svg('circle',{class:'hit',cx:item.x,cy:item.y,r:18},g);
+   svg('circle',{class:'core',cx:item.x,cy:item.y,r:13},g);
+   const t=svg('text',{x:item.x,y:item.y+1},g);t.textContent=item.number;
+   g.addEventListener('click',()=>answer(item.id));
+   g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();answer(item.id)}});
+  });
+ }else{
+  mountains.forEach(item=>{
+   const polygon=svg('polygon',{points:item.poly,class:'region',tabindex:0,role:'button','aria-label':'Zone montagneuse à identifier','data-id':item.id},el('regionLayer'));
+   polygon.addEventListener('click',()=>answer(item.id));
+   polygon.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();answer(item.id)}});
+  });
+ }
+}
+function renderNames(){
+ el('names').replaceChildren();
+ order.forEach(item=>{
+  const b=document.createElement('button');b.className='name'+(done.has(item.id)?' done':'')+(selected===item.id?' active':'');
+  b.textContent=item.name;b.disabled=done.has(item.id);b.setAttribute('aria-pressed',String(selected===item.id));b.addEventListener('click',()=>select(item.id));el('names').append(b);
+ });
+}
+function select(id){if(done.has(id))return;selected=id;shownHint=false;renderNames();feedback('Cherche '+items().find(i=>i.id===id).name+' sur la carte.')}
+function feedback(message,type=''){el('feedback').textContent=message;el('feedback').className=type}
+function mark(id,klass){const target=document.querySelector('[data-id="'+id+'"]');if(target)target.classList.add(klass)}
+function showLabel(item){
+ const x=theme==='cities'?item.x+18:Number(item.poly.split(' ')[0].split(',')[0]);
+ const y=theme==='cities'?item.y-17:Number(item.poly.split(' ')[0].split(',')[1])-8;
+ const txt=svg('text',{x,y,class:'label-on-map'},el('mapLabels'));txt.textContent=item.name;
+}
+function answer(id){
+ if(!selected){feedback('Sélectionne d’abord le nom d’une ville ou d’un massif.','error');return}
+ if(done.has(id))return;
+ const item=items().find(v=>v.id===selected);
+ if(id===selected){
+  done.add(id);mark(id,'correct');
+  if(mode==='learn'||mode==='practice')showLabel(item);
+  feedback('Bien joué ! '+item.name+' est au bon endroit.','success');selected=null;shownHint=false;
+  renderNames();updateCounters();
+  if(done.size===items().length)endGame();
+ }else{
+  mistakes++;attempts[selected]=(attempts[selected]||0)+1;mark(id,'wrong');setTimeout(()=>{document.querySelector('[data-id="'+id+'"]')?.classList.remove('wrong')},650);
+  if(mode==='challenge'){
+   feedback('Pas tout à fait. La bonne réponse était '+item.name+'.','error');done.add(selected);mark(selected,'reveal');selected=null;renderNames();updateCounters();
+   if(done.size===items().length)endGame();
+  }else feedback('Ce n’est pas le bon repère. Réessaie !'+(attempts[selected]>=2?' Tu peux demander un indice.':''),'error');
+ }
+}
+function updateCounters(){
+ el('progress').textContent=done.size+' / '+items().length;
+ const correct=done.size-(mode==='challenge'?mistakes:0);
+ const score=mode==='challenge'?Math.max(0,correct*100/items().length):Math.max(0,(done.size*100-items().length*Math.min(5,mistakes*3+hints*2))/items().length);
+ el('score').textContent=Math.round(score)+' / 100';
+}
+function endGame(){
+ const correct=mode==='challenge'?done.size-mistakes:done.size;
+ const score=mode==='challenge'?Math.round(correct*100/items().length):Math.max(0,Math.round(100-mistakes*3-hints*2));
+ const box=el('finish');box.classList.remove('hidden');box.replaceChildren();
+ const heading=document.createElement('strong');heading.textContent=score+' / 100';
+ const note=document.createElement('div');note.textContent=mode==='challenge'?correct+' bonnes réponses sur '+items().length:items().length+' repères placés · '+mistakes+' erreur(s) · '+hints+' indice(s)';
+ const msg=document.createElement('p');msg.textContent=score>=90?'Excellent repérage !':score>=60?'Bien joué, continue à t’entraîner !':'Un nouveau tour pour mieux mémoriser les repères !';
+ box.append(heading,note,msg);feedback('Partie terminée ! Tu peux recommencer ou changer de défi.','success');
+}
+el('hint').addEventListener('click',()=>{
+ if(!selected){feedback('Choisis d’abord un nom.','error');return}
+ if(mode==='challenge')return;
+ const item=items().find(x=>x.id===selected);if(!shownHint){hints++;shownHint=true}
+ feedback('Indice : '+item.help);updateCounters();
+});
+el('reset').addEventListener('click',reset);
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{theme=b.dataset.theme;reset()}));
+document.querySelectorAll('.mode').forEach(b=>b.addEventListener('click',()=>{mode=b.dataset.mode;reset()}));
+reset();
+</script><script src="site-tracking.js" defer></script></body></html>
