@@ -362,7 +362,7 @@ async function showZoukuVictoryGif(l){
   if(won&&level===l){img.removeAttribute('src');img.alt='Bravo ! Défi réussi.';}
  }
 }
-function checkWin(){let n=sizes[level],positions=[];for(let i=0;i<marks.length;i++)if(marks[i]===2)positions.push(i);if(positions.length!==n||positions.some(conflict)||positions.some(i=>i%n!==solution[Math.floor(i/n)]))return;won=true;clearInterval(timer);zoukuPlay('victory');$('#wintext').textContent=`${n} loups parfaitement placés en ${format(elapsed)}. Le prochain défi t’attend.`;$('#modal').classList.add('show');$('#continue').textContent=level===sizes.length-1?'Tous les défis terminés ✓':'Défi suivant →';showZoukuVictoryGif(level);$('#notice').textContent='Grille résolue !';drawLevels()}
+function checkWin(){let n=sizes[level],positions=[];for(let i=0;i<marks.length;i++)if(marks[i]===2)positions.push(i);if(positions.length!==n||positions.some(conflict)||positions.some(i=>i%n!==solution[Math.floor(i/n)]))return;won=true;clearInterval(timer);zoukuPlay('victory');$('#wintext').textContent=`${n} loups parfaitement placés en ${format(elapsed)}. Le prochain défi t’attend.`;$('#modal').classList.add('show');$('#continue').textContent=level===sizes.length-1?'Tous les défis terminés ✓':'Défi suivant →';zoukuCelebrateThenGif(level);$('#notice').textContent='Grille résolue !';drawLevels()}
 $('#zouku-sound').onclick=()=>{zoukuSoundOn=!zoukuSoundOn;const b=$('#zouku-sound');b.textContent=zoukuSoundOn?'🔊 Sons':'🔇 Muet';b.setAttribute('aria-pressed',String(zoukuSoundOn));if(zoukuSoundOn)zoukuPlay('cross')};
 $('#undo').onclick=()=>{if(!history.length||won)return;marks=history.pop();render()};$('#reset').onclick=()=>load(level);$('#next').onclick=()=>load(Math.min(level+1,sizes.length-1));$('#continue').onclick=()=>{if(level<sizes.length-1)load(level+1);else showZoukuMenu()};function showZoukuMenu(){$('#modal').classList.remove('show');document.body.classList.add('menu-open');$('#zouku-menu-btn').setAttribute('aria-expanded','true');$('#zouku-menu-btn').textContent='✕ Fermer le menu';document.querySelector('.side').scrollIntoView({behavior:'smooth',block:'start'});}$('#victory-menu').onclick=showZoukuMenu;
 $('#hint').onclick=()=>{if(won)return;let n=sizes[level],idx=-1;for(let row=0;row<n;row++){let i=row*n+solution[row];if(marks[i]!==2){idx=i;break}}if(idx<0)return;setMark(idx,2);let cell=$('#board').children[idx];if(cell)cell.classList.add('hint');$('#notice').textContent=`Indice loup : ligne ${Math.floor(idx/n)+1}, colonne ${idx%n+1}.`};
@@ -477,4 +477,32 @@ const observer=new MutationObserver(()=>{
 });
 observer.observe(board,{childList:true});
 })();
+</script><style id="zouku-fireworks-win">
+#zouku-fireworks{position:absolute;inset:0;z-index:10;overflow:hidden;pointer-events:none;border-radius:26px;background:radial-gradient(circle at center,#153d80dd,#071a39ee);display:flex;align-items:center;justify-content:center;flex-direction:column}
+#zouku-fireworks .win-banner{font-weight:1000;font-size:clamp(24px,6vw,44px);color:white;text-align:center;text-shadow:0 3px #0d3b7c,0 0 24px #f9cf24;animation:zoukuWinPop .7s ease-out both}
+#zouku-fireworks .fire-spark{position:absolute;left:var(--x);top:var(--y);width:8px;height:8px;border-radius:50%;background:var(--c);box-shadow:0 0 10px var(--c);animation:zoukuSpark .85s ease-out var(--delay) both}
+@keyframes zoukuSpark{0%{opacity:0;transform:translate(0,0) scale(.2)}18%{opacity:1}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.35)}}
+@keyframes zoukuWinPop{0%{opacity:0;transform:scale(.3)}60%{transform:scale(1.16)}100%{opacity:1;transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){#zouku-fireworks .fire-spark{display:none}#zouku-fireworks .win-banner{animation:none}}
+</style><script id="zouku-fireworks-win-js">
+function zoukuCelebrateThenGif(l){
+ const modal=document.querySelector('#modal'),dialog=modal.querySelector('.dialog');
+ dialog.style.position='relative';
+ const prior=dialog.querySelector('#zouku-fireworks');if(prior)prior.remove();
+ const layer=document.createElement('div');layer.id='zouku-fireworks';layer.setAttribute('role','status');
+ layer.innerHTML='<div class="win-banner">🎉 VOUS AVEZ GAGNÉ ! 🎉</div>';
+ const colors=['#ffe15d','#25baff','#ff5c8a','#8efc6e','#ffffff'];
+ for(let burst=0;burst<5;burst++){
+  const cx=18+Math.random()*64,cy=15+Math.random()*60;
+  for(let j=0;j<15;j++){
+   const angle=j*Math.PI*2/15,dist=42+Math.random()*70;
+   const p=document.createElement('span');p.className='fire-spark';
+   p.style.setProperty('--x',cx+'%');p.style.setProperty('--y',cy+'%');
+   p.style.setProperty('--dx',Math.cos(angle)*dist+'px');p.style.setProperty('--dy',Math.sin(angle)*dist+'px');
+   p.style.setProperty('--c',colors[(j+burst)%colors.length]);p.style.setProperty('--delay',burst*0.16+'s');layer.appendChild(p);
+  }
+ }
+ dialog.appendChild(layer);
+ setTimeout(()=>{layer.remove();if(modal.classList.contains('show')&&won&&level===l)showZoukuVictoryGif(l)},1600);
+}
 </script></body></html>
