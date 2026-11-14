@@ -405,4 +405,44 @@ document.getElementById('reset').addEventListener('click',()=>{remaining=3;previ
 document.getElementById('next').addEventListener('click',()=>{remaining=3;previous.clear();update()});
 update();
 })();
+</script><style id="zouku-sprite-animation-v2">
+/* Six-frame CSS sprite animation: independent reveal debris and head motion. */
+.board .cell.cat{overflow:visible!important}
+.board .cell.cat img.wolf-face.zouku-discovered{animation:zoukuWolfSpriteMove 1250ms steps(1,end) both!important;position:relative;z-index:2}
+@keyframes zoukuWolfSpriteMove{
+0%{opacity:0;transform:scale(.25) rotate(-12deg) translateX(-15%)}
+15%{opacity:.5;transform:scale(.65) rotate(-7deg) translateX(-8%)}
+30%{opacity:1;transform:scale(1.17) rotate(0)}
+47%{transform:scale(1.04) rotate(-12deg) translateX(-7%)}
+64%{transform:scale(1.05) rotate(12deg) translateX(7%)}
+82%{transform:scale(1.02) rotate(0)}
+100%{transform:scale(1) rotate(0)}
+}
+.board .cell.zouku-breaking::after{display:none!important}
+.board .cell .zouku-crack-sprite{position:absolute;inset:-8%;width:116%;height:116%;z-index:3;pointer-events:none;animation:zoukuCrackSprite 850ms steps(1,end) forwards}
+@keyframes zoukuCrackSprite{
+0%,14%{opacity:0;transform:scale(.85)}
+15%,28%{opacity:1;transform:scale(.96)}
+29%,42%{opacity:1;transform:scale(1)}
+43%,57%{opacity:1;transform:scale(1.08)}
+58%,75%{opacity:.9;transform:scale(1.16) rotate(-5deg)}
+76%,100%{opacity:0;transform:scale(1.4) rotate(12deg)}
+}
+.board .cell .zouku-crack-sprite path{stroke:#172a40;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;fill:none;filter:drop-shadow(0 1px 1px #fff)}
+.board .cell .zouku-crack-sprite .shard{fill:#a5e7ff;stroke:#182f4b;stroke-width:1.5}
+#zouku-paws{background:#102c4b;border:1px solid #35baff;border-radius:40px;padding:5px 15px;box-shadow:0 0 14px #24b8ff50;width:max-content;max-width:100%}
+.zouku-paw{font-size:26px}
+@media(prefers-reduced-motion:reduce){.board .cell.cat img.wolf-face.zouku-discovered,.board .cell .zouku-crack-sprite{animation:none!important}.board .cell .zouku-crack-sprite{display:none}}
+</style><script id="zouku-sprite-animation-v2-js">
+(()=>{
+ const board=document.getElementById('board');
+ const crack='<svg class="zouku-crack-sprite" viewBox="0 0 100 100" aria-hidden="true"><path d="M48 4 54 28 38 42 56 56 45 75 51 97 M54 28 77 19 83 8 M38 42 15 36 6 20 M56 56 82 52 95 39 M45 75 22 87 13 97"/><path class="shard" d="M2 12 18 3 23 22 8 28Z M77 2 94 14 79 28Z M79 75 99 68 91 95Z M8 67 28 79 7 94Z"/></svg>';
+ const watcher=new MutationObserver(()=>{
+  board.querySelectorAll('.cell.zouku-breaking:not([data-sprite-added])').forEach(cell=>{
+   cell.dataset.spriteAdded='1';cell.insertAdjacentHTML('beforeend',crack);
+   setTimeout(()=>cell.querySelector('.zouku-crack-sprite')?.remove(),950);
+  });
+ });
+ watcher.observe(board,{subtree:true,childList:true,attributes:true,attributeFilter:['class']});
+})();
 </script></body></html>
