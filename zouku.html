@@ -445,4 +445,36 @@ update();
  });
  watcher.observe(board,{subtree:true,childList:true,attributes:true,attributeFilter:['class']});
 })();
+</script><style id="zouku-real-sprites">
+.board .cell.cat img.wolf-face{display:none!important}
+.board .cell.cat .zouku-real-head{display:block;position:absolute;inset:0;width:100%;height:100%;background-image:url('assets/zouku-wolf-head-sprites.svg');background-size:800% 100%;background-position:0 0;background-repeat:no-repeat;z-index:2;pointer-events:none}
+.board .cell.cat .zouku-real-head.zouku-head-animate{animation:zoukuSpriteEyes 1.4s steps(1,end) 1 both}
+@keyframes zoukuSpriteEyes{0%,100%{background-position:0 0}13%{background-position:14.2857% 0}26%{background-position:28.5714% 0}39%{background-position:42.8571% 0}52%{background-position:57.1428% 0}65%{background-position:71.4285% 0}78%{background-position:85.7142% 0}90%{background-position:100% 0}}
+.board .cell .zouku-reveal-frames{position:absolute;inset:0;width:100%;height:100%;background:url('assets/zouku-reveal-sprites.svg') left center / 600% 100% no-repeat;z-index:4;pointer-events:none;animation:zoukuSpriteReveal .72s steps(1,end) forwards}
+@keyframes zoukuSpriteReveal{0%{background-position:0 0;opacity:1}17%{background-position:20% 0}34%{background-position:40% 0}51%{background-position:60% 0}68%{background-position:80% 0}85%{background-position:100% 0;opacity:1}100%{background-position:100% 0;opacity:0}}
+@media(prefers-reduced-motion:reduce){.board .cell.cat .zouku-real-head.zouku-head-animate{animation:none}.board .cell .zouku-reveal-frames{display:none}}
+</style><script id="zouku-real-sprites-js">
+(()=>{
+const board=document.getElementById('board');
+let seen=new Set(),lastLevel=document.getElementById('levelName')?.textContent;
+const observer=new MutationObserver(()=>{
+ const name=document.getElementById('levelName')?.textContent;
+ if(name!==lastLevel){seen.clear();lastLevel=name}
+ const now=new Set();
+ [...board.children].forEach((cell,i)=>{
+ if(!cell.classList.contains('cat'))return;
+ now.add(i);
+ if(cell.querySelector('.zouku-real-head'))return;
+ const head=document.createElement('span');head.className='zouku-real-head';head.setAttribute('aria-hidden','true');
+ cell.appendChild(head);
+ if(!seen.has(i)){
+ head.classList.add('zouku-head-animate');
+ const crack=document.createElement('span');crack.className='zouku-reveal-frames';crack.setAttribute('aria-hidden','true');cell.appendChild(crack);
+ setTimeout(()=>crack.remove(),850);
+ }
+ });
+ seen=now;
+});
+observer.observe(board,{childList:true});
+})();
 </script></body></html>
