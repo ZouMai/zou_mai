@@ -368,4 +368,41 @@ $('#undo').onclick=()=>{if(!history.length||won)return;marks=history.pop();rende
 $('#hint').onclick=()=>{if(won)return;let n=sizes[level],idx=-1;for(let row=0;row<n;row++){let i=row*n+solution[row];if(marks[i]!==2){idx=i;break}}if(idx<0)return;setMark(idx,2);let cell=$('#board').children[idx];if(cell)cell.classList.add('hint');$('#notice').textContent=`Indice loup : ligne ${Math.floor(idx/n)+1}, colonne ${idx%n+1}.`};
 $('#hint-cross').onclick=()=>{if(won)return;let n=sizes[level],idx=-1;for(let row=0;row<n&&idx<0;row++){for(let col=0;col<n;col++){let i=row*n+col;if(col!==solution[row]&&marks[i]===0){idx=i;break}}}if(idx<0){$('#notice').textContent='Toutes les cases incorrectes sont déjà marquées.';return}setMark(idx,1);let cell=$('#board').children[idx];if(cell)cell.classList.add('hint');$('#notice').textContent=`Indice croix : cette case est impossible (ligne ${Math.floor(idx/n)+1}, colonne ${idx%n+1}).`};
 load(0);
+</script><style id="zouku-wolf-premium-2026">
+#zouku-paws{display:flex;gap:9px;align-items:center;justify-content:center;margin:5px auto 9px}
+.zouku-paw{font-size:29px;line-height:1;filter:drop-shadow(0 0 5px #39bbff);transition:opacity .2s,filter .2s}
+.zouku-paw.used{opacity:.22;filter:grayscale(1)}
+.board .cell.cross .xmain{stroke-width:17!important;stroke:#18243c!important}
+.board .cell.cross .xshadow{stroke-width:23!important}
+.board .cell.cross .xshine{stroke-width:3!important}
+.board .cell.cat img.wolf-face.zouku-discovered{animation:zoukuHeadReveal 1100ms ease-out both!important;transform-origin:50% 70%}
+.board .cell.zouku-breaking::after{content:"";position:absolute;inset:4%;pointer-events:none;z-index:4;background:linear-gradient(135deg,transparent 43%,#13263b 44%,#13263b 47%,transparent 48%),linear-gradient(43deg,transparent 48%,#13263b 49%,#13263b 52%,transparent 53%);animation:zoukuCrack .65s ease-out forwards}
+@keyframes zoukuCrack{0%{opacity:0;transform:scale(.2)}25%{opacity:1;transform:scale(1)}70%{opacity:1;clip-path:polygon(0 0,100% 0,100% 100%,0 100%)}100%{opacity:0;transform:scale(1.4) rotate(5deg);clip-path:polygon(0 0,40% 0,35% 35%,0 50%)}}
+@keyframes zoukuHeadReveal{0%{opacity:.1;transform:scale(.25) rotate(-9deg)}22%{opacity:1;transform:scale(1.16) rotate(0)}42%{transform:scale(.98) rotate(-9deg)}63%{transform:scale(1.05) rotate(9deg)}80%{transform:scale(.98) rotate(-4deg)}100%{transform:scale(1) rotate(0)}}
+@media(prefers-reduced-motion:reduce){.board .cell.cat img.wolf-face.zouku-discovered,.board .cell.zouku-breaking::after{animation:none!important}}
+</style><script id="zouku-wolf-premium-script">
+(()=>{'use strict';
+const board=document.getElementById('board'),hint=document.getElementById('hint'),cross=document.getElementById('hint-cross');
+const paws=document.createElement('div');paws.id='zouku-paws';paws.setAttribute('aria-label','Trois indices par partie');paws.innerHTML='<span class="zouku-paw">🐾</span><span class="zouku-paw">🐾</span><span class="zouku-paw">🐾</span>';
+board.before(paws);
+let remaining=3,oldLevel='',previous=new Set();
+const update=()=>{[...paws.children].forEach((el,i)=>el.classList.toggle('used',i>=remaining));hint.title=cross.title=remaining+' indices restants sur 3';hint.disabled=cross.disabled=remaining<=0};
+const observer=new MutationObserver(()=>{
+ const name=document.getElementById('levelName')?.textContent||'';
+ if(name!==oldLevel){oldLevel=name;remaining=3;previous.clear();update()}
+ const next=new Set();
+ [...board.children].forEach((cell,i)=>{if(cell.classList.contains('cat')){next.add(i);if(!previous.has(i)){cell.classList.add('zouku-breaking');const img=cell.querySelector('img.wolf-face');if(img){img.classList.remove('wolf-pop');img.classList.add('zouku-discovered')}setTimeout(()=>cell.classList.remove('zouku-breaking'),800)}}});
+ previous=next;
+});
+observer.observe(board,{childList:true});
+const notice=document.getElementById('notice');
+[hint,cross].forEach(button=>button.addEventListener('click',e=>{
+ if(remaining<=0){e.preventDefault();e.stopImmediatePropagation();notice.textContent='Les trois indices ont été utilisés pour cette partie.';return}
+ const before=[...board.children].map(x=>x.className).join('|');
+ setTimeout(()=>{const after=[...board.children].map(x=>x.className).join('|');if(after!==before){remaining--;update()}},0);
+},true));
+document.getElementById('reset').addEventListener('click',()=>{remaining=3;previous.clear();update()});
+document.getElementById('next').addEventListener('click',()=>{remaining=3;previous.clear();update()});
+update();
+})();
 </script></body></html>
