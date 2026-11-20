@@ -120,7 +120,7 @@ async function playClip(key) {
   unlockAudio();
   stop();
   audioNotice();
-  const clip = window.CODE_AUDIO?.[key];
+  const clip = window.CODE_GAME_AUDIO?.[key] || window.CODE_AUDIO?.[key];
   if (!clip || !audioContext) return false;
   const request = lastAudioRequest;
   try {
@@ -254,6 +254,8 @@ function renderHome() {
   const fewer = document.querySelector("#fewer");
   fewer.checked = tinyChoice;
   fewer.onchange = () => { tinyChoice = fewer.checked; };
+  const play = actionButton("🐾 Le jeu des syllabes", () => openSyllableGame(), "entry syllable-entry");
+  document.querySelector(".entries").append(play);
   renderLibrary();
 }
 function renderLibrary() {
@@ -266,6 +268,7 @@ function renderLibrary() {
   if (tab === "work") {
     const choices = document.createElement("div");
     choices.className = "grid";
+    actionButton("🐾 Le jeu des syllabes", () => openSyllableGame(), "primary", choices);
     for (const workshop of workshops) actionButton(workshop.title, () => openWorkshop(workshop), "", choices);
     library.append(choices);
     return;
@@ -335,6 +338,7 @@ function spokenWriting(lesson) {
 }
 function currentPrompt() {
   if (stage === 1 && isVisual()) return "Touche les mêmes lettres que dans le modèle.";
+  if (stage === 2) return "Touche un bloc pour écouter son son. Puis assemble les blocs pour entendre la syllabe.";
   return playCopy[steps[stage]];
 }
 function isVisual() {
@@ -383,7 +387,7 @@ function renderLesson() {
   if ([1,4,5].includes(stage)) next.disabled = true;
   if (stage === 0) discover(task);
   if (stage === 1) isVisual() ? visual(task, next) : matchSound(task, next);
-  if (stage === 2) fusion(task);
+  if (stage === 2) fusion(task, next);
   if (stage === 3) reading(task);
   if (stage === 4) writing(task, next);
   if (stage === 5) visual(task, next);
@@ -516,41 +520,166 @@ function units(word) {
   return result;
 }
 
-function splitSyllable(syllable) {
-  if (["c devant e, i","g devant e, i","h muet","ill"].includes(current.graph)) {
-    const boundary = current.graph === "ill" ? syllable.indexOf("ill") : 0;
-    if (current.graph === "ill" && boundary === 0) return [syllable];
-    if (current.graph === "ill" && boundary > 0) return [syllable.slice(0,boundary), syllable.slice(boundary)];
-  }
-  const start = syllable.indexOf(current.glyph);
-  if (start > 0) return [syllable.slice(0,start), syllable.slice(start)];
-  if (start === 0 && syllable !== current.glyph) return [current.glyph, syllable.slice(current.glyph.length)];
-  return [syllable];
-}
-function fusion(task) {
-  const display = actionButton("", () => {
-    display.classList.add("join");
-    saySyllable(current.syllables[index], () => say(current.syllables[index]));
-  }, "focus fusion fusion-card", task);
-  display.setAttribute("aria-label", "Écouter la syllabe assemblée");
+function fusion(task, next) {
+  const pack = current.syllables;
   let index = 0;
+  const board = document.createElement("div");
+  board.className = "sound-board";
+  task.append(board);
+  const track = document.createElement("div");
+  track.className = "sound-track";
+  board.append(track);
+  const controls = document.createElement("div");
+  controls.className = "choices sound-controls";
+  board.append(controls);
+  const label = document.createElement("div");
+  label.className = "sound-example";
+  label.setAttribute("aria-live", "polite");
+  board.append(label);
+  next.disabled = true;
   function update() {
-    display.replaceChildren();
-    display.classList.remove("join");
-    for (const part of splitSyllable(current.syllables[index])) {
-      const span = document.createElement("span");
-      span.textContent = part;
-      display.append(span);
+    track.replaceChildren();
+    track.classList.remove("join");
+    label.textContent = "";
+    for (const [position, block] of soundBlocks(pack[index], current.graph).entries()) {
+      const syllable = pack[index];
+      const tile = actionButton(block.token, async () => {
+        track.querySelectorAll(".sound-block").forEach(item => item.classList.remove("sounding"));
+        tile.classList.add("sounding");
+        if (block.sound && !(await playClip("@son:" + block.sound))) saySyllable(syllable, () => say(syllable));
+      }, "sound-block", track);
+      tile.style.setProperty("--piece", position % 3);
+      if (!block.sound) tile.classList.add("quiet");
+      tile.setAttribute("aria-label", block.sound ? "Écouter le bloc " + block.token : block.token + " est muet");
+      tile.disabled = !block.sound;
     }
   }
+  actionButton("▶ Assembler et écouter", () => {
+    track.querySelectorAll(".sounding").forEach(tile => tile.classList.remove("sounding"));
+    track.classList.add("join");
+    label.textContent = pack[index];
+    saySyllable(pack[index], () => say(pack[index]));
+    next.disabled = false;
+    next.classList.add("ready");
+  }, "primary", controls);
+  actionButton("↻ Autre syllabe", () => {
+    stop();
+    index = (index + 1) % pack.length;
+    update();
+  }, "", controls).disabled = pack.length < 2;
   update();
-  const choices = document.createElement("div");
-  choices.className = "choices";
-  task.append(choices);
-  actionButton("🔊 Assembler et écouter", () => display.click(), "primary", choices);
-  actionButton("Autre assemblage", () => {index = (index + 1) % current.syllables.length; update(); inform("", false);}, "", choices)
-    .disabled = current.syllables.length < 2;
 }
+
+const syllableDirections = "Écoute le mot. Pose une patte pour chaque syllabe, puis vérifie.";
+function openSyllableGame() {
+  unlockAudio();
+  const cards = [...shuffle(syllableCards.filter(card => card[2].length === 2)).slice(0, 3),
+    ...syllableCards.filter(card => card[2].length === 3)];
+  let round = 0;
+  function render() {
+    stop();
+    const [word, icon, parts] = cards[round];
+    let count = 0;
+    let activeDemo = 0;
+    app.innerHTML = `<section class="work paw-game">
+      <div class="game-heading"><img src="../images/loup-bleu-original.png" alt=""><div>
+      <p id="context"></p><h1>Le jeu des syllabes</h1></div></div>
+      <p class="prompt"></p><div class="game-model"></div>
+      <div class="paw-track" aria-label="Pattes posées"></div>
+      <div class="paw-tools"></div><p class="feedback" id="feedback" aria-live="polite"></p>
+      <p class="note" id="audio-notice" role="status"></p><div class="actions"></div></section>`;
+    app.querySelector("#context").textContent = (round + 1) + " / " + cards.length;
+    app.querySelector(".prompt").textContent = syllableDirections;
+    const model = app.querySelector(".game-model");
+    const listen = modelCard(model, word, icon, "Écouter le mot");
+
+    const trail = app.querySelector(".paw-track");
+    const tools = app.querySelector(".paw-tools");
+    const box = app.querySelector(".paw-game");
+    function paint(highlight = 0, reveal = false) {
+      trail.replaceChildren();
+      trail.setAttribute("aria-label", count + " pattes posées");
+      for (let i = 0; i < 4; i++) {
+        const stone = document.createElement("span");
+        stone.className = "paw-stone";
+        stone.classList.toggle("planted", i < count);
+        stone.classList.toggle("beat", i + 1 === highlight);
+        stone.setAttribute("aria-hidden", "true");
+        stone.textContent = i < count ? (reveal ? "🐾 " + (i + 1) : "🐾") : "·";
+        trail.append(stone);
+      }
+    }
+    const add = actionButton("🐾 Poser une patte", () => {
+      activeDemo++;
+      stop();
+      count++;
+      paint();
+      add.disabled = count === 4;
+      reset.disabled = false;
+      check.disabled = false;
+    }, "primary", tools);
+    const reset = actionButton("↻ Refaire", () => {
+      activeDemo++;
+      stop();
+      count = 0;
+      paint();
+      add.disabled = false;
+      check.disabled = true;
+      reset.disabled = true;
+    }, "", tools);
+    reset.disabled = true;
+    async function showBeats() {
+      const token = ++activeDemo;
+      count = parts.length;
+      paint();
+      add.disabled = true;
+      reset.disabled = true;
+      check.disabled = true;
+      listen.disabled = true;
+      for (let i = 0; i < parts.length; i++) {
+        if (!box.isConnected || token !== activeDemo) return;
+        paint(i + 1, true);
+        const key = "@galet:" + word + ":" + i;
+        await playClip(key);
+        const seconds = window.CODE_GAME_AUDIO?.[key]?.[2] || .4;
+        await new Promise(resolve => setTimeout(resolve, seconds * 1000 + 250));
+      }
+      if (box.isConnected && token === activeDemo) {
+        paint(0, true);
+        listen.disabled = false;
+      }
+    }
+    actionButton("💡 Voir les syllabes", async () => {
+      await showBeats();
+      if (!box.isConnected) return;
+      add.disabled = true;
+      check.disabled = true;
+      next.disabled = false;
+      inform(parts.length + " syllabes dans « " + word + " ».", true);
+    }, "", tools);
+    const check = actionButton("✓ Vérifier", () => {
+      if (count !== parts.length) {
+        inform("Réécoute le mot et pose une patte pour chaque syllabe.", false);
+        say(word);
+        return;
+      }
+      next.disabled = false;
+      inform("✓ " + parts.length + " syllabes !", true);
+      showBeats();
+    }, "", tools);
+    check.disabled = true;
+    const next = actionButton(round + 1 < cards.length ? "▶ Mot suivant" : "★ Terminer", () => {
+      if (++round < cards.length) render();
+      else finishLesson();
+    }, "primary", app.querySelector(".actions"));
+    next.disabled = true;
+    paint();
+    headingFocus();
+    say(syllableDirections);
+  }
+  render();
+}
+
 function reading(task) {
   const panel = document.createElement("div");
   panel.className = "reading";
