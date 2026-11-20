@@ -84,10 +84,15 @@ function stop() {
   audio = null;
   window.speechSynthesis?.cancel();
 }
+function audioNotice(message = "") {
+  const node = document.querySelector("#audio-notice");
+  if (node) node.textContent = message;
+}
 function say(message, rate = .93) {
   stop();
+  audioNotice();
   if (!window.speechSynthesis || !window.SpeechSynthesisUtterance) {
-    inform("L’adulte peut lire la consigne ou dire le modèle.", false);
+    audioNotice("Voix indisponible. L’adulte peut lire la consigne ou dire le modèle.");
     return;
   }
   const utterance = new SpeechSynthesisUtterance(message);
@@ -96,7 +101,7 @@ function say(message, rate = .93) {
   const voice = window.speechSynthesis.getVoices().find(item => item.lang === "fr-FR" && item.localService);
   if (voice) utterance.voice = voice;
   utterance.onerror = event => {
-    if (!["canceled","interrupted"].includes(event.error)) inform("L’adulte peut dire le modèle.", false);
+    if (!["canceled","interrupted"].includes(event.error)) audioNotice("Voix indisponible. L’adulte peut dire le modèle.");
   };
   window.speechSynthesis.speak(utterance);
 }
@@ -106,7 +111,7 @@ function modelSound(lesson) {
   const source = window.RASED_PHONEME_BY_ID[lesson.value]?.audioUrl;
   if (!source) {
     say(lesson.word, .87);
-    inform("Écoute le mot repère. L’adulte peut isoler le son.", false);
+    audioNotice("L’adulte peut isoler le son dans le mot repère.");
     return;
   }
   const clip = new Audio(source);
@@ -114,7 +119,7 @@ function modelSound(lesson) {
   clip.play().catch(() => {
     if (audio === clip) {
       say(lesson.word, .87);
-      inform("Écoute le mot repère. L’adulte peut isoler le son.", false);
+      audioNotice("L’adulte peut isoler le son dans le mot repère.");
     }
   });
 }
@@ -173,7 +178,7 @@ function renderHome() {
       <button type="button" id="intro">🔊 Écouter</button> <button class="primary" type="button" id="continue"></button></div>
       <img src="../images/loup-bleu-original.png" alt="Le loup bleu Zou Maï">
     </section>
-    <div class="entries" aria-label="Entrées du manuel"></div>
+    <p id="audio-notice" class="note" role="status"></p><div class="entries" aria-label="Entrées du manuel"></div>
     <section class="section" id="library"></section>
     <details class="section adult"><summary>Espace enseignant</summary>
       <p>Les cinq périodes suivent une entrée graphémique. L’entrée par l’oral regroupe les graphies qui peuvent coder le même son. Pour un élève débutant, sélectionner d’abord la leçon correspondant aux graphies déjà vues.</p>
@@ -304,7 +309,7 @@ function renderLesson() {
       <button id="listen" type="button">🔊 Consigne</button></div></div>
     <nav class="steps" aria-label="Étapes de la leçon"></nav>
     <section class="work"><p id="context"></p><h1></h1><p class="prompt"></p><div id="task"></div>
-      <p id="feedback" class="feedback" aria-live="polite"></p><div class="actions"></div></section>
+      <p id="feedback" class="feedback" aria-live="polite"></p><p id="audio-notice" class="note" role="status"></p><div class="actions"></div></section>
     <details class="section adult"><summary>Repères pour l’adulte</summary><p id="guide"></p><p id="adult-model"></p></details>`;
   document.querySelector("#back").onclick = () => { renderHome(); headingFocus(); };
   document.querySelector("#listen").onclick = () => { hasAudioGesture = true; say(currentPrompt()); };
@@ -547,7 +552,7 @@ function openWorkshop(workshop) {
         "Regarde le modèle et retrouve les mêmes lettres.";
     app.innerHTML = `<section class="work"><p></p><h1></h1><button id="work-audio" type="button">🔊 Consigne</button>
       <p class="prompt"></p><div id="task"></div><p id="feedback" aria-live="polite" class="feedback"></p>
-      <div class="actions"></div></section>`;
+      <p id="audio-notice" class="note" role="status"></p><div class="actions"></div></section>`;
     app.querySelector("h1").textContent = workshop.title;
     app.querySelector(".work > p").textContent = (index + 1) + "/" + workshop.items.length;
     app.querySelector(".prompt").textContent = prompt;
