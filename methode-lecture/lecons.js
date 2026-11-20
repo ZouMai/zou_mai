@@ -17,7 +17,7 @@ const periods = [
     ["p","panda","🐼","ballon,rat","pa pi po pu pé ap ip / pirate pile","pile","Le pirate a ri."],
     ["t","tortue","🐢","panda,ballon","ta ti to tu té at it / tomate tir","tomate","Papa a pelé la tomate."],
     ["b","ballon","🎈","panda,tortue","ba bi bo bu bé ab ib / bol robe","robe","Mila a lavé la robe."],
-    ["d","domino","🁣","tortue,ballon","da di do du dé ad id / dé date","date","Ali a tiré le dé."],
+    ["d","dé","🎲","tortue,ballon","da di do du dé ad id / dé date","date","Ali a tiré le dé."],
     ["n","nid","🪺","moto,lit","na ni no nu né / canapé narine","narine","Nina a dormi sur le canapé."],
     ["è","flèche","🎯","fusée,tortue","lè mè rè pè / mère père","mère","Sa mère a ri."],
     ["ê","tête","🙂","lit,fusée","rê tê pê / tête fête","fête","Papa prépare la fête."],
@@ -38,7 +38,7 @@ const periods = [
   ["De nouvelles façons d’écrire les sons", [
     ["ai","lait","🥛","lit,robot","lai mai rai pai / laine","laine","Nina a sali la laine."],
     ["ei","reine","👑","lit,robot","rei nei pei / reine peine","reine","La reine a lavé sa robe."],
-    ["au","taupe","🦫","tortue,lit","lau mau rau tau / taupe jaune","taupe","Nina a vu la taupe."],
+    ["au","jaune","🟡","tortue,lit","lau mau rau tau / taupe jaune","taupe","Nina a vu la taupe."],
     ["eau","bateau","⛵","tortue,lit","beau teau peau veau / bateau chapeau","bateau","Nina a vu le bateau."],
     ["j","jupe","👗","chat,carotte","ja ji jo ju / jupe jolie","jupe","Nina a lavé sa jupe."],
     ["z","zèbre","🦓","salade,chat","za zi zo zu / zèbre zéro","zéro","Ali a vu le zéro."],
@@ -72,7 +72,7 @@ const periods = [
 const oralPictures = {
   lune:"🌙", lit:"🛏️", avion:"✈️", robot:"🤖", sac:"🎒", moto:"🏍️",
   rat:"🐀", ballon:"🎈", panda:"🐼", tortue:"🐢", fusée:"🚀", salade:"🥗",
-  ours:"🐻", pont:"🌉", dent:"🦷", chat:"🐱", domino:"🁣", carotte:"🥕",
+  ours:"🐻", pont:"🌉", dent:"🦷", chat:"🐱", domino:"🎲", carotte:"🥕",
   zèbre:"🦓", jupe:"👗", tasse:"☕", gomme:"🧽", girafe:"🦒", étoile:"⭐",
   bol:"🥣", rose:"🌹",
   île:"🏝️", vélo:"🚲", serpent:"🐍", porte:"🚪", tête:"🙂", pêche:"🍑",
@@ -84,12 +84,23 @@ const oralPictures = {
 const oralModels = {
   "a":"arbre", "i":"image", "l":"lapin", "o":"vélo", "s":"serpent",
   "u":"mule", "m":"maman", "f":"fourmi", "r":"raisin", "é":"école",
-  "e":"menu", "p":"poire", "t":"tapis", "b":"bébé", "d":"dauphin",
+  "e":"renard", "p":"poire", "t":"tambour", "b":"bébé", "d":"dauphin",
   "n":"nuage", "è":"père", "ê":"fête", "v":"valise", "ch":"chou",
   "ou":"poule", "on":"mouton", "an":"gant", "en":"vent", "in":"sapin",
   "oi":"poire", "gn":"ligne", "c":"cochon", "g":"gare", "ai":"aile",
-  "ei":"peine", "au":"jaune", "eau":"chapeau", "j":"jardin", "z":"zéro",
+  "ei":"neige", "au":"chaud", "eau":"chapeau", "j":"jardin", "z":"zéro",
   "ss":"serpent", "s entre voyelles":"zéro", "qu":"cochon", "ç":"serpent",
-  "oin":"coin", "eu":"jeu", "œu":"sœur", "ain":"main", "ein":"ceinture",
+  "oin":"coin", "eu":"jeu", "œu":"sœur", "ain":"main", "ein":"main",
   "ui":"pluie", "ill":"bille", "y":"yoga", "k":"cochon", "ph":"fourmi"
+};
+
+const modelPictures = {
+  arbre:"🌳", image:"🖼️", lapin:"🐇", vélo:"🚲", serpent:"🐍", mule:"🐴",
+  maman:"👩", fourmi:"🐜", raisin:"🍇", école:"🏫", renard:"🦊", poire:"🍐",
+  tambour:"🥁", bébé:"👶", dauphin:"🐬", nuage:"☁️", père:"👨", fête:"🎉",
+  valise:"🧳", chou:"🥬", poule:"🐔", mouton:"🐑", gant:"🧤", vent:"🌬️",
+  sapin:"🌲", ligne:"➖", cochon:"🐖", gare:"🚉", aile:"🪽", neige:"❄️",
+  chaud:"🥵", chapeau:"👒", jardin:"🌻", zéro:"0️⃣", coin:"📐", jeu:"🎲",
+  sœur:"👧", main:"✋", pluie:"🌧️", bille:"🔵", yoga:"🧘",
+  pirate:"🏴‍☠️", farine:"🌾"
 };

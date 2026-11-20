@@ -52,10 +52,10 @@ const workshops = [
 
 const playCopy = {
   Découvrir:"Regarde les lettres. Touche le haut-parleur pour écouter le mot repère.",
-  Repérer:"Écoute le mot modèle. Puis touche l’image où tu entends le même son.",
-  Assembler:"Regarde les deux parties. Rapproche-les et lis la syllabe d’un seul élan.",
-  Lire:"Lis à voix haute. Si tu lis une phrase, imagine la scène et raconte-la.",
-  Écrire:"Écoute le mot ou la syllabe. Choisis les lettres dans l’ordre.",
+  Repérer:"Touche l’image modèle pour écouter. Puis choisis une image où tu entends le même son.",
+  Assembler:"Touche les lettres. Écoute comment elles se collent, puis redis la syllabe.",
+  Lire:"Essaie de lire. Puis touche le mot pour écouter et vérifier.",
+  Écrire:"Écoute la dictée. Touche les lettres dans l’ordre.",
   Retenir:"Retrouve les mêmes lettres que dans le modèle."
 };
 
@@ -68,31 +68,80 @@ let tab = "graph";
 let current = null;
 let stage = 0;
 let trial = [];
-let audio = null;
 let selected = [];
 let mistake = 0;
 let activityPassed = false;
 let tinyChoice = false;
 let hasAudioGesture = false;
+let lastAudioRequest = 0;
+let audioContext;
+let clipSource;
+const audioBuffers = new Map();
 let run = null;
 
 function save() {
   try { localStorage.setItem(storageKey, JSON.stringify(progress)); } catch {}
 }
 function stop() {
-  audio?.pause();
-  audio = null;
+  lastAudioRequest++;
+  if (clipSource) {
+    clipSource.onended = null;
+    clipSource.stop();
+    clipSource = null;
+  }
   window.speechSynthesis?.cancel();
 }
 function audioNotice(message = "") {
   const node = document.querySelector("#audio-notice");
   if (node) node.textContent = message;
 }
-function say(message, rate = .93) {
+function unlockAudio() {
+  hasAudioGesture = true;
+  if (!audioContext) {
+    const Context = window.AudioContext || window.webkitAudioContext;
+    if (Context) audioContext = new Context();
+  }
+  if (audioContext?.state === "suspended") audioContext.resume().catch(() => {});
+}
+function loadBuffer(filename) {
+  if (!audioBuffers.has(filename)) {
+    const buffer = fetch(filename).then(response => {
+      if (!response.ok) throw Error("Audio indisponible");
+      return response.arrayBuffer();
+    }).then(bytes => audioContext.decodeAudioData(bytes)).catch(error => {
+      audioBuffers.delete(filename);
+      throw error;
+    });
+    audioBuffers.set(filename, buffer);
+  }
+  return audioBuffers.get(filename);
+}
+async function playClip(key) {
+  unlockAudio();
   stop();
   audioNotice();
+  const clip = window.CODE_AUDIO?.[key];
+  if (!clip || !audioContext) return false;
+  const request = lastAudioRequest;
+  try {
+    const [file, offset, duration] = clip;
+    const buffer = await loadBuffer(file);
+    if (request !== lastAudioRequest) return true;
+    const source = audioContext.createBufferSource();
+    source.buffer = buffer;
+    source.connect(audioContext.destination);
+    source.onended = () => { if (clipSource === source) clipSource = null; };
+    clipSource = source;
+    source.start(0, offset, duration);
+    return true;
+  } catch {
+    return request !== lastAudioRequest;
+  }
+}
+async function say(message, rate = .93) {
+  if (await playClip(message)) return;
   if (!window.speechSynthesis || !window.SpeechSynthesisUtterance) {
-    audioNotice("Voix indisponible. L’adulte peut lire la consigne ou dire le modèle.");
+    audioNotice("🔇 Son indisponible. Tu peux continuer avec les images ou les lettres.");
     return;
   }
   const utterance = new SpeechSynthesisUtterance(message);
@@ -101,27 +150,17 @@ function say(message, rate = .93) {
   const voice = window.speechSynthesis.getVoices().find(item => item.lang === "fr-FR" && item.localService);
   if (voice) utterance.voice = voice;
   utterance.onerror = event => {
-    if (!["canceled","interrupted"].includes(event.error)) audioNotice("Voix indisponible. L’adulte peut dire le modèle.");
+    if (!["canceled","interrupted"].includes(event.error)) audioNotice("🔇 Son indisponible. Tu peux continuer avec les images ou les lettres.");
   };
   window.speechSynthesis.speak(utterance);
 }
-
-function modelSound(lesson) {
-  stop();
-  const source = window.RASED_PHONEME_BY_ID[lesson.value]?.audioUrl;
-  if (!source) {
-    say(lesson.word, .87);
-    audioNotice("L’adulte peut isoler le son dans le mot repère.");
-    return;
-  }
-  const clip = new Audio(source);
-  audio = clip;
-  clip.play().catch(() => {
-    if (audio === clip) {
-      say(lesson.word, .87);
-      audioNotice("L’adulte peut isoler le son dans le mot repère.");
-    }
-  });
+async function saySyllable(syllable, fallback) {
+  if (await playClip("@syllabe:" + syllable)) return;
+  if (fallback) fallback();
+}
+async function modelSound(lesson) {
+  if (await playClip("@son:" + lesson.ipa)) return;
+  say(lesson.word);
 }
 
 function inform(message, correct) {
@@ -154,7 +193,7 @@ function headingFocus() {
   h.focus();
 }
 function lessonButton(lesson, parent, soundEntry = false) {
-  const button = actionButton("", () => openLesson(lesson, soundEntry ? 1 : 0), "lesson", parent);
+  const button = actionButton("", () => { unlockAudio(); openLesson(lesson, soundEntry ? 1 : 0); }, "lesson", parent);
   const graph = document.createElement("b");
   graph.textContent = soundEntry ? lesson.icon + " " + lesson.word : lesson.graph;
   button.append(graph);
@@ -182,12 +221,12 @@ function renderHome() {
     <section class="section" id="library"></section>
     <details class="section adult"><summary>Espace enseignant</summary>
       <p>Les cinq périodes suivent une entrée graphémique. L’entrée par l’oral regroupe les graphies qui peuvent coder le même son. Pour un élève débutant, sélectionner d’abord la leçon correspondant aux graphies déjà vues.</p>
-      <p>Sur papier, refaire la fusion avec deux jetons qui se rapprochent, puis dicter une nouvelle syllabe. Prendre en charge les modèles marqués « avec l’adulte ». Écouter les réalisations de l’élève pendant la lecture à voix haute.</p>
+      <p>Sur papier, refaire la fusion avec deux jetons qui se rapprochent, puis dicter une nouvelle syllabe. En accompagnement, écouter les réalisations de l’élève pendant la lecture à voix haute.</p>
       <p><label>Filtrer les leçons <input id="filter" type="search" placeholder="Graphème, son ou mot repère"></label></p>
       <div id="matches" class="grid"></div>
       <p><label><input type="checkbox" id="fewer"> Deux images au choix dans les leçons</label></p>
       <p><a href="https://codeo.mdi-editions.com/9782223114207">Codéo CP</a> · <a href="https://www.leslettresbleues.fr/IMG/pdf/gp_cp_l1-l7-5.pdf">Je lis, j’écris</a> · <a href="https://www.education.gouv.fr/bo/2024/Hebdo41/MENE2415135A">Programme de français du cycle 2</a></p>
-      <p>Les consignes et mots modèles utilisent la voix française de l’appareil. Les sons isolés disponibles proviennent de <a href="https://commons.wikimedia.org/wiki/Category:IPA_pronunciation">Wikimedia Commons</a>. Les fusions et dictées de syllabes isolées sont guidées par l’adulte.</p>
+      <p>Le parcours enfant dispose de clips audio intégrés. Voix de synthèse <a href="https://huggingface.co/rhasspy/piper-voices/blob/main/fr/fr_FR/siwis/medium/MODEL_CARD">Piper SIWIS</a>. Illustrations <a href="https://github.com/jdecked/twemoji">Twemoji</a> © Twitter, Inc. et contributeurs, sous <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
     </details>`;
   document.querySelector("#intro").onclick = () => {
     hasAudioGesture = true;
@@ -196,7 +235,7 @@ function renderHome() {
   const resume = lessons.find(lesson => lesson.id === progress.id);
   const next = document.querySelector("#continue");
   next.textContent = resume ? "Reprendre" : "Commencer";
-  next.onclick = () => openLesson(resume || lessons[0], resume ? progress.stage : 0);
+  next.onclick = () => { unlockAudio(); openLesson(resume || lessons[0], resume ? progress.stage : 0); };
   const modes = [["graph","🔤","Je vois les lettres"],["sound","👂","J’entends un son"],["work","🧩","Je m’entraîne"]];
   for (const [key, icon, label] of modes) {
     const button = actionButton("", () => {tab = key; renderLibrary();}, "entry", document.querySelector(".entries"));
@@ -291,13 +330,11 @@ function setStage(index) {
   headingFocus();
   if (hasAudioGesture) say(currentPrompt());
 }
-function adultWriting() {
-  return !lessons.some(item => item.words.includes(current.writing)) &&
-    !["a","i"].includes(current.writing);
+function spokenWriting(lesson) {
+  return lesson.syllables.includes(lesson.writing) || lesson.writing.length === 1;
 }
 function currentPrompt() {
   if (stage === 1 && isVisual()) return "Touche les mêmes lettres que dans le modèle.";
-  if (stage === 4 && adultWriting()) return "Écoute la syllabe dictée par l’adulte. Choisis les lettres dans l’ordre.";
   return playCopy[steps[stage]];
 }
 function isVisual() {
@@ -305,29 +342,28 @@ function isVisual() {
 }
 function renderLesson() {
   app.innerHTML = `
-    <div class="toolbar"><div><button id="back" type="button">Sommaire</button></div><div>
+    <div class="toolbar"><div>
       <button id="listen" type="button">🔊 Consigne</button></div></div>
-    <nav class="steps" aria-label="Étapes de la leçon"></nav>
+    <div class="steps" aria-label="Progression de la leçon"></div>
     <section class="work"><p id="context"></p><h1></h1><p class="prompt"></p><div id="task"></div>
       <p id="feedback" class="feedback" aria-live="polite"></p><p id="audio-notice" class="note" role="status"></p><div class="actions"></div></section>
-    <details class="section adult"><summary>Repères pour l’adulte</summary><p id="guide"></p><p id="adult-model"></p></details>`;
-  document.querySelector("#back").onclick = () => { renderHome(); headingFocus(); };
+`;
   document.querySelector("#listen").onclick = () => { hasAudioGesture = true; say(currentPrompt()); };
   for (const [index, label] of steps.entries()) {
     if (run) break;
-    const button = actionButton(label, () => setStage(index), "", app.querySelector(".steps"));
-    button.setAttribute("aria-pressed", index === stage);
+    const marker = document.createElement("span");
+    marker.className = "step-dot";
+    marker.dataset.state = index === stage ? "current" : index < stage ? "past" : "next";
+    marker.title = label;
+    if (index === stage) marker.setAttribute("aria-current", "step");
+    marker.textContent = ["👀","👂","🧩","📖","✍️","★"][index];
+    app.querySelector(".steps").append(marker);
   }
   app.querySelector("h1").textContent = steps[stage] + (stage === 1 && !isVisual() ? "" : " · " + current.graph);
   app.querySelector("#context").textContent = run
     ? run.title + " · " + (run.index + 1) + "/" + run.from.length
     : "Période " + (current.period + 1) + " · " + (stage + 1) + "/" + steps.length;
   app.querySelector(".prompt").textContent = currentPrompt();
-  app.querySelector("#guide").textContent = (notes[current.graph] || "Fais entendre le son dans « " + current.word + " », puis montre les lettres correspondantes.") +
-    " Demande une lecture à voix haute et un essai sur ardoise.";
-  if (stage === 4 && adultWriting()) {
-    app.querySelector("#adult-model").textContent = "Modèle à dicter en gardant l’écran tourné vers l’adulte ou en lisant ce repère à l’avance : " + current.writing + ".";
-  }
   const task = document.querySelector("#task");
   const actions = document.querySelector(".actions");
   const next = actionButton(stage === 5 ? "Terminer" : "Continuer", () => {
@@ -339,8 +375,7 @@ function renderLesson() {
       progress.id = upcoming?.id || current.id;
       progress.stage = 0;
       save();
-      renderHome();
-      headingFocus();
+      finishLesson(upcoming);
     } else {
       setStage(stage + 1);
     }
@@ -361,12 +396,44 @@ function focusCard(parent, text) {
   parent.append(node);
   return node;
 }
+function finishLesson(upcoming) {
+  stop();
+  app.innerHTML = '<section class="work finish"><img src="../images/loup-bleu-original.png" alt=""><h1>Bravo !</h1><p>Tu as terminé ta leçon.</p><div class="choices"></div></section>';
+  const choices = app.querySelector(".choices");
+  if (upcoming) actionButton("▶ Leçon suivante", () => openLesson(upcoming), "primary", choices);
+  actionButton("Sommaire", () => { renderHome(); headingFocus(); }, "", choices);
+  headingFocus();
+  say("Bravo ! Tu as terminé ta leçon.");
+}
+function picture(button, icon) {
+  const sprite = window.CODE_PICTURES?.[icon];
+  if (sprite) {
+    const [columns, rows, x, y] = sprite;
+    const image = document.createElement("span");
+    image.className = "art-image";
+    image.setAttribute("aria-hidden", "true");
+    image.style.backgroundSize = (columns * 100) + "% " + (rows * 100) + "%";
+    image.style.backgroundPosition = x + "% " + y + "%";
+    button.append(image);
+  } else button.textContent = icon;
+}
+function modelCard(parent, word, icon, label = "Écouter le mot modèle") {
+  const button = actionButton("", () => say(word), "model-card", parent);
+  button.setAttribute("aria-label", label + " : " + word);
+  const art = document.createElement("span");
+  art.className = "model-art";
+  picture(art, icon);
+  const volume = document.createElement("span");
+  volume.textContent = "🔊 " + label;
+  button.append(art, volume);
+  return button;
+}
 function discover(task) {
   focusCard(task, current.glyph + "   " + current.glyph.toLocaleUpperCase("fr"));
   const choices = document.createElement("div");
   choices.className = "choices";
   task.append(choices);
-  actionButton(current.icon + "  🔊 " + current.word, () => say(current.word, .87), "choice", choices);
+  modelCard(choices, current.word, current.icon, "Écouter le mot repère");
   if (current.ipa !== "∅") actionButton("🔊 Le son", () => modelSound(current), "", choices);
 }
 function pictureChoices(parent, words, icons, onChoose) {
@@ -376,9 +443,10 @@ function pictureChoices(parent, words, icons, onChoose) {
   for (const word of words) {
     const pair = document.createElement("div");
     pair.className = "pair";
-    const pick = actionButton(icons[word] || "🖼️", () => onChoose(word, pick), "picture", pair);
+    const pick = actionButton("", () => onChoose(word, pick), "picture", pair);
+    picture(pick, icons[word] || "🖼️");
     pick.setAttribute("aria-label", "Choisir : " + word);
-    const hear = actionButton("🔊", () => say(word), "", pair);
+    const hear = actionButton("🔊", () => say(word), "hear", pair);
     hear.setAttribute("aria-label", "Écouter : " + word);
     choices.append(pair);
   }
@@ -388,20 +456,32 @@ function pass(next, button, message) {
   if (button) button.setAttribute("aria-pressed", "true");
   inform(message, true);
   next.disabled = false;
+  next.classList.add("ready");
+  next.focus({preventScroll:true});
+  say("Bravo !");
+}
+function guidedAnswer(task, answer) {
+  if (mistake < 2) return;
+  const target = [...task.querySelectorAll(".choice,.picture")].find(button =>
+    button.textContent === answer || button.getAttribute("aria-label") === "Choisir : " + answer);
+  if (target) target.classList.add("hinted");
+  say("Essaie la case qui brille.");
 }
 function matchSound(task, next) {
-  actionButton("🔊 Mot modèle", () => say(oralModels[current.graph] || current.word, .87), "", task);
+  const model = oralModels[current.graph] || current.word;
+  modelCard(task, model, modelPictures[model] || current.icon);
   trial = shuffle([current.word, ...current.distractors.slice(0, tinyChoice ? 1 : 2)]);
   pictureChoices(task, trial, {...oralPictures, [current.word]:current.icon}, (word, button) => {
     if (activityPassed) return;
     if (word === current.word) {
-      pass(next, button, "Tu as retrouvé le son dans « " + current.word + " ». Il s’écrit ici « " + current.glyph + " ».");
-      say(current.word + ". Tu as retrouvé le son.");
+      pass(next, button, "✓ Tu as retrouvé le son.");
       return;
     }
     mistake++;
-    say("Écoute encore : " + (oralModels[current.graph] || current.word));
-    inform(mistake > 1 ? "Réécoute le modèle, puis compare avec les autres images." : "Réécoute le mot modèle.", false);
+    button.disabled = true;
+    inform(mistake > 1 ? "Essaie la case qui brille." : "Réécoute le mot modèle.", false);
+    if (mistake > 1) guidedAnswer(task, current.word);
+    else say(model);
   });
 }
 function visual(task, next) {
@@ -415,7 +495,13 @@ function visual(task, next) {
     const button = actionButton(choice, () => {
       if (activityPassed) return;
       if (choice === current.glyph) pass(next, button, "Tu as retrouvé « " + current.glyph + " ».");
-      else inform("Compare la forme et l’ordre des lettres avec le modèle.", false);
+      else {
+        mistake++;
+        button.disabled = true;
+        inform("Compare les lettres avec le modèle.", false);
+        if (mistake > 1) guidedAnswer(task, current.glyph);
+        else say("Compare les lettres avec le modèle.");
+      }
     }, "choice", choices);
   }
 }
@@ -442,8 +528,11 @@ function splitSyllable(syllable) {
   return [syllable];
 }
 function fusion(task) {
-  const display = focusCard(task, "");
-  display.classList.add("fusion");
+  const display = actionButton("", () => {
+    display.classList.add("join");
+    saySyllable(current.syllables[index], () => say(current.syllables[index]));
+  }, "focus fusion fusion-card", task);
+  display.setAttribute("aria-label", "Écouter la syllabe assemblée");
   let index = 0;
   function update() {
     display.replaceChildren();
@@ -458,10 +547,7 @@ function fusion(task) {
   const choices = document.createElement("div");
   choices.className = "choices";
   task.append(choices);
-  actionButton("Assembler", () => {
-    display.classList.add("join");
-    inform("Lis d’un seul élan. Avec l’adulte, écoute son modèle puis essaie à ton tour.", false);
-  }, "primary", choices);
+  actionButton("🔊 Assembler et écouter", () => display.click(), "primary", choices);
   actionButton("Autre assemblage", () => {index = (index + 1) % current.syllables.length; update(); inform("", false);}, "", choices)
     .disabled = current.syllables.length < 2;
 }
@@ -469,28 +555,27 @@ function reading(task) {
   const panel = document.createElement("div");
   panel.className = "reading";
   task.append(panel);
-  for (const item of [...current.syllables, ...current.words]) {
-    const card = document.createElement("span");
-    card.textContent = item;
-    panel.append(card);
+  for (const item of current.syllables) {
+    actionButton(item, () => saySyllable(item, () => say(item)), "read-word", panel);
   }
+  for (const item of current.words) actionButton(item, () => say(item), "read-word", panel);
   if (current.sentence) {
     focusCard(task, current.sentence);
-    actionButton("🔊 Vérifier la phrase", () => say(current.sentence), "", task);
-    const prompt = document.createElement("p");
-    prompt.textContent = "Après ta lecture, raconte ce que tu as compris.";
-    task.append(prompt);
+    actionButton("🔊 Écouter la phrase", () => say(current.sentence), "", task);
   }
 }
 function writing(task, next) {
   const answer = units(current.writing);
-  const useAdult = adultWriting();
-  if (!useAdult) actionButton("🔊 Écouter la dictée", () => say(current.writing === "i" ? "i" : current.writing, .86), "", task);
-  else {
-    const helper = document.createElement("p");
-    helper.textContent = "🎙️ Avec l’adulte. Il trouve le modèle à dicter dans les repères de la leçon.";
-    task.append(helper);
-  }
+  const heading = document.createElement("div");
+  heading.className = "dictation";
+  task.append(heading);
+  const replay = () => spokenWriting(current)
+    ? saySyllable(current.writing, () => say(current.writing)) : say(current.writing);
+  actionButton("🔊 Écouter la dictée", replay, "primary", heading);
+  actionButton("💡 Aide", () => {
+    inform("Regarde le modèle « " + current.writing + " », puis reconstruis-le.", false);
+    replay();
+  }, "", heading);
   const slots = document.createElement("div");
   slots.className = "tiles";
   slots.setAttribute("aria-label", "Lettres posées");
@@ -526,7 +611,8 @@ function writing(task, next) {
       refresh();
     } else {
       mistake++;
-      inform(mistake > 1 ? "Compare avec le modèle « " + current.writing + " », puis reconstruis-le." : "Réécoute et reprends les lettres dans l’ordre.", false);
+      inform(mistake > 1 ? "Regarde le modèle « " + current.writing + " », puis reconstruis-le." : "Réécoute et reprends les lettres dans l’ordre.", false);
+      replay();
       selected = [];
       refresh();
     }
@@ -535,6 +621,7 @@ function writing(task, next) {
 }
 
 function openWorkshop(workshop) {
+  unlockAudio();
   if (workshop.mode === "revision") {
     run = {...workshop, index:0};
     nextRevision(true);
@@ -548,7 +635,7 @@ function openWorkshop(workshop) {
     const listening = workshop.mode === "listen";
     const readingOrder = workshop.mode === "read";
     const prompt = listening ? "Écoute le mot modèle, puis retrouve le même premier son." :
-      readingOrder ? "Lis les deux syllabes. Avec l’adulte, touche celle qu’il prononce." :
+      readingOrder ? "Écoute la syllabe. Puis touche les lettres que tu entends." :
         "Regarde le modèle et retrouve les mêmes lettres.";
     app.innerHTML = `<section class="work"><p></p><h1></h1><button id="work-audio" type="button">🔊 Consigne</button>
       <p class="prompt"></p><div id="task"></div><p id="feedback" aria-live="polite" class="feedback"></p>
@@ -567,23 +654,25 @@ function openWorkshop(workshop) {
     }, "primary", actions);
     next.disabled = true;
     activityPassed = false;
+    mistake = 0;
     const model = {p:"pirate",b:"bébé",f:"farine",v:"valise",ch:"chou",j:"jardin"}[graph];
     function choose(value, button) {
       if (activityPassed) return;
       if (value === answer) pass(next, button, "C’est la bonne réponse.");
-      else inform(listening ? "Écoute le début des deux mots." : "Reprends les lettres dans l’ordre.", false);
+      else {
+        mistake++;
+        button.disabled = true;
+        inform("Essaie l’autre case.", false);
+        guidedAnswer(task, answer);
+        if (mistake === 1) say("Essaie l’autre case.");
+      }
     }
     if (listening) {
-      actionButton("🔊 Mot modèle", () => say(model), "", task);
+      modelCard(task, model, modelPictures[model]);
       pictureChoices(task, shuffle([answer,wrong]), oralPictures, choose);
     } else {
       if (readingOrder) {
-        const adult = document.createElement("details");
-        adult.innerHTML = "<summary>Modèle à dicter par l’adulte</summary>";
-        const model = document.createElement("p");
-        model.textContent = answer;
-        adult.append(model);
-        task.append(adult);
+        actionButton("🔊 Écouter la syllabe", () => saySyllable(answer, () => say(answer)), "primary", task);
       } else focusCard(task, answer);
       const choices = document.createElement("div");
       choices.className = "choices";
