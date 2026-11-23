@@ -5,3 +5,11 @@
 :is(a,button,[role="button"]).subject:is(:hover,:focus-visible,:active),:is(a,button,[role="button"]).subfolder:is(:hover,:focus-visible,:active),:is(a,button,[role="button"]).weekly-card:is(:hover,:focus-visible,:active),:is(a,button,[role="button"]).card:is(:hover,:focus-visible,:active),:is(a,button,[role="button"]).tile:is(:hover,:focus-visible,:active),:is(a,button,[role="button"]).atelier:is(:hover,:focus-visible,:active),:is(a,button,[role="button"]).tab:is(:hover,:focus-visible,:active),:is(a,button,[role="button"]).choice:is(:hover,:focus-visible,:active),:is(a,button,[role="button"]).game-card:is(:hover,:focus-visible,:active),.zm-neon-target:is(:hover,:focus-visible,:active),.zm-neon-lit{border-color:#fff!important;box-shadow:0 0 8px #fff,0 0 22px var(--zm-glow,var(--zm-neon)),0 0 42px color-mix(in srgb,var(--zm-glow,var(--zm-neon)) 65%,transparent),inset 0 0 17px color-mix(in srgb,var(--zm-glow,var(--zm-neon)) 25%,transparent)!important;filter:brightness(1.1);transform:translateY(-2px)}
 :is(a,button,[role="button"]):focus-visible{outline:3px solid var(--zm-glow,var(--zm-neon))}
 @media(prefers-reduced-motion:reduce){.zm-neon-target,.zm-neon-lit{transition:none!important;transform:none!important}}
+
+/* Identité sombre unifiée, sans masquer les interfaces de jeux ou tableaux pédagogiques */
+body:not(.home-page):not(.dictation-page){background-color:#080c15;color:#edf5ff}
+body:not(.home-page):not(.dictation-page)::after{content:"";position:fixed;z-index:-1;right:-80px;bottom:-95px;width:min(50vw,460px);height:min(50vw,460px);background:url('images/logo-zou-mai-sensei.png') center/contain no-repeat;opacity:.055;filter:grayscale(1);pointer-events:none}
+:is(.card,.tile,.atelier,.lesson,.lesson-card,.game-card,.weekly-card,.item,.subject,.subfolder):not(.filled):not(.correct){transition:box-shadow .22s ease,transform .22s ease,border-color .22s ease}
+:is(.card,.tile,.atelier,.lesson,.lesson-card,.game-card,.weekly-card,.item,.subject,.subfolder):hover{box-shadow:0 0 18px #27d9ff55}
+:is(.card,.tile,.atelier,.lesson,.lesson-card,.game-card,.weekly-card,.item,.subject,.subfolder):focus-within{outline:2px solid #5be6ff;outline-offset:2px}
+@media(prefers-reduced-motion:reduce){:is(.card,.tile,.atelier,.lesson,.lesson-card,.game-card,.weekly-card,.item,.subject,.subfolder){transition:none!important}}
