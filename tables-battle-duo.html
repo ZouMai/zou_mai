@@ -72,6 +72,13 @@ html,body{background:#090d1b}
 .totoro.winner{animation:totoroWin .85s ease-in-out infinite alternate!important}
 @keyframes totoroWin{from{transform:translateY(0) rotate(-9deg) scale(1)}to{transform:translateY(-9px) rotate(9deg) scale(1.35)}}
 @media(prefers-reduced-motion:reduce){.totoro,.totoro img,.totoro.celebrate,.totoro.sad,.totoro.winner{animation:none!important}}
+</style><style>
+/* Portrait original Zoumaï: présence renforcée, aucun emoji de substitution. */
+.wolf{width:clamp(43px,8vh,72px)!important;height:clamp(43px,8vh,72px)!important;overflow:visible}
+.wolf-head{image-rendering:auto;filter:drop-shadow(0 0 5px #2bdfff)}
+.hud{min-height:clamp(43px,8vh,72px)}
+.totoro{width:clamp(43px,8vh,72px)!important;height:clamp(43px,8vh,72px)!important}
+@media(max-height:600px){.wolf,.totoro{width:32px!important;height:32px!important}.hud{min-height:32px}}
 </style></head><body>
 <section id="setup"><div class="panel"><h1>⚔️ TABLES BATTLE DUO</h1><p>Deux joueurs, une tablette, deux claviers opposés.</p><div class="setting">Mode</div><div class="choices" id="modes"></div><div class="setting">Tables du joueur bleu</div><div class="choices" id="tables0"></div><div class="setting">Tables du joueur rose</div><div class="choices" id="tables1"></div><div class="setting">Durée</div><div class="choices" id="times"></div><label><input type="checkbox" id="sound" checked> Sons du duel</label><p><button class="primary" id="start">⚡ LANCER LE DUEL</button></p><p class="muted">Pose l'appareil à plat. Le côté bleu est retourné à 180°. Sur téléphone, le mode portrait est conseillé.</p><a href="tables-multiplication.html">← Retour aux tables</a></div></section>
 <main id="arena" hidden><section class="side blue" id="side0"><div class="hud"><span><span class="wolf" id="wolf0" aria-label="Loup bleu Zoumaï"><span class="wolf-head"></span></span> BLEU <span id="combo0"></span></span><span class="score" id="score0">0</span></div><div class="question" id="q0"></div><div class="entry" id="a0">?</div><div class="pad" id="pad0"></div><div class="feedback" id="f0"></div></section><div class="center"><strong id="clock">60 s</strong><div class="meter" id="meter"></div><strong>⚔️</strong><button id="quit" aria-label="Quitter le duel">✕</button></div><section class="side pink" id="side1"><div class="hud"><span><span class="totoro" id="wolf1" aria-label="Totoro"><img src="images/totoro-felicitations.png" alt="Totoro"></span> TOTORO <span id="combo1"></span></span><span class="score" id="score1">0</span></div><div class="question" id="q1"></div><div class="entry" id="a1">?</div><div class="pad" id="pad1"></div><div class="feedback" id="f1"></div></section></main>
