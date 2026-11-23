@@ -159,6 +159,25 @@ html,body{background:#090d1b}
 .meter{background:linear-gradient(90deg,#00dcff,#5557e9 48%,#ec51ff)}
 .nox{filter:drop-shadow(0 0 10px #ed62ff)}
 @media(max-width:420px){.panel{padding:13px}.panel .table-choice{min-width:52px;padding:8px 7px}}
+</style><style>
+/* Sélecteur des tables : mêmes règles explicites pour 2 à 12, sans styles nth-child hérités */
+.panel .table-picker{display:block;margin:10px auto 18px;width:min(100%,480px)}
+.panel .table-all{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;min-height:47px;border:2px solid #65718e;border-radius:13px;background:#11172a;color:#e6e8f7;font-weight:1000;letter-spacing:.045em;box-shadow:none;cursor:pointer}
+.panel .table-all .all-icon{font-size:23px;color:#b3b8d2}
+.panel .table-all .all-count{font-size:12px;border-radius:99px;background:#ffffff19;padding:4px 7px}
+.panel .table-all.selected{background:#0f5c65;color:#fff;border-color:#5ef2ef;box-shadow:0 0 0 2px #0a111e,0 0 16px #37f0e888}
+.panel .picker-nox .table-all.selected{background:#602577;border-color:#f39bff;box-shadow:0 0 0 2px #0a111e,0 0 16px #e26dff88}
+.panel .table-all.selected .all-icon{color:#ffeb72}
+.panel .table-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin-top:11px}
+.panel .table-tile{position:relative;min-width:0;min-height:61px;padding:7px 2px 5px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:2px solid #53617d;border-radius:12px;background:#101628;color:#8e9ab4;box-shadow:inset 0 0 0 1px #ffffff0b;opacity:1;filter:none;cursor:pointer;transition:transform .14s,background .14s,border-color .14s}
+.panel .table-tile .tile-num{font-size:clamp(20px,5vw,27px);font-weight:1000;line-height:1}
+.panel .table-tile .tile-mark{display:grid;place-items:center;font-size:12px;font-weight:1000;line-height:1;width:18px;height:18px;border-radius:50%;background:#394158;color:#a4b1c8}
+.panel .table-tile.selected{background:#2bc7e8;color:#08162d;border:3px solid #e9ffff;box-shadow:0 0 0 2px #1ddcff,0 4px 0 #061328;transform:translateY(-2px)}
+.panel .table-tile.selected .tile-mark{background:#0c4a62;color:#fff}
+.panel .picker-nox .table-tile.selected{background:#c966ed;color:#1d082d;box-shadow:0 0 0 2px #ed8bff,0 4px 0 #190920}
+.panel .picker-nox .table-tile.selected .tile-mark{background:#58256f;color:#fff}
+.panel .table-tile:focus-visible,.panel .table-all:focus-visible{outline:3px solid #ffe66b;outline-offset:4px}
+@media(max-width:380px){.panel .table-grid{gap:5px}.panel .table-tile{min-height:53px;border-radius:9px}.panel .table-tile .tile-num{font-size:20px}}
 </style></head><body>
 <section id="setup"><div class="panel"><h1>⚔️ TABLES BATTLE DUO</h1><p>Deux joueurs, une tablette, deux claviers opposés.</p><div class="setting">Mode</div><div class="choices" id="modes"></div><div class="setting">Tables de Zoum · bleu</div><div class="choices" id="tables0"></div><div class="setting">Tables de Nox · violet</div><div class="choices" id="tables1"></div><div class="setting">Durée</div><div class="choices" id="times"></div><label><input type="checkbox" id="sound" checked> Sons du duel</label><p><button class="primary" id="start">⚡ LANCER LE DUEL</button></p><p class="muted">Pose l'appareil à plat. Le côté bleu est retourné à 180°. Sur téléphone, le mode portrait est conseillé.</p><a href="tables-multiplication.html">← Retour aux tables</a></div></section>
 <main id="arena" hidden><section class="side blue" id="side0"><div class="hud"><span><span class="wolf" id="wolf0" aria-label="Zoum Zoumaï"><span class="wolf-head"></span></span> ZOUM <span id="combo0"></span></span><span class="score" id="score0">0</span></div><div class="question" id="q0"></div><div class="entry" id="a0">?</div><div class="pad" id="pad0"></div><div class="feedback" id="f0"></div></section><div class="center"><strong id="clock">60 s</strong><div class="meter" id="meter"></div><strong>⚔️</strong><button id="quit" aria-label="Quitter le duel">✕</button></div><section class="side pink" id="side1"><div class="hud"><span><span class="nox" id="wolf1" aria-label="Nox"><img src="assets/nox-chat-graffiti.svg" alt="Nox"></span> NOX <span id="combo1"></span></span><span class="score" id="score1">0</span></div><div class="question" id="q1"></div><div class="entry" id="a1">?</div><div class="pad" id="pad1"></div><div class="feedback" id="f1"></div></section></main>
@@ -171,7 +190,22 @@ const tables=[new Set([2,3,4,5,6,7,8,9,10]),new Set([2,3,4,5,6,7,8,9,10])];
 let mode='flash',duration=60,active=false,remaining=60,tick=null,deadline=0,shared=null,round=0,audio=null,token=0;
 const players=[0,1].map(()=>({score:0,combo:0,correct:0,errors:0,input:'',q:null,lockedUntil:0,mistakes:new Map(),slow:new Map(),eliminated:false}));
 function sound(freq=660){if(!$('sound').checked)return;try{audio=audio||new(window.AudioContext||window.webkitAudioContext)();if(audio.state==='suspended')audio.resume();const o=audio.createOscillator(),g=audio.createGain();o.type='sine';o.frequency.setValueAtTime(freq,audio.currentTime);g.gain.setValueAtTime(.055,audio.currentTime);g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+.12);o.connect(g);g.connect(audio.destination);o.start();o.stop(audio.currentTime+.13)}catch(e){}}
-function options(){ $('modes').replaceChildren();modes.forEach(([id,label,help])=>{const b=document.createElement('button');b.className='choice'+(mode===id?' on':'');b.innerHTML=label+'<small>'+help+'</small>';b.onclick=()=>{mode=id;options()};$('modes').append(b)});for(let i=0;i<2;i++){const root=$('tables'+i);root.replaceChildren();for(let n=2;n<=12;n++){const b=document.createElement('button');b.className='choice table-choice'+(tables[i].has(n)?' on':' off');b.setAttribute('aria-pressed',String(tables[i].has(n)));b.textContent=(tables[i].has(n)?'✓ ':'○ ')+'×'+n;b.onclick=()=>{if(tables[i].has(n)&&tables[i].size>1)tables[i].delete(n);else tables[i].add(n);options()};root.append(b)}}$('times').replaceChildren();[60,90,120].forEach(n=>{const b=document.createElement('button');b.className='choice'+(duration===n?' on':'');b.textContent=n+' s';b.onclick=()=>{duration=n;options()};$('times').append(b)})}
+function options(){
+ $('modes').replaceChildren();
+ modes.forEach(([id,label,help])=>{const b=document.createElement('button');b.className='choice'+(mode===id?' on':'');b.innerHTML=label+'<small>'+help+'</small>';b.onclick=()=>{mode=id;options()};$('modes').append(b)});
+ for(let i=0;i<2;i++){
+  const root=$('tables'+i);root.replaceChildren();root.className='table-picker '+(i?'picker-nox':'picker-zoum');
+  const all=document.createElement('button');all.type='button';all.className='table-all'+(tables[i].size===11?' selected':'');all.setAttribute('aria-pressed',String(tables[i].size===11));all.innerHTML='<span class="all-icon">✦</span><span>TOUTES LES TABLES</span><span class="all-count">'+tables[i].size+'/11</span>';
+  all.onclick=()=>{tables[i]=new Set(Array.from({length:11},(_,k)=>k+2));options()};root.append(all);
+  const grid=document.createElement('div');grid.className='table-grid';root.append(grid);
+  for(let n=2;n<=12;n++){
+   const selected=tables[i].has(n),b=document.createElement('button');b.type='button';b.className='table-tile'+(selected?' selected':'');b.setAttribute('aria-pressed',String(selected));b.setAttribute('aria-label','Table de '+n+(selected?' sélectionnée':' non sélectionnée'));
+   b.innerHTML='<span class="tile-num">'+n+'</span><span class="tile-mark" aria-hidden="true">'+(selected?'✓':'+')+'</span>';
+   b.onclick=()=>{if(selected&&tables[i].size===1)return;if(selected)tables[i].delete(n);else tables[i].add(n);options()};grid.append(b)
+  }
+ }
+ $('times').replaceChildren();[60,90,120].forEach(n=>{const b=document.createElement('button');b.className='choice'+(duration===n?' on':'');b.textContent=n+' s';b.onclick=()=>{duration=n;options()};$('times').append(b)})
+}
 function makeQuestion(i){const list=[...tables[i]];let a=list[Math.floor(Math.random()*list.length)],b=2+Math.floor(Math.random()*11);if(mode==='champion'){const stage=Math.min(2,Math.floor(round/5));const hard=list.filter(t=>t>=4+stage*2);if(hard.length)a=hard[Math.floor(Math.random()*hard.length)];b=2+stage*2+Math.floor(Math.random()*(11-stage*2))}return {a,b}}
 function key(q){return q.a+' × '+q.b}
 function setQuestion(i,q){const p=players[i];p.q=q;p.input='';$('q'+i).textContent=key(q)+' = ?';$('a'+i).textContent='?'}
