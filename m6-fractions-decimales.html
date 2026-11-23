@@ -95,11 +95,19 @@ function mathFractions(root){
 function fractionsGrid(total,den,caption){let out='<div><div class="units">',left=total;let boxes=Math.ceil(total/den);for(let z=0;z<boxes;z++){let amount=Math.min(left,den);left-=amount;out+='<div class="unit '+(den===10?'bars':'')+'" aria-label="'+amount+' cases colorées sur '+den+'">';for(let i=0;i<(den===10?10:100);i++){let active=den===1000?i<Math.round(amount/10):i<amount;out+='<span class="'+(active?'filled':'')+'"></span>'}out+='</div>'}return out+'</div><div class="chart-note">'+caption+'</div></div>'}
 function shapeFor(n,d){if(d===1000){let full=Math.floor(n/1000),rest=n%1000;return fractionsGrid(full*100+Math.round(rest/10),100,'Chaque grand carré représente 1 unité. Les millièmes sont regroupés par dizaines pour la visualisation.')}return fractionsGrid(n,d,'Chaque grand dessin représente 1 unité.')}
 function lineView(n,d){
- const x0=45,unitWidth=215,y=75,pointX=x0+unitWidth*n/d;
- let s='<svg class="numberline" viewBox="0 0 760 155" role="img" aria-label="Demi-droite graduée de 0 à 3, repère A"><path d="M'+x0+' '+y+'H730" stroke="#234c62" stroke-width="3"/><path d="M718 68l12 7-12 7" fill="none" stroke="#234c62" stroke-width="3"/>';
- for(let i=0;i<=3;i++){const x=x0+i*unitWidth;s+='<path d="M'+x+' 58v34" stroke="#234c62" stroke-width="3"/><text x="'+x+'" y="120" text-anchor="middle" font-size="23" font-weight="bold" fill="#234c62">'+i+'</text>'}
- for(let i=0;i<30;i++){if(i%10===0)continue;const x=x0+i*unitWidth/10;s+='<path d="M'+x+' 69v12" stroke="#7aafc7" stroke-width="1.5"/>'}
- s+='<path d="M'+pointX+' 24v35" stroke="#e60065" stroke-width="3"/><path d="M'+(pointX-7)+' 49l7 12 7-12" fill="#e60065"/><text x="'+pointX+'" y="20" text-anchor="middle" font-size="22" font-weight="bold" fill="#e60065">A</text></svg>';return s
+ // Une seule unité visible à la fois : lisibilité des centièmes sur mobile.
+ const start=Math.floor(n/d),end=start+1,x0=36,x1=716,width=x1-x0,y=75;
+ const pointX=x0+(n/d-start)*width;
+ let s='<svg class="numberline" viewBox="0 0 760 150" role="img" aria-label="Demi-droite graduée de '+start+' à '+end+', en '+(d===10?'dixièmes':'centièmes')+', repère A">';
+ s+='<path d="M'+x0+' '+y+'H736" stroke="#234c62" stroke-width="3"/><path d="M724 68l12 7-12 7" fill="none" stroke="#234c62" stroke-width="3"/>';
+ for(let i=0;i<=d;i++){
+   const x=x0+i*width/d,integer=i===0||i===d,tenth=i%(d/10)===0;
+   const top=integer?52:tenth?59:70,bottom=integer?96:tenth?91:80;
+   s+='<path d="M'+x.toFixed(2)+' '+top+'V'+bottom+'" stroke="'+(integer?'#234c62':tenth?'#2b8aaf':'#8aafc0')+'" stroke-width="'+(integer?3.5:tenth?2.5:1)+'"/>';
+ }
+ for(const [i,label] of [[0,start],[d,end]]){const x=x0+i*width/d;s+='<text x="'+x+'" y="126" text-anchor="middle" font-size="24" font-weight="bold" fill="#234c62">'+label+'</text>'}
+ s+='<path d="M'+pointX.toFixed(2)+' 22v33" stroke="#e60065" stroke-width="3"/><path d="M'+(pointX-7).toFixed(2)+' 47l7 12 7-12" fill="#e60065"/><text x="'+pointX.toFixed(2)+'" y="17" text-anchor="middle" font-size="22" font-weight="bold" fill="#e60065">A</text></svg>';
+ return s;
 }
 const wordUnit={10:'dixièmes',100:'centièmes',1000:'millièmes'};
 function asWords(n,d){let list=['zéro','un','deux','trois','quatre','cinq','six','sept','huit','neuf','dix','onze','douze','treize','quatorze','quinze','seize','dix-sept','dix-huit','dix-neuf','vingt'];return n<=20?list[n]+' '+wordUnit[d]:n+' '+wordUnit[d]}
@@ -110,7 +118,7 @@ case 0:d=pick([10,100]);n=d===10?rnd(1,26):rnd(11,235);return Q('input','Observe
 case 1:d=pick([10,100,1000]);a=rnd(1,4);b=rnd(1,d-1);n=a*d+b;return Q('choice','Quelle écriture correspond à '+fraction(n,d)+' ?','<span class="badge">Écriture sous plusieurs formes</span>',a+' + '+fraction(b,d),[a+' + '+fraction(b,d),(a+1)+' + '+fraction(b,d),a+' + '+fraction(d-b,d),b+' + '+fraction(a,d)],'Sépare les '+a+' unités entières du reste.',''+fraction(n,d)+' = '+a+' + '+fraction(b,d)+'.');
 case 2:d=pick([10,100,1000]);n=rnd(1,20);if(rnd(0,1)){return Q('input','Écris cette fraction en chiffres : « '+asWords(n,d)+' ».','<span class="badge">Je passe des mots aux chiffres</span>',fraction(n,d),[],'Le dénominateur de « '+wordUnit[d]+' » est '+d+'.','La réponse est '+fraction(n,d)+'.')}return Q('choice','Comment lit-on la fraction '+fraction(n,d)+' ?','<span class="badge">Je passe des chiffres aux mots</span>',asWords(n,d),[asWords(n,d),asWords(n,d===10?100:10),asWords(n,d===1000?100:1000),asWords(n+1,d)],'Observe le dénominateur : '+d+'.',''+fraction(n,d)+' se lit « '+asWords(n,d)+' ».');
 case 3: a=pick([1,4,5]);return Q('multi','Sélectionne TOUTES les fractions égales à '+a+'.','<span class="badge">Plusieurs réponses sont possibles</span>',[fraction(a*10,10),fraction(a*100,100),fraction(a*1000,1000)],shuffle([fraction(a*10,10),fraction(a*100,100),fraction(a*1000,1000),fraction(a,10),fraction(a*10,100),fraction(a*100,1000)]),'Dans une fraction égale à un entier, le numérateur est le dénominateur multiplié par cet entier.',''+a+' = '+fraction(a*10,10)+' = '+fraction(a*100,100)+' = '+fraction(a*1000,1000)+'.');
-case 4:d=pick([10,100]);n=d===10?rnd(1,28):rnd(11,288);return Q('input','Sur la demi-droite, quelle fraction est repérée par la lettre A ?',lineView(n,d),fraction(n,d),[],'Les grandes graduations indiquent 0, 1, 2 et 3. Chaque unité est partagée en dix parts égales. Pour les centièmes, observe la position entre deux dixièmes.','A se trouve à '+fraction(n,d)+'.');
+case 4:d=pick([10,100]);n=d===10?rnd(1,28):rnd(11,288);return Q('input','Sur la demi-droite, quelle fraction est repérée par la lettre A ?',lineView(n,d),fraction(n,d),[],'La demi-droite montre une unité entière, par exemple de 1 à 2. Les grandes graduations intermédiaires sont les dixièmes ; les petites sont les centièmes quand il y en a.','A se trouve à '+fraction(n,d)+'.');
 case 5:d=pick([10,100,1000]);a=rnd(1,d*2);b=rnd(1,d*2);if(a===b)b++;sol=a>b?'>':'<';return Q('choice','Complète avec <, > ou =.','<span class="badge">'+fraction(a,d)+' &nbsp; … &nbsp; '+fraction(b,d)+'</span>',sol,['<','>','='],'Quand les dénominateurs sont identiques, compare les numérateurs.',''+a+' '+sol+' '+b+' donc '+fraction(a,d)+' '+sol+' '+fraction(b,d)+'.');
 case 6:d=pick([10,100,1000]);a=rnd(1,4);b=rnd(1,d-1);n=a*d+b;return Q('input','Complète le numérateur manquant : '+a+' + '+fraction(b,d)+' = ?/'+d+'.','<span class="badge">Une somme à transformer en fraction</span>',String(n),[],'Calcule '+a+' × '+d+' + '+b+'.',''+a+' + '+fraction(b,d)+' = '+fraction(n,d)+'.');
 default:t=rnd(0,3);if(t===0)return make(0);if(t===1)return make(1);if(t===2)return make(4);return make(6)
