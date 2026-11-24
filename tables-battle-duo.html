@@ -223,6 +223,32 @@ html,body{background:#090d1b}
 /* Personnages authentiques : fichiers originaux, jamais redessinés */
 .wolf-head,.versus-wolf{background-image:url("images/loup-bleu-original.png")!important;background-size:contain!important;background-position:center!important;background-repeat:no-repeat!important}
 .nox img,.versus-player img{object-fit:contain}
+</style><style>
+/* Feedback de victoire des deux mascottes originales : aucun redessin */
+.final-scene{isolation:isolate}
+.final-scene:before{content:"";position:absolute;inset:-50%;pointer-events:none;opacity:0;background:repeating-conic-gradient(from 0deg,#ffe65d44 0deg 9deg,transparent 9deg 23deg,#fff5 23deg 27deg,transparent 27deg 45deg);z-index:0}
+.final-scene.wolf-wins:before,.final-scene.wolf-loses:before{opacity:1;animation:duoSpin 13s linear infinite}
+@keyframes duoSpin{to{transform:rotate(360deg)}}
+.final-scene.wolf-wins{background:radial-gradient(circle at 35% 50%,#28e4ff99,transparent 55%),linear-gradient(120deg,#063c6e,#182a73 60%,#472265)}
+.final-scene.wolf-loses{background:radial-gradient(circle at 68% 50%,#ef65ff99,transparent 55%),linear-gradient(120deg,#301e5e,#4b1773 65%,#851e7b)}
+.final-nox{position:relative}
+.nox-crown,.nox-tears,.nox-spark{position:absolute;pointer-events:none;z-index:5}
+.nox-crown{top:-17%;left:29%;font-size:clamp(28px,6vh,47px);opacity:0;transform:translateY(-100px) rotate(-35deg);filter:drop-shadow(0 0 8px #ffe35b)}
+.nox-tears{top:45%;left:43%;font-size:27px;opacity:0}
+.nox-spark{top:5%;right:-12%;font-size:clamp(28px,6vh,52px);color:#ffe661;text-shadow:0 0 20px #ff4bea;opacity:0}
+.final-scene.wolf-loses .nox-crown{opacity:1;animation:duoCrownDrop .8s cubic-bezier(.2,1.3,.5,1) both}
+.final-scene.wolf-loses .nox-spark{opacity:1;animation:duoSpark .7s ease-in-out infinite alternate}
+.final-scene.wolf-wins .nox-tears{opacity:1;animation:cryDrops .85s ease-in infinite}
+.final-scene.wolf-wins .final-nox{animation:loseSlump 1.1s ease-out both}
+.final-scene.wolf-wins .final-crown{animation:duoCrownDrop .8s cubic-bezier(.2,1.3,.5,1) both}
+.final-scene.wolf-loses .final-crown{opacity:0!important;display:none}
+.final-scene.draw .nox-crown,.final-scene.draw .nox-tears,.final-scene.draw .nox-spark{display:none}
+.victory-burst{position:absolute;left:50%;top:45%;transform:translate(-50%,-50%);font-size:clamp(19px,5vw,39px);font-weight:1000;letter-spacing:.3em;color:#ffe76e;text-shadow:0 0 17px #fff,0 0 30px #ed55ff;opacity:0;pointer-events:none;z-index:1}
+.final-scene:not(.draw) .victory-burst{opacity:1;animation:duoBurst 1.3s ease-out both}
+@keyframes duoCrownDrop{0%{transform:translateY(-110px) rotate(-35deg) scale(.4)}60%{transform:translateY(5px) rotate(8deg) scale(1.25)}100%{transform:translateY(0) rotate(-9deg) scale(1)}}
+@keyframes duoSpark{to{transform:scale(1.4) rotate(25deg);filter:drop-shadow(0 0 18px #ffe66d)}}
+@keyframes duoBurst{0%{transform:translate(-50%,-50%) scale(.2) rotate(-35deg);opacity:0}35%{opacity:1}100%{transform:translate(-50%,-50%) scale(1.5) rotate(12deg);opacity:.6}}
+@media(prefers-reduced-motion:reduce){.final-scene:before,.final-scene .nox-crown,.final-scene .nox-spark,.final-scene .nox-tears,.final-scene .victory-burst{animation:none!important}.final-scene.wolf-loses .nox-crown{transform:none;opacity:1}.final-scene.wolf-wins .final-crown{transform:none}}
 </style></head><body>
 <section id="setup"><div class="panel wizard-panel">
 <div class="wizard-progress" aria-label="Progression"><span class="progress-dot active"></span><span class="progress-dot"></span><span class="progress-dot"></span><span class="progress-dot"></span></div>
@@ -233,7 +259,7 @@ html,body{background:#090d1b}
 </div></section>
 <main id="arena" hidden><section class="side blue" id="side0"><div class="hud"><span><span class="wolf" id="wolf0" aria-label="Zoum Zoumaï"><span class="wolf-head"></span></span> ZOUM <span id="combo0"></span></span><span class="score" id="score0">0</span></div><div class="question" id="q0"></div><div class="entry" id="a0">?</div><div class="pad" id="pad0"></div><div class="feedback" id="f0"></div></section><div class="center"><strong id="clock">60 s</strong><div class="meter" id="meter"></div><strong>⚔️</strong><button id="quit" aria-label="Quitter le duel">✕</button></div><section class="side pink" id="side1"><div class="hud"><span><span class="nox" id="wolf1" aria-label="Nox"><img src="assets/nox-original.png" alt="Nox"></span> NOX <span id="combo1"></span></span><span class="score" id="score1">0</span></div><div class="question" id="q1"></div><div class="entry" id="a1">?</div><div class="pad" id="pad1"></div><div class="feedback" id="f1"></div></section></main>
 <div id="countdown" hidden aria-live="assertive"></div>
-<section id="finish" hidden><div class="panel"><div id="finalScene" class="final-scene" aria-hidden="true"><div id="finalWolf" class="final-wolf"><span class="final-head"></span><span class="final-crown">👑</span><span class="final-tears">💧💧</span><span class="final-laugh">HA HA !</span></div><div id="finalNox" class="final-nox"><img src="assets/nox-original.png" alt=""></div><div id="confetti" class="confetti"></div></div><h1 id="winner"></h1><p id="results"></p><div id="report" class="report"></div><button class="primary" id="again">🔁 REJOUER</button><p><a href="tables-multiplication.html">Retour aux tables</a></p></div></section>
+<section id="finish" hidden><div class="panel"><div id="finalScene" class="final-scene" aria-hidden="true"><div id="finalWolf" class="final-wolf"><span class="final-head"></span><span class="final-crown">👑</span><span class="final-tears">💧💧</span><span class="final-laugh">HA HA !</span></div><div id="finalNox" class="final-nox"><img src="assets/nox-original.png" alt=""><span class="nox-crown">👑</span><span class="nox-tears">💧</span><span class="nox-spark">✦</span></div><div class="victory-burst" aria-hidden="true">✦ ⚡ ★ ✦</div><div id="confetti" class="confetti"></div></div><h1 id="winner"></h1><p id="results"></p><div id="report" class="report"></div><button class="primary" id="again">🔁 REJOUER</button><p><a href="tables-multiplication.html">Retour aux tables</a></p></div></section>
 <script>
 'use strict';
 const $=id=>document.getElementById(id),modes=[['flash','⚡ Éclair','Même calcul, premier à répondre'],['race','🏁 Course','Premier à 15 bonnes réponses'],['survival','❤️ Survie','Trois erreurs maximum'],['champion','👑 Champion','Trois manches progressives']];
