@@ -283,7 +283,7 @@ html,body{background:#090d1b}
 .side.pink .pad button.confirm{border:2px solid #c9ffdf!important;box-shadow:0 0 14px #42ff9a,0 0 24px #42ff9a77!important}
 .side .pad button.clear{border:2px solid #ffc1cb!important;box-shadow:0 0 13px #ff6588aa!important}
 @media(prefers-reduced-motion:reduce){.side .pad button{transition:none}}
-</style><style>.sprite-ready{background-image:var(--sprite)!important;background-size:contain!important;background-position:center!important;background-repeat:no-repeat!important}.sprite-ready>.wolf-head,.sprite-ready>.final-head,.sprite-ready>img{visibility:hidden!important}.sprite-ready:before,.sprite-ready:after{background-image:none!important}.sprite-ready>.final-crown,.sprite-ready>.nox-crown{display:none!important}</style></head><body>
+</style><style>.sprite-ready{background-image:var(--sprite)!important;background-size:contain!important;background-position:center!important;background-repeat:no-repeat!important}.sprite-ready>.wolf-head,.sprite-ready>.final-head,.sprite-ready>img{visibility:hidden!important}.sprite-ready:before,.sprite-ready:after{background-image:none!important}.sprite-ready>.final-crown,.sprite-ready>.nox-crown{display:none!important}</style><style>.final-scene.gif-ready{position:relative;min-height:clamp(160px,42vh,360px)}.final-scene.gif-ready> :not(.duo-victory-gif){visibility:hidden}.duo-victory-gif{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:5}.duo-victory-gif[hidden]{display:none!important}</style></head><body>
 <section id="setup"><div class="panel wizard-panel">
 <div class="wizard-progress" aria-label="Progression"><span class="progress-dot active"></span><span class="progress-dot"></span><span class="progress-dot"></span><span class="progress-dot"></span></div>
 <div class="wizard-step" data-step="0"><div class="versus-art"><div class="versus-player"><span class="versus-wolf"></span><strong>ZOUM</strong></div><div class="versus-title"><small>TABLES BATTLE</small><b>DUO</b><em>⚡ VS ⚡</em></div><div class="versus-player"><img src="assets/nox-original.png" alt="Maï, le chat électrique"><strong>MAÏ</strong></div></div><h1>PRÊTS POUR LE DUEL ?</h1><p>Deux joueurs, une tablette, deux claviers opposés.</p><button class="primary wizard-next" data-next="1">⚡ CHOISIR LES TABLES</button><p><a href="tables-multiplication.html">← Retour aux tables</a></p></div>
@@ -370,5 +370,12 @@ reset=function(){oldReset();for(let i=0;i<2;i++){clearTimeout(timers[i]);pose(do
 victoryScene=function(a,b){oldVictory(a,b);pose(document.getElementById('finalWolf'),0,a>b?'happy':a<b?'think':'neutral');pose(document.getElementById('finalMaï'),1,b>a?'happy':b<a?'think':'neutral')};
 function init(){document.querySelectorAll('.versus-wolf').forEach(el=>pose(el,0,'neutral'));document.querySelectorAll('.versus-player img').forEach(el=>{const img=loaded['mai-neutral'];if(img.complete&&img.naturalWidth)el.src=img.src});for(let i=0;i<2;i++)pose(document.getElementById('wolf'+i),i,'neutral')}
 Object.values(loaded).forEach(img=>img.addEventListener('load',init));init();
+})();
+</script><script>
+(function(){
+const scene=document.getElementById('finalScene');if(!scene)return;
+const gif=document.createElement('img');gif.alt='Animation de victoire de Zoum et Maï';gif.className='duo-victory-gif';gif.hidden=true;scene.appendChild(gif);
+let run=0;const previous=victoryScene;
+victoryScene=function(a,b){previous(a,b);const id=++run;gif.hidden=true;scene.classList.remove('gif-ready');if(a===b)return;const src='assets/'+(a>b?'zoum':'mai')+'-victory.gif';gif.onload=()=>{if(id===run){gif.hidden=false;scene.classList.add('gif-ready')}};gif.onerror=()=>{if(id===run){gif.hidden=true;scene.classList.remove('gif-ready')}};gif.src=src+'?play='+Date.now()};
 })();
 </script></body></html>
