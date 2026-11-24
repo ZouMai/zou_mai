@@ -283,7 +283,7 @@ html,body{background:#090d1b}
 .side.pink .pad button.confirm{border:2px solid #c9ffdf!important;box-shadow:0 0 14px #42ff9a,0 0 24px #42ff9a77!important}
 .side .pad button.clear{border:2px solid #ffc1cb!important;box-shadow:0 0 13px #ff6588aa!important}
 @media(prefers-reduced-motion:reduce){.side .pad button{transition:none}}
-</style></head><body>
+</style><style>.sprite-ready{background-image:var(--sprite)!important;background-size:contain!important;background-position:center!important;background-repeat:no-repeat!important}.sprite-ready>.wolf-head,.sprite-ready>.final-head,.sprite-ready>img{visibility:hidden!important}.sprite-ready:before,.sprite-ready:after{background-image:none!important}.sprite-ready>.final-crown,.sprite-ready>.nox-crown{display:none!important}</style></head><body>
 <section id="setup"><div class="panel wizard-panel">
 <div class="wizard-progress" aria-label="Progression"><span class="progress-dot active"></span><span class="progress-dot"></span><span class="progress-dot"></span><span class="progress-dot"></span></div>
 <div class="wizard-step" data-step="0"><div class="versus-art"><div class="versus-player"><span class="versus-wolf"></span><strong>ZOUM</strong></div><div class="versus-title"><small>TABLES BATTLE</small><b>DUO</b><em>⚡ VS ⚡</em></div><div class="versus-player"><img src="assets/nox-original.png" alt="Maï, le chat électrique"><strong>MAÏ</strong></div></div><h1>PRÊTS POUR LE DUEL ?</h1><p>Deux joueurs, une tablette, deux claviers opposés.</p><button class="primary wizard-next" data-next="1">⚡ CHOISIR LES TABLES</button><p><a href="tables-multiplication.html">← Retour aux tables</a></p></div>
@@ -355,5 +355,20 @@ function update(){
  requestAnimationFrame(update);
 }
 update();
+})();
+</script><script>
+(function(){
+const base='assets/duo-sprites/', names=['zoum','mai'], states=['neutral','happy','think'], loaded={};
+for(const n of names)for(const st of states){const img=new Image();img.src=base+n+'-'+st+'.png';loaded[n+'-'+st]=img}
+const timers=[];
+function pose(el,i,state){if(!el)return;const img=loaded[names[i]+'-'+state];if(!img.complete||!img.naturalWidth)return;el.classList.add('sprite-ready');el.style.setProperty('--sprite','url("'+img.src+'")')}
+function react(i,state){const el=document.getElementById('wolf'+i);pose(el,i,state);clearTimeout(timers[i]);timers[i]=setTimeout(()=>pose(el,i,'neutral'),1100)}
+const oldCelebrate=celebrate,oldSad=sadWolf,oldReset=reset,oldVictory=victoryScene;
+celebrate=function(i){oldCelebrate(i);react(i,'happy')};
+sadWolf=function(i){oldSad(i);react(i,'think')};
+reset=function(){oldReset();for(let i=0;i<2;i++){clearTimeout(timers[i]);pose(document.getElementById('wolf'+i),i,'neutral')}};
+victoryScene=function(a,b){oldVictory(a,b);pose(document.getElementById('finalWolf'),0,a>b?'happy':a<b?'think':'neutral');pose(document.getElementById('finalMaï'),1,b>a?'happy':b<a?'think':'neutral')};
+function init(){document.querySelectorAll('.versus-wolf').forEach(el=>pose(el,0,'neutral'));document.querySelectorAll('.versus-player img').forEach(el=>{const img=loaded['mai-neutral'];if(img.complete&&img.naturalWidth)el.src=img.src});for(let i=0;i<2;i++)pose(document.getElementById('wolf'+i),i,'neutral')}
+Object.values(loaded).forEach(img=>img.addEventListener('load',init));init();
 })();
 </script></body></html>
