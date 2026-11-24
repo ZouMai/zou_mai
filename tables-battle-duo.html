@@ -358,7 +358,7 @@ update();
 })();
 </script><script>
 (function(){
-const base='assets/duo-sprites/', names=['zoum','mai'], states=['neutral','happy','think'], loaded={};
+const base='assets/', names=['zoum','mai'], states=['neutral','happy','think'], loaded={};
 for(const n of names)for(const st of states){const img=new Image();img.src=base+n+'-'+st+'.png';loaded[n+'-'+st]=img}
 const timers=[];
 function pose(el,i,state){if(!el)return;const img=loaded[names[i]+'-'+state];if(!img.complete||!img.naturalWidth)return;el.classList.add('sprite-ready');el.style.setProperty('--sprite','url("'+img.src+'")')}
