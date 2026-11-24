@@ -249,6 +249,26 @@ html,body{background:#090d1b}
 @keyframes duoSpark{to{transform:scale(1.4) rotate(25deg);filter:drop-shadow(0 0 18px #ffe66d)}}
 @keyframes duoBurst{0%{transform:translate(-50%,-50%) scale(.2) rotate(-35deg);opacity:0}35%{opacity:1}100%{transform:translate(-50%,-50%) scale(1.5) rotate(12deg);opacity:.6}}
 @media(prefers-reduced-motion:reduce){.final-scene:before,.final-scene .nox-crown,.final-scene .nox-spark,.final-scene .nox-tears,.final-scene .victory-burst{animation:none!important}.final-scene.wolf-loses .nox-crown{transform:none;opacity:1}.final-scene.wolf-wins .final-crown{transform:none}}
+</style><style>
+/* Neon arcade 2026 : horloge et jauge de temps permanentes */
+#arena{grid-template-rows:minmax(0,1fr) 64px minmax(0,1fr);gap:4px}
+.center{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;grid-template-rows:23px 17px;align-content:center;align-items:center;gap:3px 8px;padding:5px 9px;border:2px solid #ffe85a;border-radius:12px;box-shadow:0 0 12px #ffe85a88, inset 0 0 14px #26dfff22}
+.center #clock{grid-column:1;grid-row:1 / 3;font-size:clamp(17px,4vw,25px);min-width:62px;text-align:center;color:#fff;text-shadow:0 0 9px #ffe45e,0 0 19px #ffe45e}
+.center .meter{grid-column:2;grid-row:1;height:13px;width:100%;min-width:0}
+.center .time-track{grid-column:2;grid-row:2;width:100%;height:13px;border:2px solid #b9faff;border-radius:99px;background:#071024;overflow:hidden;box-shadow:0 0 9px #00e5ff99}
+.center .time-fill{height:100%;width:100%;background:linear-gradient(90deg,#00e5ff,#49ffae);border-radius:99px;box-shadow:0 0 12px #38ffcf;transition:width .1s linear,background .2s}
+.center .time-label{grid-column:3;grid-row:1 / 3;font-size:clamp(9px,2.4vw,12px);color:#bdfdff;font-weight:950;letter-spacing:.04em}
+.center #quit{grid-column:4;grid-row:1 / 3}
+.center.time-warning .time-fill{background:linear-gradient(90deg,#ffb22d,#ffe85a);box-shadow:0 0 13px #ffad28}
+.center.time-danger .time-fill{background:linear-gradient(90deg,#ff335f,#ff8d34);box-shadow:0 0 15px #ff4269}
+.center.time-danger #clock{color:#ffb6c2;text-shadow:0 0 13px #ff315e;animation:clockPulse .6s ease-in-out infinite alternate}
+@keyframes clockPulse{to{transform:scale(1.1);filter:brightness(1.35)}}
+.side.blue{box-shadow:inset 0 0 32px #00eaff22,0 0 21px #00eaffaa}
+.side.pink{box-shadow:inset 0 0 32px #ed53ff22,0 0 21px #ed53ffaa}
+.side .pad button{border-color:#d7faff;box-shadow:inset 0 1px 0 #fff9,0 0 12px #00eaff88}
+.side.pink .pad button{border-color:#ffe1ff;box-shadow:inset 0 1px 0 #fff9,0 0 12px #ed53ff99}
+@media(max-height:550px){#arena{grid-template-rows:minmax(0,1fr) 54px minmax(0,1fr)}.center{grid-template-rows:18px 12px;padding:2px 6px}.center .time-track{height:11px}.center .meter{height:11px}}
+@media(prefers-reduced-motion:reduce){.center.time-danger #clock{animation:none}}
 </style></head><body>
 <section id="setup"><div class="panel wizard-panel">
 <div class="wizard-progress" aria-label="Progression"><span class="progress-dot active"></span><span class="progress-dot"></span><span class="progress-dot"></span><span class="progress-dot"></span></div>
@@ -257,7 +277,7 @@ html,body{background:#090d1b}
 <div class="wizard-step" data-step="2" hidden><h1>🏆 QUEL MODE ?</h1><p>Choisissez les règles de votre duel.</p><div class="choices mode-cards" id="modes"></div><div class="setting">⏱️ DURÉE</div><div class="choices" id="times"></div><label class="sound-toggle"><input type="checkbox" id="sound" checked> 🔊 Sons du duel</label><div class="wizard-nav"><button class="wizard-back" data-back="1">← RETOUR</button><button class="primary wizard-next" data-next="3">RÉCAPITULATIF →</button></div></div>
 <div class="wizard-step" data-step="3" hidden><h1>🔥 LE DUEL EST PRÊT !</h1><div class="versus-art mini"><div class="versus-player"><span class="versus-wolf"></span><strong>ZOUM</strong></div><div class="versus-title"><b>VS</b></div><div class="versus-player"><img src="assets/nox-original.png" alt=""><strong>NOX</strong></div></div><div class="duel-summary" id="duelSummary" aria-live="polite"></div><p class="muted">Posez la tablette à plat, chacun face à son clavier.</p><div class="wizard-nav"><button class="wizard-back" data-back="2">← MODIFIER</button><button class="primary" id="start">⚡ LANCER LE DUEL</button></div></div>
 </div></section>
-<main id="arena" hidden><section class="side blue" id="side0"><div class="hud"><span><span class="wolf" id="wolf0" aria-label="Zoum Zoumaï"><span class="wolf-head"></span></span> ZOUM <span id="combo0"></span></span><span class="score" id="score0">0</span></div><div class="question" id="q0"></div><div class="entry" id="a0">?</div><div class="pad" id="pad0"></div><div class="feedback" id="f0"></div></section><div class="center"><strong id="clock">60 s</strong><div class="meter" id="meter"></div><strong>⚔️</strong><button id="quit" aria-label="Quitter le duel">✕</button></div><section class="side pink" id="side1"><div class="hud"><span><span class="nox" id="wolf1" aria-label="Nox"><img src="assets/nox-original.png" alt="Nox"></span> NOX <span id="combo1"></span></span><span class="score" id="score1">0</span></div><div class="question" id="q1"></div><div class="entry" id="a1">?</div><div class="pad" id="pad1"></div><div class="feedback" id="f1"></div></section></main>
+<main id="arena" hidden><section class="side blue" id="side0"><div class="hud"><span><span class="wolf" id="wolf0" aria-label="Zoum Zoumaï"><span class="wolf-head"></span></span> ZOUM <span id="combo0"></span></span><span class="score" id="score0">0</span></div><div class="question" id="q0"></div><div class="entry" id="a0">?</div><div class="pad" id="pad0"></div><div class="feedback" id="f0"></div></section><div class="center"><strong id="clock">60 s</strong><div class="meter" id="meter"></div><div class="time-track" role="progressbar" aria-label="Temps restant" aria-valuemin="0" aria-valuemax="60" aria-valuenow="60" id="timeTrack"><div class="time-fill" id="timeFill"></div></div><strong class="time-label">TEMPS</strong><button id="quit" aria-label="Quitter le duel">✕</button></div><section class="side pink" id="side1"><div class="hud"><span><span class="nox" id="wolf1" aria-label="Nox"><img src="assets/nox-original.png" alt="Nox"></span> NOX <span id="combo1"></span></span><span class="score" id="score1">0</span></div><div class="question" id="q1"></div><div class="entry" id="a1">?</div><div class="pad" id="pad1"></div><div class="feedback" id="f1"></div></section></main>
 <div id="countdown" hidden aria-live="assertive"></div>
 <section id="finish" hidden><div class="panel"><div id="finalScene" class="final-scene" aria-hidden="true"><div id="finalWolf" class="final-wolf"><span class="final-head"></span><span class="final-crown">👑</span><span class="final-tears">💧💧</span><span class="final-laugh">HA HA !</span></div><div id="finalNox" class="final-nox"><img src="assets/nox-original.png" alt=""><span class="nox-crown">👑</span><span class="nox-tears">💧</span><span class="nox-spark">✦</span></div><div class="victory-burst" aria-hidden="true">✦ ⚡ ★ ✦</div><div id="confetti" class="confetti"></div></div><h1 id="winner"></h1><p id="results"></p><div id="report" class="report"></div><button class="primary" id="again">🔁 REJOUER</button><p><a href="tables-multiplication.html">Retour aux tables</a></p></div></section>
 <script>
@@ -303,4 +323,20 @@ let wizardStep=0;
 function showWizard(step){wizardStep=step;document.querySelectorAll('.wizard-step').forEach(el=>el.hidden=Number(el.dataset.step)!==step);document.querySelectorAll('.progress-dot').forEach((el,i)=>{el.classList.toggle('active',i===step);el.classList.toggle('done',i<step)});if(step===3){const label=modes.find(m=>m[0]===mode)?.[1]||mode;const exLabel=exerciseType==='missing'?'Facteur mystère':'Multiplication';$('duelSummary').textContent='🔵 Zoum : '+[...tables[0]].sort((a,b)=>a-b).join(', ')+'  |  🟣 Nox : '+[...tables[1]].sort((a,b)=>a-b).join(', ')+'  |  '+exLabel+'  |  '+label+'  |  '+duration+' secondes'}}
 document.querySelectorAll('.wizard-next').forEach(b=>b.onclick=()=>showWizard(Number(b.dataset.next)));document.querySelectorAll('.wizard-back').forEach(b=>b.onclick=()=>showWizard(Number(b.dataset.back)));
 $('start').onclick=begin;$('again').onclick=()=>{$('finish').hidden=true;$('setup').hidden=false;showWizard(0)};$('quit').onclick=()=>{if(!$('countdown').hidden){token++;$('countdown').hidden=true;$('arena').hidden=true;$('setup').hidden=false;showWizard(0);return}end()};document.addEventListener('touchmove',e=>{if(!$('arena').hidden)e.preventDefault()},{passive:false});pad(0);pad(1);options();
+</script><script>
+/* Affichage indépendant du chronomètre : ne modifie pas les règles du duel. */
+(function(){
+const clock=document.getElementById('clock'),track=document.getElementById('timeTrack'),fill=document.getElementById('timeFill'),center=document.querySelector('.center');
+if(!clock||!track||!fill||!center)return;
+function update(){
+ const seconds=Math.max(0,Number.parseInt(clock.textContent,10)||0);
+ const max=Math.max(1,typeof duration==='number'?duration:60);
+ const pct=Math.max(0,Math.min(100,seconds/max*100));
+ fill.style.width=pct+'%';track.setAttribute('aria-valuemax',String(max));track.setAttribute('aria-valuenow',String(seconds));
+ center.classList.toggle('time-warning',seconds>10&&seconds<=20);
+ center.classList.toggle('time-danger',seconds<=10);
+}
+new MutationObserver(update).observe(clock,{childList:true,characterData:true,subtree:true});
+update();
+})();
 </script></body></html>
