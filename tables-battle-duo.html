@@ -269,6 +269,20 @@ html,body{background:#090d1b}
 .side.pink .pad button{border-color:#ffe1ff;box-shadow:inset 0 1px 0 #fff9,0 0 12px #ed53ff99}
 @media(max-height:550px){#arena{grid-template-rows:minmax(0,1fr) 54px minmax(0,1fr)}.center{grid-template-rows:18px 12px;padding:2px 6px}.center .time-track{height:11px}.center .meter{height:11px}}
 @media(prefers-reduced-motion:reduce){.center.time-danger #clock{animation:none}}
+</style><style id="duo-neon-keypads">
+/* Claviers arcade lumineux, palettes distinctes et chiffres très lisibles */
+.side.blue .pad button:not(.clear):not(.confirm){background:linear-gradient(155deg,#80f5ff 0%,#19d7f5 52%,#0876b9 100%);color:#03162b;border:2px solid #a8faff;box-shadow:inset 0 2px 0 #ffffffa8,inset 0 -3px 0 #004a8d,0 0 9px #00eaffaa,0 0 20px #00cfff55;text-shadow:0 1px 0 #ffffff55}
+.side.blue .pad button:nth-child(3n+2):not(.clear):not(.confirm){background:linear-gradient(155deg,#c3faff,#4ee8ff 55%,#238ac9)}
+.side.blue .pad button:nth-child(3n):not(.clear):not(.confirm){background:linear-gradient(155deg,#c7d9ff,#71b5ff 55%,#4168db);border-color:#d9edff}
+.side.pink .pad button:not(.clear):not(.confirm){background:linear-gradient(155deg,#ffd1ff 0%,#f37aff 50%,#aa37e6 100%);color:#270735;border:2px solid #ffe1ff;box-shadow:inset 0 2px 0 #ffffffa8,inset 0 -3px 0 #7620a3,0 0 9px #ed53ffb8,0 0 20px #ed53ff66;text-shadow:0 1px 0 #ffffff66}
+.side.pink .pad button:nth-child(3n+2):not(.clear):not(.confirm){background:linear-gradient(155deg,#ffe2ff,#ff9be7 55%,#df47ae)}
+.side.pink .pad button:nth-child(3n):not(.clear):not(.confirm){background:linear-gradient(155deg,#e2c4ff,#bc80ff 55%,#8e42dc)}
+.side .pad button{font-weight:1000;font-size:clamp(20px,4.3vh,32px);transition:transform .1s,filter .1s,box-shadow .1s}
+.side .pad button:active{filter:brightness(1.35);transform:scale(.94);box-shadow:inset 0 0 16px #fff,0 0 25px #fff!important}
+.side.blue .pad button.confirm{border:2px solid #c9ffdf!important;box-shadow:0 0 14px #42ff9a,0 0 24px #42ff9a77!important}
+.side.pink .pad button.confirm{border:2px solid #c9ffdf!important;box-shadow:0 0 14px #42ff9a,0 0 24px #42ff9a77!important}
+.side .pad button.clear{border:2px solid #ffc1cb!important;box-shadow:0 0 13px #ff6588aa!important}
+@media(prefers-reduced-motion:reduce){.side .pad button{transition:none}}
 </style></head><body>
 <section id="setup"><div class="panel wizard-panel">
 <div class="wizard-progress" aria-label="Progression"><span class="progress-dot active"></span><span class="progress-dot"></span><span class="progress-dot"></span><span class="progress-dot"></span></div>
