@@ -381,6 +381,12 @@ body.resources-page{
   text-shadow:0 0 5px #fff,0 0 15px var(--sub-neon)!important;
 }
 </style>
+<style>
+.resources-page #dictees .item.dict-done{--item-neon:#34d9f4!important;border:2px solid #34d9f4!important;background:linear-gradient(135deg,#102e45,#111a2c 68%,#251838)!important;box-shadow:0 0 15px #24d6f64a,inset 0 0 22px #24d6f612!important}
+.resources-page #dictees .item.dict-current{--item-neon:#ffd34d!important;border:2px solid #ffd34d!important;background:linear-gradient(135deg,#423014,#171a2c)!important;box-shadow:0 0 22px #ffd34d88,inset 0 0 20px #ffd34d22!important}
+#dictees .dict-status{display:block;width:fit-content;margin-top:8px;padding:5px 9px;border:1px solid #36dfc2;border-radius:999px;background:#0d3c40;color:#9efbe8;font-size:.7rem;font-weight:900;letter-spacing:.04em}
+#dictees .dict-current .dict-status{border-color:#ffd34d;background:#49350d;color:#ffe899}
+</style>
 </head>
 <body id="top" class="resources-page"><a class="zm-corner-logo" href="index.html" aria-label="Accueil Zou Maï"><img src="images/logo-zou-mai-sensei.png" alt="Logo Sensei Zou_Maï"></a>
 <nav class="site-nav" aria-label="Navigation principale">
@@ -614,9 +620,9 @@ window.addEventListener('scroll',placeResourceMenu,true);
 </script>
 <script src="dictee-data.js"></script>
 <script>
-const dictFiles=['grottes','megalithes','ecriture','artisanat-gaulois','monuments-gallo-romains','seigneurs','paysans','eglises','guillaume-conquerant','alienor-aquitaine','inventions','exploration','renaissance','guerres-religion','monarchie-absolue','revolution-francaise','napoleon','revolution-industrielle','expansion-coloniale','progres-sociaux','premiere-guerre','seconde-guerre','resistance','societe-consommation','futur'];
+const dictFiles=['grottes','megalithes','ecriture','artisanat-gaulois','monuments-gallo-romains','seigneurs','paysans','eglises','bayeux','alienor-aquitaine','inventions','exploration','renaissance','guerres-religion','monarchie-absolue','revolution-francaise','napoleon','revolution-industrielle','expansion-coloniale','progres-sociaux','premiere-guerre','seconde-guerre','resistance','societe-consommation','futur'];
 const dictGrid=document.querySelector('#dictees .grid');
-if(dictGrid && window.DICTEES){dictGrid.innerHTML=window.DICTEES.map((d,n)=>`<article class="item"><span class="type">3 NIVEAUX · 5 JEUX</span><h4>Dictée ${d.id} · ${d.title}</h4><p>Mémorisation, accords, orthographe et mini-dictée.</p><a href="dictee-${String(d.id).padStart(2,'0')}-${dictFiles[n]}.html">S’ENTRAÎNER →</a></article>`).join('');}</script>
+if(dictGrid && window.DICTEES){dictGrid.innerHTML=window.DICTEES.map((d,n)=>`<article class="item ${Number(d.id)<=8?"dict-done":Number(d.id)===9?"dict-current":""}"><span class="type">3 NIVEAUX · 5 JEUX</span>${Number(d.id)<=8?'<span class="dict-status">✓ DICTÉE FAITE EN CLASSE</span>':Number(d.id)===9?'<span class="dict-status">★ DICTÉE DE LA SEMAINE</span>':""}<h4>Dictée ${d.id} · ${Number(d.id)===9?"La tapisserie de Bayeux":d.title}</h4><p>Mémorisation, accords, orthographe et mini-dictée.</p><a href="dictee-${String(d.id).padStart(2,'0')}-${dictFiles[n]}.html">S’ENTRAÎNER →</a></article>`).join('');}</script>
 <script>
 const mathGrid=document.querySelector('#ma .grid');
 if(mathGrid){
