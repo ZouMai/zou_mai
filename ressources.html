@@ -398,6 +398,16 @@ body.resources-page{
 @keyframes resourceNeonPulse{0%{opacity:.72;filter:brightness(.85)}12%,100%{opacity:1;filter:brightness(1.15)}35%{opacity:1;filter:brightness(1)}45%{opacity:.75;filter:brightness(.9)}55%,75%{opacity:1;filter:brightness(1.25)}85%{opacity:.9;filter:brightness(1)}}
 @media(prefers-reduced-motion:reduce){.resources-page header:has(>h1) h1{animation:none!important}}
 </style>
+<style id="resource-official-mascots">
+.resources-page header:has(>h1){grid-template-columns:minmax(0,1fr) minmax(0,3.5fr) minmax(0,1fr);gap:clamp(4px,1vw,16px);height:auto!important;min-height:140px;padding:18px 10px!important}
+.resources-page header:has(>h1) h1{font-size:clamp(1.05rem,5.7vw,5rem)!important;white-space:nowrap;grid-column:2;grid-row:1}
+.resources-page header .official-mascot{display:block!important;width:100%;max-width:165px;height:auto;aspect-ratio:1;object-fit:contain;position:relative;z-index:2;filter:drop-shadow(0 0 12px #00bfff88);animation:mascotHover 4s ease-in-out infinite}
+.resources-page header .official-zoum{grid-column:1;grid-row:1}
+.resources-page header .official-mai{grid-column:3;grid-row:1;filter:drop-shadow(0 0 12px #e54dff88);animation-delay:-2s}
+@keyframes mascotHover{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@media(max-width:480px){.resources-page header:has(>h1){width:calc(100% - 16px);min-height:90px;padding:16px 5px!important;grid-template-columns:1fr 3.6fr 1fr}}
+@media(prefers-reduced-motion:reduce){.resources-page header .official-mascot{animation:none}}
+</style>
 </head>
 <body id="top" class="resources-page"><a class="zm-corner-logo" href="index.html" aria-label="Accueil Zou Maï"><img src="images/logo-zou-mai-sensei.png" alt="Logo Sensei Zou_Maï"></a>
 <nav class="site-nav" aria-label="Navigation principale">
@@ -422,8 +432,9 @@ body.resources-page{
 </div><div class="ribbon-panel" id="ribbon-panel" hidden></div>
 </section>
 <header>
+<img class="official-mascot official-zoum" src="images/loup-bleu-original.png" alt="Zoum">
 <h1>RESSOURCES</h1>
-<img class="resource-figure" src="images/loup-bleu-original.png" alt="Le loup bleu original de Zou_Maï">
+<img class="official-mascot official-mai" src="assets/nox-original.png" alt="Maï">
 </header>
 <main>
 <section class="weekly" aria-labelledby="weekly-title">
