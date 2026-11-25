@@ -515,12 +515,14 @@ body.resources-page{
 <h3>EMC · Vivre ensemble</h3>
 <div class="grid"><article class="item"><span class="type">AFFICHAGE · LEÇON · 3 JEUX</span><h4>Les messages clairs</h4><p>Exprimer un désaccord sans blesser, écouter l’autre et chercher une solution.</p><a href="emc-messages-clairs.html">DÉCOUVRIR &amp; JOUER →</a></article></div>
 </div>
+<div class="shelf" id="ge" style="--a:#45b96b"><h3>Géographie</h3><div class="grid"><article class="item"><span class="type">G1 · PAYS FRONTALIERS</span><h4>G1 · Les pays frontaliers</h4><p>Repère les pays qui partagent une frontière terrestre avec la France métropolitaine. Jeu France, PACA et Vaucluse.</p><a href="jeu-geographie-france-paca-vaucluse.html">JOUER →</a></article><article class="item"><span class="type">G2 · 2 JEUX INTERACTIFS · CM2</span><h4>G2 · Villes et massifs</h4><p>Associe 8 grandes villes aux points de la carte et 6 massifs, dont les Cévennes, à leurs zones.</p><a href="geographie-g2-villes-massifs.html">S’ENTRAÎNER →</a></article><article class="item"><span class="type">GÉO 3 · 16 QUESTIONS · CM2</span><h4>G3 · Les villes attractives</h4><p>Révise les villes en croissance et en déclin, les migrations et les raisons de l’attractivité.</p><a href="geographie-g3-villes-attractives.html">RÉVISER →</a></article></div></div>
+<div class="shelf" id="mu" style="--a:#aa5be6"><h3>Musique</h3><div class="grid"><article class="item"><span class="type">CHANT 1 · KARAOKÉ AVEC PAROLES À L’ÉCRAN</span><h4>Aux arbres citoyens</h4><p>Yannick Noah · Entraîne-toi à chanter avec la version karaoké et ses paroles affichées pendant la musique.</p><a href="https://www.youtube.com/watch?v=5-7yEtjLfZs" target="_blank" rel="noopener noreferrer">CHANTER EN KARAOKÉ ↗</a> <a href="https://www.youtube.com/watch?v=U8DD1c24bwk" target="_blank" rel="noopener noreferrer">ÉCOUTER LE CHANT ORIGINAL ↗</a></article><article class="item"><span class="type">CHANT 2 · LES ENFANTASTIQUES</span><h4>C'est de l'eau 💧</h4><p>Écoute, compréhension, chant collectif et préservation de l'eau.</p><a href="musique-cest-de-leau-enfantastiques.html">DÉCOUVRIR LE CHANT →</a></article></div></div>
 <div id="empty">
 </div>
 </section>
 </main>
 <script>
-const n={ma:'Mathématiques',ge:'Géographie',sc:'Sciences & technologie',ar:'Arts visuels',hd:'Histoire des arts',ep:'EPS',mu:'Musique',nu:'Numérique & EMI'},c={ma:'#23a3df',ge:'#45b96b',sc:'#81c63b',ar:'#e54ea2',hd:'#ef8b2c',ep:'#37d4ce',mu:'#aa5be6',nu:'#f5d725'},e=document.querySelector('#empty');Object.keys(n).forEach(id=>e.insertAdjacentHTML('beforebegin',`<div class="shelf" id="${id}" style="--a:${c[id]}">
+const n={ma:'Mathématiques',sc:'Sciences & technologie',ar:'Arts visuels',hd:'Histoire des arts',ep:'EPS',nu:'Numérique & EMI'},c={ma:'#23a3df',ge:'#45b96b',sc:'#81c63b',ar:'#e54ea2',hd:'#ef8b2c',ep:'#37d4ce',mu:'#aa5be6',nu:'#f5d725'},e=document.querySelector('#empty');Object.keys(n).forEach(id=>e.insertAdjacentHTML('beforebegin',`<div class="shelf" id="${id}" style="--a:${c[id]}">
 <h3>${n[id]}</h3>
 <div class="grid">
 <article class="item soon">
@@ -534,11 +536,11 @@ const n={ma:'Mathématiques',ge:'Géographie',sc:'Sciences & technologie',ar:'Ar
 <script>
 const musicGrid=document.querySelector('#mu .grid');
 if(musicGrid){
-  musicGrid.innerHTML='<article class="item"><span class="type">CHANT 1 · KARAOKÉ AVEC PAROLES À L’ÉCRAN</span><h4>Aux arbres citoyens</h4><p>Yannick Noah · Entraîne-toi à chanter avec la version karaoké et ses paroles affichées pendant la musique.</p><a href="https://www.youtube.com/watch?v=5-7yEtjLfZs" target="_blank" rel="noopener noreferrer">CHANTER EN KARAOKÉ ↗</a> <a href="https://www.youtube.com/watch?v=U8DD1c24bwk" target="_blank" rel="noopener noreferrer">ÉCOUTER LE CHANT ORIGINAL ↗</a></article><article class="item"><span class="type">CHANT 2 · LES ENFANTASTIQUES</span><h4>C'est de l'eau 💧</h4><p>Écoute, compréhension, chant collectif et préservation de l'eau.</p><a href="musique-cest-de-leau-enfantastiques.html">DÉCOUVRIR LE CHANT →</a></article>';
+
 }
 const geographyGrid=document.querySelector('#ge .grid');
 if(geographyGrid){
-  geographyGrid.innerHTML='<article class="item"><span class="type">GÉO 3 · 16 QUESTIONS · CM2</span><h4>G3 · Les villes attractives</h4><p>Révise les villes en croissance et en déclin, les migrations et les raisons de l’attractivité.</p><a href="geographie-g3-villes-attractives.html">RÉVISER →</a></article><article class="item"><span class="type">G2 · 2 JEUX INTERACTIFS · CM2</span><h4>G2 · Villes et massifs</h4><p>Associe 8 grandes villes aux points de la carte et 6 massifs, dont les Cévennes, à leurs zones.</p><a href="geographie-g2-villes-massifs.html">S’ENTRAÎNER →</a></article><article class="item"><span class="type">G1 · PAYS FRONTALIERS</span><h4>G1 · Les pays frontaliers</h4><p>Repère les pays qui partagent une frontière terrestre avec la France métropolitaine. Jeu France, PACA et Vaucluse.</p><a href="jeu-geographie-france-paca-vaucluse.html">JOUER →</a></article>';
+
   const geographyCount=document.querySelector('.subject.ge .count');
   if(geographyCount)geographyCount.textContent='G1 · G2';
 }
