@@ -645,7 +645,7 @@ function showDiscipline(id){
  if(id==='world'||id==='an'){
   const sid=id==='world'?'world':'an-lessons';
   let shelf=document.getElementById(sid);
-  if(!shelf){shelf=document.createElement('div');shelf.className='shelf';shelf.id=sid;shelf.style.setProperty('--a',id==='world'?'#42dbff':'#ff7b45');const h=document.createElement('h3');h.textContent=names[id];const grid=document.createElement('div');grid.className='grid';shelf.append(h,grid);content.append(shelf);
+  if(!shelf){shelf=document.createElement('div');shelf.className='shelf';shelf.id=sid;shelf.style.setProperty('--a',id==='world'?'#45f0b5':'#ff7b45');const h=document.createElement('h3');h.textContent=names[id];const grid=document.createElement('div');grid.className='grid';shelf.append(h,grid);content.append(shelf);
    ribbonFolders[id].forEach(([label,href])=>{const card=document.createElement('article');card.className='item';const type=document.createElement('span');type.className='type';type.textContent=id==='world'?'DESTINATION':'LEÇON';const title=document.createElement('h4');title.textContent=label;const a=document.createElement('a');a.href=href;a.textContent=id==='world'?'EXPLORER →':'OUVRIR →';card.append(type,title,a);grid.append(card)});
   }
  }
@@ -701,6 +701,6 @@ body.discipline-view #resource-content .shelf.active>.grid>.item{display:block!i
 ribbonFolders.mu=[["Aux arbres citoyens","#mu"],["C’est de l’eau","musique-cest-de-leau-enfantastiques.html"]];
 const count=document.querySelector('.subject.ge .count');if(count)count.textContent='G1 · G2 · G3';
 })();
-</script><script>(()=>{const g=document.querySelector('#ge .grid');if(g){const cards=[...g.querySelectorAll(':scope > .item')];cards.sort((a,b)=>a.querySelector('h4').textContent.localeCompare(b.querySelector('h4').textContent,'fr'));cards.forEach(x=>g.append(x));}})();</script></body>
+</script><script>(()=>{const g=document.querySelector('#ge .grid');if(g){const cards=[...g.querySelectorAll(':scope > .item')];cards.sort((a,b)=>a.querySelector('h4').textContent.localeCompare(b.querySelector('h4').textContent,'fr'));cards.forEach(x=>g.append(x));}})();</script><style>body.discipline-view #world{--a:#45f0b5!important;--card-neon:#45f0b5!important}body.discipline-view #world .item{--item-neon:#45f0b5!important}body.discipline-view:has(#world.active) #discipline-heading h2{color:#45f0b5!important}</style></body>
 </html>
 
