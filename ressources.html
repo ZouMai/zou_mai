@@ -387,6 +387,7 @@ body.resources-page{
 #dictees .dict-status{display:block;width:fit-content;margin-top:8px;padding:5px 9px;border:1px solid #36dfc2;border-radius:999px;background:#0d3c40;color:#9efbe8;font-size:.7rem;font-weight:900;letter-spacing:.04em}
 #dictees .dict-current .dict-status{border-color:#ffd34d;background:#49350d;color:#ffe899}
 </style>
+<style>.weekly[hidden]{display:none!important}</style>
 </head>
 <body id="top" class="resources-page"><a class="zm-corner-logo" href="index.html" aria-label="Accueil Zou Maï"><img src="images/logo-zou-mai-sensei.png" alt="Logo Sensei Zou_Maï"></a>
 <nav class="site-nav" aria-label="Navigation principale">
@@ -462,6 +463,7 @@ body.resources-page{
 </div></div>
 <div class="shelf" id="conjugaison" style="--a:#ff4f73"><h3>Français · Conjugaison</h3><div class="grid">
 <article class="item"><span class="type">CONJUGAISON · JEUX</span><h4>🥋 Konju Dojo</h4><p>Reconnais les verbes, trouve leur groupe ou relève les défis du dojo.</p><a href="francais-1-conjugaison.html?v=20261004-2326">CHOISIR UN JEU →</a></article>
+<article class="item"><span class="type">CONJUGAISON · JEU CHRONOMÉTRÉ</span><h4>⏱️ Transpo Chrono</h4><p>Transforme les textes : présent, imparfait et changements de personne.</p><a href="transpo-chrono.html">JOUER →</a></article>
 </div></div>
 <div class="shelf" id="lexique" style="--a:#ff4f73"><h3>Français · Lexique</h3><div class="grid"><article class="item"><span class="type">JEU INTERACTIF · VOCABULAIRE</span><h4>🌱 Les familles de mots</h4><p>Retrouve les mots d’une même famille parmi huit propositions. Douze défis avec correction immédiate.</p><a href="lexique-familles-de-mots.html">JOUER →</a></article></div></div>
 <div class="shelf" id="hi" style="--a:#ffc83d">
@@ -601,6 +603,7 @@ document.querySelectorAll('.ribbon-tab[data-subject]').forEach(btn=>{
   if(dropdownButton===btn&&!ribbonPanel.hidden){closeResourceMenu();return}
   closeResourceMenu();dropdownButton=btn;btn.classList.add('active');btn.setAttribute('aria-expanded','true');
   const subject=btn.dataset.subject,list=ribbonFolders[subject]||[];
+  if(subject==='fr'){openSubject('fr');history.replaceState(null,'','#fr')}else{document.querySelectorAll('.shelf').forEach(s=>s.classList.remove('active'))}document.querySelectorAll('.weekly').forEach(w=>w.hidden=true);
   ribbonPanel.dataset.subject=subject;
   ribbonPanel.replaceChildren();
   list.forEach(([label,href])=>{const a=document.createElement('a');a.href=href;a.dataset.target=href.startsWith('#')?href.slice(1):'';a.textContent=label;ribbonPanel.append(a)});
@@ -636,7 +639,7 @@ if(mathGrid){
 (function(){
  const content=document.getElementById('resource-content');
  if(!content)return;
- function sync(){const selected=!!document.querySelector('.shelf.active');content.classList.toggle('has-selection',selected);const weekly=document.querySelector('.weekly');if(weekly)weekly.hidden=selected}
+ function sync(){const selected=!!document.querySelector('.shelf.active');content.classList.toggle('has-selection',selected);document.querySelectorAll('.weekly').forEach(w=>w.hidden=selected||!!document.querySelector('.ribbon-tab.active[data-subject]'))}
  const observer=new MutationObserver(sync);
  document.querySelectorAll('.shelf').forEach(s=>observer.observe(s,{attributes:true,attributeFilter:['class']}));
  sync();
@@ -648,7 +651,7 @@ if(mathGrid){
  const panel=document.getElementById('ribbon-panel');
  const menu=document.createElement('div');menu.id='mobile-french-games';menu.hidden=true;menu.setAttribute('aria-label','Jeux de la rubrique');panel.after(menu);
  const categories=new Set(['lecture','dictees','orthographe','grammaire','conjugaison','lexique']);
- function resetSelection(){document.querySelectorAll('.shelf').forEach(s=>s.classList.remove('active'));document.getElementById('resource-content').classList.remove('has-selection');const weekly=document.querySelector('.weekly');if(weekly)weekly.hidden=false}
+ function resetSelection(){document.querySelectorAll('.shelf').forEach(s=>s.classList.remove('active'));document.getElementById('resource-content').classList.remove('has-selection');document.querySelectorAll('.weekly').forEach(w=>w.hidden=true)}
  function openGames(id){
  const shelf=document.getElementById(id);if(!shelf)return;
  menu.replaceChildren();const box=document.createElement('div');box.className='mobile-game-links';
@@ -663,7 +666,7 @@ if(mathGrid){
  },true);
  document.querySelectorAll('.ribbon-tab[data-subject]').forEach(button=>button.addEventListener('click',()=>{
  menu.hidden=true;panel.querySelectorAll('a').forEach(a=>a.removeAttribute('aria-current'));
- if(matchMedia('(max-width:600px)').matches&&button.dataset.subject==='fr')resetSelection();
+ if(matchMedia('(max-width:600px)').matches&&button.dataset.subject==='fr'&&!panel.hidden)resetSelection();
  }));
  matchMedia('(max-width:600px)').addEventListener('change',()=>{menu.hidden=true});
 })();
