@@ -32,7 +32,7 @@
 </head>
 <body class="editorial-page games-page">
 <a class="zm-corner-logo" href="index.html" aria-label="Accueil Zou Maï"><img src="images/logo-zou-mai-sensei.png" alt="Logo Sensei Zou Maï"></a>
-<nav aria-label="Navigation principale"><a href="index.html">ACCUEIL</a><a href="ressources.html">RESSOURCES</a><a class="on" href="jeux.html" aria-current="page">JEUX</a><a href="projets.html">PROJETS</a><a href="apropos.html">À PROPOS</a></nav>
+<nav aria-label="Navigation principale"><a href="index.html">ACCUEIL</a><a href="ressources.html">RESSOURCES</a><a class="on" href="jeux.html" aria-current="page">JEUX</a><a href="apropos.html">À PROPOS</a></nav>
 <main class="editorial-wrap">
 <div class="games-hero"><div><p class="page-kicker">Le coin des défis</p><h1>JEUX</h1><p class="editorial-lead">Un mot à deviner, une partie à gagner, une carte à explorer… Choisis ton défi et amuse-toi !</p></div><img src="images/loup-bleu-original.png" alt="" aria-hidden="true"></div>
 <section class="games-section" aria-labelledby="favoris"><h2 id="favoris">LES <span>FAVORIS</span></h2>
@@ -66,5 +66,9 @@
 </main>
 <footer class="site-footer"><span>Choisir · Chercher · Jouer</span><a class="site-signature" href="index.html"><img src="images/logo-zou-mai-sensei.png" alt="Logo Sensei Zou Maï"></a></footer>
 <script src="site-tracking.js" defer></script>
-</body>
+<style id="compact-main-nav-v2">
+html body nav[aria-label="Navigation principale"]{display:flex!important;flex-wrap:nowrap!important;align-items:center!important;justify-content:center!important;gap:8px!important;min-height:44px!important;height:auto!important;padding:4px 8px!important;width:100%!important;box-sizing:border-box}
+html body nav[aria-label="Navigation principale"]>a{white-space:nowrap!important;letter-spacing:0!important;margin:0!important}
+@media(max-width:700px){html body nav[aria-label="Navigation principale"]{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:2px!important;padding:2px 4px!important;min-height:40px!important}html body nav[aria-label="Navigation principale"]>a{display:flex!important;align-items:center;justify-content:center;min-width:0!important;min-height:36px!important;padding:3px 1px!important;font-size:clamp(9px,2.8vw,12px)!important;line-height:1!important}body.games-page .zm-corner-logo{position:static!important;margin:8px auto}}
+</style></body>
 </html>
