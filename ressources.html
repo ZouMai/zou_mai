@@ -805,6 +805,17 @@ html body.resources-page .weekly #featured-scroll .weekly-card strong{font-size:
 html body.resources-page .weekly #featured-scroll .weekly-card img{max-height:62px;object-fit:cover}
 html body.resources-page .weekly #featured-scroll .weekly-card b{font-size:.59rem!important;overflow-wrap:anywhere}
 }
-</style><script>(()=>{const g=document.getElementById('featured-scroll');const p=g.parentElement.querySelector('.week-prev'),n=g.parentElement.querySelector('.week-next');const sync=()=>{p.disabled=g.scrollLeft<=2;n.disabled=g.scrollLeft+g.clientWidth>=g.scrollWidth-2};const move=d=>g.scrollBy({left:d*(g.querySelector('.weekly-card').getBoundingClientRect().width+9),behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});p.onclick=()=>move(-1);n.onclick=()=>move(1);g.addEventListener('scroll',sync,{passive:true});window.addEventListener('resize',sync);if(window.ResizeObserver)new ResizeObserver(sync).observe(g);sync()})();</script></body>
+</style><script>(()=>{const g=document.getElementById('featured-scroll');const p=g.parentElement.querySelector('.week-prev'),n=g.parentElement.querySelector('.week-next');const sync=()=>{p.disabled=g.scrollLeft<=2;n.disabled=g.scrollLeft+g.clientWidth>=g.scrollWidth-2};const move=d=>g.scrollBy({left:d*(g.querySelector('.weekly-card').getBoundingClientRect().width+9),behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});p.onclick=()=>move(-1);n.onclick=()=>move(1);g.addEventListener('scroll',sync,{passive:true});window.addEventListener('resize',sync);if(window.ResizeObserver)new ResizeObserver(sync).observe(g);sync()})();</script><style id="featured-mobile-low-profile">
+@media(max-width:700px), (max-width:950px) and (pointer:coarse) and (orientation:landscape){
+html body.resources-page .featured-carousel{display:grid;grid-template-columns:25px minmax(0,1fr) 25px;gap:3px;align-items:center}
+html body.resources-page .featured-carousel .week-arrow{display:grid;place-items:center;width:25px;height:40px;padding:0;border:1px solid #36c8ff;border-radius:8px;background:#101722;color:#a6efff;font:700 26px/1 Arial,sans-serif}
+html body.resources-page .weekly #featured-scroll{gap:9px!important;padding:3px 4px 8px!important}
+html body.resources-page .weekly #featured-scroll .weekly-card{flex:0 0 calc((100% - 9px)/2)!important;max-width:none!important;min-width:0!important;height:88px!important;min-height:88px!important;max-height:88px!important;padding:6px 8px!important;box-sizing:border-box;display:flex!important;flex-direction:column;justify-content:space-between;gap:3px!important}
+html body.resources-page .weekly #featured-scroll .weekly-card span{font-size:.54rem!important;padding:2px 4px!important;line-height:1.1!important;letter-spacing:0!important;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;box-sizing:border-box}
+html body.resources-page .weekly #featured-scroll .weekly-card strong{font-size:.82rem!important;line-height:1.1!important;margin:0!important;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+html body.resources-page .weekly #featured-scroll .weekly-card small,html body.resources-page .weekly #featured-scroll .weekly-card img{display:none!important}
+html body.resources-page .weekly #featured-scroll .weekly-card b{font-size:.57rem!important;line-height:1.1!important;margin:0!important;padding:0!important;letter-spacing:0!important;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+}
+</style></body>
 </html>
 
