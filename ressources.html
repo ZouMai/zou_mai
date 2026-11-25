@@ -415,7 +415,7 @@ body.resources-page{
 .resources-page .resource-animated-banner{display:block;width:min(100%,760px);height:auto;object-fit:contain}
 </style>
 </head>
-<body id="top" class="resources-page"><a class="zm-corner-logo" href="index.html" aria-label="Accueil Zou Maï"><img src="images/logo-zou-mai-sensei.png" alt="Logo Sensei Zou_Maï"></a>
+<body id="top" class="resources-page">
 <nav class="site-nav" aria-label="Navigation principale">
 <a href="index.html">ACCUEIL</a>
 <a class="on" href="ressources.html">RESSOURCES</a>
@@ -423,7 +423,7 @@ body.resources-page{
 <a href="projets.html">PROJETS</a>
 <a href="apropos.html">À PROPOS</a>
 </nav>
-<section class="resource-ribbon" aria-label="Navigation des matières">
+<header class="animated-resource-header"><h1 class="resource-accessible-title">RESSOURCES</h1><img class="resource-animated-banner" src="assets/ressources-zoumai.gif" alt="Zoum et Maï, enseigne Ressources animée"></header><section class="portal-search" aria-label="Recherche de ressources"><label for="portal-query">Trouve ton activité</label><input id="portal-query" type="search" placeholder="Rechercher une leçon, une dictée, un jeu…" autocomplete="off"><div id="portal-results" aria-live="polite" hidden></div></section><section class="resource-ribbon" aria-label="Navigation des matières">
 <div class="ribbon-scroll">
 <button class="ribbon-tab fr" data-subject="fr">✍️ Français</button>
 <button class="ribbon-tab ma" data-subject="ma">➗ Maths</button>
@@ -437,7 +437,7 @@ body.resources-page{
 <button class="ribbon-tab world" data-subject="world" type="button">🧭 Mystères du monde</button>
 </div><div class="ribbon-panel" id="ribbon-panel" hidden></div>
 </section>
-<header class="animated-resource-header"><h1 class="resource-accessible-title">RESSOURCES</h1><img class="resource-animated-banner" src="assets/ressources-zoumai.gif" alt="Zoum et Maï, enseigne Ressources animée"></header>
+
 <main>
 <section class="weekly" aria-labelledby="weekly-title">
 <div class="weekly-guide">
@@ -724,6 +724,38 @@ body.discipline-view #resource-content .shelf.active>.grid>.item{display:block!i
 ribbonFolders.mu=[["Aux arbres citoyens","#mu"],["C’est de l’eau","musique-cest-de-leau-enfantastiques.html"]];
 const count=document.querySelector('.subject.ge .count');if(count)count.textContent='G1 · G2 · G3';
 })();
-</script><script>(()=>{const g=document.querySelector('#ge .grid');if(g){const cards=[...g.querySelectorAll(':scope > .item')];cards.sort((a,b)=>a.querySelector('h4').textContent.localeCompare(b.querySelector('h4').textContent,'fr'));cards.forEach(x=>g.append(x));}})();</script><style>body.discipline-view #world{--a:#45f0b5!important;--card-neon:#45f0b5!important}body.discipline-view #world .item{--item-neon:#45f0b5!important}body.discipline-view:has(#world.active) #discipline-heading h2{color:#45f0b5!important}</style></body>
+</script><script>(()=>{const g=document.querySelector('#ge .grid');if(g){const cards=[...g.querySelectorAll(':scope > .item')];cards.sort((a,b)=>a.querySelector('h4').textContent.localeCompare(b.querySelector('h4').textContent,'fr'));cards.forEach(x=>g.append(x));}})();</script><style>body.discipline-view #world{--a:#45f0b5!important;--card-neon:#45f0b5!important}body.discipline-view #world .item{--item-neon:#45f0b5!important}body.discipline-view:has(#world.active) #discipline-heading h2{color:#45f0b5!important}</style><style id="portal-nexus-final">
+body.resources-page{isolation:isolate}
+body.resources-page:after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:url("images/logo-zou-mai-sensei.png") right 5vw bottom 4vh / min(65vw,650px) auto no-repeat;opacity:.075}
+body.resources-page .zm-corner-logo{display:none!important}
+.resources-page .site-nav{position:relative;justify-content:flex-start;height:auto;min-height:48px;flex-wrap:wrap}
+.resources-page .resource-ribbon{width:min(1180px,94vw);margin:12px auto 24px;position:relative;border:0;background:transparent;box-shadow:none;padding:8px 0}
+.resources-page .ribbon-scroll{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;overflow:visible;padding:5px}
+.resources-page .ribbon-tab{min-width:0;min-height:54px;width:100%;padding:10px 5px;white-space:normal;font-size:.88rem}
+.resources-page .weekly{background:#101722b0;border:1px solid #344257;border-radius:18px;box-shadow:none;padding:18px;margin:0 0 22px!important}
+.resources-page .weekly-guide img{display:none}
+.resources-page .weekly-guide{margin-bottom:8px}
+.resources-page .weekly h2{font-size:clamp(1.35rem,3vw,2rem)}
+.resources-page .site-footer{position:relative;display:flex;justify-content:space-between;align-items:center;padding:20px 4vw}
+.resources-page .site-footer .site-signature{position:static!important;margin-left:auto}
+.resources-page .site-footer img{width:64px;height:auto}
+.portal-search{width:min(680px,92vw);margin:0 auto 18px;position:relative;z-index:31;color:#eef4fa}
+.portal-search label{display:block;font-weight:700;font-size:.85rem;margin-bottom:7px}
+.portal-search input{width:100%;padding:14px 18px;border:1px solid #65caff;border-radius:14px;background:#101722;color:white;font:inherit;outline-offset:4px}
+#portal-results{background:#111a28;border:1px solid #526b85;border-radius:12px;padding:8px;margin-top:8px;max-height:45vh;overflow:auto}
+#portal-results[hidden],body.discipline-view .portal-search{display:none!important}
+#portal-results a{display:block;color:#eaf5ff;padding:10px;text-decoration:none;border-bottom:1px solid #ffffff18}
+#portal-results a:hover,#portal-results a:focus{background:#25364a}
+@media(max-width:650px){.resources-page .ribbon-scroll{grid-template-columns:repeat(2,minmax(0,1fr))}.resources-page .ribbon-tab{min-height:48px}.resources-page .weekly{padding:12px}}
+</style><script>
+(()=>{const q=document.getElementById('portal-query'),out=document.getElementById('portal-results');if(!q||!out)return;
+const normalize=x=>x.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+function search(){const words=normalize(q.value.trim()).split(/\s+/).filter(Boolean);out.replaceChildren();out.hidden=!words.length;if(!words.length)return;const seen=new Set(),items=[];
+document.querySelectorAll('.weekly-card[href],.shelf .item,.shelf > a').forEach(el=>{const a=el.matches('a')?el:el.querySelector('a[href]');if(!a)return;const title=el.querySelector('h4,strong')?.textContent||a.textContent;items.push([title,a.getAttribute('href'),el.textContent+' '+(el.closest('.shelf')?.querySelector('h3')?.textContent||'')]);});
+Object.values(ribbonFolders).flat().forEach(([title,href])=>items.push([title,href,title]));
+for(const [title,href,body] of items){if(seen.has(href)||!words.every(w=>normalize(title+' '+body+' '+href).includes(w)))continue;seen.add(href);const a=document.createElement('a');a.href=href;a.textContent=title;a.addEventListener('click',e=>{if(href.startsWith('#')){e.preventDefault();const id=href.slice(1);if(ribbonFolders[id])showDiscipline(id);else openSubject(id);history.replaceState(null,'',href)}out.hidden=true});out.append(a);if(seen.size>=30)break;}if(!seen.size)out.textContent='Aucun résultat. Essaie un autre mot.';}
+q.addEventListener('input',search);q.addEventListener('keydown',e=>{if(e.key==='Escape'){q.value='';search()}});
+})();
+</script></body>
 </html>
 
