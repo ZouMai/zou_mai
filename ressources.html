@@ -538,7 +538,7 @@ if(musicGrid){
 }
 const geographyGrid=document.querySelector('#ge .grid');
 if(geographyGrid){
-  geographyGrid.innerHTML='<article class="item"><span class="type">GÉO 3 · 16 QUESTIONS · CM2</span><h4>GÉO 3 · Les villes attractives</h4><p>Révise les villes en croissance et en déclin, les migrations et les raisons de l’attractivité.</p><a href="geographie-g3-villes-attractives.html">RÉVISER →</a></article><article class="item"><span class="type">G2 · 2 JEUX INTERACTIFS · CM2</span><h4>G2 · Les villes et les massifs français</h4><p>Associe 8 grandes villes aux points de la carte et 6 massifs, dont les Cévennes, à leurs zones.</p><a href="geographie-g2-villes-massifs.html">S’ENTRAÎNER →</a></article><article class="item"><span class="type">G1 · PAYS FRONTALIERS</span><h4>G1 · Les pays frontaliers de la France</h4><p>Repère les pays qui partagent une frontière terrestre avec la France métropolitaine. Jeu France, PACA et Vaucluse.</p><a href="jeu-geographie-france-paca-vaucluse.html">JOUER →</a></article>';
+  geographyGrid.innerHTML='<article class="item"><span class="type">GÉO 3 · 16 QUESTIONS · CM2</span><h4>G3 · Les villes attractives</h4><p>Révise les villes en croissance et en déclin, les migrations et les raisons de l’attractivité.</p><a href="geographie-g3-villes-attractives.html">RÉVISER →</a></article><article class="item"><span class="type">G2 · 2 JEUX INTERACTIFS · CM2</span><h4>G2 · Villes et massifs</h4><p>Associe 8 grandes villes aux points de la carte et 6 massifs, dont les Cévennes, à leurs zones.</p><a href="geographie-g2-villes-massifs.html">S’ENTRAÎNER →</a></article><article class="item"><span class="type">G1 · PAYS FRONTALIERS</span><h4>G1 · Les pays frontaliers</h4><p>Repère les pays qui partagent une frontière terrestre avec la France métropolitaine. Jeu France, PACA et Vaucluse.</p><a href="jeu-geographie-france-paca-vaucluse.html">JOUER →</a></article>';
   const geographyCount=document.querySelector('.subject.ge .count');
   if(geographyCount)geographyCount.textContent='G1 · G2';
 }
@@ -578,7 +578,7 @@ world:[["🌋 Islande","ressources/mysteresdumonde/index.html#islande"],["🏜�
 fr:[["Lecture","#lecture"],["Dictées","#dictees"],["Orthographe","#orthographe"],["Grammaire","#grammaire"],["Conjugaison","#conjugaison"],["Lexique","#lexique"]],
 ma:[["Leçons","maths-lecons-cm2.html"],["Calcul mental","calcul-mental-series.html"],["Tables de multiplication","tables-multiplication.html"],["Opérations posées","operations-posees.html?v=4operations-20261014-3"],["Résolution de problèmes","resolution-problemes.html"],["🧪 LABORATOIRE","resolution-problemes-labo-test.html?v=6"]],
 hi:[["Défi H2 + H3 · XIXe siècle","histoire-h2-h3-revisions-xixe.html"],["H2 · Le retour du roi","histoire-1815-1848-royaute.html"],["H3 · Empires et Républiques","histoire-1848-1875-second-empire-republiques.html"],["H1 · Les grandes périodes historiques","histoire-periodes.html"],["H1 bis · Les nombres romains","nombres-romains-cm2.html"],["Frise historique","histoire-frise-interactive.html"]],
-ge:[["G3 · Villes attractives","geographie-g3-villes-attractives.html"],["G1 · Pays frontaliers","jeu-geographie-france-paca-vaucluse.html"],["G2 · Villes et massifs","geographie-g2-villes-massifs.html"],["Géographie","#ge"]],
+ge:[["G1 · Les pays frontaliers","jeu-geographie-france-paca-vaucluse.html"],["G2 · Villes et massifs","geographie-g2-villes-massifs.html"],["G3 · Les villes attractives","geographie-g3-villes-attractives.html"]],
 hd:[["Jeu : le point de fuite","arts-visuels-point-de-fuite.html"],["Musée secret","histoire-des-arts.html"],["Histoire des arts","#hd"]],
 em:[["Les symboles de la République","emc-symboles-republique.html"],["Messages clairs","emc-messages-clairs.html"],["EMC","#em"]],
 mu:[["Chants","#mu"]],ci:[["Les 3 films","ecole-et-cinema.html"]]
@@ -699,6 +699,6 @@ body.discipline-view #resource-content .shelf.active>.grid>.item{display:block!i
 ribbonFolders.mu=[["Aux arbres citoyens","#mu"],["C’est de l’eau","musique-cest-de-leau-enfantastiques.html"]];
 const count=document.querySelector('.subject.ge .count');if(count)count.textContent='G1 · G2 · G3';
 })();
-</script></body>
+</script><script>(()=>{const g=document.querySelector('#ge .grid');if(g){const cards=[...g.querySelectorAll(':scope > .item')];cards.sort((a,b)=>a.querySelector('h4').textContent.localeCompare(b.querySelector('h4').textContent,'fr'));cards.forEach(x=>g.append(x));}})();</script></body>
 </html>
 
