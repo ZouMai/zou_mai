@@ -408,6 +408,12 @@ body.resources-page{
 @media(max-width:480px){.resources-page header:has(>h1){width:calc(100% - 16px);min-height:90px;padding:16px 5px!important;grid-template-columns:1fr 3.6fr 1fr}}
 @media(prefers-reduced-motion:reduce){.resources-page header .official-mascot{animation:none}}
 </style>
+<style id="resource-gif-banner">
+.resources-page header.animated-resource-header:has(>h1){display:flex!important;justify-content:center;align-items:center;min-height:0!important;height:auto!important;padding:4px 0!important;background:transparent!important;border:0!important;box-shadow:none!important;margin:12px auto!important;overflow:visible}
+.resources-page header.animated-resource-header:before,.resources-page header.animated-resource-header:after{display:none!important}
+.resources-page header.animated-resource-header h1.resource-accessible-title{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip-path:inset(50%);white-space:nowrap;animation:none!important}
+.resources-page .resource-animated-banner{display:block;width:min(100%,760px);height:auto;object-fit:contain}
+</style>
 </head>
 <body id="top" class="resources-page"><a class="zm-corner-logo" href="index.html" aria-label="Accueil Zou Maï"><img src="images/logo-zou-mai-sensei.png" alt="Logo Sensei Zou_Maï"></a>
 <nav class="site-nav" aria-label="Navigation principale">
@@ -431,11 +437,7 @@ body.resources-page{
 <button class="ribbon-tab world" data-subject="world" type="button">🧭 Mystères du monde</button>
 </div><div class="ribbon-panel" id="ribbon-panel" hidden></div>
 </section>
-<header>
-<img class="official-mascot official-zoum" src="images/loup-bleu-original.png" alt="Zoum">
-<h1>RESSOURCES</h1>
-<img class="official-mascot official-mai" src="assets/nox-original.png" alt="Maï">
-</header>
+<header class="animated-resource-header"><h1 class="resource-accessible-title">RESSOURCES</h1><img class="resource-animated-banner" src="assets/ressources-zoumai.gif" alt="Zoum et Maï, enseigne Ressources animée"></header>
 <main>
 <section class="weekly" aria-labelledby="weekly-title">
 <div class="weekly-guide">
