@@ -13,3 +13,31 @@ body:not(.home-page):not(.dictation-page)::after{content:"";position:fixed;z-ind
 :is(.card,.tile,.atelier,.lesson,.lesson-card,.game-card,.weekly-card,.item,.subject,.subfolder):hover{box-shadow:0 0 18px #27d9ff55}
 :is(.card,.tile,.atelier,.lesson,.lesson-card,.game-card,.weekly-card,.item,.subject,.subfolder):focus-within{outline:2px solid #5be6ff;outline-offset:2px}
 @media(prefers-reduced-motion:reduce){:is(.card,.tile,.atelier,.lesson,.lesson-card,.game-card,.weekly-card,.item,.subject,.subfolder){transition:none!important}}
+
+/* Charte commune des cartes de navigation : uniquement les cartes, jamais les supports de manipulation. */
+@media screen {
+:is(a,button,[role="button"]):is(.subject,.subfolder,.weekly-card,.game-card,.lesson-card,.atelier,.tile,.card):not(.correct):not(.wrong):not(.filled) {
+ background:#101622!important;color:#f5f8ff!important;border:1px solid var(--zm-glow,#29d9ff)!important;border-radius:16px;
+}
+:is(a,button,[role="button"]):is(.subject,.subfolder,.weekly-card,.game-card,.lesson-card,.atelier,.tile,.card) :is(h2,h3,strong,b,small,p,.description,.subtitle) {color:inherit!important;opacity:1!important}
+:is(a,button,[role="button"]):is(.subject,.subfolder,.weekly-card,.game-card,.lesson-card,.atelier,.tile,.card):is(:hover,:focus-visible,:active) {box-shadow:0 0 20px var(--zm-glow,#29d9ff)!important}
+}
+/* Mystères : mêmes cartes sur toutes les semaines, sans modifier les cartes géographiques. */
+@media screen {
+html:has(title) body.zm-world,body:has(.week .heroText),body:has(.globe-layout):has(.details),body:has(.globe-layout):has(.culture),body:has(.map):has(.details) {
+ background:#080d17!important;color:#f5f8ff!important;
+ --world-text:#f5f8ff;--world-muted:#c9d8e8;--world-panel:#101827;--world-card:#121f30;--world-cyan:#42dbff;
+}
+body:is(.zm-world,:has(.week .heroText),:has(.globe-layout):has(.details),:has(.globe-layout):has(.culture),:has(.map):has(.details)) :is(.hero,.section,.panel,.detail,.card,.mapcard,.concept,.further-card,.pedago,.note,.culture,.highlight,.takeaway,.surprise,.globe-feedback,.feedback,.answer,.mapbody,.conceptBody) {
+ background:var(--world-panel)!important;color:var(--world-text)!important;opacity:1!important;border:1px solid #376581!important;border-radius:16px;box-shadow:0 0 12px #29d9ff20;
+}
+body:is(.zm-world,:has(.week .heroText),:has(.globe-layout):has(.details),:has(.globe-layout):has(.culture),:has(.map):has(.details)) :is(.detail,.card,.concept,.further-card,.mapcard) {background:var(--world-card)!important;border-color:#42dbff!important}
+body:is(.zm-world,:has(.week .heroText),:has(.globe-layout):has(.details),:has(.globe-layout):has(.culture),:has(.map):has(.details)) :is(h1,h2,h3,h4,p,b,strong,small,.lead,.small,.caption,.credit,.further-note,.globe-hint,.globe-key,footer) {color:var(--world-text)!important;opacity:1!important}
+body:is(.zm-world,:has(.week .heroText),:has(.globe-layout):has(.details),:has(.globe-layout):has(.culture),:has(.map):has(.details)) :is(h2,h3) {color:#87eaff!important}
+body:is(.zm-world,:has(.week .heroText),:has(.globe-layout):has(.details),:has(.globe-layout):has(.culture),:has(.map):has(.details)) :is(a,.maplink,.further-link,.link,.tag,.globe-btn,nav button,.answers button,.quiz button,.next,.restart) {color:#e9faff!important}
+body:is(.zm-world,:has(.week .heroText),:has(.globe-layout):has(.details),:has(.globe-layout):has(.culture),:has(.map):has(.details)) :is(.maplink,.further-link,.link,.tag,.globe-btn,nav button,.answers button,.quiz button,.next,.restart) {background:#14283b!important;border:1px solid #42dbff!important;border-radius:10px;opacity:1}
+body:is(.zm-world,:has(.week .heroText),:has(.globe-layout):has(.details),:has(.globe-layout):has(.culture),:has(.map):has(.details)) :is(nav button.active,.answers button.correct,.quiz button.good) {background:#134b35!important;color:white!important;border-color:#56ffa9!important;box-shadow:0 0 12px #56ffa977}
+body:is(.zm-world,:has(.week .heroText),:has(.globe-layout):has(.details),:has(.globe-layout):has(.culture),:has(.map):has(.details)) :is(.answers button.wrong,.quiz button.bad) {background:#63263b!important;color:white!important;border-color:#ff7999!important}
+body:is(.zm-world,:has(.week .heroText),:has(.globe-layout):has(.details),:has(.globe-layout):has(.culture),:has(.map):has(.details)) :is(button,a):focus-visible {outline:3px solid #f9d65d;outline-offset:3px}
+body:is(.zm-world,:has(.week .heroText),:has(.globe-layout):has(.details),:has(.globe-layout):has(.culture),:has(.map):has(.details)) :is(.card,.detail,.concept,.further-card):hover {box-shadow:0 0 20px #42dbff55}
+}
