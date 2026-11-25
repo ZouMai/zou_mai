@@ -388,7 +388,7 @@ body.resources-page{
 #dictees .dict-current .dict-status{border-color:#ffd34d;background:#49350d;color:#ffe899}
 </style>
 <style>.weekly[hidden]{display:none!important}</style>
-</head>
+<style id="discipline-cards">#resource-content .shelf.active{display:block!important}#resource-content .shelf.active .grid{display:grid}#resource-content .shelf.active .subfolders{display:none}#resource-content .shelf.active>h3{margin-top:0}#resource-content .shelf.active+.shelf.active{margin-top:24px}</style></head>
 <body id="top" class="resources-page"><a class="zm-corner-logo" href="index.html" aria-label="Accueil Zou Maï"><img src="images/logo-zou-mai-sensei.png" alt="Logo Sensei Zou_Maï"></a>
 <nav class="site-nav" aria-label="Navigation principale">
 <a href="index.html">ACCUEIL</a>
@@ -603,7 +603,7 @@ document.querySelectorAll('.ribbon-tab[data-subject]').forEach(btn=>{
   if(dropdownButton===btn&&!ribbonPanel.hidden){closeResourceMenu();return}
   closeResourceMenu();dropdownButton=btn;btn.classList.add('active');btn.setAttribute('aria-expanded','true');
   const subject=btn.dataset.subject,list=ribbonFolders[subject]||[];
-  if(subject==='fr'){openSubject('fr');history.replaceState(null,'','#fr')}else{document.querySelectorAll('.shelf').forEach(s=>s.classList.remove('active'))}document.querySelectorAll('.weekly').forEach(w=>w.hidden=true);
+  showDiscipline(subject);history.replaceState(null,'','#'+subject);
   ribbonPanel.dataset.subject=subject;
   ribbonPanel.replaceChildren();
   list.forEach(([label,href])=>{const a=document.createElement('a');a.href=href;a.dataset.target=href.startsWith('#')?href.slice(1):'';a.textContent=label;ribbonPanel.append(a)});
@@ -635,6 +635,25 @@ if(mathGrid){
 }
 </script>
 
+<script>
+function showDiscipline(id){
+ const content=document.getElementById('resource-content');
+ const names={world:'Mystères du monde',an:'Anglais',fr:'Français',ma:'Mathématiques',hi:'Histoire',ge:'Géographie',hd:'Arts',em:'EMC',mu:'Musique',ci:'Cinéma'};
+ const french=['lecture','dictees','orthographe','grammaire','conjugaison','lexique'];
+ if(id==='world'||id==='an'){
+  const sid=id==='world'?'world':'an-lessons';
+  let shelf=document.getElementById(sid);
+  if(!shelf){shelf=document.createElement('div');shelf.className='shelf';shelf.id=sid;shelf.style.setProperty('--a',id==='world'?'#42dbff':'#ff7b45');const h=document.createElement('h3');h.textContent=names[id];const grid=document.createElement('div');grid.className='grid';shelf.append(h,grid);content.append(shelf);
+   ribbonFolders[id].forEach(([label,href])=>{const card=document.createElement('article');card.className='item';const type=document.createElement('span');type.className='type';type.textContent=id==='world'?'DESTINATION':'LEÇON';const title=document.createElement('h4');title.textContent=label;const a=document.createElement('a');a.href=href;a.textContent=id==='world'?'EXPLORER →':'OUVRIR →';card.append(type,title,a);grid.append(card)});
+  }
+ }
+ const ids=id==='fr'?french:id==='an'?['an','an-lessons']:id==='hd'?['hd','histoire-arts']:[id];
+ document.querySelectorAll('.shelf').forEach(x=>x.classList.toggle('active',ids.includes(x.id)));
+ content.classList.add('has-selection');document.querySelectorAll('.weekly').forEach(w=>w.hidden=true);
+}
+const initialDiscipline=location.hash.slice(1);
+if(Object.prototype.hasOwnProperty.call(ribbonFolders,initialDiscipline)){const b=document.querySelector('.ribbon-tab[data-subject="'+initialDiscipline+'"]');if(b)b.click();}
+</script>
 <script id="resource-selection-state">
 (function(){
  const content=document.getElementById('resource-content');
@@ -646,31 +665,7 @@ if(mathGrid){
 })();
 </script>
 <footer class="site-footer"><span>Choisir · Explorer · S’entraîner</span><a class="site-signature" href="apropos.html"><img src="images/logo-zou-mai-sensei.png" alt="Logo Sensei Zou_Mai"></a></footer>
-<script id="mobile-french-navigation">
-(function(){
- const panel=document.getElementById('ribbon-panel');
- const menu=document.createElement('div');menu.id='mobile-french-games';menu.hidden=true;menu.setAttribute('aria-label','Jeux de la rubrique');panel.after(menu);
- const categories=new Set(['lecture','dictees','orthographe','grammaire','conjugaison','lexique']);
- function resetSelection(){document.querySelectorAll('.shelf').forEach(s=>s.classList.remove('active'));document.getElementById('resource-content').classList.remove('has-selection');document.querySelectorAll('.weekly').forEach(w=>w.hidden=true)}
- function openGames(id){
- const shelf=document.getElementById(id);if(!shelf)return;
- menu.replaceChildren();const box=document.createElement('div');box.className='mobile-game-links';
- shelf.querySelectorAll('.grid .item').forEach(item=>{const source=item.querySelector('a[href]');if(!source)return;const a=document.createElement('a');a.className='mobile-game-link';a.href=source.getAttribute('href');const label=document.createElement('span');label.textContent=item.querySelector('.type')?.textContent||'JEU';const title=document.createElement('strong');title.textContent=item.querySelector('h4')?.textContent||source.textContent;a.append(label,title);box.append(a)});
- if(!box.children.length){const text=document.createElement('p');text.textContent='Les prochaines activités seront ajoutées ici.';box.append(text)}
- menu.append(box);menu.hidden=false;panel.querySelectorAll('a').forEach(a=>a.setAttribute('aria-current',String(a.dataset.target===id)));resetSelection();history.replaceState(null,'','#'+id);
- }
- panel.addEventListener('click',event=>{
- if(!matchMedia('(max-width:600px)').matches||panel.dataset.subject!=='fr')return;
- const link=event.target.closest('a[data-target]');if(!link||!categories.has(link.dataset.target))return;
- event.preventDefault();event.stopImmediatePropagation();openGames(link.dataset.target);
- },true);
- document.querySelectorAll('.ribbon-tab[data-subject]').forEach(button=>button.addEventListener('click',()=>{
- menu.hidden=true;panel.querySelectorAll('a').forEach(a=>a.removeAttribute('aria-current'));
- if(matchMedia('(max-width:600px)').matches&&button.dataset.subject==='fr'&&!panel.hidden)resetSelection();
- }));
- matchMedia('(max-width:600px)').addEventListener('change',()=>{menu.hidden=true});
-})();
-</script>
+
 <script src="site-tracking.js" defer></script>
 <script>document.addEventListener('DOMContentLoaded',()=>{const links=[...document.querySelectorAll('a')].filter(a=>/lecture|compréhension/i.test(a.textContent||''));const parent=links.find(a=>a.closest('.shelf'))?.closest('.shelf')||document.querySelector('.content')||document.querySelector('main');if(parent){const a=document.createElement('a');a.href='fluence.html';a.textContent='🥋 Dojo de la fluence · 20 exercices CM2 →';a.style.cssText='display:block;margin:18px 0;padding:17px;background:#151b2a;color:#ffe06a;border:3px solid #ffdc56;border-radius:12px;text-decoration:none;font-weight:900;text-align:center';parent.prepend(a)}});</script></body>
 </html>
