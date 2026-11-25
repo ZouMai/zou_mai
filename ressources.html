@@ -423,7 +423,7 @@ body.resources-page{
 <a href="projets.html">PROJETS</a>
 <a href="apropos.html">À PROPOS</a>
 </nav>
-<header class="animated-resource-header"><h1 class="resource-accessible-title">RESSOURCES</h1><img class="resource-animated-banner" src="assets/ressources-zoumai.gif" alt="Zoum et Maï, enseigne Ressources animée"></header><section class="portal-search" aria-label="Recherche de ressources"><label for="portal-query">Trouve ton activité</label><input id="portal-query" type="search" placeholder="Rechercher une leçon, une dictée, un jeu…" autocomplete="off"><div id="portal-results" aria-live="polite" hidden></div></section><section class="resource-ribbon" aria-label="Navigation des matières">
+<header class="animated-resource-header"><a class="portal-brand" href="index.html"><img src="images/logo-zou-mai-sensei.png" alt="Sensei Zoumaï"></a><h1 class="resource-accessible-title">RESSOURCES</h1><img class="resource-animated-banner" src="assets/ressources-zoumai.gif" alt="Zoum et Maï, enseigne Ressources animée"></header><section class="portal-search" aria-label="Recherche de ressources"><label for="portal-query">Trouve ton activité</label><input id="portal-query" type="search" placeholder="Rechercher une leçon, une dictée, un jeu…" autocomplete="off"><div id="portal-results" aria-live="polite" hidden></div></section><section class="resource-ribbon" aria-label="Navigation des matières">
 <div class="ribbon-scroll">
 <button class="ribbon-tab fr" data-subject="fr">✍️ Français</button>
 <button class="ribbon-tab ma" data-subject="ma">➗ Maths</button>
@@ -756,6 +756,18 @@ Object.values(ribbonFolders).flat().forEach(([title,href])=>items.push([title,hr
 for(const [title,href,body] of items){if(seen.has(href)||!words.every(w=>normalize(title+' '+body+' '+href).includes(w)))continue;seen.add(href);const a=document.createElement('a');a.href=href;a.textContent=title;a.addEventListener('click',e=>{if(href.startsWith('#')){e.preventDefault();const id=href.slice(1);if(ribbonFolders[id])showDiscipline(id);else openSubject(id);history.replaceState(null,'',href)}out.hidden=true});out.append(a);if(seen.size>=30)break;}if(!seen.size)out.textContent='Aucun résultat. Essaie un autre mot.';}
 q.addEventListener('input',search);q.addEventListener('keydown',e=>{if(e.key==='Escape'){q.value='';search()}});
 })();
-</script></body>
+</script><style id="portal-graffiti-wallpaper">
+body.resources-page{background:#080d14 linear-gradient(#080d1440,#080d1440) fixed!important;color:#eef4fa;isolation:isolate}
+body.resources-page:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:url("assets/Fond%20graffiti%20urbain%20au%20loup%20bleu.png") center center / cover no-repeat!important;opacity:.48!important}
+body.resources-page:after{display:none!important}
+.resources-page .section-label,.resources-page .content>h2,.resources-page .shelf h3{color:#eef4fa;text-shadow:none}
+.resources-page .content{background:#101722b0;border:1px solid #344257;border-radius:18px}
+.resources-page .portal-brand{display:block;flex:0 0 auto;width:clamp(120px,15vw,230px);align-self:center}
+.resources-page .portal-brand img{display:block;width:100%;height:auto;border-radius:8px}
+.resources-page header.animated-resource-header:has(>h1){gap:24px;justify-content:space-between}
+.resources-page .resource-animated-banner{width:min(70%,760px);margin:auto}
+@media(min-width:900px){.resources-page main,.resources-page header.animated-resource-header:has(>h1),.resources-page .resource-ribbon{width:94vw!important;max-width:none!important}.resources-page #resource-content{max-width:none!important;width:100%}.resources-page .portal-search{width:min(900px,94vw)}}
+@media(max-width:650px){.resources-page header.animated-resource-header:has(>h1){flex-direction:column;align-items:flex-start;gap:8px}.resources-page .portal-brand{width:120px;align-self:flex-start}.resources-page .resource-animated-banner{width:100%}.resources-page:before{background-position:65% center!important;opacity:.35!important}}
+</style></body>
 </html>
 
