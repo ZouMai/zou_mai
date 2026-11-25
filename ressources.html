@@ -393,7 +393,12 @@ body.resources-page{
 .resources-page header:has(>h1)::before{top:12px}.resources-page header:has(>h1)::after{bottom:12px}
 @keyframes resourceIgnition{from{opacity:.35;filter:brightness(.7)}to{opacity:1;filter:brightness(1)}}
 @media(prefers-reduced-motion:reduce){.resources-page header:has(>h1) h1{animation:none}}
-</style></head>
+</style><style id="resource-title-neon-v3">
+.resources-page header:has(>h1) h1{font-family:Impact,"Arial Black",Arial,sans-serif!important;font-style:italic;font-weight:900!important;letter-spacing:.035em!important;font-size:clamp(1.65rem,8vw,5.7rem)!important;transform:skew(-5deg) rotate(-2deg);color:#eaffff!important;-webkit-text-stroke:1px #65e9ff;text-shadow:2px 3px 0 #1554a0,4px 6px 0 #54278a,0 0 6px #fff,0 0 16px #00dfff,0 0 38px #008cff!important;animation:resourceNeonPulse 6s ease-in-out infinite!important}
+@keyframes resourceNeonPulse{0%{opacity:.72;filter:brightness(.85)}12%,100%{opacity:1;filter:brightness(1.15)}35%{opacity:1;filter:brightness(1)}45%{opacity:.75;filter:brightness(.9)}55%,75%{opacity:1;filter:brightness(1.25)}85%{opacity:.9;filter:brightness(1)}}
+@media(prefers-reduced-motion:reduce){.resources-page header:has(>h1) h1{animation:none!important}}
+</style>
+</head>
 <body id="top" class="resources-page"><a class="zm-corner-logo" href="index.html" aria-label="Accueil Zou Maï"><img src="images/logo-zou-mai-sensei.png" alt="Logo Sensei Zou_Maï"></a>
 <nav class="site-nav" aria-label="Navigation principale">
 <a href="index.html">ACCUEIL</a>
