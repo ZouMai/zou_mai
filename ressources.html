@@ -691,6 +691,14 @@ const oldShow=showDiscipline;showDiscipline=function(id){oldShow(id);if(id==='fr
 const oldOpen=openSubject;openSubject=function(id){oldOpen(id);view(id)};
 const id=location.hash.slice(1);if(names[id]){if(ribbonFolders[id])showDiscipline(id);else openSubject(id)}
 })();
+</script><style>
+body.discipline-view #resource-content .shelf.active>.grid{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));visibility:visible!important}
+body.discipline-view #resource-content .shelf.active>.grid>.item{display:block!important;visibility:visible!important}
+</style><script>
+(()=>{const em=document.querySelector('#em .grid');if(em&&!em.querySelector('a[href="emc-symboles-republique.html"]'))em.insertAdjacentHTML('beforeend','<article class="item"><span class="type">EMC · RÉPUBLIQUE</span><h4>Les symboles de la République</h4><p>Découvre les symboles de la République française.</p><a href="emc-symboles-republique.html">DÉCOUVRIR →</a></article>');
+ribbonFolders.mu=[["Aux arbres citoyens","#mu"],["C’est de l’eau","musique-cest-de-leau-enfantastiques.html"]];
+const count=document.querySelector('.subject.ge .count');if(count)count.textContent='G1 · G2 · G3';
+})();
 </script></body>
 </html>
 
