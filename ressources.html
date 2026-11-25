@@ -667,6 +667,30 @@ if(Object.prototype.hasOwnProperty.call(ribbonFolders,initialDiscipline)){const 
 <footer class="site-footer"><span>Choisir · Explorer · S’entraîner</span><a class="site-signature" href="apropos.html"><img src="images/logo-zou-mai-sensei.png" alt="Logo Sensei Zou_Mai"></a></footer>
 
 <script src="site-tracking.js" defer></script>
-<script>document.addEventListener('DOMContentLoaded',()=>{const links=[...document.querySelectorAll('a')].filter(a=>/lecture|compréhension/i.test(a.textContent||''));const parent=links.find(a=>a.closest('.shelf'))?.closest('.shelf')||document.querySelector('.content')||document.querySelector('main');if(parent){const a=document.createElement('a');a.href='fluence.html';a.textContent='🥋 Dojo de la fluence · 20 exercices CM2 →';a.style.cssText='display:block;margin:18px 0;padding:17px;background:#151b2a;color:#ffe06a;border:3px solid #ffdc56;border-radius:12px;text-decoration:none;font-weight:900;text-align:center';parent.prepend(a)}});</script></body>
+<style>
+body.discipline-view header,body.discipline-view .weekly,body.discipline-view .section-label,body.discipline-view .subjects,body.discipline-view .coming-soon,body.discipline-view #resource-content>h2{display:none!important}
+body.discipline-view #resource-content{background:#0b1018;color:white;border:0;box-shadow:none;margin-top:20px}
+body.discipline-view #resource-content .shelf h3{color:white;text-shadow:none}
+#discipline-heading{display:none}body.discipline-view #discipline-heading{display:block;padding:18px 0}
+#discipline-heading a{color:#a5c8df;font-size:.85rem}#discipline-heading h2{font-size:clamp(2rem,5vw,3.5rem);margin:12px 0;color:white}
+#fr-home .grid{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+#fr-home .weekly-card{min-height:160px;--wc:#ff4f73}
+body.discipline-view .ribbon-panel:not([hidden]){display:flex!important;flex-wrap:nowrap!important;overflow-x:auto!important;max-height:none!important}
+body.discipline-view .ribbon-panel a{flex:0 0 auto;white-space:nowrap;background:#101722}
+</style><script>
+(()=>{
+const content=document.getElementById('resource-content');
+const heading=document.createElement('div');heading.id='discipline-heading';heading.innerHTML='<a href="ressources.html">‹ Retour aux ressources</a><h2></h2>';content.prepend(heading);
+const shelf=document.createElement('div');shelf.id='fr-home';shelf.className='shelf';shelf.style.setProperty('--a','#ff4f73');const grid=document.createElement('div');grid.className='grid';shelf.append(grid);content.append(shelf);
+const names={fr:'Français',ma:'Mathématiques',hi:'Histoire',ge:'Géographie',an:'Anglais',world:'Mystères du monde',hd:'Histoire des arts',em:'EMC',mu:'Musique',ci:'Cinéma',lecture:'Lecture',dictees:'Dictées',orthographe:'Orthographe',grammaire:'Grammaire',conjugaison:'Conjugaison',lexique:'Lexique'};
+const icons=['📖','✍️','🔤','🧩','🥋','📚'];
+ribbonFolders.fr.forEach(([label,href],i)=>{const a=document.createElement('a');a.className='weekly-card weekly-fr';a.href=href;a.innerHTML='<span>'+icons[i]+' FRANÇAIS</span><strong>'+label+'</strong><b>EXPLORER →</b>';grid.append(a);a.addEventListener('click',e=>{e.preventDefault();openSubject(href.slice(1));history.replaceState(null,'',href)})});
+const reading=document.querySelector('#lecture .grid');if(reading&&!reading.querySelector('a[href="fluence.html"]'))reading.insertAdjacentHTML('afterbegin','<article class="item"><span class="type">LECTURE · FLUENCE</span><h4>🥋 Dojo de la fluence</h4><p>20 exercices CM2 pour entraîner ta lecture à voix haute.</p><a href="fluence.html">ENTRER DANS LE DOJO →</a></article>');
+function view(id){document.body.classList.add('discipline-view');heading.querySelector('h2').textContent=names[id]||id;window.scrollTo(0,0)}
+const oldShow=showDiscipline;showDiscipline=function(id){oldShow(id);if(id==='fr'){document.querySelectorAll('.shelf').forEach(x=>x.classList.toggle('active',x===shelf))}view(id)};
+const oldOpen=openSubject;openSubject=function(id){oldOpen(id);view(id)};
+const id=location.hash.slice(1);if(names[id]){if(ribbonFolders[id])showDiscipline(id);else openSubject(id)}
+})();
+</script></body>
 </html>
 
