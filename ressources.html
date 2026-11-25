@@ -197,10 +197,7 @@ body.resources-page{
   margin:0;color:#fff;font-size:clamp(2.8rem,8vw,6.5rem);line-height:.82;
   letter-spacing:-.065em;text-shadow:0 0 18px #36c8ff55,0 8px 28px #000;
 }
-.resources-page header h1:after{
-  content:" / CM2";display:inline-block;margin-left:.18em;color:#36c8ff;
-  font-size:.24em;letter-spacing:.08em;vertical-align:middle;text-shadow:0 0 12px #36c8ffaa
-}
+.resources-page header h1:after{content:none}
 .resources-page main{max-width:1180px;margin:0 auto;padding:0 20px 60px}
 .resources-page .weekly{
   margin:8px 0 34px;padding:22px 0 10px;background:transparent;border:0;
@@ -388,7 +385,15 @@ body.resources-page{
 #dictees .dict-current .dict-status{border-color:#ffd34d;background:#49350d;color:#ffe899}
 </style>
 <style>.weekly[hidden]{display:none!important}</style>
-<style id="discipline-cards">#resource-content .shelf.active{display:block!important}#resource-content .shelf.active .grid{display:grid}#resource-content .shelf.active .subfolders{display:none}#resource-content .shelf.active>h3{margin-top:0}#resource-content .shelf.active+.shelf.active{margin-top:24px}</style></head>
+<style id="discipline-cards">#resource-content .shelf.active{display:block!important}#resource-content .shelf.active .grid{display:grid}#resource-content .shelf.active .subfolders{display:none}#resource-content .shelf.active>h3{margin-top:0}#resource-content .shelf.active+.shelf.active{margin-top:24px}</style><style id="electric-resource-banner">
+.resources-page header:has(>h1){box-sizing:border-box;position:relative;display:grid!important;place-items:center;isolation:isolate;overflow:hidden;margin:24px auto 18px!important;width:calc(100% - 40px);padding:clamp(24px,5vw,52px) 12px!important;border:1px solid #65caff!important;border-radius:18px;background:radial-gradient(ellipse at 15% 50%,#073c5055,transparent 60%),radial-gradient(ellipse at 85% 50%,#51208055,transparent 60%),#080d1b!important;box-shadow:0 0 18px #00dfff44,inset 0 0 24px #a065ff22!important}
+.resources-page header:has(>h1) .resource-figure{display:none!important}
+.resources-page header:has(>h1) h1{position:relative;z-index:1;margin:0!important;font-family:Arial,sans-serif;font-weight:900;font-size:clamp(1.65rem,7.4vw,5rem)!important;line-height:1.15!important;letter-spacing:.065em!important;color:#e6faff!important;text-shadow:0 0 5px #fff,0 0 14px #00dfff,0 0 32px #8660ff!important;animation:resourceIgnition .85s ease-out both}
+.resources-page header:has(>h1)::before,.resources-page header:has(>h1)::after{content:"";position:absolute;left:8%;right:8%;height:2px;background:linear-gradient(90deg,transparent,#00eaff,#ad65ff,transparent);box-shadow:0 0 9px #62caff;pointer-events:none}
+.resources-page header:has(>h1)::before{top:12px}.resources-page header:has(>h1)::after{bottom:12px}
+@keyframes resourceIgnition{from{opacity:.35;filter:brightness(.7)}to{opacity:1;filter:brightness(1)}}
+@media(prefers-reduced-motion:reduce){.resources-page header:has(>h1) h1{animation:none}}
+</style></head>
 <body id="top" class="resources-page"><a class="zm-corner-logo" href="index.html" aria-label="Accueil Zou Maï"><img src="images/logo-zou-mai-sensei.png" alt="Logo Sensei Zou_Maï"></a>
 <nav class="site-nav" aria-label="Navigation principale">
 <a href="index.html">ACCUEIL</a>
