@@ -1,13 +1,267 @@
-<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"><title>Maths à la corde | Zoumaï</title><style>
-*{box-sizing:border-box}body{margin:0;font-family:system-ui;background:#edf3fa;color:#17243d}header{padding:10px;text-align:center;background:#182e53;color:white}h1{font-size:21px;margin:0}.settings{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:10px}select,button{font:inherit;border-radius:12px;padding:9px;border:1px solid #b8c8db;background:white}button{cursor:pointer;font-weight:750}.start{background:#f4b942}.tip{text-align:center;font-size:13px;margin:3px 8px}.game{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px;max-width:1000px;margin:auto}.panel{border-radius:18px;padding:12px;text-align:center;background:#dcecff;border:3px solid #2875d0}.panel.red{background:#ffe2df;border-color:#db4b45}.question{font-weight:900;font-size:clamp(25px,5vw,46px);margin:6px}.answer{font-size:24px;width:min(100%,190px);text-align:center;border:2px solid #899db4;border-radius:12px;padding:8px}.submit{display:block;margin:8px auto;background:#fff}.stage{position:relative;grid-column:1/-1;background:linear-gradient(#b9e8ff 0 70%,#8bc982 70%);border-radius:20px;overflow:hidden;height:clamp(190px,30vw,300px)}svg{width:100%;height:100%}.status{text-align:center;font-weight:800;grid-column:1/-1;min-height:26px}.score{font-size:14px;font-weight:700}.end-screen{position:absolute;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;gap:12px;background:#14223de8;color:white;text-align:center;z-index:5;padding:20px}.end-screen.visible{display:flex}.end-screen strong{font-size:clamp(22px,5vw,36px)}.end-screen button{background:#f4b942;color:#17243d;border:0;font-size:20px;padding:12px 24px}@media(orientation:portrait){.game{display:flex;flex-direction:column}.panel.red{order:0;transform:rotate(180deg)}.stage{order:1;height:34vh;min-height:180px}.panel.blue{order:2}.status{order:3}}@media(orientation:landscape){.panel.red{order:2}.panel.blue{order:0}.stage{order:1;grid-column:1/-1;grid-row:2}.game{grid-template-columns:1fr 1fr}} 
-</style></head><body><header><h1>🪢 Maths à la corde</h1></header><div class="settings"><select id="mode"><option value="cpu">Contre l'ordinateur</option><option value="duo">Deux joueurs</option></select><select id="level"><option value="facile">Facile</option><option value="moyen" selected>Moyen</option><option value="expert">Expert</option></select><select id="operation"><option value="mix">Calculs mélangés</option><option value="add">Additions</option><option value="sub">Soustractions</option><option value="mul">Multiplications</option><option value="div">Divisions (Expert)</option></select><button class="start" id="start">Nouvelle partie</button></div><div class="tip" id="tip">À deux, placez-vous face à face. Répondez juste pour tirer la corde ! En solo, affrontez l'ordinateur.</div><main class="game"><section class="panel blue"><strong>🔵 Équipe bleue</strong><div class="question" id="qb">Prêt ?</div><input class="answer" type="number" inputmode="numeric" id="ab" placeholder="Réponse"><button class="submit" id="bb">Valider ✓</button><div class="score" id="sb">0 bonne réponse</div></section><section class="panel red"><strong id="redname">🔴 Ordinateur</strong><div class="question" id="qr">Prêt ?</div><input class="answer" type="number" inputmode="numeric" id="ar" placeholder="Réponse"><button class="submit" id="br">Valider ✓</button><div class="score" id="sr">0 bonne réponse</div></section><div class="stage"><svg viewBox="0 0 900 280" aria-label="Animation du tir à la corde"><line x1="0" y1="222" x2="900" y2="222" stroke="#59934e" stroke-width="5"/><g id="actors"><path id="rope" d="M140 157 Q450 163 760 157" fill="none" stroke="#8a5c32" stroke-width="12" stroke-linecap="round"/><path d="M140 154 Q450 160 760 154" fill="none" stroke="#d8aa68" stroke-width="3" stroke-dasharray="9 10"/><g id="blues"></g><g id="reds"></g><path d="M450 151 l0 38 l24 -10 l-24 -9" fill="#ffdc49" stroke="#a27c15" stroke-width="3"/></g><path d="M450 210 v30" stroke="#fff" stroke-width="5" stroke-dasharray="5 5"/></svg><div id="endScreen" class="end-screen" role="status" aria-live="assertive"><strong id="winnerText"></strong><button id="replay">🔁 Recommencer</button></div></div><div class="status" id="status">Premier à prendre 5 longueurs de corde !</div></main><script>
-const $=x=>document.getElementById(x);let progress=0,score=[0,0],q=[null,null],active=false,timer=null;
-function person(x,color,flip){return '<g transform="translate('+x+' 0) scale('+flip+' 1)"><path d="M-10 198 L-29 225 M8 198 L27 225" stroke="#26334b" stroke-width="13" stroke-linecap="round"/><path d="M-1 174 L-2 200" stroke="'+color+'" stroke-width="32" stroke-linecap="round"/><path d="M-5 178 L30 158 L54 157" fill="none" stroke="#e2a97f" stroke-width="11" stroke-linecap="round"/><circle cx="-2" cy="135" r="23" fill="#e2a97f"/><path d="M-25 132 Q-25 102 0 110 Q23 111 22 130" fill="#26334b"/><circle cx="8" cy="135" r="3" fill="#26334b"/><circle cx="54" cy="157" r="8" fill="#e2a97f"/></g>'}
-$('blues').innerHTML=person(245,'#2677e3',1);$('reds').innerHTML=person(655,'#df5148',-1);
-function rand(n){return Math.floor(Math.random()*n)+1}function question(){let level=$('level').value,ops=$('operation').value,choices=ops==='mix'?['add','sub','mul',...(level==='expert'?['div']:[])]:[ops];let op=choices[Math.floor(Math.random()*choices.length)];if(op==='div'&&level!=='expert')op='mul';let max=level==='facile'?5:level==='moyen'?10:12,a=rand(max),b=rand(max),ans,txt;if(op==='add'){ans=a+b;txt=a+' + '+b}else if(op==='sub'){if(a<b)[a,b]=[b,a];ans=a-b;txt=a+' − '+b}else if(op==='mul'){ans=a*b;txt=a+' × '+b}else{ans=a;txt=(a*b)+' ÷ '+b}return {txt,ans}}
-function next(i){q[i]=question();$('q'+(i?'r':'b')).textContent=q[i].txt+' = ?'}
-function draw(){let x=progress*42;$('actors').setAttribute('transform','translate('+x+' 0)');$('sb').textContent=score[0]+' bonnes réponses';$('sr').textContent=score[1]+' bonnes réponses';if(Math.abs(progress)>=5){active=false;clearInterval(timer);let winner=progress<0?'BLEUS':'ROUGES';let message=progress<0?'Bravo ! Les bleus ont gagné !':($('mode').value==='cpu'?'L’ordinateur a gagné !':'Bravo ! Les rouges ont gagné !');$('status').textContent=message+' Recommencez !';$('winnerText').textContent='🏆 '+message;$('endScreen').classList.add('visible');$('ab').disabled=true;$('ar').disabled=true;$('bb').disabled=true;$('br').disabled=true;let loser=progress<0?$('reds'):$('blues');loser.setAttribute('transform','rotate('+(progress<0?18:-18)+' 450 190) translate(0 35)');$('rope').setAttribute('d','M140 157 Q450 175 760 210')}else $('status').textContent=progress===0?'Les équipes sont à égalité !':(progress<0?'Les bleus':'Les rouges')+' gagnent du terrain !'}
-function correct(i){if(!active||!q[i])return;let inp=$(i?'ar':'ab');if(Number(inp.value)===q[i].ans&&inp.value.trim()!==''){score[i]++;progress+=i?1:-1;inp.value='';next(i);draw()}else{$('status').textContent='Essaie encore !';inp.select()}}
-function start(){clearInterval(timer);$('endScreen').classList.remove('visible');$('ab').disabled=false;$('ar').disabled=false;$('bb').disabled=false;$('br').disabled=false;active=true;progress=0;score=[0,0];$('reds').removeAttribute('transform');$('blues').removeAttribute('transform');$('rope').setAttribute('d','M140 157 Q450 163 760 157');$('ab').value='';$('ar').value='';let duo=$('mode').value==='duo';$('redname').textContent=duo?'🔴 Équipe rouge':'🔴 Ordinateur';$('ar').style.display=duo?'':'none';$('br').style.display=duo?'':'none';next(0);if(duo)next(1);else $('qr').textContent='🤖';draw();if(!duo){let ms={facile:7500,moyen:5100,expert:3300}[$('level').value];timer=setInterval(()=>{if(active){score[1]++;progress++;draw()}},ms)}}
-$('bb').onclick=()=>correct(0);$('br').onclick=()=>correct(1);$('ab').onkeydown=e=>{if(e.key==='Enter')correct(0)};$('ar').onkeydown=e=>{if(e.key==='Enter')correct(1)};$('start').onclick=start;$('replay').onclick=start;$('level').onchange=()=>{if($('level').value!=='expert'&&$('operation').value==='div')$('operation').value='mix'};start();
-</script></body></html>
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Maths à la corde | Zoumaï</title>
+<style>
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:#0a1124;color:#f7f8ff;font-family:system-ui,sans-serif}
+main{width:min(100% - 24px,880px);margin:auto;padding:12px 0 24px}
+.top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+.top a{color:#b6e8ff}
+h1{font-size:clamp(1.65rem,5vw,3rem);margin:0}
+h2,p{margin:0}
+button,select,input{font:inherit}
+button,select{min-height:44px;border:1px solid #57658d;border-radius:12px;padding:8px 13px;background:#1f2b49;color:white}
+button{font-weight:750;cursor:pointer}
+button.primary{background:#ffdc62;color:#151b2a;border-color:#ffdc62}
+button:disabled{opacity:.55;cursor:default}
+:focus-visible{outline:3px solid #ffdc62;outline-offset:3px}
+.hero{display:block;width:100%;height:auto;max-height:420px;object-fit:contain;background:#0e152c;border:1px solid #566695;border-radius:20px}
+.settings,.choices,.actions{display:flex;flex-wrap:wrap;gap:10px}
+.choices{margin:12px 0}.settings{margin:12px 0 0}
+.settings label{display:grid;gap:4px;flex:1;min-width:132px;font-weight:700}
+.rule{margin-top:10px;color:#d4e0fc}
+.arena{position:relative;overflow:hidden;border:1px solid #516491;border-radius:18px;background:linear-gradient(110deg,#123663,#0c1532 49%,#441c50)}
+.arena svg{display:block;width:100%;height:auto}
+#pull{transition:transform .28s ease-out}
+.arena.won #pull{animation:finish .36s ease-out}
+@keyframes finish{50%{translate:var(--kick) 0}}
+.board{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.arena,.race,.actions{grid-column:1/-1}
+.race{text-align:center;color:#e0e8ff;min-height:1.5em}
+.panel{--team:#6bd6ff;background:#121f3b;border:2px solid var(--team);border-radius:16px;text-align:center;padding:10px;min-width:0}
+.panel.mai{--team:#ff91dc}
+.panel h2{color:var(--team);font-size:1.2rem}
+.calc{font-size:clamp(1.65rem,5vw,2.5rem);font-weight:850;margin:5px 0}
+form{display:flex;justify-content:center;gap:7px}
+input{width:min(110px,55%);min-width:0;min-height:44px;text-align:center;border-radius:10px;border:1px solid #7991bf;background:#fff;color:#101934;font-size:1.2rem}
+.feedback{min-height:1.5em;margin-top:5px;color:#ffe087}
+.panel small{color:#c9d4f1}
+#result{display:grid;place-content:center;justify-items:center;gap:9px;text-align:center;position:absolute;inset:0;background:#10182be8;padding:10px}
+.arena.won #result{animation:show-result .2s .36s both}
+@keyframes show-result{from{opacity:0}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){.arena.won #result{animation:none}}
+#practiceNext{margin-top:7px}
+.board[data-mode=practice]{grid-template-columns:1fr}
+@media(max-width:540px){
+  .board[data-mode=cpu]{grid-template-columns:1fr}
+  .board[data-mode=cpu] .mai{display:flex;justify-content:space-between;align-items:center;gap:6px}
+  .board[data-mode=cpu] .mai .calc{font-size:1rem;margin:0}
+}
+@media(orientation:portrait) and (max-width:740px){
+  .board[data-mode=duo]{grid-template-columns:1fr}
+  .board[data-mode=duo] .mai{grid-row:1;transform:rotate(180deg)}
+  .board[data-mode=duo] .arena{grid-row:2}
+  .board[data-mode=duo] .race{grid-row:3}
+}
+@media(prefers-reduced-motion:reduce){#pull{transition:none}.arena.won #pull{animation:none}}
+</style>
+</head>
+<body>
+<main>
+  <header class="top"><a href="jeux.html">← Jeux</a><h1>Maths à la corde</h1></header>
+  <section id="home" aria-label="Choisir une partie">
+    <img class="hero" src="assets/maths-corde-duel.webp" width="1120" height="630" alt="Zoum et Maï tirent chacun de leur côté sur une corde au nœud rose.">
+    <p class="rule">Chaque bonne réponse tire la corde vers ton équipe.</p>
+    <div class="choices">
+      <button class="primary" data-start="practice">M’entraîner</button>
+      <button data-start="cpu">Jouer contre Maï</button>
+      <button data-start="duo">Jouer à deux</button>
+    </div>
+    <details>
+      <summary>Réglages du duel</summary>
+      <div class="settings">
+        <label>Niveau<select id="level"><option value="facile">Facile</option><option value="moyen">Moyen</option><option value="expert">Expert</option></select></label>
+        <label>Calculs<select id="operation"><option value="mix">Calculs mélangés</option><option value="add">Additions</option><option value="sub">Soustractions</option><option value="mul">Multiplications</option><option value="div" disabled>Divisions (Expert)</option></select></label>
+      </div>
+    </details>
+  </section>
+  <section class="board" id="board" aria-label="Partie" hidden>
+    <div class="arena" id="arena">
+      <svg viewBox="0 0 720 166" aria-label="Zoum et Maï tirent sur la corde" role="img">
+        <path d="M0 146H720" stroke="#a3d5ff" stroke-opacity=".4" stroke-width="2"/>
+        <path d="M210 125v24m150-24v24m150-24v24" stroke="#e0e7ff" stroke-width="3" stroke-dasharray="4 4"/>
+        <g id="pull">
+          <path d="M214 119H506" stroke="#4c341a" stroke-width="13" stroke-linecap="round"/>
+          <path d="M214 118H506" stroke="#ffcb55" stroke-width="8" stroke-linecap="round"/>
+          <path d="M214 118H506" stroke="#9b5e23" stroke-width="4" stroke-dasharray="2 7"/>
+          <image href="assets/zoum-neutral.png" x="150" y="20" width="137" height="122"/>
+          <image href="assets/mai-neutral.png" x="434" y="14" width="138" height="130"/>
+          <path d="M468 118h36" stroke="#ffcb55" stroke-width="7" stroke-linecap="round"/>
+          <path d="M468 118h36" stroke="#9b5e23" stroke-width="3" stroke-dasharray="2 6"/>
+          <path d="M360 117q-27-29-26-3q0 10 26 3q26-7 26-3q1-26-26 3l-13 22m13-22 13 22" fill="none" stroke="#fa6fb4" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="360" cy="117" r="6" fill="#ffe0f3"/>
+        </g>
+      </svg>
+      <div id="result" hidden><h2 id="winner"></h2><button class="primary" id="replay">Revanche</button></div>
+    </div>
+    <p class="race" id="race" role="status"></p>
+    <article class="panel">
+      <h2>Zoum</h2>
+      <p class="calc" id="calc0"></p>
+      <form data-side="0"><input id="answer0" type="text" inputmode="numeric" autocomplete="off" aria-labelledby="calc0"><button class="primary">Valider</button></form>
+      <p class="feedback" id="feedback0" role="status"></p>
+      <small id="score0"></small>
+      <button id="practiceNext" hidden>Défier Maï</button>
+    </article>
+    <article class="panel mai" id="mai">
+      <h2>Maï</h2>
+      <p class="calc" id="calc1"></p>
+      <form data-side="1"><input id="answer1" type="text" inputmode="numeric" autocomplete="off" aria-labelledby="calc1"><button class="primary">Valider</button></form>
+      <p class="feedback" id="feedback1" role="status"></p>
+      <small id="score1"></small>
+    </article>
+    <div class="actions"><button id="menu">Retour aux modes</button></div>
+  </section>
+</main>
+<script>
+const $ = id => document.getElementById(id);
+const forms = [...document.querySelectorAll('form[data-side]')];
+const starts = [...document.querySelectorAll('[data-start]')];
+const practice = [
+  { text: '3 + 2', answer: 5, hint: 'Pars de 3 et avance de 2.' },
+  { text: '4 + 3', answer: 7, hint: 'Pars de 4 et avance de 3.' },
+  { text: '5 + 4', answer: 9, hint: 'Pars de 5 et avance de 4.' }
+];
+const pullStep = 30;
+const finishLine = 5;
+const maïDelay = { facile: 7500, moyen: 5100, expert: 3300 };
+let mode, level, operation, timer, active, position, scores, questions;
+
+function setEnabled(side, enabled) {
+  forms[side].querySelectorAll('input, button').forEach(control => control.disabled = !enabled);
+}
+
+function nextQuestion(side) {
+  if (mode === 'practice') {
+    questions[side] = practice[scores[side]];
+  } else {
+    const operations = ['add', 'sub', 'mul'];
+    if (level === 'expert') operations.push('div');
+    const selected = operation === 'mix' ? operations[Math.floor(Math.random() * operations.length)] : operation;
+    const max = { facile: 5, moyen: 10, expert: 12 }[level];
+    const a = 1 + Math.floor(Math.random() * max);
+    const b = 1 + Math.floor(Math.random() * max);
+    const possibilities = {
+      add: { text: a + ' + ' + b, answer: a + b },
+      sub: { text: Math.max(a, b) + ' − ' + Math.min(a, b), answer: Math.abs(a - b) },
+      mul: { text: a + ' × ' + b, answer: a * b },
+      div: { text: (a * b) + ' ÷ ' + b, answer: a }
+    };
+    questions[side] = possibilities[selected];
+  }
+  $('calc' + side).textContent = questions[side].text + ' = ?';
+}
+
+function stop() {
+  active = false;
+  clearInterval(timer);
+  setEnabled(0, false);
+  setEnabled(1, false);
+}
+
+function pull(side) {
+  scores[side]++;
+  position += side === 0 ? -1 : 1;
+  $('pull').style.transform = 'translateX(' + position * pullStep + 'px)';
+  $('score' + side).textContent = scores[side] + (scores[side] === 1 ? ' bonne réponse' : ' bonnes réponses');
+  if (mode === 'practice') {
+    $('race').textContent = scores[0] + ' calcul' + (scores[0] > 1 ? 's' : '') + ' réussi' + (scores[0] > 1 ? 's' : '') + ' sur 3';
+    if (scores[0] === practice.length) {
+      stop();
+      $('feedback0').textContent = 'Bravo, tu sais tirer la corde !';
+      $('practiceNext').hidden = false;
+      $('practiceNext').focus();
+    }
+    return;
+  }
+  const leader = position < 0 ? 'Zoum' : 'Maï';
+  if (Math.abs(position) === finishLine) {
+    stop();
+    $('arena').style.setProperty('--kick', position < 0 ? '-9px' : '9px');
+    $('arena').classList.add('won');
+    $('winner').textContent = leader + ' remporte le duel !';
+    $('race').textContent = $('winner').textContent;
+    $('result').hidden = false;
+    $('replay').focus();
+  } else {
+    $('race').textContent = position === 0 ? 'À égalité !' : leader + ' mène. Encore ' + (finishLine - Math.abs(position)) + ' pour gagner.';
+  }
+}
+
+function start(selectedMode) {
+  stop();
+  mode = selectedMode;
+  level = $('level').value;
+  operation = $('operation').value;
+  position = 0;
+  scores = [0, 0];
+  questions = [];
+  active = true;
+  $('home').hidden = true;
+  $('board').hidden = false;
+  $('board').dataset.mode = mode;
+  $('arena').classList.remove('won');
+  $('result').hidden = true;
+  $('practiceNext').hidden = true;
+  $('pull').style.transform = '';
+  $('mai').hidden = mode === 'practice';
+  forms[1].hidden = mode !== 'duo';
+  $('feedback1').hidden = mode !== 'duo';
+  $('race').textContent = mode === 'practice' ? 'À ton rythme · 3 calculs' : 'Tire le nœud jusqu’au repère de ton côté.';
+  for (const side of [0, 1]) {
+    $('answer' + side).value = '';
+    $('feedback' + side).textContent = '';
+    $('score' + side).textContent = '0 bonne réponse';
+  }
+  setEnabled(0, true);
+  setEnabled(1, mode === 'duo');
+  nextQuestion(0);
+  if (mode === 'duo') nextQuestion(1);
+  else $('calc1').textContent = 'Adversaire';
+  $('answer0').focus({ preventScroll: true });
+  if (mode === 'cpu') timer = setInterval(() => pull(1), maïDelay[level]);
+}
+
+forms.forEach(form => form.addEventListener('submit', event => {
+  event.preventDefault();
+  const side = Number(form.dataset.side);
+  if (!active || !questions[side]) return;
+  const field = $('answer' + side);
+  const feedback = $('feedback' + side);
+  const value = field.value.trim();
+  if (!/^\d+$/.test(value) || Number(value) !== questions[side].answer) {
+    feedback.textContent = value === '' ? 'Écris ta réponse.' : (questions[side].hint || 'Essaie encore !');
+    field.focus();
+    field.select();
+    return;
+  }
+  field.value = '';
+  feedback.textContent = 'Bien joué !';
+  pull(side);
+  if (active) {
+    nextQuestion(side);
+    field.focus();
+  }
+}));
+
+starts.forEach(button => button.addEventListener('click', () => start(button.dataset.start)));
+$('practiceNext').addEventListener('click', () => start('cpu'));
+$('replay').addEventListener('click', () => start(mode));
+$('menu').addEventListener('click', () => {
+  stop();
+  $('board').hidden = true;
+  $('home').hidden = false;
+  starts.find(button => button.dataset.start === mode).focus();
+});
+$('level').addEventListener('change', () => {
+  const expert = $('level').value === 'expert';
+  if (!expert && $('operation').value === 'div') $('operation').value = 'mix';
+  $('operation').querySelector('[value=div]').disabled = !expert;
+});
+</script>
+</body>
+</html>
