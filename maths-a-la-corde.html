@@ -51,13 +51,60 @@ input{width:min(110px,55%);min-width:0;min-height:44px;text-align:center;border-
   .board[data-mode=cpu] .mai{display:flex;justify-content:space-between;align-items:center;gap:6px}
   .board[data-mode=cpu] .mai .calc{font-size:1rem;margin:0}
 }
-@media(orientation:portrait) and (max-width:740px){
+/* Keep both players on the same screen, with independent keypads. */
+.keypad{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;width:min(100%,248px);margin:4px auto;flex:none}
+.keypad button{min-height:36px;min-width:0;padding:3px;font-size:1.05rem;touch-action:manipulation}
+.keypad button:active{background:#526289}
+form{flex-direction:column;align-items:center}
+form input{min-height:32px}
+.posed{transform-box:fill-box;transform-origin:center bottom}
+#pull[data-side="0"] .zoum-pose,#pull[data-side="1"] .mai-pose{
+  animation:tug .34s steps(1,end);--lean:1
+}
+#pull[data-side="0"] .mai-pose,#pull[data-side="1"] .zoum-pose{
+  animation:brace .34s steps(1,end);--lean:1
+}
+#pull[data-side="0"] .zoum-pose,#pull[data-side="0"] .mai-pose{--lean:-1}
+@keyframes tug{
+  0%{transform:rotate(calc(var(--lean) * -5deg)) scale(1.02,.96)}
+  24%{transform:rotate(calc(var(--lean) * 13deg)) translateY(-5px) scale(.98,1.05)}
+  60%{transform:rotate(calc(var(--lean) * 7deg)) translateY(-1px)}
+}
+@keyframes brace{
+  0%{transform:rotate(calc(var(--lean) * -7deg)) translateY(-2px)}
+  30%{transform:rotate(calc(var(--lean) * 9deg)) translateY(-7px)}
+  67%{transform:rotate(calc(var(--lean) * -4deg))}
+}
+@media(pointer:coarse){
+  .board{gap:6px}
+  .board .panel{padding:4px 8px}
+  .board .calc{line-height:1.1;margin:2px 0}
+  .board .feedback{margin-top:1px;min-height:1.1em;font-size:.85rem}
+  .board .score{display:none}
+  form input{min-height:29px;height:29px}
+  .actions button{min-height:34px;padding:3px 9px}
+  .race{font-size:.85rem;min-height:0}
+  .arena svg{max-height:clamp(68px,16svh,138px)}
+}
+@media(orientation:portrait) and (max-width:1024px){
   .board[data-mode=duo]{grid-template-columns:1fr}
   .board[data-mode=duo] .mai{grid-row:1;transform:rotate(180deg)}
   .board[data-mode=duo] .arena{grid-row:2}
   .board[data-mode=duo] .race{grid-row:3}
+  .board[data-mode=duo] .actions{justify-content:center}
 }
-@media(prefers-reduced-motion:reduce){#pull{transition:none}.arena.won #pull{animation:none}}
+@media(orientation:landscape) and (pointer:coarse){
+  .board[data-mode=duo]{grid-template-columns:minmax(140px,1fr) minmax(130px,1.2fr) minmax(140px,1fr);align-items:center}
+  .board[data-mode=duo] .arena{grid-column:2;grid-row:1}
+  .board[data-mode=duo] .panel:not(.mai){grid-column:1;grid-row:1}
+  .board[data-mode=duo] .mai{grid-column:3;grid-row:1;transform:rotate(180deg)}
+  .board[data-mode=duo] .race{grid-column:2;grid-row:2}
+  .board[data-mode=duo] .actions{justify-content:center}
+}
+body.playing .top{display:none}
+@media(prefers-reduced-motion:reduce){
+  #pull,.arena.won #pull,#pull[data-side] .posed{transition:none;animation:none}
+}
 </style>
 </head>
 <body>
@@ -88,10 +135,10 @@ input{width:min(110px,55%);min-width:0;min-height:44px;text-align:center;border-
           <path d="M214 119H506" stroke="#4c341a" stroke-width="13" stroke-linecap="round"/>
           <path d="M214 118H506" stroke="#ffcb55" stroke-width="8" stroke-linecap="round"/>
           <path d="M214 118H506" stroke="#9b5e23" stroke-width="4" stroke-dasharray="2 7"/>
-          <image href="assets/zoum-neutral.png" x="150" y="20" width="137" height="122"/>
-          <image href="assets/mai-neutral.png" x="434" y="14" width="138" height="130"/>
+          <image class="posed zoum-pose" href="assets/zoum-neutral.png" x="150" y="20" width="137" height="122"/>
+          <g class="posed mai-pose"><image href="assets/mai-neutral.png" x="434" y="14" width="138" height="130"/>
           <path d="M468 118h36" stroke="#ffcb55" stroke-width="7" stroke-linecap="round"/>
-          <path d="M468 118h36" stroke="#9b5e23" stroke-width="3" stroke-dasharray="2 6"/>
+          <path d="M468 118h36" stroke="#9b5e23" stroke-width="3" stroke-dasharray="2 6"/></g>
           <path d="M360 117q-27-29-26-3q0 10 26 3q26-7 26-3q1-26-26 3l-13 22m13-22 13 22" fill="none" stroke="#fa6fb4" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
           <circle cx="360" cy="117" r="6" fill="#ffe0f3"/>
         </g>
@@ -102,17 +149,17 @@ input{width:min(110px,55%);min-width:0;min-height:44px;text-align:center;border-
     <article class="panel">
       <h2>Zoum</h2>
       <p class="calc" id="calc0"></p>
-      <form data-side="0"><input id="answer0" type="text" inputmode="numeric" autocomplete="off" aria-labelledby="calc0"><button class="primary">Valider</button></form>
+      <form data-side="0"><input id="answer0" type="text" inputmode="none" autocomplete="off" aria-labelledby="calc0"><div class="keypad" role="group" aria-label="Clavier numérique"></div></form>
       <p class="feedback" id="feedback0" role="status"></p>
-      <small id="score0"></small>
+      <small class="score" id="score0"></small>
       <button id="practiceNext" hidden>Défier Maï</button>
     </article>
     <article class="panel mai" id="mai">
       <h2>Maï</h2>
       <p class="calc" id="calc1"></p>
-      <form data-side="1"><input id="answer1" type="text" inputmode="numeric" autocomplete="off" aria-labelledby="calc1"><button class="primary">Valider</button></form>
+      <form data-side="1"><input id="answer1" type="text" inputmode="none" autocomplete="off" aria-labelledby="calc1"><div class="keypad" role="group" aria-label="Clavier numérique"></div></form>
       <p class="feedback" id="feedback1" role="status"></p>
-      <small id="score1"></small>
+      <small class="score" id="score1"></small>
     </article>
     <div class="actions"><button id="menu">Retour aux modes</button></div>
   </section>
@@ -130,6 +177,7 @@ const pullStep = 30;
 const finishLine = 5;
 const maïDelay = { facile: 7500, moyen: 5100, expert: 3300 };
 let mode, level, operation, timer, active, position, scores, questions;
+let poseFrame = 0;
 
 function setEnabled(side, enabled) {
   forms[side].querySelectorAll('input, button').forEach(control => control.disabled = !enabled);
@@ -167,6 +215,12 @@ function pull(side) {
   scores[side]++;
   position += side === 0 ? -1 : 1;
   $('pull').style.transform = 'translateX(' + position * pullStep + 'px)';
+  const cast = $('pull');
+  cast.removeAttribute('data-side');
+  cancelAnimationFrame(poseFrame);
+  poseFrame = requestAnimationFrame(() => {
+    poseFrame = requestAnimationFrame(() => cast.dataset.side = side);
+  });
   $('score' + side).textContent = scores[side] + (scores[side] === 1 ? ' bonne réponse' : ' bonnes réponses');
   if (mode === 'practice') {
     $('race').textContent = scores[0] + ' calcul' + (scores[0] > 1 ? 's' : '') + ' réussi' + (scores[0] > 1 ? 's' : '') + ' sur 3';
@@ -201,12 +255,15 @@ function start(selectedMode) {
   scores = [0, 0];
   questions = [];
   active = true;
+  document.body.classList.add('playing');
   $('home').hidden = true;
   $('board').hidden = false;
   $('board').dataset.mode = mode;
   $('arena').classList.remove('won');
   $('result').hidden = true;
   $('practiceNext').hidden = true;
+  cancelAnimationFrame(poseFrame);
+  $('pull').removeAttribute('data-side');
   $('pull').style.transform = '';
   $('mai').hidden = mode === 'practice';
   forms[1].hidden = mode !== 'duo';
@@ -222,9 +279,37 @@ function start(selectedMode) {
   nextQuestion(0);
   if (mode === 'duo') nextQuestion(1);
   else $('calc1').textContent = 'Adversaire';
-  $('answer0').focus({ preventScroll: true });
+  if (mode !== 'duo') $('answer0').focus({ preventScroll: true });
   if (mode === 'cpu') timer = setInterval(() => pull(1), maïDelay[level]);
 }
+
+forms.forEach(form => {
+  const field = form.querySelector('input');
+  const keypad = form.querySelector('.keypad');
+  keypad.setAttribute('aria-label', Number(form.dataset.side) ? 'Clavier de Maï' : 'Clavier de Zoum');
+  for (const key of ['1', '2', '3', '4', '5', '6', '7', '8', '9', '⌫', '0', '✓']) {
+    const button = document.createElement('button');
+    button.textContent = key;
+    button.type = key === '✓' ? 'submit' : 'button';
+    if (key === '✓') {
+      button.className = 'primary';
+      button.setAttribute('aria-label', 'Valider');
+    } else {
+      if (key === '⌫') button.setAttribute('aria-label', 'Effacer un chiffre');
+      button.addEventListener('click', () => {
+        const start = field.selectionStart;
+        const end = field.selectionEnd;
+        if (key === '⌫') {
+          const from = start === end ? Math.max(0, start - 1) : start;
+          field.setRangeText('', from, end, 'end');
+        } else if (field.value.length - (end - start) < 4) {
+          field.setRangeText(key, start, end, 'end');
+        }
+      });
+    }
+    keypad.append(button);
+  }
+});
 
 forms.forEach(form => form.addEventListener('submit', event => {
   event.preventDefault();
@@ -235,7 +320,6 @@ forms.forEach(form => form.addEventListener('submit', event => {
   const value = field.value.trim();
   if (!/^\d+$/.test(value) || Number(value) !== questions[side].answer) {
     feedback.textContent = value === '' ? 'Écris ta réponse.' : (questions[side].hint || 'Essaie encore !');
-    field.focus();
     field.select();
     return;
   }
@@ -244,7 +328,6 @@ forms.forEach(form => form.addEventListener('submit', event => {
   pull(side);
   if (active) {
     nextQuestion(side);
-    field.focus();
   }
 }));
 
@@ -253,6 +336,7 @@ $('practiceNext').addEventListener('click', () => start('cpu'));
 $('replay').addEventListener('click', () => start(mode));
 $('menu').addEventListener('click', () => {
   stop();
+  document.body.classList.remove('playing');
   $('board').hidden = true;
   $('home').hidden = false;
   starts.find(button => button.dataset.start === mode).focus();
