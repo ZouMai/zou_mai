@@ -4,7 +4,6 @@ body.rased-workshop {
   --rased-muted: #41556d;
   --rased-paper: #f2f6fb;
   --rased-line: #9aacc0;
-  --rased-blue: #164d86;
   color-scheme: light;
 }
 
@@ -15,7 +14,14 @@ body.rased-workshop {
   color: var(--rased-ink);
 }
 
-.rased-home {
+body.rased-home {
+  --rased-ink: #f1f8ff;
+  --rased-muted: #c0d3e9;
+  --rased-paper: #090f21;
+  --rased-line: #314866;
+  --rased-neon: #56defb;
+  --rased-glow: #29d9ff40;
+  color-scheme: dark;
   font: 1rem/1.5 system-ui, sans-serif;
 }
 
@@ -27,10 +33,11 @@ body.rased-workshop {
 
 .rased-header {
   padding: clamp(1rem, 4vw, 2rem);
-  background: #102846;
+  background: linear-gradient(125deg, #112847, #141b36);
   color: #fff;
   border-radius: 1rem;
-  border-bottom: 4px solid #38c7e6;
+  border: 1px solid var(--rased-neon);
+  box-shadow: 0 0 20px var(--rased-glow);
 }
 
 .rased-header a {
@@ -63,10 +70,10 @@ body.rased-workshop {
   align-items: center;
   min-height: 44px;
   padding: 0 .85rem;
-  border: 1px solid var(--rased-line);
+  border: 1px solid var(--rased-neon);
   border-radius: .6rem;
-  background: #fff;
-  color: var(--rased-blue);
+  background: #122039;
+  color: #d9f7ff;
   font-weight: 700;
   text-decoration: none;
 }
@@ -96,9 +103,10 @@ body.rased-workshop {
   position: relative;
   display: block;
   padding: .85rem 2.4rem .85rem .9rem;
-  border: 1px solid var(--rased-line);
+  border: 1px solid var(--rased-neon);
   border-radius: .75rem;
-  background: #fff;
+  background: linear-gradient(135deg, #142746, #10182e);
+  box-shadow: 0 0 12px var(--rased-glow);
   color: inherit;
   text-decoration: none;
 }
@@ -117,14 +125,18 @@ body.rased-workshop {
   position: absolute;
   top: .85rem;
   right: .9rem;
-  color: var(--rased-blue);
+  color: var(--rased-neon);
   font-weight: 800;
 }
 
-.rased-card:hover,
-.rased-nav a:hover {
-  border-color: var(--rased-blue);
-  background: #e8f3ff;
+.rased-home :is(.rased-card, .rased-nav a):is(:hover, :focus-visible, :active) {
+  background: #203856;
+  box-shadow: 0 0 20px var(--rased-glow), inset 0 0 0 1px var(--rased-neon);
+}
+
+.rased-home :is(#encodage, #enseignant) {
+  --rased-neon: #ffa0de;
+  --rased-glow: #fa43bd42;
 }
 
 #enseignant {
@@ -132,7 +144,11 @@ body.rased-workshop {
   border-top: 2px solid var(--rased-line);
 }
 
-.rased-home :focus-visible,
+.rased-home :focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
 .rased-workshop :focus-visible {
   outline: 3px solid #1765ad;
   outline-offset: 3px;
@@ -166,9 +182,9 @@ body.rased-workshop {
 }
 
 .rased-workshop :is(.wrap .card, .wrap .game, .wrap .panel, .wrap .lab):not(button) {
-  background: #fff;
-  border-color: var(--rased-line);
-  box-shadow: 0 4px 14px #17294216;
+  background: #e4f3ff;
+  border-color: #1d77ab;
+  box-shadow: 0 0 0 1px #5bdcff, 0 0 14px #169de63d;
 }
 
 .rased-workshop .wrap .game .oi {
