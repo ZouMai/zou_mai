@@ -21,6 +21,8 @@ button:disabled{opacity:.55;cursor:default}
 :focus-visible{outline:3px solid #ffdc62;outline-offset:3px}
 .hero{display:block;width:100%;height:auto;max-height:420px;object-fit:contain;background:#0e152c;border:1px solid #566695;border-radius:20px}
 .settings,.choices,.actions{display:flex;flex-wrap:wrap;gap:10px}
+.actions{align-items:center}
+.actions small{color:#c9d4f1}
 .choices{margin:12px 0}.settings{margin:12px 0 0}
 .settings label{display:grid;gap:4px;flex:1;min-width:132px;font-weight:700}
 .rule{margin-top:10px;color:#d4e0fc}
@@ -121,11 +123,6 @@ body.playing .top{display:none}
   <section id="home" aria-label="Choisir une partie">
     <img class="hero" src="assets/maths-corde-duel.webp" width="1120" height="630" alt="Zoum et Maï tirent chacun de leur côté sur une corde au nœud rose.">
     <p class="rule">Chaque bonne réponse tire la corde vers ton équipe.</p>
-    <div class="choices">
-      <button class="primary" data-start="practice">M’entraîner</button>
-      <button data-start="cpu">Jouer contre Maï</button>
-      <button data-start="duo">Jouer à deux</button>
-    </div>
     <details open>
       <summary>Réglages du duel</summary>
       <div class="settings">
@@ -133,6 +130,11 @@ body.playing .top{display:none}
         <label>Calculs<select id="operation"><option value="mix">Calculs mélangés</option></select></label>
       </div>
     </details>
+    <div class="choices">
+      <button class="primary" data-start="practice">M’entraîner</button>
+      <button data-start="cpu">Jouer contre Maï</button>
+      <button data-start="duo">Jouer à deux</button>
+    </div>
   </section>
   <section class="board" id="board" aria-label="Partie" hidden>
     <div class="arena" id="arena">
@@ -169,18 +171,14 @@ body.playing .top{display:none}
       <p class="feedback" id="feedback1" role="status"></p>
       <small class="score" id="score1"></small>
     </article>
-    <div class="actions"><button id="menu">Retour aux modes</button></div>
+    <div class="actions"><button id="menu">Retour aux modes</button><small id="currentSettings"></small></div>
   </section>
 </main>
 <script>
 const $ = id => document.getElementById(id);
 const forms = [...document.querySelectorAll('form[data-side]')];
 const starts = [...document.querySelectorAll('[data-start]')];
-const practice = [
-  { text: '3 + 2', answer: 5, hint: 'Pars de 3 et avance de 2.' },
-  { text: '4 + 3', answer: 7, hint: 'Pars de 4 et avance de 3.' },
-  { text: '5 + 4', answer: 9, hint: 'Pars de 5 et avance de 4.' }
-];
+const practiceLength = 3;
 const pullStep = 30;
 const finishLine = 5;
 const maïDelay = { moyen: 9200, expert: 11800, defi: 14500 };
@@ -226,27 +224,25 @@ const families = {
     'Compléments à 1 000',
     difficulty => complement(1000, difficulty === 0 ? random(11, 99) * 10 : random(101, 999))
   ],
-  near: [
-    'Ajouter ou retirer 9, 29, 99…',
-    difficulty => {
-      const tens = difficulty === 0 ? pick([10, 20, 30]) : random(1, 10) * 10;
-      const gap = difficulty === 0 ? 1 : pick([1, 2]);
-      const b = tens - gap;
-      const a = random(b + 9, [105, 500, 1800][difficulty]);
-      const add = pick([true, false]);
-      const hint = add ? 'Ajoute ' + tens + ', puis retire ' + gap + '.' : 'Retire ' + tens + ', puis ajoute ' + gap + '.';
-      return expression(a, add ? '+' : '−', b, a + (add ? b : -b), hint);
+  near: ['Ajouter ou retirer 8, 9, 19, 29…', difficulty => nearRound(difficulty)],
+  plus9: ['Ajouter 9', difficulty => nearRound(difficulty, 10)],
+  plus29: ['Ajouter 29', difficulty => nearRound(difficulty, 30)],
+  plus99: ['Ajouter 99', difficulty => nearRound(difficulty, 100)],
+  tables: [
+    'Tables de multiplication',
+    () => {
+      const a = random(2, 10);
+      const b = random(2, 10);
+      return expression(a, '×', b, a * b, 'Retrouve ce produit dans les tables.');
     }
   ],
-  tables: [
-    'Multiplications et tables',
+  scaled: [
+    'Multiplier des dizaines, centaines ou milliers',
     difficulty => {
-      const max = difficulty === 0 ? 10 : 9;
-      const a = random(2, max);
-      const b = random(2, max);
-      if (difficulty === 0) return expression(a, '×', b, a * b, 'Retrouve ce produit dans les tables.');
-      const scaleA = pick([10, 100, 1000]);
-      const scaleB = difficulty === 1 ? 10 : pick([10, 100, 1000]);
+      const a = random(2, 9);
+      const b = random(2, 9);
+      const scaleA = pick(difficulty === 0 ? [10, 100] : [10, 100, 1000]);
+      const scaleB = difficulty < 2 ? 10 : pick([10, 100, 1000]);
       return expression(a * scaleA, '×', b * scaleB, a * b * scaleA * scaleB, 'Multiplie ' + a + ' par ' + b + ', puis tiens compte des dizaines, centaines ou milliers.');
     }
   ],
@@ -348,6 +344,16 @@ const families = {
   ]
 };
 
+function nearRound(difficulty, fixedTens) {
+  const tens = fixedTens ?? pick(difficulty === 0 ? [10, 20, 30] : [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]);
+  const gap = fixedTens ? 1 : pick([1, 2]);
+  const b = tens - gap;
+  const a = random(b + 9, [160, 500, 1800][difficulty]);
+  const add = Boolean(fixedTens) || pick([true, false]);
+  const hint = add ? 'Ajoute ' + tens + ', puis retire ' + gap + '.' : 'Retire ' + tens + ', puis ajoute ' + gap + '.';
+  return expression(a, add ? '+' : '−', b, a + (add ? b : -b), hint);
+}
+
 function complement(target, given) {
   return item(given + ' + □ = ' + target, target - given, 'Combien manque-t-il pour atteindre ' + target + ' ?');
 }
@@ -365,8 +371,8 @@ function shares(difficulty, factor, multiple, part) {
 const difficultyByLevel = { moyen: 0, expert: 1, defi: 2 };
 const mixByDifficulty = [
   ['add', 'sub', 'holes', 'comp10', 'comp100', 'near', 'tables', 'times5', 'doubles', 'triples', 'quarters'],
-  ['add', 'sub', 'holes', 'comp100', 'comp1000', 'near', 'tables', 'times5', 'times50', 'place', 'distribute', 'doubles', 'triples', 'quarters', 'divide', 'decimals', 'fractions'],
-  ['holes', 'comp1000', 'near', 'tables', 'times5', 'times50', 'place', 'distribute', 'doubles', 'triples', 'quarters', 'divide', 'decimals', 'fractions', 'steps']
+  ['add', 'sub', 'holes', 'comp100', 'comp1000', 'near', 'tables', 'scaled', 'times5', 'times50', 'place', 'distribute', 'doubles', 'triples', 'quarters', 'divide', 'decimals', 'fractions'],
+  ['add', 'sub', 'holes', 'comp1000', 'near', 'tables', 'scaled', 'times5', 'times50', 'place', 'distribute', 'doubles', 'triples', 'quarters', 'divide', 'decimals', 'fractions', 'steps']
 ];
 
 function setEnabled(side, enabled) {
@@ -374,15 +380,13 @@ function setEnabled(side, enabled) {
 }
 
 function nextQuestion(side) {
-  if (mode === 'practice') {
-    questions[side] = practice[scores[side]];
-  } else {
-    const difficulty = difficultyByLevel[level];
-    const selected = operation === 'mix' ? pick(mixByDifficulty[difficulty]) : operation;
-    questions[side] = families[selected][1](difficulty);
-  }
-  const question = questions[side];
-  $('calc' + side).textContent = mode === 'practice' ? question.text + ' = ?' : question.text;
+  const difficulty = difficultyByLevel[level];
+  const selected = operation === 'mix' ? pick(mixByDifficulty[difficulty]) : operation;
+  const generate = families[selected][1];
+  let question = generate(difficulty);
+  if (question.text === questions[side]?.text) question = generate(difficulty);
+  questions[side] = question;
+  $('calc' + side).textContent = question.text;
 }
 
 function stop() {
@@ -404,8 +408,8 @@ function pull(side) {
   });
   $('score' + side).textContent = scores[side] + (scores[side] === 1 ? ' bonne réponse' : ' bonnes réponses');
   if (mode === 'practice') {
-    $('race').textContent = scores[0] + ' calcul' + (scores[0] > 1 ? 's' : '') + ' réussi' + (scores[0] > 1 ? 's' : '') + ' sur 3';
-    if (scores[0] === practice.length) {
+    $('race').textContent = scores[0] + ' calcul' + (scores[0] > 1 ? 's' : '') + ' réussi' + (scores[0] > 1 ? 's' : '') + ' sur ' + practiceLength;
+    if (scores[0] === practiceLength) {
       stop();
       $('feedback0').textContent = 'Bravo, tu sais tirer la corde !';
       $('practiceNext').hidden = false;
@@ -432,6 +436,8 @@ function start(selectedMode) {
   mode = selectedMode;
   level = $('level').value;
   operation = $('operation').value;
+  $('currentSettings').textContent = $('level').selectedOptions[0].textContent + ' · ' +
+    $('operation').selectedOptions[0].textContent;
   position = 0;
   scores = [0, 0];
   questions = [];
@@ -449,7 +455,7 @@ function start(selectedMode) {
   $('mai').hidden = mode === 'practice';
   forms[1].hidden = mode !== 'duo';
   $('feedback1').hidden = mode !== 'duo';
-  $('race').textContent = mode === 'practice' ? 'À ton rythme · 3 calculs' : 'Tire le nœud jusqu’au repère de ton côté.';
+  $('race').textContent = mode === 'practice' ? 'À ton rythme · ' + practiceLength + ' calculs' : 'Tire le nœud jusqu’au repère de ton côté.';
   for (const side of [0, 1]) {
     $('answer' + side).value = '';
     $('feedback' + side).textContent = '';
