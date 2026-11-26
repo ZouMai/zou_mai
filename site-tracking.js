@@ -36,6 +36,7 @@
 
 /* Design néon global : charge la feuille commune et illumine les cartes activées. */
 (() => {
+  if (document.body?.hasAttribute('data-zm-no-neon')) return;
   if (!document.querySelector('link[data-zm-neon]')) {
     const link=document.createElement('link');link.rel='stylesheet';link.href=new URL('zoumai-neon.css',document.currentScript?.src || location.href).href;link.dataset.zmNeon='1';document.head.append(link);
   }
