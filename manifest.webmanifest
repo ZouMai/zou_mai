@@ -1,0 +1,36 @@
+{
+  "id": "./",
+  "name": "Sensei Zou_Maï",
+  "short_name": "Zou_Maï",
+  "lang": "fr",
+  "description": "Ressources et jeux pédagogiques",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#101526",
+  "theme_color": "#101526",
+  "icons": [
+    {
+      "src": "pwa-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/zoum-neutral.png",
+      "sizes": "512x491",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Ressources",
+      "url": "ressources.html"
+    },
+    {
+      "name": "Jeux",
+      "url": "jeux.html"
+    }
+  ]
+}
