@@ -35,7 +35,7 @@ button:disabled{opacity:.55;cursor:default}
 .panel{--team:#6bd6ff;background:#121f3b;border:2px solid var(--team);border-radius:16px;text-align:center;padding:10px;min-width:0}
 .panel.mai{--team:#ff91dc}
 .panel h2{color:var(--team);font-size:1.2rem}
-.calc{font-size:clamp(1.65rem,5vw,2.5rem);font-weight:850;margin:5px 0}
+.calc{overflow-wrap:anywhere;font-size:clamp(1.65rem,5vw,2.5rem);font-weight:850;margin:5px 0}
 form{display:flex;justify-content:center;gap:7px}
 input{width:min(110px,55%);min-width:0;min-height:44px;text-align:center;border-radius:10px;border:1px solid #7991bf;background:#fff;color:#101934;font-size:1.2rem}
 .feedback{min-height:1.5em;margin-top:5px;color:#ffe087}
@@ -49,11 +49,12 @@ input{width:min(110px,55%);min-width:0;min-height:44px;text-align:center;border-
 @media(max-width:540px){
   .board[data-mode=cpu]{grid-template-columns:1fr}
   .board[data-mode=cpu] .mai{display:flex;justify-content:space-between;align-items:center;gap:6px}
-  .board[data-mode=cpu] .mai .calc{font-size:1rem;margin:0}
+  .board[data-mode=cpu] .mai .calc{overflow-wrap:anywhere;font-size:1rem;margin:0}
 }
 /* Keep both players on the same screen, with independent keypads. */
-.keypad{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;width:min(100%,248px);margin:4px auto;flex:none}
+.keypad{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;width:min(100%,248px);margin:4px auto;flex:none}
 .keypad button{min-height:36px;min-width:0;padding:3px;font-size:1.05rem;touch-action:manipulation}
+.keypad button.primary{grid-column:span 4}
 .keypad button:active{background:#526289}
 form{flex-direction:column;align-items:center}
 form input{min-height:32px}
@@ -78,8 +79,10 @@ form input{min-height:32px}
 @media(pointer:coarse){
   .board{gap:6px}
   .board .panel{padding:4px 8px}
-  .board .calc{line-height:1.1;margin:2px 0}
+  .board .calc{font-size:clamp(1.15rem,4.4vw,1.8rem);line-height:1.1;margin:2px 0}
+  .board[data-mode=duo] .calc{height:2.2em;display:grid;place-items:center}
   .board .feedback{margin-top:1px;min-height:1.1em;font-size:.85rem}
+  .board[data-mode=duo] .feedback{height:2.3em;line-height:1.15;overflow:auto}
   .board .score{display:none}
   form input{min-height:29px;height:29px}
   .actions button{min-height:34px;padding:3px 9px}
@@ -102,8 +105,9 @@ form input{min-height:32px}
   .board[data-mode=duo] .actions{justify-content:center}
 }
 @media(orientation:portrait) and (pointer:coarse) and (max-height:680px){
-  .board[data-mode=duo] .keypad{grid-template-columns:repeat(6,minmax(0,1fr));width:min(100%,380px)}
+  .board[data-mode=duo] .keypad{grid-template-columns:repeat(7,minmax(0,1fr));width:min(100%,380px)}
   .board[data-mode=duo] .keypad button{min-height:42px}
+  .board[data-mode=duo] .keypad .primary{grid-column:span 1}
 }
 body.playing .top{display:none}
 @media(prefers-reduced-motion:reduce){
@@ -122,11 +126,11 @@ body.playing .top{display:none}
       <button data-start="cpu">Jouer contre Maï</button>
       <button data-start="duo">Jouer à deux</button>
     </div>
-    <details>
+    <details open>
       <summary>Réglages du duel</summary>
       <div class="settings">
-        <label>Niveau<select id="level"><option value="facile">Facile</option><option value="moyen">Moyen</option><option value="expert">Expert</option></select></label>
-        <label>Calculs<select id="operation"><option value="mix">Calculs mélangés</option><option value="add">Additions</option><option value="sub">Soustractions</option><option value="mul">Multiplications</option><option value="div" disabled>Divisions (Expert)</option></select></label>
+        <label>Niveau<select id="level"><option value="moyen">Intermédiaire</option><option value="expert">Expert</option><option value="defi">Défi CM2</option></select></label>
+        <label>Calculs<select id="operation"><option value="mix">Calculs mélangés</option></select></label>
       </div>
     </details>
   </section>
@@ -179,9 +183,191 @@ const practice = [
 ];
 const pullStep = 30;
 const finishLine = 5;
-const maïDelay = { facile: 7500, moyen: 5100, expert: 3300 };
+const maïDelay = { moyen: 9200, expert: 11800, defi: 14500 };
 let mode, level, operation, timer, active, position, scores, questions;
 let poseFrame = 0;
+
+const random = (min, max) => min + Math.floor(Math.random() * (max - min + 1));
+const pick = values => values[random(0, values.length - 1)];
+const format = number => String(Number(number.toFixed(6))).replace('.', ',');
+const item = (text, answer, hint) => ({ text, answer: Number(answer.toFixed(6)), hint });
+const expression = (a, sign, b, answer, hint) =>
+  item(format(a) + ' ' + sign + ' ' + format(b) + ' = ?', answer, hint);
+
+const families = {
+  add: [
+    'Additions',
+    difficulty => {
+      const a = random(20, [70, 500, 1500][difficulty]);
+      const b = random(8, [29, 199, 499][difficulty]);
+      return expression(a, '+', b, a + b, 'Ajoute les dizaines, puis les unités.');
+    }
+  ],
+  sub: [
+    'Soustractions',
+    difficulty => {
+      const a = random(40, [100, 700, 2000][difficulty]);
+      const b = random(9, Math.floor(a / 2));
+      return expression(a, '−', b, a - b, 'Retire les dizaines, puis les unités.');
+    }
+  ],
+  holes: [
+    'Additions à trous',
+    difficulty => {
+      const total = random(40, [100, 500, 2000][difficulty]);
+      const known = random(10, total - 10);
+      const text = random(0, 1) ? known + ' + □ = ' + total : '□ + ' + known + ' = ' + total;
+      return item(text, total - known, 'Soustrais le nombre connu du total.');
+    }
+  ],
+  comp10: ['Compléments à 10', () => complement(10, random(1, 9))],
+  comp100: ['Compléments à 100', () => complement(100, random(11, 99))],
+  comp1000: [
+    'Compléments à 1 000',
+    difficulty => complement(1000, difficulty === 0 ? random(11, 99) * 10 : random(101, 999))
+  ],
+  near: [
+    'Ajouter ou retirer 9, 29, 99…',
+    difficulty => {
+      const tens = difficulty === 0 ? pick([10, 20, 30]) : random(1, 10) * 10;
+      const gap = difficulty === 0 ? 1 : pick([1, 2]);
+      const b = tens - gap;
+      const a = random(b + 9, [105, 500, 1800][difficulty]);
+      const add = pick([true, false]);
+      const hint = add ? 'Ajoute ' + tens + ', puis retire ' + gap + '.' : 'Retire ' + tens + ', puis ajoute ' + gap + '.';
+      return expression(a, add ? '+' : '−', b, a + (add ? b : -b), hint);
+    }
+  ],
+  tables: [
+    'Multiplications et tables',
+    difficulty => {
+      const max = difficulty === 0 ? 10 : 9;
+      const a = random(2, max);
+      const b = random(2, max);
+      if (difficulty === 0) return expression(a, '×', b, a * b, 'Retrouve ce produit dans les tables.');
+      const scaleA = pick([10, 100, 1000]);
+      const scaleB = difficulty === 1 ? 10 : pick([10, 100, 1000]);
+      return expression(a * scaleA, '×', b * scaleB, a * b * scaleA * scaleB, 'Multiplie ' + a + ' par ' + b + ', puis tiens compte des dizaines, centaines ou milliers.');
+    }
+  ],
+  times5: [
+    'Multiplier par 5',
+    difficulty => {
+      const a = difficulty === 0 ? random(12, 49) : random(21, difficulty === 1 ? 98 : 298) / 10;
+      return expression(a, '×', 5, a * 5, 'Multiplie par 10, puis prends la moitié.');
+    }
+  ],
+  times50: [
+    'Multiplier par 50',
+    difficulty => {
+      const a = difficulty === 0 ? random(11, 35) : random(11, 199) / 10;
+      return expression(a, '×', 50, a * 50, 'Multiplie par 100, puis prends la moitié.');
+    }
+  ],
+  place: [
+    'Multiplier ou diviser par 10, 100, 1 000',
+    difficulty => {
+      const factor = pick([10, 100, 1000]);
+      const multiply = pick([true, false]);
+      const a = difficulty === 0 ? random(12, 80) * (multiply ? 1 : 10) :
+        random(12, 199) / (difficulty === 1 && !multiply ? 1 : 10);
+      return expression(a, multiply ? '×' : '÷', factor, multiply ? a * factor : a / factor,
+        'Chaque chiffre prend une valeur ' + factor + ' fois plus ' + (multiply ? 'grande.' : 'petite.'));
+    }
+  ],
+  distribute: [
+    'Décomposer pour multiplier',
+    difficulty => {
+      const a = random(2, [6, 8, 9][difficulty]);
+      const round = random(1, [2, 5, 9][difficulty]) * 10;
+      const rest = random(2, 8);
+      return expression(round + rest, '×', a, (round + rest) * a,
+        'Calcule ' + round + ' × ' + a + ' et ' + rest + ' × ' + a + ', puis additionne.');
+    }
+  ],
+  doubles: [
+    'Doubles et moitiés',
+    difficulty => {
+      if (difficulty === 0 && pick([true, false])) {
+        const a = random(1, 7) * 2 + 1;
+        return item('La moitié de ' + a + ' ?', a / 2, 'Partage le nombre pair précédent, puis ajoute 0,5.');
+      }
+      const a = difficulty === 0 ? random(11, 49) : random(16, 999) / 10;
+      return pick([
+        item('Le double de ' + format(a) + ' ?', a * 2, 'Additionne le nombre avec lui-même.'),
+        item('La moitié de ' + format(a * 2) + ' ?', a, 'Sépare la partie entière et la partie décimale si cela aide.')
+      ]);
+    }
+  ],
+  triples: ['Triples et tiers', difficulty => shares(difficulty, 3, 'triple', 'tiers')],
+  quarters: ['Quadruples et quarts', difficulty => shares(difficulty, 4, 'quadruple', 'quart')],
+  divide: [
+    'Diviser par 4 ou par 8',
+    difficulty => {
+      const divisor = pick([4, 8]);
+      const quotient = random(6, [30, 75, 150][difficulty]) / (difficulty === 2 ? 2 : 1);
+      return expression(quotient * divisor, '÷', divisor, quotient,
+        divisor === 4 ? 'Prends la moitié deux fois.' : 'Prends la moitié trois fois.');
+    }
+  ],
+  decimals: [
+    'Additions et soustractions avec des décimaux',
+    difficulty => {
+      const a = random(11, 89) / 10;
+      if (difficulty === 0 || pick([true, false])) {
+        const b = random(11, 89) / 10;
+        return expression(a, '+', b, a + b, 'Additionne les parties entières et les dixièmes séparément.');
+      }
+      const b = random(1, 7);
+      return pick([
+        expression(a, '+', b, a + b, 'Ajoute les unités et garde les dixièmes.'),
+        expression(a + b, '−', b, a, 'Retire les unités et garde les dixièmes.')
+      ]);
+    }
+  ],
+  fractions: [
+    'Fractions usuelles et décimaux',
+    difficulty => {
+      if (difficulty > 0 && pick([true, false])) {
+        const numerator = random(1, 4);
+        return item(numerator + '/2 = □/4', numerator * 2, 'Pour passer des demis aux quarts, double le numérateur.');
+      }
+      const [fraction, answer] = pick(difficulty === 0 ?
+        [['1/2', 0.5], ['1/4', 0.25], ['3/4', 0.75], ['1/5', 0.2]] :
+        [['1/2', 0.5], ['1/4', 0.25], ['3/4', 0.75], ['1/5', 0.2], ['2/5', 0.4], ['1/10', 0.1]]);
+      return item('Écris ' + fraction + ' en décimal.', answer, 'Cherche une fraction équivalente en dixièmes ou en centièmes.');
+    }
+  ],
+  steps: [
+    'Calculs en deux étapes',
+    difficulty => {
+      const a = random(8, [18, 37, 63][difficulty]);
+      const b = random(2, 8);
+      return item('(' + a + ' × 5) − ' + b + ' = ?', a * 5 - b, 'Calcule d’abord le produit, puis soustrais ' + b + '.');
+    }
+  ]
+};
+
+function complement(target, given) {
+  return item(given + ' + □ = ' + target, target - given, 'Combien manque-t-il pour atteindre ' + target + ' ?');
+}
+
+function shares(difficulty, factor, multiple, part) {
+  const value = random(4, [15, 60, 125][difficulty]);
+  return pick([
+    item('Le ' + multiple + ' de ' + value + ' ?', value * factor, 'Multiplie par ' + factor + '.'),
+    item('Le ' + part + ' de ' + value * factor + ' ?', value, 'Divise par ' + factor + '.'),
+    ...(difficulty === 2 ?
+      [item('Le ' + part + ' de quel nombre vaut ' + value + ' ?', value * factor, 'Repars du résultat et multiplie par ' + factor + '.')] : [])
+  ]);
+}
+
+const difficultyByLevel = { moyen: 0, expert: 1, defi: 2 };
+const mixByDifficulty = [
+  ['add', 'sub', 'holes', 'comp10', 'comp100', 'near', 'tables', 'times5', 'doubles', 'triples', 'quarters'],
+  ['add', 'sub', 'holes', 'comp100', 'comp1000', 'near', 'tables', 'times5', 'times50', 'place', 'distribute', 'doubles', 'triples', 'quarters', 'divide', 'decimals', 'fractions'],
+  ['holes', 'comp1000', 'near', 'tables', 'times5', 'times50', 'place', 'distribute', 'doubles', 'triples', 'quarters', 'divide', 'decimals', 'fractions', 'steps']
+];
 
 function setEnabled(side, enabled) {
   forms[side].querySelectorAll('input, button').forEach(control => control.disabled = !enabled);
@@ -191,21 +377,12 @@ function nextQuestion(side) {
   if (mode === 'practice') {
     questions[side] = practice[scores[side]];
   } else {
-    const operations = ['add', 'sub', 'mul'];
-    if (level === 'expert') operations.push('div');
-    const selected = operation === 'mix' ? operations[Math.floor(Math.random() * operations.length)] : operation;
-    const max = { facile: 5, moyen: 10, expert: 12 }[level];
-    const a = 1 + Math.floor(Math.random() * max);
-    const b = 1 + Math.floor(Math.random() * max);
-    const possibilities = {
-      add: { text: a + ' + ' + b, answer: a + b },
-      sub: { text: Math.max(a, b) + ' − ' + Math.min(a, b), answer: Math.abs(a - b) },
-      mul: { text: a + ' × ' + b, answer: a * b },
-      div: { text: (a * b) + ' ÷ ' + b, answer: a }
-    };
-    questions[side] = possibilities[selected];
+    const difficulty = difficultyByLevel[level];
+    const selected = operation === 'mix' ? pick(mixByDifficulty[difficulty]) : operation;
+    questions[side] = families[selected][1](difficulty);
   }
-  $('calc' + side).textContent = questions[side].text + ' = ?';
+  const question = questions[side];
+  $('calc' + side).textContent = mode === 'practice' ? question.text + ' = ?' : question.text;
 }
 
 function stop() {
@@ -291,7 +468,7 @@ forms.forEach(form => {
   const field = form.querySelector('input');
   const keypad = form.querySelector('.keypad');
   keypad.setAttribute('aria-label', Number(form.dataset.side) ? 'Clavier de Maï' : 'Clavier de Zoum');
-  for (const key of ['1', '2', '3', '4', '5', '6', '7', '8', '9', '⌫', '0', '✓']) {
+  for (const key of ['1', '2', '3', '⌫', '4', '5', '6', ',', '7', '8', '9', '0', '✓']) {
     const button = document.createElement('button');
     button.textContent = key;
     button.type = key === '✓' ? 'submit' : 'button';
@@ -299,6 +476,7 @@ forms.forEach(form => {
       button.className = 'primary';
       button.setAttribute('aria-label', 'Valider');
     } else {
+      if (key === ',') button.setAttribute('aria-label', 'Virgule');
       if (key === '⌫') button.setAttribute('aria-label', 'Effacer un chiffre');
       button.addEventListener('click', () => {
         const start = field.selectionStart;
@@ -306,7 +484,7 @@ forms.forEach(form => {
         if (key === '⌫') {
           const from = start === end ? Math.max(0, start - 1) : start;
           field.setRangeText('', from, end, 'end');
-        } else if (field.value.length - (end - start) < 4) {
+        } else if (field.value.length - (end - start) < 12) {
           field.setRangeText(key, start, end, 'end');
         }
       });
@@ -322,7 +500,7 @@ forms.forEach(form => form.addEventListener('submit', event => {
   const field = $('answer' + side);
   const feedback = $('feedback' + side);
   const value = field.value.trim();
-  if (!/^\d+$/.test(value) || Number(value) !== questions[side].answer) {
+  if (!/^\d+(?:[,.]\d+)?$/.test(value) || Number(value.replace(',', '.')) !== questions[side].answer) {
     feedback.textContent = value === '' ? 'Écris ta réponse.' : (questions[side].hint || 'Essaie encore !');
     field.select();
     return;
@@ -345,11 +523,12 @@ $('menu').addEventListener('click', () => {
   $('home').hidden = false;
   starts.find(button => button.dataset.start === mode).focus();
 });
-$('level').addEventListener('change', () => {
-  const expert = $('level').value === 'expert';
-  if (!expert && $('operation').value === 'div') $('operation').value = 'mix';
-  $('operation').querySelector('[value=div]').disabled = !expert;
-});
+for (const [value, [label]] of Object.entries(families)) {
+  const option = document.createElement('option');
+  option.value = value;
+  option.textContent = label;
+  $('operation').append(option);
+}
 </script>
 </body>
 </html>
