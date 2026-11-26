@@ -101,6 +101,10 @@ form input{min-height:32px}
   .board[data-mode=duo] .race{grid-column:2;grid-row:2}
   .board[data-mode=duo] .actions{justify-content:center}
 }
+@media(orientation:portrait) and (pointer:coarse) and (max-height:680px){
+  .board[data-mode=duo] .keypad{grid-template-columns:repeat(6,minmax(0,1fr));width:min(100%,380px)}
+  .board[data-mode=duo] .keypad button{min-height:42px}
+}
 body.playing .top{display:none}
 @media(prefers-reduced-motion:reduce){
   #pull,.arena.won #pull,#pull[data-side] .posed{transition:none;animation:none}
