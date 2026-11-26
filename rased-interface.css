@@ -1,27 +1,21 @@
 body.rased-home,
 body.rased-workshop {
-  --rased-ink: #172942;
-  --rased-muted: #41556d;
-  --rased-paper: #f2f6fb;
-  --rased-line: #9aacc0;
-  color-scheme: light;
-}
-
-body.rased-home,
-body.rased-workshop {
+  --rased-ink: #f2eee4;
+  --rased-muted: #ccc8c0;
+  --rased-paper: #000;
+  --rased-panel: #171a22;
+  --rased-inset: #11141a;
+  --rased-line: #657085;
+  --rased-neon: #f2d31c;
+  --rased-glow: #f2d31c40;
+  color-scheme: dark;
+  min-height: 100vh;
   margin: 0;
   background: var(--rased-paper);
   color: var(--rased-ink);
 }
 
 body.rased-home {
-  --rased-ink: #f1f8ff;
-  --rased-muted: #c0d3e9;
-  --rased-paper: #090f21;
-  --rased-line: #314866;
-  --rased-neon: #56defb;
-  --rased-glow: #29d9ff40;
-  color-scheme: dark;
   font: 1rem/1.5 system-ui, sans-serif;
 }
 
@@ -33,7 +27,7 @@ body.rased-home {
 
 .rased-header {
   padding: clamp(1rem, 4vw, 2rem);
-  background: linear-gradient(125deg, #112847, #141b36);
+  background: var(--rased-inset);
   color: #fff;
   border-radius: 1rem;
   border: 1px solid var(--rased-neon);
@@ -44,7 +38,7 @@ body.rased-home {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
-  color: #bae9ff;
+  color: var(--rased-neon);
   text-underline-offset: .2em;
 }
 
@@ -72,8 +66,8 @@ body.rased-home {
   padding: 0 .85rem;
   border: 1px solid var(--rased-neon);
   border-radius: .6rem;
-  background: #122039;
-  color: #d9f7ff;
+  background: var(--rased-inset);
+  color: var(--rased-ink);
   font-weight: 700;
   text-decoration: none;
 }
@@ -103,9 +97,10 @@ body.rased-home {
   position: relative;
   display: block;
   padding: .85rem 2.4rem .85rem .9rem;
-  border: 1px solid var(--rased-neon);
+  border: 1px solid #ffffff38;
+  border-top: 5px solid var(--rased-neon);
   border-radius: .75rem;
-  background: linear-gradient(135deg, #142746, #10182e);
+  background: var(--rased-panel);
   box-shadow: 0 0 12px var(--rased-glow);
   color: inherit;
   text-decoration: none;
@@ -130,8 +125,19 @@ body.rased-home {
 }
 
 .rased-home :is(.rased-card, .rased-nav a):is(:hover, :focus-visible, :active) {
-  background: #203856;
+  background: #202530;
+  border-color: var(--rased-neon);
   box-shadow: 0 0 20px var(--rased-glow), inset 0 0 0 1px var(--rased-neon);
+}
+
+.rased-home :is(#sons, #lecture) {
+  --rased-neon: #56defb;
+  --rased-glow: #29d9ff40;
+}
+
+.rased-home #maths {
+  --rased-neon: #92f4ba;
+  --rased-glow: #64e99c40;
 }
 
 .rased-home :is(#encodage, #enseignant) {
@@ -150,7 +156,7 @@ body.rased-home {
 }
 
 .rased-workshop :focus-visible {
-  outline: 3px solid #1765ad;
+  outline: 3px solid var(--rased-neon);
   outline-offset: 3px;
 }
 
@@ -182,13 +188,13 @@ body.rased-home {
 }
 
 .rased-workshop :is(.wrap .card, .wrap .game, .wrap .panel, .wrap .lab):not(button) {
-  background: #e4f3ff;
-  border-color: #1d77ab;
+  background: var(--rased-panel);
+  border-color: #56defb;
   box-shadow: 0 0 0 1px #5bdcff, 0 0 14px #169de63d;
 }
 
 .rased-workshop .wrap .game .oi {
-  color: #ae2925;
+  color: #ff9385;
 }
 
 .rased-workshop .wrap .game .strip {
@@ -202,7 +208,7 @@ body.rased-home {
 }
 
 .rased-workshop .wrap .game button:is(.start, .good, .mic) {
-  background: #a6281f;
+  background: #8b302b;
   color: #fff;
 }
 
@@ -215,4 +221,22 @@ body.rased-home {
   .rased-workshop :is(.wrap .card, .wrap .game, .wrap .panel, .wrap .lab):not(button) {
     padding-inline: .8rem;
   }
+}
+
+.rased-workshop button,
+.rased-workshop :is(input, select, textarea) {
+  color: inherit;
+}
+
+.rased-workshop .top {
+  border-color: var(--rased-line);
+}
+
+.rased-workshop .top a {
+  color: #56defb;
+}
+
+.rased-workshop .app :is(.prompt, .mission, .tiny) {
+  opacity: 1;
+  color: var(--rased-muted);
 }
