@@ -55,10 +55,10 @@ async function decrypt(cipher: string, nonce: string) {
     { name: 'AES-GCM', iv: unhex(nonce) }, await encryptionKey(), unhex(cipher)
   ));
 }
-async function studentSession(token: unknown) {
+async function studentSession(token: unknown, table = 'site_sessions') {
   const value = normalize(token);
   if (!/^[0-9a-f]{64}$/.test(value)) return null;
-  const { data, error } = await db.from('site_sessions')
+  const { data, error } = await db.from(table)
     .select('account_id,expires_at,tables_accounts!inner(id,nickname,role,active,avatar)')
     .eq('token_hash', await hash(value)).gt('expires_at', new Date().toISOString()).maybeSingle();
   if (error || !data) return null;
@@ -171,7 +171,7 @@ Deno.serve(async req => {
       if (error || !updated) return reply({ error: 'Activation impossible.' }, 409);
       return reply({ activated: true, pending: false, nickname: account.nickname });
     }
-    if (body.action === 'pinLogin') {
+    if (body.action === 'pinLogin' || body.action === 'arcadeGuestLogin') {
       if (!await validClassAccess(body.classAccount, body.classCode)) return reply({ error: 'Compte ou mot de passe de classe incorrect.' }, 403);
       const nickname = typeof body.nickname === 'string' ? body.nickname.trim() : '';
       if (!/^[\p{L}\p{N}][\p{L}\p{N} _-]{0,23}$/u.test(nickname) || !/^\d{4}$/.test(body.pin))
@@ -192,12 +192,15 @@ Deno.serve(async req => {
       }
       await db.from('site_pin_failures').delete().eq('account_id', account.id);
       const token = hex(bytes(32));
-      const expires = new Date(Date.now() + 12 * 60 * 60 * 1000).toISOString();
-      const { error } = await db.from('site_sessions').insert({
+      const isArcade = body.action === 'arcadeGuestLogin';
+      const table = isArcade ? 'site_arcade_sessions' : 'site_sessions';
+      const expires = new Date(Date.now() + (isArcade ? 1 : 12) * 60 * 60 * 1000).toISOString();
+      if (isArcade) await db.from(table).delete().eq('account_id', account.id).lte('expires_at', new Date().toISOString());
+      const { error } = await db.from(table).insert({
         token_hash: await hash(token), account_id: account.id, expires_at: expires
       });
       if (error) throw error;
-      return reply({ token, nickname: account.nickname, expires });
+      return reply({ token, nickname: account.nickname, expires, ...(isArcade ? { id: account.id } : {}) });
     }
     if (body.action === 'revealPin') {
       if (!await teacher(body.teacherCode)) return reply({ error: 'Accès refusé.' }, 403);
@@ -266,7 +269,7 @@ Deno.serve(async req => {
       }));
       return reply({ students });
     }
-    const account = await studentSession(body.session);
+    const account = await studentSession(body.session) || (body.action === 'arcadeBattleRecord' ? await studentSession(body.session, 'site_arcade_sessions') : null);
     if (!account) return reply({ error: 'Session expirée. Reconnecte-toi.' }, 401);
     if (body.action === 'me') return reply({ nickname: account.nickname, id: account.id });
     if (body.action === 'updateAvatar') {
@@ -277,6 +280,42 @@ Deno.serve(async req => {
         .eq('active', true).select('avatar').maybeSingle();
       if (error) throw error;
       return data ? reply(data) : reply({ error: 'Session expirée. Reconnecte-toi.' }, 401);
+    }
+    if (body.action === 'arcadeSummary') {
+      const { data, error } = await db.rpc('site_arcade_summary', { pupil: account.id });
+      if (error) throw error;
+      return reply(data);
+    }
+    if (body.action === 'arcadeBattleRecord') {
+      const { match, mode, exercise, seconds, correct, errors } = body;
+      const maxAnswers = 500;
+      const tableSet = (value: unknown) => {
+        if (!Array.isArray(value) || !value.length || value.length > 11 ||
+            value.some(n => !Number.isInteger(n) || n < 2 || n > 12)) return null;
+        return [...new Set<number>(value)].sort((a, b) => a - b);
+      };
+      const own = tableSet(body.tables);
+      const other = tableSet(body.opponentTables);
+      if (typeof match !== 'string' || !/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(match) ||
+          !['flash','race','survival','champion'].includes(mode) || !['classic','missing'].includes(exercise) ||
+          ![60,90,120].includes(seconds) || !own || !other ||
+          !Number.isInteger(correct) || !Number.isInteger(errors) ||
+          correct < 0 || errors < 0 || correct + errors < 1 || correct + errors > maxAnswers)
+        return reply({ error: 'Bilan du duel invalide.' }, 400);
+      const mistakes = Array.isArray(body.mistakes)
+        ? body.mistakes.slice(0, 6).filter((fact: unknown) =>
+          typeof fact === 'string' && /^(?:\d{1,2}|\?) × (?:\d{1,2}|\?) = (?:\d{1,3}|\?)$/.test(fact))
+        : [];
+      const shared = mode === 'flash' || mode === 'champion';
+      const comparedTables = shared ? [own.join(','), other.join(',')].sort() : [own.join(','), other.join(',')];
+      const { data, error } = await db.rpc('site_arcade_record', {
+        pupil: account.id, match, game_name: 'tables-battle-duo',
+        rules: [mode, exercise, seconds, ...comparedTables].join(':'),
+        details: { mode, exercise, seconds, tables: own, opponentTables: other, correct, errors, mistakes },
+        rating: Math.round(10 * correct / Math.max(5, correct + errors))
+      });
+      if (error) throw error;
+      return reply({ points: data });
     }
     if (body.action === 'lessonJournal') {
       if (!Array.isArray(body.paths) || body.paths.length > 100)

@@ -1,0 +1,28 @@
+.duel-accounts {
+  width: min(100%, 540px);
+  margin: 12px auto;
+  padding: 12px;
+  border: 1px solid #6da9cb;
+  border-radius: 12px;
+  background: #141e35;
+  text-align: left;
+}
+.duel-accounts[hidden], .duel-accounts [hidden] { display: none !important }
+.duel-accounts summary { cursor: pointer; font-weight: 800 }
+.duel-accounts p { margin: 6px 0 }
+#duelGuestForm { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px }
+#duelGuestForm label { display: grid; gap: 4px; font-size: .85rem }
+.duel-accounts input, .duel-accounts select {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid #6da9cb;
+  border-radius: 6px;
+  padding: 6px;
+  color: #fff;
+  background: #0a1325;
+  font: inherit;
+}
+.duel-accounts select { width: auto }
+#duelGuestForm button { grid-column: 1 / -1 }
+.duel-accounts { color: #f1f6ff }
+.duel-accounts a { color: #85efff }

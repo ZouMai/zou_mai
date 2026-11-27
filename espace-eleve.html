@@ -20,7 +20,7 @@
   </div>
 </header>
 <nav class="pupil-nav" aria-label="Dans mon espace">
-  <a href="#journal">📚 Mes leçons</a><a href="#trophies">🏅 Mes récompenses</a><a href="#training">🎯 Mes entraînements</a>
+  <a href="#journal">📚 Mes leçons</a><a href="#trophies">🏅 Mes récompenses</a><a href="#training">🎯 Mes entraînements</a><a href="#arcade">🕹️ Mon arcade</a>
 </nav>
 <div class="pupil-columns">
   <section class="pupil-panel" id="journal" aria-labelledby="journalTitle">
@@ -39,6 +39,17 @@
     <div class="belt-grid" id="rewards"></div>
   </section>
 </div>
+<section class="pupil-panel arcade-panel" id="arcade" aria-labelledby="arcadeTitle">
+  <div class="actions"><h2 id="arcadeTitle">Mon arcade</h2><strong id="arcadeBalance" hidden></strong></div>
+  <p id="arcadeStatus" class="muted" role="status"></p>
+  <p><a class="play" id="arcadeReplay" href="tables-battle-duo.html">Jouer à Tables Battle Duo →</a></p>
+  <div class="arcade-grid" id="arcadeDetails" hidden>
+    <section><h3>Mes records</h3><div id="arcadeRecords"></div></section>
+    <section><h3>Mes jeux à reprendre</h3><p id="arcadePractice"></p><ul id="arcadeMistakes"></ul></section>
+    <section><h3>Mes récompenses</h3><ul id="arcadePrizes"></ul></section>
+  </div>
+  <details id="arcadeHistory" hidden><summary>Mes derniers duels</summary><ul id="arcadeRounds"></ul></details>
+</section>
 <section class="pupil-panel french-missions" aria-labelledby="french-missions-title">
   <h3 id="french-missions-title">Mes activités de français</h3>
   <div class="french-missions-grid">
@@ -276,7 +287,9 @@ window.addEventListener('pageshow',event=>{
   else if(event.persisted)show('login');
 });
 
-async function load(token){try{const r=await request('summary',{session:token});if(sessionStorage.getItem('zoumai-site-session')!==token)return;$('#nickname').textContent=r.nickname;renderAvatar(r.avatar);$('#profile').open=!r.avatar;$('#avatarMessage').textContent='';showRewards(r.rewards||[]);showBadges(null);const box=$('#metrics');box.replaceChildren();metric(box,String(r.attempts),'calculs essayés');metric(box,String(r.correct),'réussis');metric(box,r.successRate===null?'—':r.successRate+' %','de réussite');const tables=$('#tables');tables.replaceChildren();for(const t of r.byTable||[]){const x=document.createElement('div');x.className='table '+(t.attempts<10?'':t.successRate>=80?'good':'work');x.textContent='Table de '+t.table+' : '+t.correct+'/'+t.attempts+' réussis';tables.append(x)}if(!tables.childElementCount)tables.textContent='Tes résultats apparaîtront après ta première partie.';$('#weak').textContent=r.weak?.length?r.weak.map(x=>x.fact).join(' · '):'Aucun calcul à revoir pour le moment.';const activities=$('#activities');activities.replaceChildren();for(const a of r.byActivity||[]){const p=document.createElement('p');p.textContent=a.activity+' : '+a.attempts+' essai(s), '+a.successRate+' % de réussite';activities.append(p)}if(!activities.childElementCount)activities.textContent='Tes activités apparaîtront ici au fur et à mesure.';show('progress');void loadJournal(token)}catch(err){if(sessionStorage.getItem('zoumai-site-session')!==token)return;sessionStorage.removeItem('zoumai-site-session');show('login');$('#message').textContent=err.message}}
-$('#back').onclick=()=>{classAccount='';classCode='';roster=[];$('#pin').value='';show('login')};$('#logout').onclick=()=>{sessionStorage.removeItem('zoumai-site-session');classAccount='';classCode='';roster=[];lessons=[];$('#lessonList').replaceChildren();$('#resumeLesson').hidden=true;$('#filterField').hidden=true;$('#classCode').value='';show('login')};const remembered=sessionStorage.getItem('zoumai-site-session');if(remembered)load(remembered);
+async function load(token){try{const r=await request('summary',{session:token});if(sessionStorage.getItem('zoumai-site-session')!==token)return;$('#nickname').textContent=r.nickname;renderAvatar(r.avatar);$('#profile').open=!r.avatar;$('#avatarMessage').textContent='';showRewards(r.rewards||[]);showBadges(null);const box=$('#metrics');box.replaceChildren();metric(box,String(r.attempts),'calculs essayés');metric(box,String(r.correct),'réussis');metric(box,r.successRate===null?'—':r.successRate+' %','de réussite');const tables=$('#tables');tables.replaceChildren();for(const t of r.byTable||[]){const x=document.createElement('div');x.className='table '+(t.attempts<10?'':t.successRate>=80?'good':'work');x.textContent='Table de '+t.table+' : '+t.correct+'/'+t.attempts+' réussis';tables.append(x)}if(!tables.childElementCount)tables.textContent='Tes résultats apparaîtront après ta première partie.';$('#weak').textContent=r.weak?.length?r.weak.map(x=>x.fact).join(' · '):'Aucun calcul à revoir pour le moment.';const activities=$('#activities');activities.replaceChildren();for(const a of r.byActivity||[]){const p=document.createElement('p');p.textContent=a.activity+' : '+a.attempts+' essai(s), '+a.successRate+' % de réussite';activities.append(p)}if(!activities.childElementCount)activities.textContent='Tes activités apparaîtront ici au fur et à mesure.';show('progress');void loadJournal(token);void loadArcade(token)}catch(err){if(sessionStorage.getItem('zoumai-site-session')!==token)return;sessionStorage.removeItem('zoumai-site-session');show('login');$('#message').textContent=err.message}}
+$('#back').onclick=()=>{classAccount='';classCode='';roster=[];$('#pin').value='';show('login')};$('#logout').onclick=()=>{sessionStorage.removeItem('zoumai-site-session');classAccount='';classCode='';roster=[];lessons=[];$('#lessonList').replaceChildren();$('#resumeLesson').hidden=true;$('#filterField').hidden=true;$('#classCode').value='';show('login')};
+</script><script src="espace-eleve-arcade.js"></script><script>
+const remembered=sessionStorage.getItem('zoumai-site-session');if(remembered)load(remembered);
 </script><script src="site-tracking.js" defer></script>
 </body></html>

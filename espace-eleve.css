@@ -183,3 +183,18 @@ summary { cursor: pointer; font-weight: 750; min-height: 30px }
   .pupil-nav a { font-size: .82rem; padding-inline: 8px }
   .hero-copy .actions a { font-size: .84rem }
 }
+
+.arcade-panel { border-color: #7761ae }
+.arcade-panel h2 { margin-bottom: 0 }
+#arcadeBalance { color: var(--gold) }
+.arcade-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px }
+.arcade-grid section { border: 1px solid var(--edge); border-radius: 12px; padding: 12px; background: var(--surface) }
+.arcade-grid h3 { margin-top: 0 }
+.arcade-grid ul, #arcadeRounds { padding-inline-start: 18px }
+#arcadeRecords p { margin: 8px 0; padding-bottom: 8px; border-bottom: 1px solid var(--edge) }
+#arcadeRecords strong, #arcadeRecords small { display: block }
+#arcadeRecords small { color: var(--muted) }
+#arcadeHistory { margin-top: 12px }
+.pupil-hero[data-arcade-frame="electric"] .hero-avatar img { border: 3px solid #55ebff; box-shadow: 0 0 17px #32d6ff90 }
+.pupil-hero[data-arcade-frame="stellar"] .hero-avatar img { border: 3px solid #ffe095; box-shadow: 0 0 20px #ffcf6bb0 }
+@media (max-width: 690px) { .arcade-grid { grid-template-columns: 1fr } }
