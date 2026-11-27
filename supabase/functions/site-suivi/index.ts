@@ -11,7 +11,16 @@ const headers = {
   'Cache-Control': 'no-store'
 };
 const reply = (value: unknown, status = 200) => new Response(JSON.stringify(value), { status, headers });
-const CLASS_ACCOUNT = 'CM2 Craoux';
+const CLASS_ACCOUNT = 'CM2.Craoux';
+const TEST_PROFILE = 'Élève test';
+const rewards = [
+  { activity: 'M6 Lecture', path: '/m6-fractions-decimales.html', subject: 'Mathématiques', label: 'Lire une fraction décimale', min: 5, max: 5 },
+  { activity: 'M6 Décomposition', path: '/m6-fractions-decimales.html', subject: 'Mathématiques', label: 'Décomposer une fraction décimale', min: 5, max: 5 },
+  { activity: 'M6 Équivalences', path: '/m6-fractions-decimales.html', subject: 'Mathématiques', label: 'Reconnaître des fractions équivalentes', min: 5, max: 5 },
+  { activity: 'M6 Demi-droite', path: '/m6-fractions-decimales.html', subject: 'Mathématiques', label: 'Lire une demi-droite graduée', min: 5, max: 5 },
+  { activity: 'Transpo Imparfait', path: '/transpo-chrono.html', subject: 'Français', label: 'Transposer un texte à l’imparfait', min: 1, max: 1 },
+  { activity: 'Histoire XIXe siècle', path: '/histoire-h2-h3-revisions-xixe.html', subject: 'Histoire', label: 'Repères du XIXe siècle', min: 20, max: 24 }
+];
 const normalize = (value: unknown) => typeof value === 'string' ? value.replace(/[-\s]/g, '').toLowerCase() : '';
 const bytes = (size: number) => crypto.getRandomValues(new Uint8Array(size));
 const hex = (value: Uint8Array) => [...value].map(b => b.toString(16).padStart(2, '0')).join('');
@@ -70,21 +79,29 @@ function safePath(value: unknown) {
   return /^\/[a-zA-Z0-9_./%-]{1,179}$/.test(path) && !path.includes('..') ? path : null;
 }
 async function validClassAccess(account: unknown, code: unknown) {
-  if (typeof account !== 'string' || account.trim().replace(/\s+/g, ' ').toLocaleLowerCase('fr') !== CLASS_ACCOUNT.toLocaleLowerCase('fr')) return false;
-  const value = normalize(code);
-  if (!/^[0-9a-f]{16}$/.test(value)) return false;
-  const { data } = await db.from('site_class_access').select('code_hash').eq('id', 1).maybeSingle();
-  return Boolean(data && data.code_hash === await hash(value));
+  if (typeof account !== 'string' || typeof code !== 'string' || code.length > 80) return false;
+  const name = account.trim().toLowerCase();
+  if (name !== 'cm2.craoux' && name !== 'cm2 craoux') return false;
+  const { data, error } = await db.from('site_class_access').select('code_hash,custom_code_hash').eq('id', 1).maybeSingle();
+  if (error) throw error;
+  if (!data) return false;
+  if (name === 'cm2 craoux') {
+    const legacyCode = normalize(code);
+    return /^[0-9a-f]{16}$/.test(legacyCode) && data.code_hash === await hash(legacyCode);
+  }
+  if (!data.custom_code_hash) return false;
+  const [salt, expected] = data.custom_code_hash.split(':');
+  return expected === await pinHash(code.trim(), salt);
 }
 function validNickname(value: unknown) {
   return typeof value === 'string' && /^[\p{L}\p{N}][\p{L}\p{N} _-]{0,23}$/u.test(value.trim());
 }
 function activityResults(events: any[]) {
-  const groups = new Map<string, { activity: string; attempts: number; scored: number; possible: number }>();
+  const groups = new Map<string, { activity: string; attempts: number; scored: number; possible: number; perfects: number; errors: number }>();
   for (const event of events) {
     if (event.event_type !== 'result' || !event.activity || !event.max_score) continue;
-    const item = groups.get(event.activity) || { activity: event.activity, attempts: 0, scored: 0, possible: 0 };
-    item.attempts++; item.scored += event.score || 0; item.possible += event.max_score;
+    const item = groups.get(event.activity) || { activity: event.activity, attempts: 0, scored: 0, possible: 0, perfects: 0, errors: 0 };
+    item.attempts++; item.scored += event.score || 0; item.possible += event.max_score; if (event.perfect) item.perfects++; item.errors += event.errors || 0;
     groups.set(event.activity, item);
   }
   return [...groups.values()].map(item => ({ ...item, successRate: Math.round(item.scored / item.possible * 100) }))
@@ -100,10 +117,10 @@ Deno.serve(async req => {
     if (body.action === 'classCode') {
       if (!await teacher(body.teacherCode)) return reply({ error: 'Accès refusé.' }, 403);
       const { data: current, error: readError } = await db.from('site_class_access')
-        .select('code_cipher,code_nonce').eq('id', 1).maybeSingle();
+        .select('code_cipher,code_nonce,custom_code_hash').eq('id', 1).maybeSingle();
       if (readError) throw readError;
       if (current && body.rotate !== true)
-        return reply({ account: CLASS_ACCOUNT, code: await decrypt(current.code_cipher, current.code_nonce) });
+        return reply({ account: CLASS_ACCOUNT, code: await decrypt(current.code_cipher, current.code_nonce), custom: Boolean(current.custom_code_hash) });
       const code = hex(bytes(8));
       const secret = await encrypt(code);
       const { error } = await db.from('site_class_access').upsert({
@@ -120,19 +137,40 @@ Deno.serve(async req => {
       if (error) throw error;
       return reply({ students: (data || []).map(p => ({ name: p.nickname, pinSet: Boolean(p.pin_hash) })) });
     }
+    if (body.action === 'issueActivation' || body.action === 'resetTestProgress') {
+      if (!await teacher(body.teacherCode)) return reply({ error: 'Accès refusé.' }, 403);
+      if (typeof body.studentId !== 'string' || !/^[0-9a-f-]{36}$/i.test(body.studentId))
+        return reply({ error: 'Élève invalide.' }, 400);
+      if (body.action === 'resetTestProgress') {
+        const { data, error } = await db.rpc('reset_zoumai_test_progress', { pupil_id: body.studentId });
+        if (error) throw error;
+        return data ? reply({ saved: true }) : reply({ error: 'Profil test introuvable.' }, 404);
+      }
+      const activationCode = hex(bytes(6));
+      const { data, error } = await db.from('tables_accounts')
+        .update({ activation_hash: await hash(activationCode) })
+        .eq('id', body.studentId).eq('role', 'student').eq('active', true).is('pin_hash', null)
+        .select('id').maybeSingle();
+      if (error) throw error;
+      return data ? reply({ activationCode }) : reply({ error: 'Ce compte a déjà un PIN ou est inactif.' }, 409);
+    }
     if (body.action === 'activate') {
       if (!await validClassAccess(body.classAccount, body.classCode)) return reply({ error: 'Compte ou mot de passe de classe incorrect.' }, 403);
       if (!validNickname(body.nickname) || !/^\d{4}$/.test(body.pin)) return reply({ error: 'Prénom ou code invalide.' }, 400);
       const { data: account } = await db.from('tables_accounts')
-        .select('id,nickname,pin_hash,active,role').eq('role', 'student').eq('nickname', body.nickname.trim()).maybeSingle();
+        .select('id,nickname,pin_hash,activation_hash,active').eq('role', 'student').eq('nickname', body.nickname.trim()).maybeSingle();
       if (!account?.active || account.pin_hash) return reply({ error: 'Code personnel déjà créé ou prénom inconnu.' }, 403);
+      const activationCode = normalize(body.activationCode);
+      if (!account.activation_hash || !/^[0-9a-f]{12}$/.test(activationCode) ||
+          account.activation_hash !== await hash(activationCode))
+        return reply({ error: 'Code d’activation incorrect. Demande ton code à ton enseignant.' }, 403);
       const salt = hex(bytes(16));
-      const secret = await encrypt(body.pin);
       const { data: updated, error } = await db.from('tables_accounts')
-        .update({ pin_hash: await pinHash(body.pin, salt), pin_salt: salt, pin_approved: false, ...secret })
-        .eq('id', account.id).is('pin_hash', null).select('id').maybeSingle();
+        .update({ pin_hash: await pinHash(body.pin, salt), pin_salt: salt, pin_approved: true, activation_hash: null })
+        .eq('id', account.id).eq('activation_hash', account.activation_hash).is('pin_hash', null)
+        .select('id').maybeSingle();
       if (error || !updated) return reply({ error: 'Activation impossible.' }, 409);
-      return reply({ activated: true, pending: true, nickname: account.nickname });
+      return reply({ activated: true, pending: false, nickname: account.nickname });
     }
     if (body.action === 'pinLogin') {
       if (!await validClassAccess(body.classAccount, body.classCode)) return reply({ error: 'Compte ou mot de passe de classe incorrect.' }, 403);
@@ -184,7 +222,7 @@ Deno.serve(async req => {
         if (error) throw error;
       } else {
         const { error } = await db.from('tables_accounts').update({
-          pin_hash: null, pin_salt: null, pin_cipher: null, pin_nonce: null, pin_approved: false
+          pin_hash: null, pin_salt: null, pin_cipher: null, pin_nonce: null, pin_approved: false, activation_hash: null
         }).eq('id', pupil.id);
         if (error) throw error;
         await db.from('site_sessions').delete().eq('account_id', pupil.id);
@@ -195,16 +233,16 @@ Deno.serve(async req => {
     if (body.action === 'siteClass') {
       if (!await teacher(body.teacherCode)) return reply({ error: 'Accès refusé.' }, 403);
       const { data: accounts, error } = await db.from('tables_accounts')
-        .select('id,nickname,active,pin_hash,pin_approved').eq('role', 'student').order('nickname');
+        .select('id,nickname,active,pin_hash,pin_approved,pin_cipher').eq('role', 'student').order('nickname');
       if (error) throw error;
       const students = await Promise.all((accounts || []).map(async pupil => {
         const { data: events, error: eventError } = await db.from('site_events')
-          .select('page_path,event_type,activity,correct,score,max_score,occurred_at')
+          .select('page_path,event_type,activity,correct,score,max_score,errors,duration_ms,perfect,completed,occurred_at')
           .eq('account_id', pupil.id).order('occurred_at', { ascending: false }).limit(800);
         if (eventError) throw eventError;
         const list = events || [];
         return {
-          id: pupil.id, nickname: pupil.nickname, active: pupil.active, pinSet: Boolean(pupil.pin_hash), pinApproved: pupil.pin_approved,
+          id: pupil.id, nickname: pupil.nickname, active: pupil.active, pinSet: Boolean(pupil.pin_hash), pinApproved: pupil.pin_approved, canRevealPin: Boolean(pupil.pin_cipher), isTest: pupil.nickname === TEST_PROFILE,
           visits: list.filter(e => e.event_type === 'visit').length,
           results: list.filter(e => e.event_type === 'result').length,
           byActivity: activityResults(list),
@@ -220,7 +258,7 @@ Deno.serve(async req => {
     if (body.action === 'me') return reply({ nickname: account.nickname, id: account.id });
     if (body.action === 'summary') {
       const { data, error } = await db.from('site_events')
-        .select('page_path,event_type,activity,correct,score,max_score,occurred_at')
+        .select('page_path,event_type,activity,correct,score,max_score,errors,duration_ms,perfect,completed,occurred_at')
         .eq('account_id', account.id).order('occurred_at', { ascending: false }).limit(800);
       if (error) throw error;
       const { data: attempts, error: attemptsError } = await db.from('tables_attempts')
@@ -241,7 +279,14 @@ Deno.serve(async req => {
         tables.set(row.a, table);
       }
       const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+      const { data: earned, error: rewardError } = await db.from('site_rewards')
+        .select('activity').eq('account_id', account.id);
+      if (rewardError) throw rewardError;
+      const earnedIds = new Set((earned || []).map(item => item.activity));
       return reply({
+        rewards: rewards.map(({ activity, path, subject, label, min, max }) => ({
+          path, subject, label, min, max, earned: earnedIds.has(activity)
+        })),
         nickname: account.nickname, attempts: rows.length, correct,
         successRate: rows.length ? Math.round(correct / rows.length * 100) : null,
         last7days: rows.filter(row => Date.parse(row.played_at) >= weekAgo).length,
@@ -271,13 +316,24 @@ Deno.serve(async req => {
       if (!path || !['visit','result'].includes(body.type)) return reply({ error: 'Activité invalide.' }, 400);
       const activity = typeof body.activity === 'string' && /^[\p{L}\p{N} _-]{1,80}$/u.test(body.activity) ? body.activity : null;
       const score = Number.isInteger(body.score) && body.score >= 0 && body.score <= 100 ? body.score : null;
+      const errors = Number.isInteger(body.errors) && body.errors >= 0 && body.errors <= 100 ? body.errors : null;
+      const duration = Number.isInteger(body.durationMs) ? Math.max(0, Math.min(7200000, body.durationMs)) : null;
       const max = Number.isInteger(body.maxScore) && body.maxScore >= 1 && body.maxScore <= 100 ? body.maxScore : null;
       if (body.type === 'result' && (score === null || max === null || score > max))
         return reply({ error: 'Résultat invalide.' }, 400);
+      const reward = body.type === 'result' && rewards.find(item =>
+        item.path === path && item.activity === activity && max === item.max && score !== null && score >= item.min);
+      if (reward) {
+        const { error } = await db.from('site_rewards').upsert(
+          { account_id: account.id, activity: reward.activity },
+          { onConflict: 'account_id,activity', ignoreDuplicates: true }
+        );
+        if (error) throw error;
+      }
       const { error } = await db.from('site_events').insert({
         account_id: account.id, page_path: path, event_type: body.type, activity,
         score: body.type === 'result' ? score : null, max_score: body.type === 'result' ? max : null,
-        correct: body.type === 'result' ? score === max : null
+        correct: body.type === 'result' ? score === max : null, errors: body.type === 'result' ? errors : null, duration_ms: body.type === 'result' ? duration : null, perfect: body.type === 'result' ? (errors === 0 && score === max) : null, completed: body.type === 'result' ? true : null
       });
       if (error) throw error;
       return reply({ saved: true });
