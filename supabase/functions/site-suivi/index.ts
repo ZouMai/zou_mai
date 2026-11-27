@@ -59,7 +59,7 @@ async function studentSession(token: unknown) {
   const value = normalize(token);
   if (!/^[0-9a-f]{64}$/.test(value)) return null;
   const { data, error } = await db.from('site_sessions')
-    .select('account_id,expires_at,tables_accounts!inner(id,nickname,role,active)')
+    .select('account_id,expires_at,tables_accounts!inner(id,nickname,role,active,avatar)')
     .eq('token_hash', await hash(value)).gt('expires_at', new Date().toISOString()).maybeSingle();
   if (error || !data) return null;
   const account: any = data.tables_accounts;
@@ -255,6 +255,15 @@ Deno.serve(async req => {
     const account = await studentSession(body.session);
     if (!account) return reply({ error: 'Session expirée. Reconnecte-toi.' }, 401);
     if (body.action === 'me') return reply({ nickname: account.nickname, id: account.id });
+    if (body.action === 'updateAvatar') {
+      if (body.avatar !== 'zoum' && body.avatar !== 'mai')
+        return reply({ error: 'Choisis Zoum ou Maï.' }, 400);
+      const { data, error } = await db.from('tables_accounts')
+        .update({ avatar: body.avatar }).eq('id', account.id).eq('role', 'student')
+        .eq('active', true).select('avatar').maybeSingle();
+      if (error) throw error;
+      return data ? reply(data) : reply({ error: 'Session expirée. Reconnecte-toi.' }, 401);
+    }
     if (body.action === 'summary') {
       const { data, error } = await db.from('site_events')
         .select('page_path,event_type,activity,correct,score,max_score,errors,duration_ms,perfect,completed,occurred_at')
@@ -286,7 +295,7 @@ Deno.serve(async req => {
         rewards: rewards.map(({ activity, path, subject, label, min, max }) => ({
           path, subject, label, min, max, earned: earnedIds.has(activity)
         })),
-        nickname: account.nickname, attempts: rows.length, correct,
+        nickname: account.nickname, avatar: account.avatar, attempts: rows.length, correct,
         successRate: rows.length ? Math.round(correct / rows.length * 100) : null,
         last7days: rows.filter(row => Date.parse(row.played_at) >= weekAgo).length,
         byTable: [...tables.values()].sort((a,b) => a.table - b.table)
