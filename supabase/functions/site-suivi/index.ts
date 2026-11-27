@@ -18,8 +18,7 @@ const rewards = [
   { activity: 'M6 Décomposition', path: '/m6-fractions-decimales.html', subject: 'Mathématiques', label: 'Décomposer une fraction décimale', min: 5, max: 5 },
   { activity: 'M6 Équivalences', path: '/m6-fractions-decimales.html', subject: 'Mathématiques', label: 'Reconnaître des fractions équivalentes', min: 5, max: 5 },
   { activity: 'M6 Demi-droite', path: '/m6-fractions-decimales.html', subject: 'Mathématiques', label: 'Lire une demi-droite graduée', min: 5, max: 5 },
-  { activity: 'Transpo Imparfait', path: '/transpo-chrono.html', subject: 'Français', label: 'Transposer un texte à l’imparfait', min: 1, max: 1 },
-  { activity: 'Histoire XIXe siècle', path: '/histoire-h2-h3-revisions-xixe.html', subject: 'Histoire', label: 'Repères du XIXe siècle', min: 20, max: 24 }
+  { activity: 'Transpo Imparfait', path: '/transpo-chrono.html', subject: 'Français', label: 'Transposer un texte à l’imparfait', min: 1, max: 1 }
 ];
 const normalize = (value: unknown) => typeof value === 'string' ? value.replace(/[-\s]/g, '').toLowerCase() : '';
 const bytes = (size: number) => crypto.getRandomValues(new Uint8Array(size));
