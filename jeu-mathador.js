@@ -283,6 +283,7 @@
     say(networkError ? 'Défi hors ligne : tu peux jouer, mais ce score ne rejoindra pas le classement de la classe.' :
       'Choisis un nombre, une opération, puis un autre nombre.',networkError?'error':'');
     timer = setInterval(() => {
+      if (loading) return;
       seconds--;
       renderClock();
       if (seconds <= 0) finish('Temps écoulé.');
@@ -322,8 +323,9 @@
     chosen = null;
     operation = null;
     render();
-    if(value === draw.target){
-      const winScore=score(result);
+    const targets = tokens.filter(token => token.value === draw.target && token.ops.length);
+    if(targets.length){
+      const winScore=Math.max(...targets.map(score));
       const win=$('target-win'),winScoreBox=$('target-win-score');
       if(win&&winScoreBox){winScoreBox.textContent=winScore+' POINT'+(winScore>1?'S':'');win.hidden=false;}
       say('Bravo ! Cible atteinte : '+winScore+' points. Tu peux valider ou chercher un meilleur score.','success');
@@ -340,40 +342,43 @@
   }
   async function validate() {
     if (!active || loading) return;
-    loading = true;
-    $('validate').disabled = true;
-    let matches = tokens.filter(x => x.value === draw.target && x.ops.length > 0);
+    const matches = tokens.filter(x => x.value === draw.target && x.ops.length > 0);
     if (!matches.length) {
       say('Atteins d’abord la cible. Tu peux utiliser de 2 à 5 nombres, comme tu veux.', 'error');
       return;
     }
-    let token = matches.sort((a,b) => score(b) - score(a))[0];
-    best = score(token);
-    bestExpression = token.expr;
+    const token = matches.sort((a,b) => score(b) - score(a))[0];
+    let earned = score(token);
+    loading = true;
+    render();
+    say('Enregistrement des points…');
     if (API && remoteDraw && remoteChallengeId) {
       try {
         const saved = await request({action:'finish',playerId:player.id,challengeId:remoteChallengeId,moves,hintUsed});
+        earned = saved.score;
         player.points = saved.points;
         player.completed = saved.completed;
         remoteChallengeId = null;
       } catch (error) {
         loading = false;
-        $('validate').disabled = false;
+        render();
         say('Score non enregistré dans le classement : ' + error.message, 'error');
         return;
       }
     } else {
-      player.points[currentLevel] = (Number(player.points[currentLevel]) || 0) + best;
+      player.points[currentLevel] = (Number(player.points[currentLevel]) || 0) + earned;
     }
     player.completed = Math.max(player.completed,currentLevel + 1);
     persist();
-    if (API) await refreshRankings(); else showRankings();
+    best = earned;
+    bestExpression = token.expr;
+    if (API) refreshRankings(); else showRankings();
     const usedCount=token.used.length;
     const opPoints=token.ops.map(op=>op+' '+weights[op]+' pt'+(weights[op]>1?'s':'')).join(' · ');
     const isMathador=usedCount===5 && token.ops.length===4 && operations.every(op=>token.ops.includes(op));
-    finish(isMathador ? 'BRAVO ! COUP MATHADOR · 18 POINTS !' :
-      'BRAVO ! Cible atteinte · '+best+' points · '+usedCount+' nombres utilisés'+(opPoints?' · '+opPoints:''));
     loading = false;
+    finish(isMathador ? 'BRAVO ! COUP MATHADOR · '+best+' POINTS !' :
+      'BRAVO ! Cible atteinte · '+best+' points · '+usedCount+' nombres utilisés'+(opPoints?' · '+opPoints:''));
     const hasNext=player.completed < levels.length;
     $('next').hidden = true;
     showLevel();
@@ -454,7 +459,7 @@
       button.textContent = token.value;
       button.title = token.expr;
       button.setAttribute('aria-label','Nombre ' + token.value + (token.id >= 5 ? ', résultat de ' + token.expr : ''));
-      button.disabled = !active;
+      button.disabled = !active || loading;
       button.addEventListener('click',() => selectToken(token.id));
       box.appendChild(button);
     });
@@ -467,7 +472,7 @@
       button.textContent = op;
       button.title = (op === '+' ? 'Addition' : op === '−' ? 'Soustraction' : op === '×' ? 'Multiplication' : 'Division') + ' · ' + weights[op] + ' point' + (weights[op] > 1 ? 's' : '');
       button.dataset.points = '+' + weights[op];
-      button.disabled = !active;
+      button.disabled = !active || loading;
       button.addEventListener('click',() => {
         if (chosen === null) { say('Choisis d’abord une carte.', 'error'); return; }
         operation = op;
@@ -482,11 +487,11 @@
       item.textContent = line;
       list.appendChild(item);
     });
-    $('validate').disabled = !active || !tokens.some(x => x.value === draw.target);
-    $('undo').disabled = !active || !undoStack.length;
-    $('reset').disabled = !active || !steps.length;
-    $('hint').disabled = !active || hintUsed;
-    $('give-up').disabled = !active;
+    $('validate').disabled = !active || loading || !tokens.some(x => x.value === draw.target && x.ops.length > 0);
+    $('undo').disabled = !active || loading || !undoStack.length;
+    $('reset').disabled = !active || loading || !steps.length;
+    $('hint').disabled = !active || loading || hintUsed;
+    $('give-up').disabled = !active || loading;
     $('instructions').textContent = chosen === null ? 'Choisis un nombre, une opération, puis un autre nombre.' :
       operation === null ? 'Choisis une opération.' : 'Choisis le deuxième nombre.';
     const g1=$('guide-number'),go=$('guide-op'),g2=$('guide-number2');
@@ -500,7 +505,9 @@
       const candidate=tokens.find(x=>x.id===chosen);
       const usedOps=steps.length ? steps.map(line=>operations.find(op=>line.includes(' '+op+' '))).filter(Boolean) : [];
       const running=usedOps.reduce((sum,op)=>sum+weights[op],0);
-      live.textContent=(steps.length ? 5+running : 5)+' pts';
+      const targets = tokens.filter(token => token.value === draw.target && token.ops.length);
+      const possible = targets.length ? Math.max(...targets.map(score)) : Math.max(0, 5 + running - (hintUsed ? 2 : 0));
+      live.textContent=possible+' pts';
       detail.textContent=steps.length ? 'Cible : 5 pts · opérations déjà jouées : '+running+' pt'+(running>1?'s':'') : (candidate ? 'Carte '+candidate.value+' choisie : sélectionne maintenant une opération.' : 'Atteindre la cible rapporte déjà 5 points.');
     }
     $('launch').disabled = active;
