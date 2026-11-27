@@ -46,12 +46,12 @@ border:2px solid #5d7189;border-radius:12px;background:#152a41;text-align:center
       <div class="avatar-options">
         <label class="avatar-option">
           <input type="radio" name="avatar" value="zoum" required>
-          <img src="assets/01_curieux.webp" width="384" height="341" alt="" loading="lazy">
+          <img src="assets/avatar-zoum.webp" width="384" height="384" alt="" loading="lazy">
           <strong>Zoum</strong><span>Le loup bleu</span>
         </label>
         <label class="avatar-option">
           <input type="radio" name="avatar" value="mai">
-          <img src="assets/mai-neutral.png" width="512" height="497" alt="" loading="lazy">
+          <img src="assets/avatar-mai.webp" width="384" height="384" alt="" loading="lazy">
           <strong>Maï</strong><span>Le chat électrique</span>
         </label>
       </div>
@@ -92,8 +92,8 @@ $('#pupilForm').onsubmit=async e=>{e.preventDefault();const nickname=$('#nicknam
   roster.find(p=>p.name===nickname).pinSet=true;help();
 }const r=await request('pinLogin',{classAccount,classCode,nickname,pin});sessionStorage.setItem('zoumai-site-session',r.token);$('#pin').value='';await load(r.token)}catch(err){$('#pupilMessage').textContent=err.message}};
 const avatars = {
-  zoum:{src:'assets/01_curieux.webp',name:'Zoum'},
-  mai:{src:'assets/mai-neutral.png',name:'Maï'}
+  zoum:{src:'assets/avatar-zoum.webp',name:'Zoum'},
+  mai:{src:'assets/avatar-mai.webp',name:'Maï'}
 };
 function renderAvatar(value){
   const avatar=Object.hasOwn(avatars,value)?avatars[value]:null;
