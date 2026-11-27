@@ -1,19 +1,243 @@
-<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Transpo'Chrono · ZouMaï</title><style>:root{font-family:system-ui,Arial;background:#f3f5fb;color:#202b44}*{box-sizing:border-box}body{margin:0}main{max-width:960px;margin:auto;padding:20px}h1{font-size:2.2rem;margin-bottom:4px}section{background:white;border-radius:18px;padding:22px;margin:16px 0;box-shadow:0 6px 24px #1b285012}label{display:inline-block;margin:6px 12px 6px 0;font-weight:600}select,button,input{font:inherit;border:1px solid #b9c6df;border-radius:10px;padding:10px;background:white}button{cursor:pointer;margin:4px}button:disabled{opacity:.45;cursor:default}.primary{background:#364cb3;color:white;border-color:#364cb3}.text{background:#eef2ff;padding:18px;border-radius:12px;font-size:1.25rem;line-height:2.15}.mark{background:#ffe59b;border-bottom:3px solid #c89a27;border-radius:4px;padding:1px}.mark.current{outline:3px solid #7855ca}.mark.done{background:#c8f2d8;border-bottom-color:#27804a}.pick{background:transparent;border:0;padding:1px 2px;margin:0;border-radius:4px;font:inherit;color:inherit;line-height:inherit}.pick.selected{background:#ffe59b;outline:2px solid #c28b20}.hint{background:#edf4ff;padding:14px;border-left:5px solid #5268c0;border-radius:9px}#feedback{min-height:28px;font-weight:650}#answer{width:min(100%,420px)}.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.tag{font-size:.88rem;background:#e7ebf9;padding:5px 10px;border-radius:20px}a{color:#344db2}#choice{display:flex;flex-wrap:wrap}small{color:#53607a}body{background:radial-gradient(circle at 12% 5%,#e9ddff,transparent 35%),radial-gradient(circle at 95% 30%,#d5f9f0,transparent 38%),#f5f7fc}main{max-width:1020px}section{border:1px solid #e2e8f7;box-shadow:0 12px 35px #24335b14}.hero{background:linear-gradient(120deg,#152d64,#6651b4);padding:24px;border-radius:22px;color:white;margin:15px 0}.hero h1{color:white;margin:0;font-size:clamp(2.2rem,6vw,3.5rem)}.hero p{color:#e5eaff}.hud{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}.hud span{background:white;border:1px solid #dfe5f5;border-radius:14px;padding:10px 15px;font-weight:800}.meter{height:13px;border-radius:20px;background:#e3e9f5;overflow:hidden;margin:12px 0}.meter div{height:100%;width:0%;background:linear-gradient(90deg,#37cda3,#7d69f2);transition:width .35s}.text{background:linear-gradient(120deg,#f4f0ff,#effaff);border:1px solid #e4e7fa}.mark.current{animation:pulse 1.4s infinite}.mark.done{animation:pop .3s}#choice{gap:10px;margin:12px 0}#choice button{min-width:120px;padding:14px;font-weight:800;border:2px solid #d4dcf5;box-shadow:0 4px 0 #e0e6f4}button:not(:disabled):hover{transform:translateY(-2px);box-shadow:0 5px 14px #23356320}button{transition:transform .15s,box-shadow .15s}.primary{background:linear-gradient(130deg,#7654e9,#3555c3);border:0;font-weight:800}.confetti{position:fixed;pointer-events:none;font-size:22px;animation:fall 1.5s ease-out forwards;z-index:99}@keyframes fall{to{transform:translateY(240px) rotate(260deg);opacity:0}}@keyframes pop{50%{transform:scale(1.04)}}@keyframes pulse{50%{outline-color:#c5aafa}}@media(max-width:650px){main{padding:12px}section{padding:16px}label{display:block}select{width:100%;max-width:100%}#choice button{flex:1 1 40%;min-width:0}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}</style></head><body><main><a href="francais-1-conjugaison.html">← Retour à Conjugaison</a><div class="hero"><h1>🕰️ Transpo'Chrono</h1><p>Une aventure à travers les temps et les personnes. Observe, transforme et gagne des étoiles !</p></div><div class="hud"><span>⭐ <b id="stars">0</b> étoiles</span><span>🔥 <b id="streak">0</b> de suite</span><span>🎯 <b id="missionsDone">0</b> textes réussis</span></div><section><div><label>Type de transposition <select id="category"><option value="temps">Changer de temps</option><option value="personne">Changer de personne</option></select></label><label>Transformation <select id="direction"></select></label></div><div><label>Difficulté <select id="difficulty"><option value="1">1 · Choisir la bonne conjugaison</option><option value="2">2 · Écrire avec aide</option><option value="3">3 · Écrire seul</option><option value="4">4 · Expert : repérer + écrire</option></select></label><label>Texte <select id="mission"></select></label></div><p class="hint" id="instruction"></p><p id="progress"></p><div class="meter" role="progressbar" aria-label="Progression" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="meter"><div id="meterFill"></div></div><div id="source" class="text"></div><p id="question"></p><div id="choice"></div><div class="controls" id="writearea" hidden><input id="answer" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Écris la transformation"><button class="primary" id="check">Vérifier</button></div><div class="controls"><button id="hint">💡 Aide</button><button id="verify" hidden class="primary">J'ai tout repéré</button><button id="next" disabled class="primary">Texte suivant →</button></div><p id="feedback" aria-live="polite"></p></section><section><b>📖 Texte transposé</b><p class="text" id="result"></p><small>Une transformation peut modifier plusieurs mots, notamment un auxiliaire, un participe passé ou un groupe de pronoms.</small></section><section id="essentiels"><h2>📚 Les 10 verbes essentiels à apprendre</h2><p>Être, avoir, aller, faire, dire, pouvoir, vouloir, venir, prendre et voir. Entraîne-toi à les conjuguer aux trois temps.</p><div class="controls"><label>Verbe <select id="verb"></select></label><label>Temps <select id="verbtense"><option value="present">Présent</option><option value="imparfait">Imparfait</option><option value="pc">Passé composé</option></select></label><label>Personne <select id="verbperson"><option value="0">je</option><option value="1">tu</option><option value="2">il / elle</option><option value="3">nous</option><option value="4">vous</option><option value="5">ils / elles</option></select></label></div><p id="verbquestion"></p><div class="controls"><input id="verbanswer" autocomplete="off" spellcheck="false" placeholder="Écris la forme conjuguée"><button id="verbcheck" class="primary">Corriger</button><button id="verbshow">Voir la réponse</button></div><p id="verbfeedback" aria-live="polite"></p><p class="hint"><b>Terminaisons de l'imparfait :</b> -ais, -ais, -ait, -ions, -iez, -aient. Au présent, on peut trouver -ez avec « vous », mais à l'imparfait c'est -iez.</p></section></main><script>
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Transpo'Chrono · ZouMaï</title><style>
+:root {
+  color-scheme: dark;
+  font-family: system-ui, Arial, sans-serif;
+  background: #080d18;
+  color: #edf5ff;
+  --panel: #101a2b;
+  --edge: #2d4663;
+  --muted: #adbed3;
+  --cyan: #78e9ff;
+  --amber: #ffdb83;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; background: radial-gradient(ellipse at top, #172d49, transparent 34rem); }
+main { width: min(100% - 24px, 960px); margin: auto; padding: 18px 0 44px; }
+a { color: var(--cyan); }
+h1, h2, p { margin: 0; }
+.hero { padding: 16px 0 12px; }
+.hero h1 { font-size: clamp(2rem, 7vw, 3.6rem); line-height: 1.05; }
+.hero p { color: var(--muted); margin-top: 6px; }
+section, details.verb-panel {
+  margin-top: 12px;
+  padding: clamp(14px, 3vw, 24px);
+  background: var(--panel);
+  border: 1px solid var(--edge);
+  border-radius: 16px;
+}
+.settings, .verb-settings { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.verb-settings { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.settings label, .verb-settings label { font-size: .85rem; font-weight: 700; color: var(--muted); min-width: 0; }
+select, button, input {
+  font: inherit;
+  padding: 9px 12px;
+  border: 1px solid #486989;
+  border-radius: 9px;
+  background: #13243a;
+  color: #f4f8ff;
+  min-height: 42px;
+}
+select { display: block; width: 100%; margin-top: 4px; }
+button { cursor: pointer; font-weight: 750; }
+button:disabled { opacity: .48; cursor: default; }
+button:enabled:hover, .choice button:focus-visible { border-color: var(--cyan); }
+:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; }
+.primary { background: var(--cyan); color: #071624; border-color: var(--cyan); }
+.mission-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px 16px; }
+#instruction { font-weight: 800; color: var(--cyan); }
+#progress { color: var(--muted); font-size: .92rem; }
+.hud { display: flex; flex-wrap: wrap; gap: 5px 15px; color: var(--muted); font-size: .85rem; margin-top: 12px; }
+.hud b { color: var(--amber); }
+.meter { height: 6px; border-radius: 20px; background: #263951; overflow: hidden; margin: 9px 0 14px; }
+.meter div { height: 100%; width: 0; background: linear-gradient(90deg, #56dfff, #b592ff); transition: width .25s; }
+.workbench { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.text-panel { min-width: 0; }
+.text-panel h2 { font-size: .88rem; color: var(--muted); margin-bottom: 5px; }
+.text {
+  min-height: 100px;
+  padding: 12px;
+  border: 1px solid #345475;
+  border-radius: 10px;
+  background: #142841;
+  line-height: 1.85;
+  font-size: clamp(1rem, 2.5vw, 1.16rem);
+  overflow-wrap: anywhere;
+}
+#resultPanel summary { cursor: pointer; color: #a9ebcc; margin-bottom: 5px; }
+#result { background: #142938; border-color: #32645d; }
+.mark { border-radius: 4px; }
+.mark.current { background: var(--amber); color: #211609; padding: 2px 4px; }
+.mark.done { background: #20513d; color: #b9f8d0; padding: 2px 4px; }
+.pick { min-height: 32px; padding: 0 3px; background: transparent; border-color: transparent; font-weight: inherit; }
+.pick[aria-pressed="true"] { background: var(--amber); color: #211609; }
+#question { margin: 14px 0 9px; font-size: 1.12rem; font-weight: 800; }
+.controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.choice { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.choice button { overflow-wrap: anywhere; }
+#answer, #verbanswer { width: min(100%, 360px); min-width: 0; }
+.actions { margin-top: 10px; }
+.feedback { margin-top: 8px; color: var(--amber); }
+.feedback:empty { display: none; }
+.verb-panel summary { font-weight: 800; cursor: pointer; }
+.verb-panel .verb-settings, .verb-panel p, .verb-panel .controls { margin-top: 10px; }
+.verb-panel .hint { color: var(--muted); font-size: .9rem; }
+.confetti { position: fixed; pointer-events: none; animation: fall 1.5s ease-out forwards; z-index: 99; }
+@keyframes fall { to { transform: translateY(240px) rotate(260deg); opacity: 0; } }
+@media (max-width: 660px) {
+  .settings, .choice { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .workbench { grid-template-columns: minmax(0, 1fr); }
+  .text { min-height: 0; }
+  #resultPanel { grid-row: 2; }
+  #answer { flex: 1 1 130px; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style></head><body data-zm-no-neon>
+<main>
+  <a href="francais-1-conjugaison.html">← Conjugaison</a>
+  <header class="hero">
+    <h1>Transpo’Chrono</h1>
+    <p>Transforme un texte en changeant le temps ou la personne.</p>
+  </header>
+  <section class="settings" aria-label="Choisir la mission">
+    <label>Type <select id="category"><option value="temps">Changer de temps</option><option value="personne">Changer de personne</option></select></label>
+    <label>Transformation <select id="direction"></select></label>
+    <label>Difficulté <select id="difficulty"><option value="1">Choisir une réponse</option><option value="2">Écrire avec aide</option><option value="3">Écrire seul</option><option value="4">Repérer puis écrire</option></select></label>
+    <label>Texte <select id="mission"></select></label>
+  </section>
+  <section aria-label="Mission de transposition">
+    <div class="mission-bar"><p id="instruction"></p><p id="progress"></p></div>
+    <div class="meter" role="progressbar" aria-label="Progression" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="meter"><div id="meterFill"></div></div>
+    <div class="workbench">
+      <div class="text-panel"><h2>Texte de départ</h2><div id="source" class="text"></div></div>
+      <details class="text-panel" id="resultPanel">
+        <summary>Texte transposé</summary>
+        <div id="result" class="text"></div>
+      </details>
+    </div>
+    <p id="question"></p>
+    <div class="choice" id="choice" hidden></div>
+    <form class="controls" id="writearea" hidden>
+      <input id="answer" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Écris la transformation" required>
+      <button class="primary" id="check">Vérifier</button>
+    </form>
+    <div class="controls actions">
+      <button type="button" id="hint">Un indice</button>
+      <button type="button" id="verify" hidden class="primary">Valider mon repérage</button>
+      <button type="button" id="next" hidden class="primary">Texte suivant →</button>
+    </div>
+    <p id="feedback" class="feedback" role="status"></p>
+    <div class="hud"><span><b id="stars">0</b> étoiles</span><span><b id="streak">0</b> réponses de suite</span><span><b id="missionsDone">0</b> textes réussis</span></div>
+  </section>
+  <details id="essentiels" class="verb-panel">
+    <summary>Atelier des 10 verbes essentiels</summary>
+    <div class="verb-settings">
+      <label>Verbe <select id="verb"></select></label>
+      <label>Temps <select id="verbtense"><option value="present">Présent</option><option value="imparfait">Imparfait</option><option value="pc">Passé composé</option></select></label>
+      <label>Personne <select id="verbperson"><option value="0">je</option><option value="1">tu</option><option value="2">il / elle</option><option value="3">nous</option><option value="4">vous</option><option value="5">ils / elles</option></select></label>
+    </div>
+    <p id="verbquestion"></p>
+    <div class="controls">
+      <input id="verbanswer" autocomplete="off" spellcheck="false" aria-label="Forme conjuguée" placeholder="Écris la forme conjuguée">
+      <button id="verbcheck" class="primary">Corriger</button>
+      <button id="verbshow">Voir la réponse</button>
+    </div>
+    <p id="verbfeedback" class="feedback" role="status"></p>
+    <p class="hint">À l’imparfait, les terminaisons sont -ais, -ais, -ait, -ions, -iez, -aient.</p>
+  </details>
+</main>
+<script>
 const missions=[{"category":"temps","direction":"Présent → imparfait","title":"La classe","level":1,"markup":"Chaque matin, les élèves [[entrent|entraient]] en classe. La maîtresse [[écrit|écrivait]] la date et ils [[ouvrent|ouvraient]] leur cahier."},{"category":"temps","direction":"Présent → imparfait","title":"Le marché","level":1,"markup":"Chaque samedi, les commerçants [[installent|installaient]] leurs étals et les clients [[choisissent|choisissaient]] leurs fruits."},{"category":"temps","direction":"Présent → imparfait","title":"Le phare","level":2,"markup":"Chaque soir, le gardien [[allume|allumait]] la lampe. Il [[voit|voyait]] les bateaux et [[tient|tenait]] son journal."},{"category":"temps","direction":"Présent → imparfait","title":"La forêt","level":2,"markup":"Chaque automne, nous [[ramassons|ramassions]] des feuilles. Nous [[faisons|faisions]] des bouquets et [[prenons|prenions]] des photos."},{"category":"temps","direction":"Présent → imparfait","title":"La cabane","level":3,"markup":"Chaque mercredi, nous [[construisons|construisions]] des cabanes. Nous [[plaçons|placions]] les planches et [[crions|criions]] de joie."},{"category":"temps","direction":"Présent → imparfait","title":"Le refuge","level":3,"markup":"Chaque jour, les bénévoles [[nourrissent|nourrissaient]] les animaux. Une soigneuse [[nettoie|nettoyait]] les cages et [[soigne|soignait]] les oiseaux."},{"category":"temps","direction":"Imparfait → présent","title":"La piscine","level":1,"markup":"Chaque mercredi, je [[nageais|nage]] à la piscine. Je [[mettais|mets]] mon bonnet et [[rejoignais|rejoins]] mes amis."},{"category":"temps","direction":"Imparfait → présent","title":"Le village","level":1,"markup":"Chaque matin, le boulanger [[vendait|vend]] son pain. Les habitants [[venaient|viennent]] tôt et [[discutaient|discutent]] longtemps."},{"category":"temps","direction":"Imparfait → présent","title":"La répétition","level":2,"markup":"Chaque soir, nous [[répétions|répétons]]. Nous [[étions|sommes]] attentifs et [[apprenions|apprenons]] nos répliques."},{"category":"temps","direction":"Imparfait → présent","title":"Le jardin","level":2,"markup":"Chaque été, tu [[arrosais|arroses]] les fleurs et tu [[cueillais|cueilles]] les fraises. Ton frère [[courait|court]] près de toi."},{"category":"temps","direction":"Imparfait → présent","title":"La montagne","level":3,"markup":"Chaque hiver, ils [[prenaient|prennent]] le télésiège. Ils [[voyaient|voient]] les sommets et [[descendaient|descendent]] les pistes."},{"category":"temps","direction":"Imparfait → présent","title":"L'atelier","level":3,"markup":"Chaque semaine, vous [[fabriquiez|fabriquez]] des cerfs-volants. Vous [[pliiez|pliez]] le papier et [[colliez|collez]] les baguettes."},{"category":"temps","direction":"Présent → passé composé","title":"Le match","level":1,"markup":"Aujourd’hui, Hugo [[marque|a marqué]] un but. Ses amis [[applaudissent|ont applaudi]] et l’arbitre [[siffle|a sifflé]] la fin."},{"category":"temps","direction":"Présent → passé composé","title":"La surprise","level":1,"markup":"Ce matin, nous [[préparons|avons préparé]] un gâteau. Nous [[mettons|avons mis]] la table et nous [[invitons|avons invité]] nos voisins."},{"category":"temps","direction":"Présent → passé composé","title":"La randonnée","level":2,"markup":"Aujourd’hui, Léa [[part|est partie]] en randonnée. Elle [[monte|est montée]] au sommet et [[revient|est revenue]] avant la nuit."},{"category":"temps","direction":"Présent → passé composé","title":"Le trésor","level":2,"markup":"Ce matin, les enfants [[trouvent|ont trouvé]] une boîte. Ils l’[[ouvrent|ont ouverte]] et [[découvrent|ont découvert]] une carte."},{"category":"temps","direction":"Présent → passé composé","title":"Le musée","level":3,"markup":"Aujourd’hui, nous [[visitons|avons visité]] le musée. Nous [[voyons|avons vu]] une statue et [[écrivons|avons écrit]] un compte rendu."},{"category":"temps","direction":"Présent → passé composé","title":"La course","level":3,"markup":"Ce matin, elles [[arrivent|sont arrivées]] au stade, [[courent|ont couru]] cinq kilomètres et [[repartent|sont reparties]] ensemble."},{"category":"temps","direction":"Passé composé → présent","title":"Le jardin secret","level":1,"markup":"[[Hier|Aujourd’hui]], Malo [[a trouvé|trouve]] une clé. Il [[a ouvert|ouvre]] la porte et [[a découvert|découvre]] un jardin."},{"category":"temps","direction":"Passé composé → présent","title":"Le concert","level":1,"markup":"[[Hier soir|Ce soir]], les musiciens [[ont joué|jouent]] une mélodie. Le public [[a applaudi|applaudit]] et les enfants [[ont chanté|chantent]]."},{"category":"temps","direction":"Passé composé → présent","title":"Le départ","level":2,"markup":"[[Hier|Aujourd’hui]], nous [[sommes partis|partons]] tôt. Nous [[avons pris|prenons]] le train et [[sommes arrivés|arrivons]] à midi."},{"category":"temps","direction":"Passé composé → présent","title":"Le laboratoire","level":2,"markup":"[[Hier|Aujourd’hui]], tu [[as mélangé|mélanges]] deux liquides. Tu [[as observé|observes]] une réaction et [[as noté|notes]] le résultat."},{"category":"temps","direction":"Passé composé → imparfait","title":"La promenade","level":3,"markup":"Hier, Léa [[a marché|marchait]] dans le parc. Elle [[a regardé|regardait]] les arbres et [[a écouté|écoutait]] les oiseaux."},{"category":"temps","direction":"Passé composé → imparfait","title":"Les vacances","level":3,"markup":"Chaque été, nous [[avons nagé|nagions]] le matin. Nous [[avons joué|jouions]] sur la plage et [[avons construit|construisions]] des châteaux."},{"category":"temps","direction":"Passé composé → imparfait","title":"La lecture","level":1,"markup":"Hier, ils [[ont lu|lisaient]] dans le salon. Leur mère [[a préparé|préparait]] le repas et le chat [[a dormi|dormait]] près du feu."},{"category":"temps","direction":"Imparfait → passé composé","title":"Le défi sportif","level":1,"markup":"Hier, les élèves [[couraient|ont couru]] autour du stade. Puis ils [[buvaient|ont bu]] de l’eau et [[rentraient|sont rentrés]] en classe."},{"category":"temps","direction":"Imparfait → passé composé","title":"L'orage","level":2,"markup":"Hier soir, le vent [[soufflait|a soufflé]] fort. Les branches [[bougeaient|ont bougé]] et une fenêtre [[claquait|a claqué]]."},{"category":"temps","direction":"Imparfait → passé composé","title":"La visite","level":2,"markup":"Hier, nous [[visitions|avons visité]] le château. Nous [[découvrions|avons découvert]] un passage et [[prenions|avons pris]] des photos."},{"category":"personne","direction":"Je → nous","title":"Mon sac","level":3,"markup":"[[Je|Nous]] [[prépare|préparons]] [[mon|notre]] sac. [[Ma|Notre]] sœur [[me|nous]] donne un livre et [[je|nous]] [[la remercie|la remercions]]."},{"category":"personne","direction":"Je → nous","title":"Le stade","level":3,"markup":"[[Je|Nous]] [[prends|prenons]] [[mon|notre]] ballon. Le professeur [[me|nous]] demande si [[je|nous]] [[suis|sommes]] [[prêt|prêts]]."},{"category":"personne","direction":"Je → nous","title":"Le secret","level":1,"markup":"[[Je|Nous]] [[me|nous]] [[cache|cachons]] derrière un arbre. [[Mon|Notre]] ami [[m’|nous ]]appelle, mais [[je|nous]] ne [[réponds|répondons]] pas."},{"category":"personne","direction":"Je → nous","title":"La bibliothèque","level":1,"markup":"[[Je|Nous]] [[choisis|choisissons]] [[mes|nos]] livres. [[Je|Nous]] les [[lis|lisons]] et la bibliothécaire [[me|nous]] conseille un roman."},{"category":"personne","direction":"Il → ils","title":"Le jardinier","level":2,"markup":"[[Il|Ils]] [[arrose|arrosent]] [[sa|leur]] plante. [[Son|Leur]] voisin [[lui|leur]] donne des graines."},{"category":"personne","direction":"Il → ils","title":"Le musicien","level":2,"markup":"[[Il|Ils]] [[joue|jouent]] de la guitare. [[Sa|Leur]] sœur [[l’|les ]]écoute et [[lui|leur]] sourit."},{"category":"personne","direction":"Il → ils","title":"Le détective","level":3,"markup":"[[Il|Ils]] [[découvre|découvrent]] un indice. [[Son|Leur]] collègue [[le|les]] félicite et [[lui|leur]] montre une carte."},{"category":"personne","direction":"Il → ils","title":"L'explorateur","level":3,"markup":"[[Il|Ils]] [[prend|prennent]] [[son|leur]] sac et [[rejoint|rejoignent]] [[son|leur]] guide. Celui-ci [[lui|leur]] explique le chemin."},{"category":"personne","direction":"Nous → je","title":"Le potager","level":1,"markup":"[[Nous|Je]] [[plantons|plante]] des graines. [[Notre|Mon]] voisin [[nous|me]] prête un arrosoir et [[nous|je]] [[sommes|suis]] [[contents|content]]."},{"category":"personne","direction":"Nous → je","title":"Le dessin","level":1,"markup":"[[Nous|Je]] [[dessinons|dessine]] une maison. [[Nos|Mes]] amis [[nous|me]] regardent et [[nous|je]] [[leur montrons|leur montre]] le résultat."},{"category":"personne","direction":"Ils → il","title":"Le cinéma","level":2,"markup":"[[Ils|Il]] [[arrivent|arrive]] au cinéma. [[Leurs|Ses]] amis [[les|le]] attendent et [[leur|lui]] donnent un billet."},{"category":"personne","direction":"Ils → il","title":"Le laboratoire","level":2,"markup":"[[Ils|Il]] [[font|fait]] une expérience. [[Leur|Son]] professeur [[leur|lui]] explique la consigne et [[ils|il]] [[notent|note]] le résultat."}].concat([{"category":"temps","direction":"Présent → imparfait","title":"Le secret de la tour","level":3,"markup":"À la tombée du jour, la vieille horloge [[sonne|sonnait]] au-dessus des toits. Dans l'escalier, une enfant [[retient|retenait]] son souffle, [[aperçoit|apercevait]] une lueur et [[comprend|comprenait]] qu'un secret [[demeure|demeurait]] derrière la porte."},{"category":"temps","direction":"Imparfait → présent","title":"Le voyageur des brumes","level":3,"markup":"Au bord du fleuve, un voyageur [[attendait|attend]] le passage du bac. Il [[connaissait|connaît]] le nom des étoiles, mais [[ignorait|ignore]] celui du village. Parfois, les roseaux [[pliaient|plient]] et les eaux [[frémissaient|frémissent]]."},{"category":"temps","direction":"Présent → passé composé","title":"La lettre oubliée","level":3,"markup":"Dans le silence de la bibliothèque, Émilie [[découvre|a découvert]] une lettre jaunie. Elle [[lit|a lu]] quelques lignes, [[reconnaît|a reconnu]] une écriture familière, puis [[referme|a refermé]] doucement le tiroir."},{"category":"temps","direction":"Passé composé → imparfait","title":"La maison des souvenirs","level":3,"markup":"Chaque soir, le vent [[a traversé|traversait]] les volets disjoints. La lumière [[a dessiné|dessinait]] de longues ombres sur le parquet, tandis que la grand-mère [[a raconté|racontait]] des histoires et que les enfants [[ont écouté|écoutaient]] en silence."},{"category":"personne","direction":"Je → nous","title":"Le carnet de l'explorateur","level":3,"markup":"[[Je|Nous]] [[suis|sommes]] [[seul|seuls]] face à l'immense forêt. [[Mon|Notre]] courage [[me|nous]] [[permet|permet]] d'avancer. [[Je|Nous]] [[distingue|distinguons]] une trace dans la boue et [[je|nous]] [[comprends|comprenons]] que quelqu'un [[m’|nous ]]observe."}]);
 const $=id=>document.getElementById(id);let pieces=[],targets=[],step=0,phase='transform',found=new Set(),mistakes=0,stars=0,streak=0,missionsDone=0,completed=false;
 function refreshHud(){$('stars').textContent=stars;$('streak').textContent=streak;$('missionsDone').textContent=missionsDone}function celebrate(){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;for(let i=0;i<16;i++){let e=document.createElement('span');e.className='confetti';e.textContent=['⭐','✦','✨'][i%3];e.style.left=(8+Math.random()*84)+'vw';e.style.top=(10+Math.random()*30)+'vh';document.body.append(e);setTimeout(()=>e.remove(),1700)}}function parse(s){let out=[],re=/\[\[([^|]+)\|([^\]]+)\]\]/g,m,last=0;while((m=re.exec(s))){if(m.index>last)out.push({text:s.slice(last,m.index)});out.push({text:m[1],to:m[2],done:false});last=re.lastIndex}if(last<s.length)out.push({text:s.slice(last)});return out}
 function current(){return missions.filter(m=>m.category===$('category').value&&m.direction===$('direction').value)[+$('mission').value]}
 function directions(){let ds=[...new Set(missions.filter(m=>m.category===$('category').value).map(m=>m.direction))];$('direction').replaceChildren(...ds.map(d=>new Option(d,d)));list()}
 function list(){let ms=missions.filter(m=>m.category===$('category').value&&m.direction===$('direction').value);$('mission').replaceChildren(...ms.map((m,i)=>new Option((i+1)+' · '+m.title,i)));start()}
-function start(){let m=current();if(!m)return;pieces=parse(m.markup);targets=pieces.map((p,i)=>p.to!==undefined?i:-1).filter(i=>i>=0);step=0;found=new Set();mistakes=0;completed=false;phase=+$('difficulty').value===4?'identify':'transform';$('next').disabled=true;$('feedback').textContent='';$('instruction').textContent=$('category').value==='temps'?'⏳ On garde la personne, on change le temps. Observe les auxiliaires, les participes passés et les repères temporels. Pour les habitudes, « chaque jour » peut rester inchangé.':'👥 On garde le temps, on change la personne. Les pronoms sujets, pronoms compléments, déterminants possessifs et accords peuvent changer. Les autres personnages ne changent pas forcément.';render()}
+function report(message){
+  $('feedback').textContent=message;
+}
+function start(){
+  const mission=current();
+  if(!mission)return;
+  pieces=parse(mission.markup);
+  targets=pieces.flatMap((piece,index)=>piece.to===undefined?[]:[index]);
+  step=0;
+  found=new Set();
+  mistakes=0;
+  completed=false;
+  phase=+$('difficulty').value===4?'identify':'transform';
+  $('instruction').textContent=mission.direction+' · '+mission.title;
+  $('resultPanel').open=false;
+  report('');
+  render();
+}
 function esc(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
-function text(){return pieces.map(p=>p.done?p.to:p.text).join('')}
-function render(){let expert=phase==='identify';let percent=targets.length?Math.round(100*step/targets.length):0;$('meterFill').style.width=percent+'%';$('meter').setAttribute('aria-valuenow',percent);$('verify').hidden=!expert;$('writearea').hidden=expert||+$('difficulty').value===1;$('choice').hidden=expert||+$('difficulty').value!==1;$('progress').textContent=expert?'Éléments repérés : '+found.size+' / ?':'Transformations : '+step+' / '+targets.length;$('result').textContent=expert?'Le texte transposé apparaîtra après ton repérage.':text();
-$('source').innerHTML=pieces.map((p,i)=>{if(p.to===undefined)return esc(p.text).replace(/(\S+)/g,'<button type="button" class="pick" data-plain="1">$1</button>');if(expert)return '<button type="button" class="pick '+(found.has(i)?'selected':'')+'" data-index="'+i+'">'+esc(p.text)+'</button>';return '<span class="mark '+(p.done?'done':targets[step]===i?'current':'')+'">'+esc(p.done?p.to:p.text)+'</span>'}).join('');
-$('source').querySelectorAll('[data-index]').forEach(b=>b.onclick=()=>{let i=+b.dataset.index;if(found.has(i))found.delete(i);else found.add(i);$('feedback').textContent='';render()});$('source').querySelectorAll('[data-plain]').forEach(b=>b.onclick=()=>{if(expert){mistakes++;$('feedback').textContent='Ce mot n’a pas besoin de changer. Observe le sujet, le temps et le sens.'}});
-if(expert){$('question').textContent='Repère tous les mots ou groupes de mots à transformer, sans surlignage.';$('choice').replaceChildren();return}
-if(step>=targets.length){if(!completed){completed=true;missionsDone++;stars+=mistakes?8:15;refreshHud();celebrate()}$('question').textContent='🎉 Texte terminé !';$('choice').replaceChildren();$('writearea').hidden=true;$('next').disabled=false;$('feedback').textContent='Mission réussie'+(mistakes?' ! Revois les points qui t’ont posé problème.':' sans erreur !');return}
-let p=pieces[targets[step]];$('question').textContent='Que devient « '+p.text+' » ?';if(+$('difficulty').value===1){let opts=optionsFor(p);$('choice').replaceChildren(...opts.map(v=>{let b=document.createElement('button');b.textContent=v;b.onclick=()=>validate(v);return b}))}else{$('answer').value='';$('answer').placeholder='Écris la forme correcte';$('answer').focus()}}
+function token(text,key){
+  return '<button type="button" class="pick" data-token="'+key+'" aria-pressed="false">'+text+'</button>';
+}
+function renderSource(expert){
+  $('source').innerHTML=pieces.map((piece,index)=>{
+    const word=esc(piece.text);
+    if(expert){
+      if(piece.to!==undefined)return token(word,index);
+      let part=0;
+      return word.replace(/[^\s.,;:!?()«»]+/g,term=>token(term,'plain-'+index+'-'+part++));
+    }
+    if(piece.to===undefined)return word;
+    const state=piece.done?'done':targets[step]===index?'current':'';
+    return '<span class="mark '+state+'">'+word+'</span>';
+  }).join('');
+}
+$('source').onclick=event=>{
+  const button=event.target.closest('button[data-token]');
+  if(!button||phase!=='identify')return;
+  const key=button.dataset.token;
+  if(found.has(key))found.delete(key);
+  else found.add(key);
+  button.setAttribute('aria-pressed',String(found.has(key)));
+  $('progress').textContent=found.size+' élément(s) repéré(s)';
+  report('');
+};
+function render(){
+  const expert=phase==='identify';
+  const finished=step>=targets.length;
+  const choices=+$('difficulty').value===1;
+  const percent=targets.length?Math.round(100*step/targets.length):0;
+  $('meterFill').style.width=percent+'%';
+  $('meter').setAttribute('aria-valuenow',percent);
+  $('verify').hidden=!expert;
+  $('hint').hidden=finished;
+  $('next').hidden=!finished;
+  $('writearea').hidden=expert||finished||choices;
+  $('choice').hidden=expert||finished||!choices;
+  $('progress').textContent=expert?found.size+' élément(s) repéré(s)':
+    finished?'Mission terminée':'Transformation '+(step+1)+' sur '+targets.length;
+  $('resultPanel').hidden=expert;
+  $('result').textContent=pieces.map(piece=>piece.done?piece.to:piece.text).join('');
+  renderSource(expert);
+  $('choice').replaceChildren();
+  if(expert){
+    $('question').textContent='Touche les mots ou groupes de mots qui doivent changer.';
+    return;
+  }
+  if(finished){
+    $('question').textContent='Texte terminé !';
+    $('resultPanel').open=true;
+    return;
+  }
+  const piece=pieces[targets[step]];
+  $('question').textContent='Que devient « '+piece.text+' » ?';
+  $('answer').value='';
+  if(choices){
+    $('choice').replaceChildren(...optionsFor(piece).map(value=>{
+      const button=document.createElement('button');
+      button.type='button';
+      button.textContent=value;
+      button.onclick=()=>validate(value);
+      return button;
+    }));
+  }
+}
 function norm(s){return s.normalize('NFC').replace(/[’]/g,"'").replace(/\s+/g,' ').trim().toLocaleLowerCase('fr')}
 function optionsFor(p){const correct=p.to.trim(),source=p.text.trim(),ending=/^(.*?)(ais|ait|ions|iez|aient)$/i.exec(correct);let pool=[];
 if(ending){let stem=ending[1];pool=['ais','ait','ions','aient','iez'].map(e=>stem+e)}
@@ -25,10 +249,76 @@ else{let stems=correct.replace(/(ent|ons|ez|es|e|s|t)$/i,'');pool=[correct,stems
 let options=[correct];for(const x of pool)if(!options.some(v=>norm(v)===norm(x)))options.push(x);for(const x of [source,correct+'s',correct+'ent'])if(options.length<4&&!options.some(v=>norm(v)===norm(x)))options.push(x);
 return options.slice(0,4).map((x,i)=>({x,sort:(i*7+step*11)%17})).sort((a,b)=>a.sort-b.sort).map(o=>o.x)
 }
-function validate(v){let p=pieces[targets[step]];if(norm(v)===norm(p.to)){p.done=true;step++;if(step===targets.length&&current().direction==='Présent → imparfait')window.zoumaiTrackResult?.('Transpo Imparfait',1,1,{errors:mistakes});streak++;stars+=2;refreshHud();$('feedback').textContent='✨ Bonne transformation !';render()}else{mistakes++;streak=0;refreshHud();$('feedback').textContent='Pas encore. Vérifie la personne, le temps et les accords.'}}
-$('check').onclick=()=>validate($('answer').value);$('answer').addEventListener('keydown',e=>{if(e.key==='Enter')validate($('answer').value)});
-$('hint').onclick=()=>{if(phase==='identify'){$('feedback').textContent='Cherche les verbes conjugués, les auxiliaires, les pronoms et les déterminants. Clique sur les groupes complets.';return}if(step>=targets.length)return;let p=pieces[targets[step]],n=+$('difficulty').value;if(n===3||n===4){$('feedback').textContent='Indice : la réponse commence par « '+p.to.slice(0,Math.max(1,Math.floor(p.to.length/3)))+'… ».'}else{$('feedback').textContent='Indice : « '+p.text+' » doit respecter la transformation « '+current().direction+' ».'}};
-$('verify').onclick=()=>{let missing=targets.filter(i=>!found.has(i));if(missing.length){mistakes++;$('feedback').textContent='Il manque '+missing.length+' élément(s). Continue à chercher.';return}phase='transform';$('feedback').textContent='Tous les éléments sont repérés. Maintenant, écris leurs transformations !';render()};
+function validate(value){
+  if(phase!=='transform'||completed||step>=targets.length||!norm(value))return;
+  const piece=pieces[targets[step]];
+  if(norm(value)!==norm(piece.to)){
+    mistakes++;
+    streak=0;
+    refreshHud();
+    report('Essaie encore. Vérifie la personne, le temps et les accords.');
+    return;
+  }
+  const focusWasInChoice=$('choice').contains(document.activeElement);
+  const focusWasInAnswer=$('writearea').contains(document.activeElement);
+  piece.done=true;
+  step++;
+  streak++;
+  stars+=2;
+  if(step===targets.length){
+    completed=true;
+    missionsDone++;
+    stars+=mistakes?8:15;
+    if(current().direction==='Présent → imparfait'){
+      window.zoumaiTrackResult?.('Transpo Imparfait',1,1,{errors:mistakes});
+    }
+    celebrate();
+  }
+  refreshHud();
+  render();
+  if(completed){
+    report(mistakes?'Mission réussie ! Relis le texte transposé.':'Mission réussie sans erreur !');
+    $('next').focus({preventScroll:true});
+  }else{
+    report('Bonne transformation !');
+    if(focusWasInChoice)$('choice').firstElementChild?.focus({preventScroll:true});
+    if(focusWasInAnswer)$('answer').focus({preventScroll:true});
+  }
+}
+$('writearea').onsubmit=event=>{
+  event.preventDefault();
+  validate($('answer').value);
+};
+$('hint').onclick=()=>{
+  if(phase==='identify'){
+    report('Repère les verbes conjugués, les auxiliaires, les pronoms et les déterminants qui changent.');
+    return;
+  }
+  if(step>=targets.length)return;
+  const piece=pieces[targets[step]];
+  if(+$('difficulty').value!==1){
+    report('La réponse commence par « '+piece.to.slice(0,Math.max(1,Math.floor(piece.to.length/3)))+'… »');
+  }else{
+    report('Relis le sujet de la phrase et applique « '+current().direction+' ».');
+  }
+};
+$('verify').onclick=()=>{
+  if(phase!=='identify')return;
+  const correctCount=targets.filter(index=>found.has(String(index))).length;
+  const missing=targets.length-correctCount;
+  const extra=found.size-correctCount;
+  if(missing||extra){
+    mistakes++;
+    const messages=[];
+    if(missing)messages.push('Il reste '+missing+' élément(s) à repérer.');
+    if(extra)messages.push('Retire '+extra+' élément(s) qui ne changent pas.');
+    report(messages.join(' '));
+    return;
+  }
+  phase='transform';
+  render();
+  report('Tout est repéré. Écris maintenant les transformations.');
+};
 $('next').onclick=()=>{$('mission').value=(+$('mission').value+1)%$('mission').options.length;start()};
 $('category').onchange=directions;$('direction').onchange=list;$('mission').onchange=start;$('difficulty').onchange=start;directions();
 // Atelier de conjugaison : dix verbes fondamentaux.
