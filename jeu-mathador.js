@@ -371,6 +371,7 @@
     player.completed = Math.max(player.completed,currentLevel + 1);
     persist();
     best = earned;
+    window.zoumaiTrackResult?.('Matador Défi '+(currentLevel+1),earned,18);
     bestExpression = token.expr;
     if (API) refreshRankings(); else showRankings();
     const usedCount=token.used.length;

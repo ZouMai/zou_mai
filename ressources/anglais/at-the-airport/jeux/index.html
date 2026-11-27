@@ -62,4 +62,4 @@ document.addEventListener('visibilitychange',()=>{if(document.hidden)cancelAudio
 document.querySelectorAll('[data-comic]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();location.href=(location.hostname==='htmlpreview.github.io'?'https://htmlpreview.github.io/?'+new URL('../../index.html',location.search.slice(1)).href:'https://zoumai.github.io/zou_mai/ressources/anglais/index.html?v='+Date.now())+'#'+a.dataset.comic}));
 
 document.querySelector('[data-catalogue]').onclick=e=>{e.preventDefault();location.href=location.hostname==='htmlpreview.github.io'?'https://htmlpreview.github.io/?'+new URL('../../index.html',location.search.slice(1)).href:'https://zoumai.github.io/zou_mai/ressources/anglais/index.html?v='+Date.now()};
-</script><script src="../../../../zoumai-scores.js?v=2"></script></body></html>
+</script><script src="../../../../zoumai-scores.js?v=2"></script><script src="../../../../site-tracking.js" defer data-zm-student-only></script></body></html>

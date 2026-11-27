@@ -45,4 +45,4 @@ svg.addEventListener('pointermove',e=>{if(!drag)return;let p=coords(e);if(missio
 document.querySelectorAll('[data-mode]').forEach(b=>{b.textContent=['1 · Figures','2 · Analyser','3 · Construire','4 · Brevet'][+b.dataset.mode];b.onclick=()=>{index=+b.dataset.mode*3;setup()}});
 Q('#retry').textContent='Recommencer la mission ↻';Q('#retry').onclick=setup;next.onclick=()=>{if(index===11){index=0;completed.clear();Q('#score').textContent='Missions réussies : 0/12';Q('#bar').style.width='0%'}else index++;setup()};setup();
 })();
-</script></body></html>
+</script><script src="site-tracking.js" defer data-zm-student-only></script></body></html>

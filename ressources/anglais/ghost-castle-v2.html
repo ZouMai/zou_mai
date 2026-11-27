@@ -13,4 +13,4 @@ function reset(){index=0;queue=[];busy=false;$("reward").hidden=true;$("message"
 $("undo").onclick=()=>{if(!busy){queue.pop();render()}};$("reset").onclick=()=>{if(!busy)reset()};$("again").onclick=reset;
 const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 $("play").onclick=async()=>{if(busy||!queue.length)return;busy=true;const actions=queue.splice(0);$("message").textContent="";for(const c of actions){if(c!==steps[index]){$("message").textContent="👻 Try another direction!";speak("Try again!");break}index++;render();await wait(650);if(index===steps.length){$("reward").hidden=false;speak("You found the treasure! Well done!");break}}busy=false;render()};render();
-</script></body></html>
+</script><script src="../../site-tracking.js" defer data-zm-student-only></script></body></html>

@@ -8,4 +8,4 @@ function reset(){clearInterval(timer);timer=null;remaining=60;$("clock").textCon
 $("start").onclick=()=>{if(timer)return;timer=setInterval(tick,1000)};$("stop").onclick=()=>{clearInterval(timer);timer=null};$("reset").onclick=reset;
 $("listen").onclick=()=>{if(!("speechSynthesis" in window)){ $("result").textContent="Lecture vocale indisponible sur cet appareil.";return}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(tasks[selected][2].replaceAll("\n"," "));u.lang="fr-FR";u.rate=.85;speechSynthesis.speak(u)};
 $("save").onclick=()=>{const w=Number($("words").value),e=Number($("errors").value);if(!Number.isInteger(w)||!Number.isInteger(e)||w<0||e<0||e>w){$("result").textContent="Vérifie les nombres saisis.";return}const score=w-e;history[selected]={score,date:new Date().toLocaleDateString("fr-FR")};try{localStorage.setItem("zm_fluence_v1",JSON.stringify(history))}catch(e){}$("result").textContent="Lecture enregistrée · "+score+" mot(s) correctement lu(s).";draw()};draw();
-</script></body></html>
+</script><script src="site-tracking.js" defer data-zm-student-only></script></body></html>

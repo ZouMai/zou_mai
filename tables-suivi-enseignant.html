@@ -36,6 +36,52 @@ async function refresh(){
     $('#notice').textContent='';
   }catch(e){$('#notice').textContent='Impossible de charger les parcours : '+e.message}
 }
+function studentTimeline(pupil){
+  const panel=document.createElement('details');
+  const heading=document.createElement('summary');
+  const list=document.createElement('ol');
+  const more=document.createElement('button');
+  const message=document.createElement('p');
+  const format=new Intl.DateTimeFormat('fr-FR',{dateStyle:'short',timeStyle:'short'});
+  let before, loaded=false;
+  heading.textContent='Pages consultées et résultats';
+  list.className='recent';
+  more.type='button';more.className='secondary';more.textContent='Voir les activités précédentes';more.hidden=true;
+  message.setAttribute('role','status');
+  async function loadTimeline(){
+    more.disabled=true;
+    message.textContent='Chargement…';
+    try{
+      const result=await siteRequest('studentTimeline',{studentId:pupil.id,before});
+      for(const event of result.events){
+        const row=document.createElement('li');
+        const label=event.activity||event.page_path.split('/').filter(Boolean).join(' › ');
+        row.append(format.format(new Date(event.occurred_at))+' · ');
+        row.append(event.event_type==='visit'?'Visite · ':'Résultat · ');
+        const path=event.page_path;
+        if(/^\/[a-zA-Z0-9_./%-]{1,179}$/.test(path)&&!path.includes('..')&&!path.startsWith('//')){
+          const link=document.createElement('a');
+          link.href=new URL(path.slice(1),location.href).href;
+          link.textContent=label;
+          row.append(link);
+        }else row.append(label);
+        if(event.event_type==='result'&&event.max_score!=null)row.append(' · '+event.score+' / '+event.max_score);
+        list.append(row);
+      }
+      loaded=true;
+      before=result.next;
+      more.hidden=before===null;
+      message.textContent=list.childElementCount?'':'Aucune activité enregistrée.';
+    }catch(error){
+      message.textContent=error.message;
+      more.hidden=false;
+    }finally{more.disabled=false}
+  }
+  more.onclick=loadTimeline;
+  panel.ontoggle=()=>{if(panel.open&&!loaded&&!more.disabled)loadTimeline()};
+  panel.append(heading,list,message,more);
+  return panel;
+}
 async function refreshSite(){
   const box=$('#siteStudents');box.replaceChildren();
   const {students=[]}=await siteRequest('siteClass');
@@ -64,6 +110,7 @@ async function refreshSite(){
     if(pupil.pinSet&&!pupil.pinApproved){const approve=document.createElement('button');approve.type='button';approve.textContent='VALIDER CE PIN';approve.onclick=async()=>{if(!confirm('As-tu vérifié avec '+pupil.nickname+' que cette demande vient bien de cet élève ?'))return;try{await siteRequest('approvePin',{studentId:pupil.id});await refreshSite()}catch(err){$('#notice').textContent=err.message}};card.append(approve)}
     if(pupil.pinSet){const reset=document.createElement('button');reset.type='button';reset.className='danger';reset.textContent='RÉINITIALISER LE PIN';reset.onclick=async()=>{if(!confirm('Réinitialiser le PIN de '+pupil.nickname+' ? Il devra en choisir un nouveau.'))return;try{await siteRequest('resetPin',{studentId:pupil.id});await refreshSite()}catch(err){$('#notice').textContent=err.message}};card.append(reset)}
     for(const item of pupil.byActivity||[]){const p=document.createElement('p');p.textContent=item.activity+' : '+item.attempts+' essai(s) · '+item.successRate+' % · '+(item.perfects||0)+' Perfect · '+(item.errors||0)+' erreur(s)';card.append(p)}
+    card.append(studentTimeline(pupil));
     box.append(card)
   }
 }

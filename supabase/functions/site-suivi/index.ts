@@ -229,6 +229,20 @@ Deno.serve(async req => {
       }
       return reply({ saved: true });
     }
+    if (body.action === 'studentTimeline') {
+      if (!await teacher(body.teacherCode)) return reply({ error: 'Accès refusé.' }, 403);
+      if (typeof body.studentId !== 'string' || !/^[0-9a-f-]{36}$/i.test(body.studentId) ||
+          (body.before !== undefined && (!Number.isSafeInteger(body.before) || body.before <= 0)))
+        return reply({ error: 'Élève ou page invalide.' }, 400);
+      let query = db.from('site_events')
+        .select('id,page_path,event_type,activity,score,max_score,occurred_at')
+        .eq('account_id', body.studentId).order('id', { ascending: false }).limit(51);
+      if (body.before !== undefined) query = query.lt('id', body.before);
+      const { data, error } = await query;
+      if (error) throw error;
+      const events = (data || []).slice(0, 50);
+      return reply({ events, next: (data || []).length > 50 ? events[49].id : null });
+    }
     if (body.action === 'siteClass') {
       if (!await teacher(body.teacherCode)) return reply({ error: 'Accès refusé.' }, 403);
       const { data: accounts, error } = await db.from('tables_accounts')

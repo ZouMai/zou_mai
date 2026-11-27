@@ -38,4 +38,4 @@ document.addEventListener('pointermove',e=>{if(!drag||drag.id!==e.pointerId)retu
 function finish(e,cancel){if(!drag||drag.id!==e.pointerId)return;let d=drag;drag=null;if(!d.started)return;suppress=true;setTimeout(()=>suppress=false,350);$('dragGhost')?.remove();$('mat').classList.remove('drop-ready');$('tray').classList.remove('return-ready');if(!cancel&&inside($('mat'),e.clientX,e.clientY)){if(d.p||pieces.length<150){snapshot();let p=d.p||make(d.i);place(p,e.clientX,e.clientY);if(!d.p)pieces.push(p);held=-1;selected.clear();say('Bloc posé.')}}else if(!cancel&&d.p&&inside($('tray'),e.clientX,e.clientY)){snapshot();pieces=pieces.filter(p=>p.id!==d.p.id);selected.delete(d.p.id);say('Bloc rendu à la réserve.')}render()}
 document.addEventListener('pointerup',e=>finish(e,false));document.addEventListener('pointercancel',e=>finish(e,true));document.addEventListener('click',e=>{if(suppress&&e.target.closest('#mat,#reserve')){e.stopImmediatePropagation();e.preventDefault();suppress=false}},true);
 
-</script></html>
+</script></html><script src="site-tracking.js" defer data-zm-student-only></script>

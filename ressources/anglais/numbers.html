@@ -20,4 +20,4 @@ else if(mode===3){sequence=unique(5).sort((a,b)=>a-b);let shuffled=[...sequence]
 function eventSafeHighlight(container,n){[...container.children].find(x=>x.textContent===String(n))?.classList.add('selected')}
 function inputAnswer(w,expected,placeholder){let f=document.createElement('form');f.className='row';let i=document.createElement('input');i.placeholder=placeholder;i.autocomplete='off';i.setAttribute('aria-label',placeholder);let b=button('Valider ✓',()=>{});b.type='submit';f.append(i,b);f.onsubmit=e=>{e.preventDefault();let normalize=s=>s.trim().toLowerCase().replace(/[‐‑–—]/g,'-').replace(/\s+/g,' ');check(normalize(i.value)===normalize(expected),expected)};w.append(f);i.focus()}
 names.forEach((n,i)=>$('menu').append(button(n,()=>start(i))));$('back').onclick=()=>{$('play').hidden=true;$('home').hidden=false;speechSynthesis?.cancel()};$('next').onclick=()=>{round++;newRound()};
-</script></body></html>
+</script><script src="../../site-tracking.js" defer data-zm-student-only></script></body></html>

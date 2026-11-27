@@ -770,6 +770,11 @@
     );
   }
   function finish() {
+    const trackedModes = {choice:'Choix', transform:'Accords', dictation:'Dictée', reverse:'Dictée inversée'};
+    if (queue.length && trackedModes[mode]) {
+      window.zoumaiTrackResult?.('Dictée '+id+' '+trackedModes[mode], points, queue.length,
+        {errors:queue.length-points});
+    }
     window.ZoumaiRewards?.complete(points === queue.length && queue.length > 0);
     updateStatus();
     document.querySelector("#progressFill").style.width = "100%";

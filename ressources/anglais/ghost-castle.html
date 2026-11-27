@@ -15,4 +15,4 @@ document.getElementById("undo").onclick=()=>{if(!busy){sequence.pop();render()}}
 const wait=ms=>new Promise(r=>setTimeout(r,ms));
 document.getElementById("play").onclick=async()=>{if(busy||!sequence.length)return;busy=true;message.textContent="";const pending=sequence.slice();sequence=[];for(const c of pending){speak(commands.find(v=>v[0]===c)[2]);const result=execute(c);render();await wait(650);if(result==="treasure"){treasure.hidden=false;speak("You found the treasure! Well done!");busy=false;return}if(result!=="ok"){message.textContent="👻 "+result;break}if(goal()&&level<3){message.textContent="⭐ Well done!";speak("Well done! Next room!");await wait(850);level++;message.textContent="";render();break}}busy=false;render()};
 document.getElementById("treasureNext").onclick=()=>{level=0;reset()};render();
-</script></html>
+</script></html><script src="../../site-tracking.js" defer data-zm-student-only></script>

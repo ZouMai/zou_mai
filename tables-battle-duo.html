@@ -378,4 +378,4 @@ const gif=document.createElement('img');gif.alt='Animation de victoire de Zoum e
 let run=0;const previous=victoryScene;
 victoryScene=function(a,b){previous(a,b);const id=++run;gif.hidden=true;scene.classList.remove('gif-ready');if(a===b)return;const src='assets/'+(a>b?'zoum':'mai')+'-victory.gif';gif.onload=()=>{if(id===run){gif.hidden=false;scene.classList.add('gif-ready')}};gif.onerror=()=>{if(id===run){gif.hidden=true;scene.classList.remove('gif-ready')}};gif.src=src+'?play='+Date.now()};
 })();
-</script></body></html>
+</script><script src="site-tracking.js" defer data-zm-student-only></script></body></html>
