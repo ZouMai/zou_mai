@@ -32,12 +32,34 @@ border:2px solid #5d7189;border-radius:12px;background:#152a41;text-align:center
 .avatar-option span{font-size:.84rem}
 #avatarMessage{margin:8px 0 0}
 #avatarMessage:empty{display:none}
+.french-missions{margin:12px 0 20px}
+.french-missions h3{margin:0 0 10px}
+.french-missions-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:10px}
+.french-mission{display:grid;align-content:start;gap:4px;padding:12px 14px;border:2px solid var(--mission-accent);border-radius:12px;background:#101d30;color:#f3f7ff;text-decoration:none}
+.french-mission-dictation{--mission-accent:#ff9bc7}
+.french-mission-spelling{--mission-accent:#83efd3}
+.french-mission span,.french-mission small{color:var(--mission-accent);font-size:.85rem}
+.french-mission:focus-visible,.french-mission:hover{outline:2px solid var(--mission-accent);outline-offset:2px}
 </style></head><body><main><nav class="top"><a href="index.html">← ACCUEIL</a><a href="tables-suivi-enseignant.html">ACCÈS ENSEIGNANT</a></nav>
 <h1>MON<br>ESPACE</h1><p class="lead">Retrouve tes réussites et les activités que tu as réalisées sur Zou Maï.</p>
 <section class="card" id="login"><h2>1. Le compte de la classe</h2><p>Entre le nom du compte et le mot de passe donnés par ton enseignant.</p>
 <form id="classForm"><input id="classAccount" aria-label="Compte classe" placeholder="Compte classe" autocomplete="off" spellcheck="false" required><input id="classCode" type="password" aria-label="Mot de passe classe" placeholder="Mot de passe classe" autocomplete="off" spellcheck="false" required><button>CONTINUER</button></form><p id="message" role="status" class="error"></p></section>
 <section class="card" id="pupilStep" hidden><h2>2. Ton prénom et ton code</h2><form id="pupilForm"><select id="nicknameSelect" aria-label="Choisis ton prénom" required><option value="">Choisis ton prénom</option></select><label id="activationField" class="activation-field" hidden>Code d’activation (lettres et chiffres)<input id="activationCode" type="text" inputmode="text" autocapitalize="none" autocorrect="off" disabled placeholder="Ex. 12ab-cd34-56ef" autocomplete="off" spellcheck="false"></label><input id="pin" type="password" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" autocomplete="off" aria-label="Code PIN à quatre chiffres" placeholder="Code PIN (4 chiffres)" required><input id="confirmPin" hidden disabled type="password" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" autocomplete="off" aria-label="Confirme ton PIN" placeholder="Confirme ton PIN"><button id="connectButton">ME CONNECTER</button></form><p id="pinHelp" class="muted"></p><p id="pupilMessage" role="status" class="error"></p><button id="back" type="button">CHANGER LE CODE CLASSE</button></section>
 <section class="card" id="progress" hidden><div class="actions"><div class="profile-heading"><img id="profileAvatar" width="64" height="64" alt="" hidden><h2>Bonjour <span id="nickname"></span> !</h2></div><button id="logout" type="button">SE DÉCONNECTER</button></div>
+<section class="french-missions" aria-labelledby="french-missions-title">
+  <h3 id="french-missions-title">Mes activités de français</h3>
+  <div class="french-missions-grid">
+    <a class="french-mission french-mission-dictation" href="dictee-09-bayeux.html">
+      <span>Dictée 9</span>
+      <strong>La tapisserie de Bayeux</strong>
+    </a>
+    <a class="french-mission french-mission-spelling" href="orthographe-c-cedille-qu.html">
+      <span>Orthographe · O9</span>
+      <strong>Les valeurs de la lettre C</strong>
+      <small>Écrire c, ç ou qu</small>
+    </a>
+  </div>
+</section>
 <details class="profile" id="profile">
   <summary>Mon profil</summary>
   <form id="avatarForm">
