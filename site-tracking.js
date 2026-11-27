@@ -79,7 +79,8 @@
   async function trackPage() {
     const session = currentSession();
     if (!session) { badge?.remove(); return; }
-    const activity = document.title.replace(/[^\p{L}\p{N} _-]/gu,' ').replace(/\s+/g,' ').trim().slice(0,80);
+    const lessonLevel = path === '/jeu-maths-cm2.html' ? new URLSearchParams(location.search).get('m') : null;
+    const activity = /^(?:[7-9]|[12][0-9]|3[0-5])$/.test(lessonLevel ?? '') ? 'Leçon M' + lessonLevel : document.title.replace(/[^\p{L}\p{N} _-]/gu,' ').replace(/\s+/g,' ').trim().slice(0,80);
     if (isProfile) { record('visit', activity); return; }
     const [profile] = await Promise.all([request('me',session), record('visit',activity)]);
     if (window.top === window && profile?.nickname && currentSession() === session) showBadge(profile.nickname);

@@ -278,6 +278,34 @@ Deno.serve(async req => {
       if (error) throw error;
       return data ? reply(data) : reply({ error: 'Session expirée. Reconnecte-toi.' }, 401);
     }
+    if (body.action === 'lessonJournal') {
+      if (!Array.isArray(body.paths) || body.paths.length > 100)
+        return reply({ error: 'Liste de leçons invalide.' }, 400);
+      const requestedPaths = body.paths as unknown[];
+      const paths = [...new Set(requestedPaths.map(safePath).filter(path => path !== null))];
+      if (!paths.length) return reply({ lessons: [] });
+      const lessons = new Map<string, { path: string; viewedAt: string }>();
+      const batchSize = 500;
+      for (let offset = 0; ; offset += batchSize) {
+        const { data, error } = await db.from('site_events')
+          .select('page_path,activity,occurred_at').eq('account_id', account.id)
+          .eq('event_type', 'visit').in('page_path', paths)
+          .order('occurred_at', { ascending: false }).order('id', { ascending: false })
+          .range(offset, offset + batchSize - 1);
+        if (error) throw error;
+        for (const visit of data) {
+          let path = visit.page_path;
+          if (path === '/jeu-maths-cm2.html') {
+            const level = /^Leçon M([7-9]|[12][0-9]|3[0-5])$/.exec(visit.activity || '');
+            if (!level) continue;
+            path += '?m=' + level[1];
+          }
+          if (!lessons.has(path)) lessons.set(path, { path, viewedAt: visit.occurred_at });
+        }
+        if (data.length < batchSize || lessons.size >= paths.length + (paths.includes('/jeu-maths-cm2.html') ? 28 : 0)) break;
+      }
+      return reply({ lessons: [...lessons.values()] });
+    }
     if (body.action === 'summary') {
       const { data, error } = await db.from('site_events')
         .select('page_path,event_type,activity,correct,score,max_score,errors,duration_ms,perfect,completed,occurred_at')
